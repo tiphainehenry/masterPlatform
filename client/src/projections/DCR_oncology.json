@@ -1,0 +1,6764 @@
+{
+  "r4": {
+    "vect": {
+      "markings": [
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e5s", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e6r", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e7r", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e3", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignPA", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "SignCP", 
+          "pending": 0
+        }
+      ], 
+      "relations": [
+        {
+          "exclude": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "include": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "response": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "condition": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "milestone": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ]
+        }
+      ]
+    }, 
+    "data": [
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e5s", 
+          "name": "!(MakePrescription, PA-->CP)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e6r", 
+          "name": "?(DontTrustPrep(CP), CP-->PA)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e7r", 
+          "name": "?(DontTrustPrep(N), Nurse-->PA)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "external choreography", 
+        "data": {
+          "id": "e3", 
+          "name": "CP\nAcceptPrescription\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignPA", 
+          "name": "SignPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "external", 
+        "data": {
+          "id": "SignCP", 
+          "name": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e5s", 
+          "id": "e5s_SignPA_response", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignPA", 
+          "id": "e5s_SignPA_response_back", 
+          "target": "e5s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "e5s", 
+          "id": "e5s_SignPA_condition", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "milestone", 
+        "data": {
+          "source": "e5s", 
+          "id": "e5s_SignPA_milestone", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_e6r_condition", 
+          "target": "e6r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e6r", 
+          "id": "e6r_SignPA_response", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignPA", 
+          "id": "e6r_SignPA_response_back", 
+          "target": "e6r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e3", 
+          "id": "e3_e5s_response", 
+          "target": "e5s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e5s", 
+          "id": "e3_e5s_response_back", 
+          "target": "e3"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "e3", 
+          "id": "e3_e5s_condition", 
+          "target": "e5s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "milestone", 
+        "data": {
+          "source": "e3", 
+          "id": "e3_e5s_milestone", 
+          "target": "e5s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignCP", 
+          "id": "SignCP_e7r_condition", 
+          "target": "e7r"
+        }
+      }
+    ], 
+    "exec": {
+      "execLogs": []
+    }
+  }, 
+  "r1": {
+    "vect": {
+      "markings": [
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e1s", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e2r", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e3r", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e4r", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "EditPrescription", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "CancelPrescription", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignDoctor", 
+          "pending": 0
+        }
+      ], 
+      "relations": [
+        {
+          "exclude": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "include": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "response": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "condition": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "milestone": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ]
+        }
+      ]
+    }, 
+    "data": [
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e1s", 
+          "name": "!(PrescribeMed, Doctor-->Nurse)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e2r", 
+          "name": "?(DontTrustPrescr(N), Nurse-->Doctor)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e3r", 
+          "name": "?(AcceptPrescription, CP-->Doctor)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e4r", 
+          "name": "?(DontTrustPrescr(CP), CP-->Doctor)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "EditPrescription", 
+          "name": "EditPrescription"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "CancelPrescription", 
+          "name": "CancelPrescription"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignDoctor", 
+          "name": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "EditPrescription", 
+          "id": "EditPrescription_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "EditPrescription_SignDoctor_response_back", 
+          "target": "EditPrescription"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e1s", 
+          "id": "e1s_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e1s_SignDoctor_response_back", 
+          "target": "e1s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "include", 
+        "data": {
+          "source": "e1s", 
+          "id": "e1s_EditPrescription_include", 
+          "target": "EditPrescription"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "include", 
+        "data": {
+          "source": "e1s", 
+          "id": "e1s_CancelPrescription_include", 
+          "target": "CancelPrescription"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e2r_condition", 
+          "target": "e2r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e2r", 
+          "id": "e2r_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e2r_SignDoctor_response_back", 
+          "target": "e2r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e3r_response", 
+          "target": "e3r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e3r", 
+          "id": "SignDoctor_e3r_response_back", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e4r", 
+          "id": "e4r_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e4r_SignDoctor_response_back", 
+          "target": "e4r"
+        }
+      }
+    ], 
+    "exec": {
+      "execLogs": []
+    }
+  }, 
+  "r2": {
+    "vect": {
+      "markings": [
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e1r", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e2s", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e7s", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "GiveMedecine", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "SignDoctor", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "SignCP", 
+          "pending": 0
+        }
+      ], 
+      "relations": [
+        {
+          "exclude": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "include": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "response": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "condition": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "milestone": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ]
+        }
+      ]
+    }, 
+    "data": [
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e1r", 
+          "name": "?(PrescribeMed, Doctor-->Nurse)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e2s", 
+          "name": "!(DontTrustPrescr(N), Nurse-->Doctor)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e7s", 
+          "name": "!(DontTrustPrep(N), Nurse-->PA)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "GiveMedecine", 
+          "name": "GiveMedecine"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "external", 
+        "data": {
+          "id": "SignDoctor", 
+          "name": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "external", 
+        "data": {
+          "id": "SignCP", 
+          "name": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e1r", 
+          "id": "e1r_GiveMedecine_response", 
+          "target": "GiveMedecine"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "GiveMedecine", 
+          "id": "e1r_GiveMedecine_response_back", 
+          "target": "e1r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e2s_condition", 
+          "target": "e2s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignCP", 
+          "id": "SignCP_e7s_condition", 
+          "target": "e7s"
+        }
+      }
+    ], 
+    "exec": {
+      "execLogs": []
+    }
+  }, 
+  "r3": {
+    "vect": {
+      "markings": [
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e3s", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e4s", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e5r", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e6s", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e7", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignCP", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "SignDoctor", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "SignPA", 
+          "pending": 0
+        }
+      ], 
+      "relations": [
+        {
+          "exclude": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "include": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "response": [
+            [
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "condition": [
+            [
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "milestone": [
+            [
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ]
+          ]
+        }
+      ]
+    }, 
+    "data": [
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e3s", 
+          "name": "!(AcceptPrescription, CP-->Doctor)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e4s", 
+          "name": "!(DontTrustPrescr(CP), CP-->Doctor)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e5r", 
+          "name": "?(MakePrescription, PA-->CP)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "e6s", 
+          "name": "!(DontTrustPrep(CP), CP-->PA)"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "external choreography", 
+        "data": {
+          "id": "e7", 
+          "name": "Nurse\nDontTrustPrep(N)\nPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignCP", 
+          "name": "SignCP"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "external", 
+        "data": {
+          "id": "SignDoctor", 
+          "name": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "external", 
+        "data": {
+          "id": "SignPA", 
+          "name": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e3s", 
+          "id": "e3s_e5r_response", 
+          "target": "e5r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e5r", 
+          "id": "e3s_e5r_response_back", 
+          "target": "e3s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "e3s", 
+          "id": "e3s_e5r_condition", 
+          "target": "e5r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "milestone", 
+        "data": {
+          "source": "e3s", 
+          "id": "e3s_e5r_milestone", 
+          "target": "e5r"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e3s_response", 
+          "target": "e3s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e3s", 
+          "id": "SignDoctor_e3s_response_back", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_e6s_condition", 
+          "target": "e6s"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_SignCP_condition", 
+          "target": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "milestone", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_SignCP_milestone", 
+          "target": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e7", 
+          "id": "e7_SignCP_response", 
+          "target": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignCP", 
+          "id": "e7_SignCP_response_back", 
+          "target": "e7"
+        }
+      }
+    ], 
+    "exec": {
+      "execLogs": []
+    }
+  }, 
+  "TextExtraction": {
+    "r4": {
+      "externalEvents": [
+        {
+          "id": 0, 
+          "event": "SignCP [role=CP]"
+        }, 
+        {
+          "id": 1, 
+          "event": "e3[AcceptPrescription src=CP tgt=Doctor]"
+        }
+      ], 
+      "role": "PA", 
+      "relations": [
+        {
+          "relation": "e5s *--> SignPA", 
+          "id": 0
+        }, 
+        {
+          "relation": "e5s -->* SignPA", 
+          "id": 1
+        }, 
+        {
+          "relation": "e5s --<> SignPA", 
+          "id": 2
+        }, 
+        {
+          "relation": "SignPA -->* e6r", 
+          "id": 3
+        }, 
+        {
+          "relation": "e6r *--> SignPA", 
+          "id": 4
+        }, 
+        {
+          "relation": "e3 *--> e5s", 
+          "id": 5
+        }, 
+        {
+          "relation": "e3 -->* e5s", 
+          "id": 6
+        }, 
+        {
+          "relation": "e3 --<> e5s", 
+          "id": 7
+        }, 
+        {
+          "relation": "SignCP -->* e7r", 
+          "id": 8
+        }
+      ], 
+      "privateEvents": [
+        {
+          "id": 0, 
+          "event": "e5s[\"!(MakePrescription, PA-&gt;CP)\"]"
+        }, 
+        {
+          "id": 1, 
+          "event": "e6r[\"?(DontTrustPrep(CP), CP-&gt;PA)\"]"
+        }, 
+        {
+          "id": 2, 
+          "event": "e7r[\"?(DontTrustPrep(N), Nurse-&gt;PA)\"]"
+        }, 
+        {
+          "id": 3, 
+          "event": "SignPA [role=PA]"
+        }
+      ]
+    }, 
+    "r1": {
+      "externalEvents": [], 
+      "role": "Doctor", 
+      "relations": [
+        {
+          "relation": "EditPrescription *--> SignDoctor", 
+          "id": 0
+        }, 
+        {
+          "relation": "e1s *--> SignDoctor", 
+          "id": 1
+        }, 
+        {
+          "relation": "e1s -->+ EditPrescription", 
+          "id": 2
+        }, 
+        {
+          "relation": "e1s -->+ CancelPrescription", 
+          "id": 3
+        }, 
+        {
+          "relation": "SignDoctor -->* e2r", 
+          "id": 4
+        }, 
+        {
+          "relation": "e2r *--> SignDoctor", 
+          "id": 5
+        }, 
+        {
+          "relation": "SignDoctor *--> e3r", 
+          "id": 6
+        }, 
+        {
+          "relation": "e4r *--> SignDoctor", 
+          "id": 7
+        }
+      ], 
+      "privateEvents": [
+        {
+          "id": 0, 
+          "event": "e1s[\"!(PrescribeMed, Doctor-&gt;Nurse)\"]"
+        }, 
+        {
+          "id": 1, 
+          "event": "e2r[\"?(DontTrustPrescr(N), Nurse-&gt;Doctor)\"]"
+        }, 
+        {
+          "id": 2, 
+          "event": "e3r[\"?(AcceptPrescription, CP-&gt;Doctor)\"]"
+        }, 
+        {
+          "id": 3, 
+          "event": "e4r[\"?(DontTrustPrescr(CP), CP-&gt;Doctor)\"]"
+        }, 
+        {
+          "id": 4, 
+          "event": "EditPrescription [role=Doctor]"
+        }, 
+        {
+          "id": 5, 
+          "event": "CancelPrescription [role=Doctor]"
+        }, 
+        {
+          "id": 6, 
+          "event": "SignDoctor [role=Doctor]"
+        }
+      ]
+    }, 
+    "r2": {
+      "externalEvents": [
+        {
+          "id": 0, 
+          "event": "SignDoctor [role=Doctor]"
+        }, 
+        {
+          "id": 1, 
+          "event": "SignCP [role=CP]"
+        }
+      ], 
+      "role": "Nurse", 
+      "relations": [
+        {
+          "relation": "e1r *--> GiveMedecine", 
+          "id": 0
+        }, 
+        {
+          "relation": "SignDoctor -->* e2s", 
+          "id": 1
+        }, 
+        {
+          "relation": "SignCP -->* e7s", 
+          "id": 2
+        }
+      ], 
+      "privateEvents": [
+        {
+          "id": 0, 
+          "event": "e1r[\"?(PrescribeMed, Doctor-&gt;Nurse)\"]"
+        }, 
+        {
+          "id": 1, 
+          "event": "e2s[\"!(DontTrustPrescr(N), Nurse-&gt;Doctor)\"]"
+        }, 
+        {
+          "id": 2, 
+          "event": "e7s[\"!(DontTrustPrep(N), Nurse-&gt;PA)\"]"
+        }, 
+        {
+          "id": 3, 
+          "event": "GiveMedecine [role=Nurse]"
+        }
+      ]
+    }, 
+    "r3": {
+      "externalEvents": [
+        {
+          "id": 0, 
+          "event": "SignDoctor [role=Doctor]"
+        }, 
+        {
+          "id": 1, 
+          "event": "SignPA [role=PA]"
+        }, 
+        {
+          "id": 2, 
+          "event": "e7[DontTrustPrep(N) src=Nurse tgt=PA]"
+        }
+      ], 
+      "role": "CP", 
+      "relations": [
+        {
+          "relation": "e3s *--> e5r", 
+          "id": 0
+        }, 
+        {
+          "relation": "e3s -->* e5r", 
+          "id": 1
+        }, 
+        {
+          "relation": "e3s --<> e5r", 
+          "id": 2
+        }, 
+        {
+          "relation": "SignDoctor *--> e3s", 
+          "id": 3
+        }, 
+        {
+          "relation": "SignPA -->* e6s", 
+          "id": 4
+        }, 
+        {
+          "relation": "SignPA -->* SignCP", 
+          "id": 5
+        }, 
+        {
+          "relation": "SignPA --<> SignCP", 
+          "id": 6
+        }, 
+        {
+          "relation": "e7 *--> SignCP", 
+          "id": 7
+        }
+      ], 
+      "privateEvents": [
+        {
+          "id": 0, 
+          "event": "e3s[\"!(AcceptPrescription, CP-&gt;Doctor)\"]"
+        }, 
+        {
+          "id": 1, 
+          "event": "e4s[\"!(DontTrustPrescr(CP), CP-&gt;Doctor)\"]"
+        }, 
+        {
+          "id": 2, 
+          "event": "e5r[\"?(MakePrescription, PA-&gt;CP)\"]"
+        }, 
+        {
+          "id": 3, 
+          "event": "e6s[\"!(DontTrustPrep(CP), CP-&gt;PA)\"]"
+        }, 
+        {
+          "id": 4, 
+          "event": "SignCP [role=CP]"
+        }
+      ]
+    }, 
+    "global": {
+      "events": [
+        {
+          "id": 0, 
+          "event": "e1[PrescribeMed src=Doctor tgt=Nurse]"
+        }, 
+        {
+          "id": 1, 
+          "event": "e2[DontTrustPrescr(N) src=Nurse tgt=Doctor]"
+        }, 
+        {
+          "id": 2, 
+          "event": "e3[AcceptPrescription src=CP tgt=Doctor]"
+        }, 
+        {
+          "id": 3, 
+          "event": "e4[DontTrustPrescr(CP) src=CP tgt=Doctor]"
+        }, 
+        {
+          "id": 4, 
+          "event": "e5[MakePrescription src=PA tgt=CP]"
+        }, 
+        {
+          "id": 5, 
+          "event": "e6[DontTrustPrep(CP) src=CP tgt=PA]"
+        }, 
+        {
+          "id": 6, 
+          "event": "e7[DontTrustPrep(N) src=Nurse tgt=PA]"
+        }, 
+        {
+          "id": 7, 
+          "event": "EditPrescription [role=Doctor]"
+        }, 
+        {
+          "id": 8, 
+          "event": "CancelPrescription [role=Doctor]"
+        }, 
+        {
+          "id": 9, 
+          "event": "SignDoctor [role=Doctor]"
+        }, 
+        {
+          "id": 10, 
+          "event": "GiveMedecine [role=Nurse]"
+        }, 
+        {
+          "id": 11, 
+          "event": "SignPA [role=PA]"
+        }, 
+        {
+          "id": 12, 
+          "event": "SignCP [role=CP]"
+        }
+      ], 
+      "relations": [
+        {
+          "relation": "EditPrescription *--> SignDoctor", 
+          "id": 0
+        }, 
+        {
+          "relation": "e1 *--> SignDoctor", 
+          "id": 1
+        }, 
+        {
+          "relation": "e1 -->+ EditPrescription", 
+          "id": 2
+        }, 
+        {
+          "relation": "e1 -->+ CancelPrescription", 
+          "id": 3
+        }, 
+        {
+          "relation": "e1 *--> GiveMedecine", 
+          "id": 4
+        }, 
+        {
+          "relation": "SignDoctor -->* e2", 
+          "id": 5
+        }, 
+        {
+          "relation": "e2 *--> SignDoctor", 
+          "id": 6
+        }, 
+        {
+          "relation": "SignDoctor *--> e3", 
+          "id": 7
+        }, 
+        {
+          "relation": "e4 *--> SignDoctor", 
+          "id": 8
+        }, 
+        {
+          "relation": "e3 *--> e5", 
+          "id": 9
+        }, 
+        {
+          "relation": "e3 -->* e5", 
+          "id": 10
+        }, 
+        {
+          "relation": "e3 --<> e5", 
+          "id": 11
+        }, 
+        {
+          "relation": "e5 *--> SignPA", 
+          "id": 12
+        }, 
+        {
+          "relation": "e5 -->* SignPA", 
+          "id": 13
+        }, 
+        {
+          "relation": "e5 --<> SignPA", 
+          "id": 14
+        }, 
+        {
+          "relation": "SignPA -->* e6", 
+          "id": 15
+        }, 
+        {
+          "relation": "e6 *--> SignPA", 
+          "id": 16
+        }, 
+        {
+          "relation": "SignPA -->* SignCP", 
+          "id": 17
+        }, 
+        {
+          "relation": "SignPA --<> SignCP", 
+          "id": 18
+        }, 
+        {
+          "relation": "SignCP -->* e7", 
+          "id": 19
+        }, 
+        {
+          "relation": "e7 *--> SignCP", 
+          "id": 20
+        }
+      ]
+    }, 
+    "roleMapping": [
+      {
+        "role": "Doctor", 
+        "id": "r1"
+      }, 
+      {
+        "role": "Nurse", 
+        "id": "r2"
+      }, 
+      {
+        "role": "CP", 
+        "id": "r3"
+      }, 
+      {
+        "role": "PA", 
+        "id": "r4"
+      }
+    ], 
+    "externalEvents": [
+      {
+        "id": 0, 
+        "event": "SignDoctor [role=Doctor]"
+      }, 
+      {
+        "id": 1, 
+        "event": "SignCP [role=CP]"
+      }, 
+      {
+        "id": 1, 
+        "event": "SignPA [role=PA]"
+      }, 
+      {
+        "id": 2, 
+        "event": "e7[DontTrustPrep(N) src=Nurse tgt=PA]"
+      }, 
+      {
+        "id": 1, 
+        "event": "e3[AcceptPrescription src=CP tgt=Doctor]"
+      }
+    ], 
+    "public": {
+      "externalEvents": [], 
+      "relations": [
+        {
+          "relation": "e1 *--> SignDoctor", 
+          "id": 0
+        }, 
+        {
+          "relation": "SignDoctor -->* e2", 
+          "id": 1
+        }, 
+        {
+          "relation": "e2 *--> SignDoctor", 
+          "id": 2
+        }, 
+        {
+          "relation": "SignDoctor *--> e3", 
+          "id": 3
+        }, 
+        {
+          "relation": "e4 *--> SignDoctor", 
+          "id": 4
+        }, 
+        {
+          "relation": "e3 *--> e5", 
+          "id": 5
+        }, 
+        {
+          "relation": "e3 -->* e5", 
+          "id": 6
+        }, 
+        {
+          "relation": "e3 --<> e5", 
+          "id": 7
+        }, 
+        {
+          "relation": "e5 *--> SignPA", 
+          "id": 8
+        }, 
+        {
+          "relation": "e5 -->* SignPA", 
+          "id": 9
+        }, 
+        {
+          "relation": "e5 --<> SignPA", 
+          "id": 10
+        }, 
+        {
+          "relation": "SignPA -->* e6", 
+          "id": 11
+        }, 
+        {
+          "relation": "e6 *--> SignPA", 
+          "id": 12
+        }, 
+        {
+          "relation": "SignPA -->* SignCP", 
+          "id": 13
+        }, 
+        {
+          "relation": "SignPA --<> SignCP", 
+          "id": 14
+        }, 
+        {
+          "relation": "SignCP -->* e7", 
+          "id": 15
+        }, 
+        {
+          "relation": "e7 *--> SignCP", 
+          "id": 16
+        }
+      ], 
+      "privateEvents": [
+        {
+          "id": 0, 
+          "event": "SignDoctor [role=Doctor]"
+        }, 
+        {
+          "id": 1, 
+          "event": "SignCP [role=CP]"
+        }, 
+        {
+          "id": 2, 
+          "event": "SignPA [role=PA]"
+        }, 
+        {
+          "id": 3, 
+          "event": "e7[DontTrustPrep(N) src=Nurse tgt=PA]"
+        }, 
+        {
+          "id": 4, 
+          "event": "e3[AcceptPrescription src=CP tgt=Doctor]"
+        }, 
+        {
+          "id": 5, 
+          "event": "e1[PrescribeMed src=Doctor tgt=Nurse]"
+        }, 
+        {
+          "id": 6, 
+          "event": "e2[DontTrustPrescr(N) src=Nurse tgt=Doctor]"
+        }, 
+        {
+          "id": 7, 
+          "event": "e3[AcceptPrescription src=CP tgt=Doctor]"
+        }, 
+        {
+          "id": 8, 
+          "event": "e4[DontTrustPrescr(CP) src=CP tgt=Doctor]"
+        }, 
+        {
+          "id": 9, 
+          "event": "e5[MakePrescription src=PA tgt=CP]"
+        }, 
+        {
+          "id": 10, 
+          "event": "e6[DontTrustPrep(CP) src=CP tgt=PA]"
+        }, 
+        {
+          "id": 11, 
+          "event": "e7[DontTrustPrep(N) src=Nurse tgt=PA]"
+        }
+      ]
+    }
+  }, 
+  "Global": {
+    "vect": {
+      "activityNames": {
+        "default": [
+          "e1", 
+          "e2", 
+          "e3", 
+          "e4", 
+          "e5", 
+          "e6", 
+          "e7", 
+          "EditPrescription", 
+          "CancelPrescription", 
+          "SignDoctor", 
+          "GiveMedecine", 
+          "SignPA", 
+          "SignCP"
+        ], 
+        "receive": [
+          "e1r", 
+          "e2r", 
+          "e3r", 
+          "e4r", 
+          "e5r", 
+          "e6r", 
+          "e7r", 
+          "EditPrescription", 
+          "CancelPrescription", 
+          "SignDoctor", 
+          "GiveMedecine", 
+          "SignPA", 
+          "SignCP"
+        ], 
+        "send": [
+          "e1s", 
+          "e2s", 
+          "e3s", 
+          "e4s", 
+          "e5s", 
+          "e6s", 
+          "e7s", 
+          "EditPrescription", 
+          "CancelPrescription", 
+          "SignDoctor", 
+          "GiveMedecine", 
+          "SignPA", 
+          "SignCP"
+        ]
+      }, 
+      "fullMarkings": {
+        "included": [
+          "1", 
+          "0", 
+          "0", 
+          "1", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0"
+        ], 
+        "executed": [
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0"
+        ], 
+        "pending": [
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0"
+        ]
+      }, 
+      "markings": [
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e1", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e2", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e3", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e4", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e5", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e6", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e7", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "EditPrescription", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "CancelPrescription", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignDoctor", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "GiveMedecine", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignPA", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignCP", 
+          "pending": 0
+        }
+      ], 
+      "relations": [
+        {
+          "exclude": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "include": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "response": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "condition": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "milestone": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ]
+        }
+      ], 
+      "fullRelations": {
+        "exclude": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ], 
+        "include": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ], 
+        "response": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "1", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ], 
+        "condition": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ], 
+        "milestone": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ]
+      }
+    }, 
+    "data": [
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e1", 
+          "name": "Doctor\nPrescribeMed\nNurse"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e2", 
+          "name": "Nurse\nDontTrustPrescr(N)\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e3", 
+          "name": "CP\nAcceptPrescription\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e4", 
+          "name": "CP\nDontTrustPrescr(CP)\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e5", 
+          "name": "PA\nMakePrescription\nCP"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e6", 
+          "name": "CP\nDontTrustPrep(CP)\nPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e7", 
+          "name": "Nurse\nDontTrustPrep(N)\nPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "EditPrescription", 
+          "name": "EditPrescription"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "CancelPrescription", 
+          "name": "CancelPrescription"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignDoctor", 
+          "name": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "GiveMedecine", 
+          "name": "GiveMedecine"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignPA", 
+          "name": "SignPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignCP", 
+          "name": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "EditPrescription", 
+          "id": "EditPrescription_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "EditPrescription_SignDoctor_response_back", 
+          "target": "EditPrescription"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e1", 
+          "id": "e1_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e1_SignDoctor_response_back", 
+          "target": "e1"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "include", 
+        "data": {
+          "source": "e1", 
+          "id": "e1_EditPrescription_include", 
+          "target": "EditPrescription"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "include", 
+        "data": {
+          "source": "e1", 
+          "id": "e1_CancelPrescription_include", 
+          "target": "CancelPrescription"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e1", 
+          "id": "e1_GiveMedecine_response", 
+          "target": "GiveMedecine"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "GiveMedecine", 
+          "id": "e1_GiveMedecine_response_back", 
+          "target": "e1"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e2_condition", 
+          "target": "e2"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e2", 
+          "id": "e2_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e2_SignDoctor_response_back", 
+          "target": "e2"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e3_response", 
+          "target": "e3"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e3", 
+          "id": "SignDoctor_e3_response_back", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e4", 
+          "id": "e4_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e4_SignDoctor_response_back", 
+          "target": "e4"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e3", 
+          "id": "e3_e5_response", 
+          "target": "e5"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e5", 
+          "id": "e3_e5_response_back", 
+          "target": "e3"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "e3", 
+          "id": "e3_e5_condition", 
+          "target": "e5"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e5", 
+          "id": "e5_SignPA_response", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignPA", 
+          "id": "e5_SignPA_response_back", 
+          "target": "e5"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "e5", 
+          "id": "e5_SignPA_condition", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_e6_condition", 
+          "target": "e6"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e6", 
+          "id": "e6_SignPA_response", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignPA", 
+          "id": "e6_SignPA_response_back", 
+          "target": "e6"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_SignCP_condition", 
+          "target": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignCP", 
+          "id": "SignCP_e7_condition", 
+          "target": "e7"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e7", 
+          "id": "e7_SignCP_response", 
+          "target": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignCP", 
+          "id": "e7_SignCP_response_back", 
+          "target": "e7"
+        }
+      }
+    ]
+  }, 
+  "Public": {
+    "vect": {
+      "activityNames": {
+        "default": [
+          "e7", 
+          "e3", 
+          "e1", 
+          "e2", 
+          "e4", 
+          "e5", 
+          "e6", 
+          "SignDoctor", 
+          "SignCP", 
+          "SignPA"
+        ], 
+        "receive": [
+          "e7r", 
+          "e3r", 
+          "e1r", 
+          "e2r", 
+          "e4r", 
+          "e5r", 
+          "e6r", 
+          "SignDoctor", 
+          "SignCP", 
+          "SignPA"
+        ], 
+        "send": [
+          "e7s", 
+          "e3s", 
+          "e1s", 
+          "e2s", 
+          "e4s", 
+          "e5s", 
+          "e6s", 
+          "SignDoctor", 
+          "SignCP", 
+          "SignPA"
+        ]
+      }, 
+      "fullMarkings": {
+        "included": [
+          "0", 
+          "0", 
+          "1", 
+          "0", 
+          "1", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0"
+        ], 
+        "executed": [
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0"
+        ], 
+        "pending": [
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0", 
+          "0"
+        ]
+      }, 
+      "markings": [
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e7", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e3", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e1", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e2", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e3", 
+          "pending": 0
+        }, 
+        {
+          "include": 1, 
+          "executed": 0, 
+          "id": "e4", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e5", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e6", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "e7", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignDoctor", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignCP", 
+          "pending": 0
+        }, 
+        {
+          "include": 0, 
+          "executed": 0, 
+          "id": "SignPA", 
+          "pending": 0
+        }
+      ], 
+      "relations": [
+        {
+          "exclude": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "include": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "response": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ]
+          ], 
+          "condition": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ]
+          ], 
+          "milestone": [
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+            ], 
+            [
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0, 
+              1.0, 
+              0.0
+            ]
+          ]
+        }
+      ], 
+      "fullRelations": {
+        "exclude": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ], 
+        "include": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ], 
+        "response": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1"
+          ], 
+          [
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        ], 
+        "condition": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "1", 
+            "0"
+          ]
+        ], 
+        "milestone": [
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0"
+          ]
+        ]
+      }
+    }, 
+    "data": [
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e7", 
+          "name": "Nurse\nDontTrustPrep(N)\nPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e3", 
+          "name": "CP\nAcceptPrescription\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e1", 
+          "name": "Doctor\nPrescribeMed\nNurse"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e2", 
+          "name": "Nurse\nDontTrustPrescr(N)\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e3", 
+          "name": "CP\nAcceptPrescription\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "included executable", 
+        "data": {
+          "id": "e4", 
+          "name": "CP\nDontTrustPrescr(CP)\nDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e5", 
+          "name": "PA\nMakePrescription\nCP"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e6", 
+          "name": "CP\nDontTrustPrep(CP)\nPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "classes": "choreography", 
+        "data": {
+          "id": "e7", 
+          "name": "Nurse\nDontTrustPrep(N)\nPA"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignDoctor", 
+          "name": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignCP", 
+          "name": "SignCP"
+        }
+      }, 
+      {
+        "group": "nodes", 
+        "data": {
+          "id": "SignPA", 
+          "name": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e1", 
+          "id": "e1_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e1_SignDoctor_response_back", 
+          "target": "e1"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e2_condition", 
+          "target": "e2"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e2", 
+          "id": "e2_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e2_SignDoctor_response_back", 
+          "target": "e2"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "SignDoctor_e3_response", 
+          "target": "e3"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e3", 
+          "id": "SignDoctor_e3_response_back", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e4", 
+          "id": "e4_SignDoctor_response", 
+          "target": "SignDoctor"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignDoctor", 
+          "id": "e4_SignDoctor_response_back", 
+          "target": "e4"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e3", 
+          "id": "e3_e5_response", 
+          "target": "e5"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "e5", 
+          "id": "e3_e5_response_back", 
+          "target": "e3"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "e3", 
+          "id": "e3_e5_condition", 
+          "target": "e5"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e5", 
+          "id": "e5_SignPA_response", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignPA", 
+          "id": "e5_SignPA_response_back", 
+          "target": "e5"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "e5", 
+          "id": "e5_SignPA_condition", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_e6_condition", 
+          "target": "e6"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e6", 
+          "id": "e6_SignPA_response", 
+          "target": "SignPA"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignPA", 
+          "id": "e6_SignPA_response_back", 
+          "target": "e6"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignPA", 
+          "id": "SignPA_SignCP_condition", 
+          "target": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "condition", 
+        "data": {
+          "source": "SignCP", 
+          "id": "SignCP_e7_condition", 
+          "target": "e7"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response", 
+        "data": {
+          "source": "e7", 
+          "id": "e7_SignCP_response", 
+          "target": "SignCP"
+        }
+      }, 
+      {
+        "group": "edges", 
+        "classes": "response back", 
+        "data": {
+          "source": "SignCP", 
+          "id": "e7_SignCP_response_back", 
+          "target": "e7"
+        }
+      }
+    ], 
+    "exec": {
+      "execLogs": []
+    }
+  }, 
+  "id": "oncology"
+}

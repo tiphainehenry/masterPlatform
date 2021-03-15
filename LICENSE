@@ -1,0 +1,11 @@
+/*
+* Software Name : React-cyto
+* Version: 1.0
+* SPDX-FileCopyrightText: Copyright (c) 2020 Orange Business Services
+*
+* This software is confidential and proprietary information of Orange Business Services.
+* You shall not disclose such Confidential Information and shall not copy, use or distribute it in whole or in part without the prior written consent of Orange Business Services
+*
+* Author: Tiphaine Henry, Amina Brahem
+* Software description: This software projects DCR choreographies into their private and public views. It then executes the private views with a blockchain support.
+*/

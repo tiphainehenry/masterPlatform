@@ -1,0 +1,121 @@
+.. _front_ref:
+
+========================
+React Components
+========================
+
+Graph display
+------------------
+Graph interactive template
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. js:autoclass:: DCRgraph
+
+    .. js:autofunction:: DCRgraph#componentWillMount
+    .. js:autofunction:: DCRgraph#componentDidMount
+    .. js:autofunction:: DCRgraph#loadContract
+    .. js:autofunction:: DCRgraph#fetchBCid
+    .. js:autofunction:: DCRgraph#runBCCheck
+    .. js:autofunction:: DCRgraph#setUpListeners
+    .. js:autofunction:: DCRgraph#handleProjSwitch
+.. js:autoclass:: PublicMarkings
+
+    .. js:autofunction:: PublicMarkings#componentWillMount
+    .. js:autofunction:: PublicMarkings#connectsToBC
+    .. js:autofunction:: PublicMarkings#checkHash
+
+.. js:autoclass:: ExecLogger
+
+Graph views
+~~~~~~~~~~~~~~~~~~~~~~
+.. js:autoclass:: ViewPublic
+
+    .. js:autofunction:: ViewPublic#componentDidMount
+    .. js:autofunction:: ViewPublic#shouldComponentUpdate
+    .. js:autofunction:: ViewPublic#componentDidUpdate
+    .. js:autofunction:: ViewPublic#componentWillMount
+    .. js:autofunction:: ViewPublic#loadContract
+
+.. js:autoclass:: ViewRi
+
+    .. js:autofunction:: ViewRi#shouldComponentUpdate
+    .. js:autofunction:: ViewRi#componentDidUpdate
+    .. js:autofunction:: ViewRi#componentWillMount
+
+
+.. js:autoclass:: WelcomeInstance
+
+.. js:autoclass:: Sidebar
+
+    .. js:autofunction:: Sidebar#componentDidMount
+    .. js:autofunction:: Sidebar#delete
+
+Graph creation/edition
+------------------------------------
+
+Misc
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. js:autoclass:: WelcomeModel
+
+.. js:autoclass:: SidebarModel
+
+Creation from Text Import
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. js:autoclass:: Create
+
+    .. js:autofunction:: onFormSubmit
+    .. js:autofunction:: onChange
+    .. js:autofunction:: fileUpload
+
+.. js:autoclass:: LoadToBC
+
+    .. js:autofunction:: LoadToBC#componentDidMount
+    .. js:autofunction:: LoadToBC#componentWillMount
+    .. js:autofunction:: LoadToBC#connectToWeb3
+    .. js:autofunction:: LoadToBC#handleCreateWkf
+
+Edition 
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. js:autoclass:: Edit
+
+    .. js:autofunction:: Edit#componentDidMount
+
+.. js:autoclass:: EditionDeck
+
+    .. js:autofunction:: EditionDeck#componentDidMount
+    .. js:autofunction:: EditionDeck#componentWillMount
+    .. js:autofunction:: EditionDeck#setUpNodeListeners
+    .. js:autofunction:: EditionDeck#setUpEdgeListeners
+    .. js:autofunction:: EditionDeck#saveGraph
+    .. js:autofunction:: EditionDeck#privateGraphUpd
+
+========================
+Utils
+========================
+
+New activity tuning 
+------------------------------------
+
+.. js:autofunction:: handleActivityName
+.. js:autofunction:: handleTenant
+.. js:autofunction:: handleSender
+.. js:autofunction:: handleReceiver
+.. js:autofunction:: handleMI
+.. js:autofunction:: handleME
+.. js:autofunction:: handleMP
+
+Editing menu
+------------------------------------
+.. js:autofunction:: getMenuStyle
+.. js:autofunction:: updActivity
+.. js:autofunction:: remove
+.. js:autofunction:: addLocalActivity
+.. js:autofunction:: addChoreoActivity
+.. js:autofunction:: addRelation 
+.. js:autofunction:: addCondition
+.. js:autofunction:: addMilestone
+.. js:autofunction:: addResponse
+.. js:autofunction:: addInclude
+.. js:autofunction:: addExclude

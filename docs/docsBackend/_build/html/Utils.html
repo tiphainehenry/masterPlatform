@@ -1,0 +1,1316 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Utils &#8212; DCRChoreo Backend v0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Projection Generators" href="projectionGenerators.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="utils">
+<span id="api-utils"></span><h1>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dcr-text-treatment">
+<h2>DCR Text Treatment<a class="headerlink" href="#dcr-text-treatment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-src.utils.chunking">
+<span id="text-decomposition"></span><h3>Text decomposition<a class="headerlink" href="#module-src.utils.chunking" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="src.utils.chunking.applyComposition">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">applyComposition</code><span class="sig-paren">(</span><em>roleIds</em>, <em>rProj</em>, <em>chunks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#applyComposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.applyComposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve list of external events names and declarations, and external relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>roleIds</strong> – list of local events of the projection</li>
+<li><strong>rProj</strong> – list of the relations of the projection</li>
+<li><strong>chunks</strong> – chunked version of the dcr global graph</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of external events names, the list of external events declarations, and the list of external relations.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.computeExternalEvents">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">computeExternalEvents</code><span class="sig-paren">(</span><em>rExt</em>, <em>eProj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#computeExternalEvents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.computeExternalEvents" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes the list of external events out of the list of external relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rExt</strong> – list of external relations retrieved</li>
+<li><strong>eProj</strong> – list of names of projection events</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of external events linked to the projection e</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.computeExternalRelations">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">computeExternalRelations</code><span class="sig-paren">(</span><em>externalLinkages</em>, <em>externalIds</em>, <em>eGlob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#computeExternalRelations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.computeExternalRelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>extracts the list of relations involving external events</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>externalLinkages</strong> – list of external relations retrieved</li>
+<li><strong>externalIds</strong> – list of names of external events</li>
+<li><strong>eGlob</strong> – list of names of global events</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of relations involving external events updated with the global events names.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.extractChunks">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">extractChunks</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#extractChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.extractChunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>translates the dcr description into a dictionary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> – dcr description to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict description of the dcr text. Dict keys: {events,internalEvents,linkages}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.extractGroupRelations">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">extractGroupRelations</code><span class="sig-paren">(</span><em>groupings</em>, <em>linkages</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#extractGroupRelations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.extractGroupRelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove groupings in a set of relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>groupings</strong> – list of groups to remove</li>
+<li><strong>linkages</strong> – list of relations to clean</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of cleaned relations (no more groups)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.extractRoleChunks">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">extractRoleChunks</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#extractRoleChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.extractRoleChunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>extracts all local events out of the dcr description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> – dcr description to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict description of the local events. Dict keys: {events,internalEvents,linkages}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.getEventDeclarationFromName">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">getEventDeclarationFromName</code><span class="sig-paren">(</span><em>ext_names</em>, <em>all_events</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#getEventDeclarationFromName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.getEventDeclarationFromName" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes the list of external events</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ext_names</strong> – list of external events names</li>
+<li><strong>all_events</strong> – list of the declaration of all events</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of external events declarations.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.getLinkages">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">getLinkages</code><span class="sig-paren">(</span><em>projRefs</em>, <em>linkages</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#getLinkages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.getLinkages" title="Permalink to this definition">¶</a></dt>
+<dd><p>extracts all relations where a given set of events is described</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>projRefs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>[</em><em>]</em>) – roles to analyze</li>
+<li><strong>linkages</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>[</em><em>]</em>) – dcr description to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of relations where projRefs events are involved</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.getRoleMapping">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">getRoleMapping</code><span class="sig-paren">(</span><em>pi</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#getRoleMapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.getRoleMapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves role id from name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pi</strong> – process id (eg “p1”)</li>
+<li><strong>role</strong> – role name (eg “Driver”)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the role id.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.getRoles">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">getRoles</code><span class="sig-paren">(</span><em>pi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#getRoles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.getRoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves list of roles belonging to the process pi</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pi</strong> – process id (eg “p1”)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of roles of the projection (eg: [“r1”,”r2”,”r3”]).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.retrieveExternalRelations">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">retrieveExternalRelations</code><span class="sig-paren">(</span><em>eProj</em>, <em>rProj</em>, <em>eGlob</em>, <em>rGlob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#retrieveExternalRelations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.retrieveExternalRelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes the list of external events out of the list of external relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>eProj</strong> – list of projection events</li>
+<li><strong>rProj</strong> – list of relations belonging to the relation</li>
+<li><strong>eGlob</strong> – list of global events</li>
+<li><strong>rGlob</strong> – list of global relations</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of external events of the projection, and the list of external events of the projection.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.transitiveIncludeExclude">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">transitiveIncludeExclude</code><span class="sig-paren">(</span><em>rExt</em>, <em>e</em>, <em>l</em>, <em>rGlob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#transitiveIncludeExclude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.transitiveIncludeExclude" title="Permalink to this definition">¶</a></dt>
+<dd><p>enriches the list of external events with the list of transitive include/exclude relations stemming from e:
+the target is consecutive condition/milestone and include/exclude relations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rExt</strong> – list of external events</li>
+<li><strong>e</strong> – event to analyze</li>
+<li><strong>l</strong> – relation to analyze</li>
+<li><strong>rGlob</strong> – list of relations defined in the global graph</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of external events enriched with transitive exclude / include relations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.chunking.transitiveResponse">
+<code class="descclassname">src.utils.chunking.</code><code class="descname">transitiveResponse</code><span class="sig-paren">(</span><em>rExt</em>, <em>e</em>, <em>l</em>, <em>rGlob</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/chunking.html#transitiveResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.chunking.transitiveResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>enriches the list of external events with the list of transitive response relations stemming from e:
+the target is consecutive milestone and response relations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rExt</strong> – list of external events</li>
+<li><strong>e</strong> – event to analyze</li>
+<li><strong>l</strong> – relation to analyze</li>
+<li><strong>rGlob</strong> – list of relations defined in the global graph</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of external events enriched with transitive response relations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.utils.formatting">
+<span id="text-formatting"></span><h3>Text formatting<a class="headerlink" href="#module-src.utils.formatting" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="src.utils.formatting.NumpyEncoder">
+<em class="property">class </em><code class="descclassname">src.utils.formatting.</code><code class="descname">NumpyEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#NumpyEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.NumpyEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="src.utils.formatting.NumpyEncoder.default">
+<code class="descname">default</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#NumpyEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.NumpyEncoder.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement this method in a subclass such that it returns
+a serializable object for <code class="docutils literal notranslate"><span class="pre">o</span></code>, or calls the base implementation
+(to raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>).</p>
+<p>For example, to support arbitrary iterators, you could
+implement default like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">iterable</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="c1"># Let the base class default method raise the TypeError</span>
+    <span class="k">return</span> <span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.utils.formatting.NumpyEncoder.encode">
+<code class="descname">encode</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="headerlink" href="#src.utils.formatting.NumpyEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON string representation of a Python data structure.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;baz&quot;</span><span class="p">]})</span>
+<span class="go">&#39;{&quot;foo&quot;: [&quot;bar&quot;, &quot;baz&quot;]}&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.utils.formatting.NumpyEncoder.iterencode">
+<code class="descname">iterencode</code><span class="sig-paren">(</span><em>o</em>, <em>_one_shot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#src.utils.formatting.NumpyEncoder.iterencode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode the given object and yield each string
+representation as available.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">bigobject</span><span class="p">):</span>
+    <span class="n">mysocket</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.cleanName">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">cleanName</code><span class="sig-paren">(</span><em>nameChunked</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#cleanName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.cleanName" title="Permalink to this definition">¶</a></dt>
+<dd><p>cleans chunked name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nameChunked</strong> – chunked name extracted from the dcr text input</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">updated name and task cleaned with the updated name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.generateDictEvent">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">generateDictEvent</code><span class="sig-paren">(</span><em>events</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#generateDictEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.generateDictEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates dictionnary of events out of a list of textual descriptions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>events</strong> – list of events to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionnary of events with keys {id, event}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.generateDictRelation">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">generateDictRelation</code><span class="sig-paren">(</span><em>relations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#generateDictRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.generateDictRelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates dictionnary of relations out of a list of textual descriptions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relations</strong> – list of relations to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionnary of relations with keys {id, event}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getArrowLink">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getArrowLink</code><span class="sig-paren">(</span><em>relation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getArrowLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getArrowLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract arrow type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relation</strong> – relation to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">arrow describing the relation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getChoreographyDetails">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getChoreographyDetails</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getChoreographyDetails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getChoreographyDetails" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract choreography details from a choreography event</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> – event to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">str eventName:</th><td class="field-body">name of the choreography event (eg ei)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">str task:</th><td class="field-body">name of the choreography task (eg Deliver)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">str src:</th><td class="field-body">choreography sender (eg Driver)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">str[] tgts:</th><td class="field-body">list of choreography receivers (eg [Customer, Florist])</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getFileName">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getFileName</code><span class="sig-paren">(</span><em>args=['-M', 'html', '.', '_build']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getFileName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getFileName" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns name of the file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">filename: name of the file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getReceiver">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getReceiver</code><span class="sig-paren">(</span><em>relation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getReceiver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getReceiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>get receiver name of a choreography event</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relation</strong> – relation to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">name of the receiver</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getRole">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getRole</code><span class="sig-paren">(</span><em>relation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>get role name of a relation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relation</strong> – relation to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">name of the tenant initiating the relation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getRoleList">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getRoleList</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getRoleList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getRoleList" title="Permalink to this definition">¶</a></dt>
+<dd><p>get role list of a dcr text description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>e</strong> – list of relations to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of tenants involved in the list of relations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getRoleTenant">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getRoleTenant</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getRoleTenant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getRoleTenant" title="Permalink to this definition">¶</a></dt>
+<dd><p>get role name of a local event</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> – role declaration to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">name of the tenant responsible for the role</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getSender">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getSender</code><span class="sig-paren">(</span><em>relation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getSender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getSender" title="Permalink to this definition">¶</a></dt>
+<dd><p>get sender name of a choreography event</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relation</strong> – relation to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">name of the sender</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.getType">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">getType</code><span class="sig-paren">(</span><em>relation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#getType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.getType" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract arrow type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relation</strong> – relation to analyze</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">relation type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.groupItems">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">groupItems</code><span class="sig-paren">(</span><em>role</em>, <em>refs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#groupItems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.groupItems" title="Permalink to this definition">¶</a></dt>
+<dd><p>definition of a grouping of events</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>role</strong> – name of the grouping</li>
+<li><strong>refs</strong> – all elements to be grouped</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">textual description of the event grouping</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.formatting.removeGroups">
+<code class="descclassname">src.utils.formatting.</code><code class="descname">removeGroups</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/formatting.html#removeGroups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.formatting.removeGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove groups from a textual description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> – textual description of the global graph</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">cleaned data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-src.utils.vectorization">
+<span id="graph-vectorization"></span><h2>Graph Vectorization<a class="headerlink" href="#module-src.utils.vectorization" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.utils.vectorization.addFullMarkings">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">addFullMarkings</code><span class="sig-paren">(</span><em>markings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#addFullMarkings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.addFullMarkings" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes activity name variants, and list of markings of the projection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>markings</strong> – list of initial markings with event names</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">variants of activity names, and full markings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.computeActivityNames">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">computeActivityNames</code><span class="sig-paren">(</span><em>activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#computeActivityNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.computeActivityNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes list of activity names with different projection settings (ie default choreography names, or send/receive projected choreography names)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>activities</strong> – list of initial activities</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict of activity names variants (default, send, or receive views)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.generateInitialMarking">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">generateInitialMarking</code><span class="sig-paren">(</span><em>eventsList</em>, <em>events</em>, <em>relations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#generateInitialMarking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.generateInitialMarking" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates initial markings of a projection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>eventsList</strong> – list of event ids</li>
+<li><strong>events</strong> – list of projection events</li>
+<li><strong>relations</strong> – list of relations</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of event markings where each marking is a dict with keys {id, include, executed, pending}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.generateInitialMarkings">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">generateInitialMarkings</code><span class="sig-paren">(</span><em>chunks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#generateInitialMarkings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.generateInitialMarkings" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates list of initial markings out of a chunked representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chunks</strong> – chunked decomposition of the projection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of event markings where each marking is a dict with keys {id, include, executed, pending}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.generateRelationMatrices">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">generateRelationMatrices</code><span class="sig-paren">(</span><em>chunks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#generateRelationMatrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.generateRelationMatrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates all 5 relation matrices (condition, response, milestone, include, exclude) out of a set of relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chunks</strong> – chunked representation of the projection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">relation matrices of size NxN where N=number of events, and list of all relation matrices</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.generateRelationMatrix">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">generateRelationMatrix</code><span class="sig-paren">(</span><em>relationType</em>, <em>eventsList</em>, <em>relations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#generateRelationMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.generateRelationMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates relation matrix out of a set of relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>relationType</strong> – matrix type to generate</li>
+<li><strong>eventsList</strong> – list of events</li>
+<li><strong>relations</strong> – list of relations</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">relation matrix of size NxN where N=number of events, and list of markings</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.getEventId">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">getEventId</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#getEventId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.getEventId" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns event ID</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> – event declaration</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">event id (eg e1 if choreography event, or Driver, Florist, etc if local event)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.getRelationElems">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">getRelationElems</code><span class="sig-paren">(</span><em>relation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#getRelationElems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.getRelationElems" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes relation into json format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relation</strong> – relation to decompose</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">json representation of the relation, with keys {r_type,r_from,r_to}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.vectorize">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">vectorize</code><span class="sig-paren">(</span><em>data</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#vectorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.vectorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>vectorizes the textual description of the global dcr graph (markings and relation matrices)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> – textual description of the global dcr graph</li>
+<li><strong>filename</strong> – filename to save vectorization</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.vectorizeRole">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">vectorizeRole</code><span class="sig-paren">(</span><em>data</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#vectorizeRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.vectorizeRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>vectorizes the textual description of the projected dcr graphs (markings and relation matrices)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> – textual description of the role dcr graphs</li>
+<li><strong>filename</strong> – filename to save vectorizations</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.utils.graphDataTranslator">
+<span id="cytoscape-js-translation"></span><h2>Cytoscape.js Translation<a class="headerlink" href="#module-src.utils.graphDataTranslator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.bodyChoreo">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">bodyChoreo</code><span class="sig-paren">(</span><em>event</em>, <em>num_task</em>, <em>externalIds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#bodyChoreo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.bodyChoreo" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes a choreography event into a cytoscape node description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event</strong> – event to decompose</li>
+<li><strong>num_task</strong> – number of the task to plot the node into the graph (not in use)</li>
+<li><strong>externalIds</strong> – list of external events of the projection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary description of the node event according to cytoscape js syntax</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.bodyExternal">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">bodyExternal</code><span class="sig-paren">(</span><em>event</em>, <em>num_task</em>, <em>externalIds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#bodyExternal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.bodyExternal" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes an external event into a cytoscape node description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event</strong> – external event to decompose</li>
+<li><strong>num_task</strong> – number of the task to plot the node into the graph (not in use)</li>
+<li><strong>externalIds</strong> – list of external events of the projection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary description of the node event according to cytoscape js syntax</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.bodyInternal">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">bodyInternal</code><span class="sig-paren">(</span><em>event</em>, <em>num_task</em>, <em>externalIds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#bodyInternal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.bodyInternal" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes a local event into a cytoscape node description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event</strong> – event to decompose</li>
+<li><strong>num_task</strong> – number of the task to plot the node into the graph (not in use)</li>
+<li><strong>externalIds</strong> – list of external events of the projection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary description of the node event according to cytoscape js syntax</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.cytoEdges">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">cytoEdges</code><span class="sig-paren">(</span><em>edges</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#cytoEdges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.cytoEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves the cytoscape edge description of a set of relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>edges</strong> – relations to compute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary description of the relations according to cytoscape js syntax</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.cytoTasks">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">cytoTasks</code><span class="sig-paren">(</span><em>events</em>, <em>externalIds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#cytoTasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.cytoTasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves the cytoscape node description of a set of events</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>events</strong> – event to compute</li>
+<li><strong>externalIds</strong> – list of external events of the projection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary description of the node event according to cytoscape js syntax</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.extractChunks">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">extractChunks</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#extractChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.extractChunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes dcr textual description into choreography, local events, and relations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> – dcr description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of the dcr description with keys {events (ie choreographies), internalEvents (ie local events), linkages (ie relations)}, and list of roles</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.extractGroupRelations">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">extractGroupRelations</code><span class="sig-paren">(</span><em>groupings</em>, <em>linkages</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#extractGroupRelations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.extractGroupRelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove groups from set of relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>groupings</strong> – list of group descriptions to remove (usually ‘Group groupName {e1 e2 e3}’)</li>
+<li><strong>linkages</strong> – list of relations to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">updated relations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.extractRoleChunks">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">extractRoleChunks</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#extractRoleChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.extractRoleChunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes dcr textual description into choreography, local events, and relations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> – dcr description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of the dcr description with keys {events (ie choreographies), internalEvents (ie local events), linkages (ie relations)}, and list of roles</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.generateGraph">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">generateGraph</code><span class="sig-paren">(</span><em>pi</em>, <em>data</em>, <em>externalIds</em>, <em>target</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#generateGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.generateGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes the cytoscape description of a set of a dcr graph (events and relations) and saves it to target file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pi</strong> – process id</li>
+<li><strong>data</strong> – dcr textual representation to compute</li>
+<li><strong>externalIds</strong> – list of external ids to the projection</li>
+<li><strong>target</strong> – target path to save the cytoscape translation</li>
+<li><strong>role</strong> – projection type (global, public, or other)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.getEventElems">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">getEventElems</code><span class="sig-paren">(</span><em>event</em>, <em>numTask</em>, <em>externalIds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#getEventElems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.getEventElems" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes an event into a cytoscape node description (whether choreography, external, or internal).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event</strong> – event to decompose</li>
+<li><strong>num_task</strong> – number of the task to plot the node into the graph (not in use)</li>
+<li><strong>externalIds</strong> – list of external events of the projection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary description of the node event according to cytoscape js syntax</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphDataTranslator.getRelationElems">
+<code class="descclassname">src.utils.graphDataTranslator.</code><code class="descname">getRelationElems</code><span class="sig-paren">(</span><em>relation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphDataTranslator.html#getRelationElems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphDataTranslator.getRelationElems" title="Permalink to this definition">¶</a></dt>
+<dd><p>decomposes a relation description into a triplet type, src, tgt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relation</strong> – relation description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary of the relation decomposition with keys {r_type, r_from, r_to}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.utils.graphManager">
+<span id="graph-execution"></span><h2>Graph Execution<a class="headerlink" href="#module-src.utils.graphManager" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.utils.graphManager.execLogg">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">execLogg</code><span class="sig-paren">(</span><em>roleID</em>, <em>processID</em>, <em>activity_name</em>, <em>status</em>, <em>start_timestamp</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#execLogg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.execLogg" title="Permalink to this definition">¶</a></dt>
+<dd><p>update log with new execution</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>roleID</strong> – projection ID</li>
+<li><strong>processID</strong> – process ID</li>
+<li><strong>activity_name</strong> – activity name processed</li>
+<li><strong>status</strong> – exec status</li>
+<li><strong>start_timestamp</strong> – exec timestamp</li>
+<li><strong>data</strong> – user txt input (if any)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">updated cytoscape node description</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.executeApprovedNode">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">executeApprovedNode</code><span class="sig-paren">(</span><em>processID</em>, <em>role</em>, <em>activity_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#executeApprovedNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.executeApprovedNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates projection after approved event execution 
+step 1. update marking to true
+step 2. apply post exec function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>processID</strong> – process ID</li>
+<li><strong>role</strong> – projection ID</li>
+<li><strong>activity_name</strong> – activity named whose execution is approved</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.executeNode">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">executeNode</code><span class="sig-paren">(</span><em>execInfo</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#executeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.executeNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>update cytoscape data projection with a new marking</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>execInfo</strong> (<em>Json</em>) – execution request to process</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">execution status (rejected request or success)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.initializeGraph">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">initializeGraph</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#initializeGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.initializeGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>initialize cytoscape data with initial markings</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – filename to analyze</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.postExecManager">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">postExecManager</code><span class="sig-paren">(</span><em>toCondition</em>, <em>toInclude</em>, <em>toExclude</em>, <em>toRespond</em>, <em>markings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#postExecManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.postExecManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>applies execution effect to projection events</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>toCondition</strong> – list of conditions stemming out of activity_id with keys {‘vectid’,’projid’}</li>
+<li><strong>toInclude</strong> – list of include constraints stemming out of activity_id with keys {‘vectid’,’projid’}</li>
+<li><strong>toExclude</strong> – list of exclude constraints stemming out of activity_id with keys {‘vectid’,’projid’}</li>
+<li><strong>toRespond</strong> – list of response constraints stemming out of activity_id conditions with keys {‘vectid’,’projid’}</li>
+<li><strong>markings</strong> – markings of the projection to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">updated markings of the projection</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.preExecCheck">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">preExecCheck</code><span class="sig-paren">(</span><em>fromCondition</em>, <em>fromMilestone</em>, <em>markings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#preExecCheck"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.preExecCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks if an event is executable</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fromCondition</strong> (<em>Json</em><em>[</em><em>]</em>) – list of conditions stemming towards activity_id with keys {‘vectid’,’projid’}</li>
+<li><strong>fromMilestone</strong> (<em>Json</em><em>[</em><em>]</em>) – list of milestones stemming towards activity_id with keys {‘vectid’,’projid’}</li>
+<li><strong>markings</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>[</em><em>]</em>) – markings of the projection to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a boolean &gt; true: executable, false: not executable</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.retrieveActivityRelations">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">retrieveActivityRelations</code><span class="sig-paren">(</span><em>relations</em>, <em>activity_id</em>, <em>dataProj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#retrieveActivityRelations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.retrieveActivityRelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves all relations involving elem name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>relations</strong> – matrix relations of the projection</li>
+<li><strong>activity_id</strong> – event name to analyze</li>
+<li><strong>dataProj</strong> – projection data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Json[] toCondition:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">list of conditions stemming out of activity_id with keys {‘vectid’,’projid’}</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Json[] fromCondition:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">list of conditions stemming towards activity_id with keys {‘vectid’,’projid’}</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Json[] fromMilestone:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">list of milestones stemming towards activity_id with keys {‘vectid’,’projid’}</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Json[] toInclude:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">list of include constraints stemming out of activity_id with keys {‘vectid’,’projid’}</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Json[] toExclude:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">list of exclude constraints stemming out of activity_id with keys {‘vectid’,’projid’}</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Json[] toRespond:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">list of response constraints stemming out of activity_id conditions with keys {‘vectid’,’projid’}</td>
+</tr>
+</tbody>
+</table>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.retrieveMarkingOnId">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">retrieveMarkingOnId</code><span class="sig-paren">(</span><em>markings</em>, <em>elem</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#retrieveMarkingOnId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.retrieveMarkingOnId" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves all markings belonging to elem id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>markings</strong> – list of projection markings</li>
+<li><strong>elem</strong> – event to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">corresponding marking or []</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.retrieveMarkingOnName">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">retrieveMarkingOnName</code><span class="sig-paren">(</span><em>markings</em>, <em>activity_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#retrieveMarkingOnName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.retrieveMarkingOnName" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves all markings of elem name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>markings</strong> – list of projection markings</li>
+<li><strong>activity_name</strong> – event name to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">corresponding marking or []</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.graphManager.updCytoData">
+<code class="descclassname">src.utils.graphManager.</code><code class="descname">updCytoData</code><span class="sig-paren">(</span><em>dataProj</em>, <em>markings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/graphManager.html#updCytoData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.graphManager.updCytoData" title="Permalink to this definition">¶</a></dt>
+<dd><p>update cytoscape data projection with a new marking</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataProj</strong> (<em>Json</em><em>[</em><em>]</em>) – cytoscape node description</li>
+<li><strong>markings</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>[</em><em>]</em>) – markings of the projection to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">updated cytoscape node description</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">DCRChoreo Backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiDoc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projectionGenerators.html">Projection Generators</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dcr-text-treatment">DCR Text Treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.utils.vectorization">Graph Vectorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.utils.graphDataTranslator">Cytoscape.js Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.utils.graphManager">Graph Execution</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="projectionGenerators.html" title="previous chapter">Projection Generators</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Orange Labs.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

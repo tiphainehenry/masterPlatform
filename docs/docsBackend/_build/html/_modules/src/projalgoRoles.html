@@ -1,0 +1,290 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.projalgoRoles &#8212; DCRChoreo Backend v0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.projalgoRoles</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="k">import</span> <span class="n">cleanName</span><span class="p">,</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">groupItems</span><span class="p">,</span> <span class="n">getRoleTenant</span><span class="p">,</span> <span class="n">getSender</span><span class="p">,</span> <span class="n">getReceiver</span><span class="p">,</span> <span class="n">getRole</span><span class="p">,</span> <span class="n">getArrowLink</span><span class="p">,</span> <span class="n">getChoreographyDetails</span><span class="p">,</span> <span class="n">getType</span><span class="p">,</span> <span class="n">getRoleList</span><span class="p">,</span><span class="n">generateDictEvent</span><span class="p">,</span><span class="n">generateDictRelation</span>
+<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="k">import</span> <span class="n">extractChunks</span><span class="p">,</span> <span class="n">getLinkages</span><span class="p">,</span><span class="n">applyComposition</span><span class="p">,</span> <span class="n">getRoles</span><span class="p">,</span> <span class="n">getRoleMapping</span>
+<span class="kn">from</span> <span class="nn">src.utils.vectorization</span> <span class="k">import</span> <span class="n">vectorizeRole</span>
+<span class="kn">from</span> <span class="nn">src.utils.graphDataTranslator</span> <span class="k">import</span> <span class="n">generateGraph</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set of functions to translate a text dcr graph description into a json view, a cytoscape view, and a vectorized view </span>
+<span class="sd">    ...</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    :getRoleEvents(role, choreoEvents, internalEvents): extracts generates text projection out of a global DCR description</span>
+<span class="sd">    :filterOnRoles(linkages, projRefs): extracts all relations linking a set of tenants </span>
+<span class="sd">    :generateDCRText(processID, chunks, role, choreoEventsProj, filename): generates text projection out of a global DCR description</span>
+<span class="sd">    :projRole(processID, data, target, role): generates role projection (text, cytoscape, and vector descriptions) out of a global DCR description</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="getRoleEvents"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoRoles.getRoleEvents">[docs]</a><span class="k">def</span> <span class="nf">getRoleEvents</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">choreoEvents</span><span class="p">,</span> <span class="n">internalEvents</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    extracts generates text projection out of a global DCR description</span>
+
+<span class="sd">    :param role: the role of interest. eg: &#39;Driver&#39;</span>
+<span class="sd">    :param choreoEvents: list of choreography events of the global projection</span>
+<span class="sd">    :param internalEvents: list of internal events of the global projection</span>
+<span class="sd">    :returns: the list of events where role is involved, and the list of tenants linked to role</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+
+    <span class="n">projEvents</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;## Event Declaration ##&quot;</span><span class="p">]</span>
+    <span class="n">projRefs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">choreoEvents</span><span class="p">:</span>
+        <span class="n">eventName</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">tgts</span> <span class="o">=</span> <span class="n">getChoreographyDetails</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+        <span class="n">involvedTenants</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>
+        <span class="k">if</span><span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">tgts</span><span class="p">):</span>
+            <span class="n">tgts</span> <span class="o">=</span> <span class="n">tgts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">involvedTenants</span><span class="o">=</span><span class="n">involvedTenants</span><span class="o">+</span><span class="n">tgts</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">involvedTenants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tgts</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">involvedTenants</span><span class="p">:</span>
+                <span class="n">newEvent</span> <span class="o">=</span> <span class="n">elem</span>        
+                <span class="k">if</span> <span class="n">src</span> <span class="o">==</span> <span class="n">role</span><span class="p">:</span>
+                    <span class="n">newEvent</span> <span class="o">=</span> <span class="n">eventName</span><span class="o">+</span><span class="s1">&#39;s[&quot;!(&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&amp;gt;&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">tgts</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;)&quot;]&#39;</span>
+                    <span class="n">projRefs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eventName</span><span class="o">+</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>  
+                <span class="k">elif</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">tgts</span><span class="p">:</span>
+                    <span class="n">newEvent</span> <span class="o">=</span> <span class="n">eventName</span><span class="o">+</span><span class="s1">&#39;r[&quot;?(&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&amp;gt;&#39;</span><span class="o">+</span><span class="n">role</span><span class="o">+</span><span class="s1">&#39;)&quot;]&#39;</span>
+                    <span class="n">projRefs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eventName</span><span class="o">+</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>  
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">projRefs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+                <span class="n">projEvents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newEvent</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">internalEvents</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">getRoleTenant</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="n">projEvents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>   
+            <span class="n">projRefs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">getRole</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+
+    <span class="c1">#projGrouping = groupItems(role, projRefs)</span>
+    <span class="k">return</span> <span class="n">projEvents</span><span class="p">,</span> <span class="n">projRefs</span></div>
+
+
+<div class="viewcode-block" id="filterOnRoles"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoRoles.filterOnRoles">[docs]</a><span class="k">def</span> <span class="nf">filterOnRoles</span><span class="p">(</span><span class="n">linkages</span><span class="p">,</span> <span class="n">projRefs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    extracts all relations linking a set of tenants</span>
+
+<span class="sd">    :param linkages: list of relations of the global projection</span>
+<span class="sd">    :param projRefs: list of tenants to filter</span>
+<span class="sd">    :returns: str[], the list of relations linked to the set of tenants</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+
+    <span class="c1"># filter on events</span>
+    <span class="n">roleLinkages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">getSender</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="ow">in</span> <span class="n">projRefs</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">getReceiver</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="ow">in</span> <span class="n">projRefs</span><span class="p">):</span>
+            <span class="n">roleLinkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roleLinkages</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">roleLinkages</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#--&gt; None Matching - Manual implementation required&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">## Linkages ##&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">roleLinkages</span> <span class="c1">#+ [&quot;\n## WrongLinks ##&quot;] + wrongLinks</span></div>
+
+
+<div class="viewcode-block" id="generateDCRText"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoRoles.generateDCRText">[docs]</a><span class="k">def</span> <span class="nf">generateDCRText</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">choreoEventsProj</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    generates text projection out of a global DCR description</span>
+
+<span class="sd">    :param processID: the ID of the current process. eg: &quot;p1&quot;</span>
+<span class="sd">    :param chunks: json description of the global dcr</span>
+<span class="sd">    :param role: the role to project. eg: &#39;Driver&#39;</span>
+<span class="sd">    :param filename: the file name to be saved</span>
+<span class="sd">    :returns: the projection for the role externalIds, and the list of external ids for the role</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+
+    <span class="c1"># get simple role projection</span>
+    <span class="n">projEvents</span><span class="p">,</span> <span class="n">projRefs</span> <span class="o">=</span> <span class="n">getRoleEvents</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">],</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;internalEvents&#39;</span><span class="p">])</span> <span class="c1">## </span>
+
+    <span class="n">rawLinkages</span> <span class="o">=</span> <span class="n">getLinkages</span><span class="p">(</span><span class="n">projRefs</span><span class="p">,</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;linkages&#39;</span><span class="p">])</span> 
+    <span class="n">updatedLinkages</span> <span class="o">=</span> <span class="n">filterOnRoles</span><span class="p">(</span><span class="n">rawLinkages</span><span class="p">,</span> <span class="n">projRefs</span><span class="p">)</span> <span class="c1">## checked</span>
+
+    <span class="c1"># apply composition algo</span>
+    <span class="n">externalIds</span><span class="p">,</span> <span class="n">externalEvents</span><span class="p">,</span> <span class="n">externalLinkages</span> <span class="o">=</span> <span class="n">applyComposition</span><span class="p">(</span><span class="n">projRefs</span><span class="p">,</span> <span class="n">updatedLinkages</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span>
+
+    <span class="c1"># Merge projection items</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="n">projRefs</span> <span class="o">+</span> <span class="n">externalIds</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">projEvents</span> <span class="o">+</span> <span class="n">externalEvents</span>
+    <span class="n">linkages</span> <span class="o">=</span> <span class="n">updatedLinkages</span> <span class="o">+</span> <span class="n">externalLinkages</span>
+
+    <span class="c1">#linkages = updatedLinkages </span>
+    <span class="n">projGrouping</span> <span class="o">=</span> <span class="n">groupItems</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">tasks</span><span class="p">)</span>
+    <span class="n">projection</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;##### Projection over role [&quot;</span> <span class="o">+</span> <span class="n">role</span> <span class="o">+</span> <span class="s2">&quot;] #######&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">events</span> <span class="o">+</span> <span class="n">projGrouping</span> <span class="o">+</span> <span class="n">linkages</span> 
+
+    <span class="c1">#generate dict</span>
+    <span class="n">Pev</span><span class="o">=</span><span class="n">generateDictEvent</span><span class="p">(</span><span class="n">projEvents</span><span class="p">)</span>
+    <span class="n">Eev</span><span class="o">=</span><span class="n">generateDictEvent</span><span class="p">(</span><span class="n">externalEvents</span><span class="p">)</span>
+    <span class="n">relations</span><span class="o">=</span><span class="n">generateDictRelation</span><span class="p">(</span><span class="n">linkages</span><span class="p">)</span>
+
+       
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+        
+    <span class="n">role_id</span><span class="o">=</span><span class="n">getRoleMapping</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">role</span><span class="p">)[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">role_id</span><span class="p">]</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;role&#39;</span><span class="p">:</span><span class="n">role</span><span class="p">,</span>
+            <span class="s1">&#39;privateEvents&#39;</span><span class="p">:</span><span class="n">Pev</span><span class="p">,</span>
+            <span class="s1">&#39;externalEvents&#39;</span><span class="p">:</span><span class="n">Eev</span><span class="p">,</span>
+            <span class="s1">&#39;relations&#39;</span><span class="p">:</span><span class="n">relations</span>
+        <span class="p">}</span>
+
+
+    <span class="n">extDict</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;externalEvents&#39;</span><span class="p">]</span>
+    <span class="n">extDictElems</span><span class="o">=</span><span class="p">[</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">extDict</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">Eev</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">extDictElems</span><span class="p">:</span>
+            <span class="n">extDict</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;externalEvents&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">extDict</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">projection</span><span class="p">,</span> <span class="n">externalIds</span></div>
+
+
+<div class="viewcode-block" id="projRole"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoRoles.projRole">[docs]</a><span class="k">def</span> <span class="nf">projRole</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>       
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    generates role projection (text, cytoscape, and vector descriptions) out of a global DCR description</span>
+
+<span class="sd">    :param processID: the ID of the current process. eg: &quot;p1&quot;</span>
+<span class="sd">    :param data: json description of the global dcr</span>
+<span class="sd">    :param target: the path where the projection will be saved. eg: &#39;./client/src/projections/&#39;</span>
+<span class="sd">    :param role: the role to project. eg: &#39;Driver&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">chunks</span><span class="p">,</span> <span class="n">roles</span> <span class="o">=</span> <span class="n">extractChunks</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">choreoEventsProj</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">]:</span>
+        <span class="n">eventName</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">tgts</span> <span class="o">=</span> <span class="n">getChoreographyDetails</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>         
+        <span class="k">if</span> <span class="n">src</span> <span class="o">==</span> <span class="n">role</span><span class="p">:</span>
+            <span class="n">newEvent</span> <span class="o">=</span> <span class="n">eventName</span><span class="o">+</span><span class="s1">&#39;s[&quot;!(&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&amp;gt;&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">tgts</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;)&quot;]&#39;</span>
+            <span class="n">choreoEventsProj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newEvent</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">tgts</span><span class="p">:</span>
+            <span class="n">newEvent</span> <span class="o">=</span> <span class="n">eventName</span><span class="o">+</span><span class="s1">&#39;r[&quot;?(&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&amp;gt;&#39;</span><span class="o">+</span><span class="n">role</span><span class="o">+</span><span class="s1">&#39;)&quot;]&#39;</span>
+            <span class="n">choreoEventsProj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newEvent</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="n">roleMapping</span><span class="o">=</span><span class="n">getRoleMapping</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+    <span class="n">projection</span><span class="p">,</span> <span class="n">externalIds</span> <span class="o">=</span> <span class="n">generateDCRText</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">choreoEventsProj</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="s2">&quot;dcrTexts.json&quot;</span><span class="p">))</span>            
+    <span class="n">generateGraph</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">externalIds</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+    <span class="n">vectorizeRole</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="s2">&quot;temp_vect&quot;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] Projection of role &#39;</span><span class="o">+</span><span class="n">role</span><span class="o">+</span><span class="s1">&#39; generated&#39;</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DCRChoreo Backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiDoc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projectionGenerators.html">Projection Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Orange Labs.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

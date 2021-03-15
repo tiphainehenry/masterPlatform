@@ -1,0 +1,381 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Projection Generators &#8212; DCRChoreo Backend v0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utils" href="Utils.html" />
+    <link rel="prev" title="API" href="apiDoc.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="projection-generators">
+<span id="api-projs"></span><h1>Projection Generators<a class="headerlink" href="#projection-generators" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-src.projalgoGlobal">
+<span id="global-projection"></span><h2>Global Projection<a class="headerlink" href="#module-src.projalgoGlobal" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.projalgoGlobal.generateGlobalProjection">
+<code class="descclassname">src.projalgoGlobal.</code><code class="descname">generateGlobalProjection</code><span class="sig-paren">(</span><em>data</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoGlobal.html#generateGlobalProjection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoGlobal.generateGlobalProjection" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates global projection (text, cytoscape, and vector descriptions) out of a textual DCR description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>processID</strong> – the ID of the current process. eg: “p1”</li>
+<li><strong>data</strong> – json description of the global dcr</li>
+<li><strong>target</strong> – the path where the projection will be saved. eg: ‘./client/src/projections/’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">global projection, empty list (generated for external ids of the role projection views – functions are shared)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoGlobal.projectGlobal">
+<code class="descclassname">src.projalgoGlobal.</code><code class="descname">projectGlobal</code><span class="sig-paren">(</span><em>processID</em>, <em>data</em>, <em>target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoGlobal.html#projectGlobal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoGlobal.projectGlobal" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates global projection (text, cytoscape, and vector descriptions) out of a textual DCR description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>processID</strong> – the ID of the current process. eg: “p1”</li>
+<li><strong>data</strong> – json description of the global dcr</li>
+<li><strong>target</strong> – the path where the projection will be saved. eg: ‘./client/src/projections/’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.projalgoPublic">
+<span id="public-projection"></span><h2>Public Projection<a class="headerlink" href="#module-src.projalgoPublic" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.projalgoPublic.addExternalEvents">
+<code class="descclassname">src.projalgoPublic.</code><code class="descname">addExternalEvents</code><span class="sig-paren">(</span><em>cNames</em>, <em>chunks</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoPublic.html#addExternalEvents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoPublic.addExternalEvents" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves external events and relations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cNames</strong> – choreography events</li>
+<li><strong>chunks</strong> – projection decomposition</li>
+<li><strong>filename</strong> – filename where projection data is stored</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">retrieved external ids, event definitions, and involved relations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoPublic.addRoleExternals">
+<code class="descclassname">src.projalgoPublic.</code><code class="descname">addRoleExternals</code><span class="sig-paren">(</span><em>events</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoPublic.html#addRoleExternals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoPublic.addRoleExternals" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves external events to a projection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>events</strong> – events to analyze</li>
+<li><strong>filename</strong> – filename where projection data is stored</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">retrieved external events to the projection</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoPublic.filterOnChoreo">
+<code class="descclassname">src.projalgoPublic.</code><code class="descname">filterOnChoreo</code><span class="sig-paren">(</span><em>cNames</em>, <em>linkages</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoPublic.html#filterOnChoreo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoPublic.filterOnChoreo" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves relations where choreography events are involved</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cNames</strong> – choreography names</li>
+<li><strong>linkages</strong> – list of relations</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of relations where choreography events are involved</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoPublic.generatePublicProjection">
+<code class="descclassname">src.projalgoPublic.</code><code class="descname">generatePublicProjection</code><span class="sig-paren">(</span><em>chunks</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoPublic.html#generatePublicProjection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoPublic.generatePublicProjection" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates public projection out of dcr textual chunked representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>chunks</strong> – dcr textual chunked representation</li>
+<li><strong>filename</strong> – filename where projection will be stored</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">public projection and list of external ids to the projection</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoPublic.projectPublic">
+<code class="descclassname">src.projalgoPublic.</code><code class="descname">projectPublic</code><span class="sig-paren">(</span><em>processID</em>, <em>data</em>, <em>target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoPublic.html#projectPublic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoPublic.projectPublic" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates public projection (text, cytoscape, and vector descriptions) out of a textual DCR description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>processID</strong> – the ID of the current process. eg: “p1”</li>
+<li><strong>data</strong> – json description of the global dcr</li>
+<li><strong>target</strong> – the path where the projection will be saved. eg: ‘./client/src/projections/’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoPublic.retrieveRelations">
+<code class="descclassname">src.projalgoPublic.</code><code class="descname">retrieveRelations</code><span class="sig-paren">(</span><em>events</em>, <em>relations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoPublic.html#retrieveRelations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoPublic.retrieveRelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves relations missing after a projection (events are chunked due to sender and receiver projections)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>events</strong> – list of choreography events</li>
+<li><strong>relations</strong> – projection relations</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">set of retrieved relations missed out due to projection</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.projalgoRoles">
+<span id="role-projections"></span><h2>Role Projections<a class="headerlink" href="#module-src.projalgoRoles" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.projalgoRoles.filterOnRoles">
+<code class="descclassname">src.projalgoRoles.</code><code class="descname">filterOnRoles</code><span class="sig-paren">(</span><em>linkages</em>, <em>projRefs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoRoles.html#filterOnRoles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoRoles.filterOnRoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>extracts all relations linking a set of tenants</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>linkages</strong> – list of relations of the global projection</li>
+<li><strong>projRefs</strong> – list of tenants to filter</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">str[], the list of relations linked to the set of tenants</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoRoles.generateDCRText">
+<code class="descclassname">src.projalgoRoles.</code><code class="descname">generateDCRText</code><span class="sig-paren">(</span><em>processID</em>, <em>chunks</em>, <em>role</em>, <em>choreoEventsProj</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoRoles.html#generateDCRText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoRoles.generateDCRText" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates text projection out of a global DCR description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>processID</strong> – the ID of the current process. eg: “p1”</li>
+<li><strong>chunks</strong> – json description of the global dcr</li>
+<li><strong>role</strong> – the role to project. eg: ‘Driver’</li>
+<li><strong>filename</strong> – the file name to be saved</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the projection for the role externalIds, and the list of external ids for the role</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoRoles.getRoleEvents">
+<code class="descclassname">src.projalgoRoles.</code><code class="descname">getRoleEvents</code><span class="sig-paren">(</span><em>role</em>, <em>choreoEvents</em>, <em>internalEvents</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoRoles.html#getRoleEvents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoRoles.getRoleEvents" title="Permalink to this definition">¶</a></dt>
+<dd><p>extracts generates text projection out of a global DCR description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>role</strong> – the role of interest. eg: ‘Driver’</li>
+<li><strong>choreoEvents</strong> – list of choreography events of the global projection</li>
+<li><strong>internalEvents</strong> – list of internal events of the global projection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the list of events where role is involved, and the list of tenants linked to role</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.projalgoRoles.projRole">
+<code class="descclassname">src.projalgoRoles.</code><code class="descname">projRole</code><span class="sig-paren">(</span><em>processID</em>, <em>data</em>, <em>target</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/projalgoRoles.html#projRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.projalgoRoles.projRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates role projection (text, cytoscape, and vector descriptions) out of a global DCR description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>processID</strong> – the ID of the current process. eg: “p1”</li>
+<li><strong>data</strong> – json description of the global dcr</li>
+<li><strong>target</strong> – the path where the projection will be saved. eg: ‘./client/src/projections/’</li>
+<li><strong>role</strong> – the role to project. eg: ‘Driver’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">DCRChoreo Backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiDoc.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Projection Generators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.projalgoGlobal">Global Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.projalgoPublic">Public Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.projalgoRoles">Role Projections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="apiDoc.html" title="previous chapter">API</a></li>
+      <li>Next: <a href="Utils.html" title="next chapter">Utils</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Orange Labs.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/projectionGenerators.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

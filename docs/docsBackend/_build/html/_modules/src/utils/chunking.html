@@ -1,0 +1,573 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.utils.chunking &#8212; DCRChoreo Backend v0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.utils.chunking</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="k">import</span> <span class="n">cleanName</span><span class="p">,</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">groupItems</span><span class="p">,</span> <span class="n">getRoleTenant</span><span class="p">,</span> <span class="n">getSender</span><span class="p">,</span> <span class="n">getReceiver</span><span class="p">,</span> <span class="n">getRole</span><span class="p">,</span> <span class="n">getArrowLink</span><span class="p">,</span> <span class="n">getChoreographyDetails</span><span class="p">,</span> <span class="n">getType</span><span class="p">,</span> <span class="n">getRoleList</span><span class="p">,</span><span class="n">generateDictEvent</span><span class="p">,</span><span class="n">generateDictRelation</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Help functions to extract dcr events and relations out of a dcr textual representation</span>
+<span class="sd">    ...</span>
+
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    Retrieving functions</span>
+<span class="sd">        :extractGroupRelations(groupings, linkages):remove groupings in a set of relations </span>
+<span class="sd">        :extractChunks(data): translates the dcr description into a dictionary </span>
+<span class="sd">        :extractRoleChunks(data): extracts all local events out of the dcr description  </span>
+<span class="sd">        :getLinkages(projRefs, linkages):: extracts all relations where a given set of events is described</span>
+<span class="sd">        :getRoles(pi):retrieves list of roles belonging to the process pi</span>
+<span class="sd">        :getRoleMapping(pi,role): retrieves role id from name</span>
+
+<span class="sd">    Composition functions (external events &amp; cie)</span>
+<span class="sd">        :transitiveIncludeExclude(rExt, e, l, rGlob): enriches the list of external events with the list of transitive include/exclude relations stemming from e</span>
+<span class="sd">        :transitiveResponse(rExt, e, l, rGlob): enriches the list of external events with the list of transitive response relations stemming from e.</span>
+<span class="sd">        :computeExternalRelations(externalLinkages,externalIds,eGlob): extracts the list of relations involving external events</span>
+<span class="sd">        :computeExternalEvents(rExt, eProj): computes the list of external events out of the list of external relations</span>
+<span class="sd">        :retrieveExternalRelations(eProj, rProj, eGlob, rGlob): computes the list of external events out of the list of external relations</span>
+<span class="sd">        :getEventDeclarationFromName(ext_names,all_events): computes the list of external events </span>
+<span class="sd">        :applyComposition(roleIds, rProj, chunks): retrieve list of external events names and declarations, and external relations </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#### RETRIEVING FUNCTIONS </span>
+
+<div class="viewcode-block" id="extractGroupRelations"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.extractGroupRelations">[docs]</a><span class="k">def</span> <span class="nf">extractGroupRelations</span><span class="p">(</span><span class="n">groupings</span><span class="p">,</span> <span class="n">linkages</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    remove groupings in a set of relations </span>
+
+<span class="sd">    :param groupings: list of groups to remove</span>
+<span class="sd">    :param linkages: list of relations to clean</span>
+
+<span class="sd">    :returns: list of cleaned relations (no more groups)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#clean list</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">:</span> 
+        <span class="n">spl</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spl</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;&quot;&#39;</span> <span class="ow">in</span> <span class="n">spl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">spl</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">newLine</span><span class="o">=</span><span class="n">spl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">spl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spl</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+                <span class="n">linkages</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">newLine</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                
+            <span class="k">if</span> <span class="s1">&#39;&quot;&#39;</span> <span class="ow">in</span> <span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="n">newLine</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spl</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+                <span class="n">linkages</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">newLine</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span><span class="mi">1</span>
+
+    <span class="n">cleaned_linkages</span> <span class="o">=</span> <span class="n">linkages</span>
+    <span class="c1"># verify if group expends on several lines: create grouping dict</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groupings</span><span class="p">:</span>
+
+        <span class="c1"># extract group name</span>
+        <span class="n">groupName</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="c1"># extract relations included in grouping</span>
+        <span class="n">groupRelations</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>        
+        <span class="c1">#clean group</span>
+        <span class="n">cnt</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">groupRelations</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">groupRelations</span><span class="p">[</span><span class="n">cnt</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">groupRelations</span><span class="p">[</span><span class="n">cnt</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+                <span class="n">groupRelations</span><span class="p">[</span><span class="n">cnt</span><span class="p">]</span><span class="o">=</span><span class="n">groupRelations</span><span class="p">[</span><span class="n">cnt</span><span class="p">]</span><span class="o">+</span><span class="n">groupRelations</span><span class="p">[</span><span class="n">cnt</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">groupRelations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">groupRelations</span><span class="p">[</span><span class="n">cnt</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="c1"># extract relations to duplicate</span>
+        <span class="n">toDuplicate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">groupName</span> <span class="ow">in</span> <span class="n">link</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">link</span><span class="p">):</span>
+                <span class="n">toDuplicate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="c1"># extract first and last relations of grouping (ie &#39;no from&#39; or &#39;no to&#39; task)</span>
+        <span class="n">firstRelation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">lastRelation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">groupRelations</span><span class="p">:</span>
+            <span class="c1">#print(&#39;elem:&#39;+ elem)</span>
+            <span class="n">hasFirst</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">hasLast</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">:</span>
+                <span class="c1">#print(link)</span>
+                <span class="k">if</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">link</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">hasLast</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1">#print(&#39;has last&#39;)</span>
+                <span class="k">elif</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">link</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">hasFirst</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1">#print(&#39;has first&#39;)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">hasFirst</span><span class="p">:</span>
+                <span class="n">firstRelation</span><span class="o">=</span><span class="n">elem</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">hasLast</span><span class="p">:</span>
+                <span class="n">lastRelation</span><span class="o">=</span><span class="n">elem</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># regenerate relations according to the type </span>
+        <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">toDuplicate</span><span class="p">:</span>
+            <span class="n">chunks</span> <span class="o">=</span> <span class="n">relation</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">groupName</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">groupName</span> <span class="o">==</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">groupRelations</span><span class="p">:</span>
+                        <span class="c1">#duplicatedRelation = firstRelation + &#39; &#39; + &#39; &#39;.join(chunks[1:])</span>
+                        <span class="n">duplicatedRelation</span> <span class="o">=</span>  <span class="n">elem</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                        <span class="n">linkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">duplicatedRelation</span><span class="p">)</span> 
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># groupName == chunks[-1].strip():</span>
+                    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">groupRelations</span><span class="p">:</span>
+                        <span class="c1">#duplicatedRelation = firstRelation + &#39; &#39; + &#39; &#39;.join(chunks[1:])</span>
+                        <span class="n">duplicatedRelation</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">elem</span>
+                        <span class="n">linkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">duplicatedRelation</span><span class="p">)</span> 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># remove former relations with grouping name</span>
+        <span class="n">cleaned_linkages</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">groupName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">relation</span><span class="p">:</span>
+                <span class="n">cleaned_linkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cleaned_linkages</span></div>
+
+
+<div class="viewcode-block" id="extractChunks"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.extractChunks">[docs]</a><span class="k">def</span> <span class="nf">extractChunks</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    translates the dcr description into a dictionary </span>
+
+<span class="sd">    :param data: dcr description to analyze</span>
+
+<span class="sd">    :returns: dict description of the dcr text. Dict keys: {events,internalEvents,linkages}</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">events</span><span class="p">,</span> <span class="n">internalEvents</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">groupings</span><span class="p">,</span> <span class="n">linkages</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#misc = []</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span>  <span class="s1">&#39;#&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;src&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;tgt&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
+                <span class="n">lineclean</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;= &#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; =&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; = &#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lineclean</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;src&#39;</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;tgt&#39;</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">):</span>
+                        <span class="n">elemclean</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;tgt=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;src=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">elemclean</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">elemclean</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">roles</span><span class="p">):</span>
+                            <span class="n">roles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elemclean</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;&gt;&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
+                <span class="n">linkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;role=&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
+                <span class="n">nameChunk</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">role</span> <span class="o">=</span> <span class="n">nameChunk</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nameChunk</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">cleanedInternalEvent</span> <span class="o">=</span> <span class="n">name</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span> <span class="n">role</span>
+                <span class="n">internalEvents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cleanedInternalEvent</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1">#misc.append(line)</span>
+            
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkages</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span><span class="p">):</span>
+                    <span class="n">linkages</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">linkages</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="n">linkages</span> <span class="o">=</span> <span class="n">extractGroupRelations</span><span class="p">(</span><span class="n">groupings</span><span class="p">,</span> <span class="n">linkages</span><span class="p">)</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;events&#39;</span><span class="p">:</span><span class="n">events</span><span class="p">,</span>
+        <span class="s1">&#39;internalEvents&#39;</span><span class="p">:</span><span class="n">internalEvents</span><span class="p">,</span>
+        <span class="s1">&#39;linkages&#39;</span><span class="p">:</span><span class="n">linkages</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">roles</span></div>
+
+
+<div class="viewcode-block" id="extractRoleChunks"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.extractRoleChunks">[docs]</a><span class="k">def</span> <span class="nf">extractRoleChunks</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    extracts all local events out of the dcr description  </span>
+
+<span class="sd">    :param data: dcr description to analyze</span>
+
+<span class="sd">    :returns: dict description of the local events. Dict keys: {events,internalEvents,linkages}</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">events</span><span class="p">,</span> <span class="n">internalEvents</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">linkages</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">):</span> 
+            <span class="k">if</span> <span class="s1">&#39;role=&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">internalEvents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;src=&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;tgt=&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;?(&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;!(&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
+                <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;&gt;&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
+                <span class="n">linkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+            
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;events&#39;</span><span class="p">:</span><span class="n">events</span><span class="p">,</span>
+        <span class="s1">&#39;internalEvents&#39;</span><span class="p">:</span><span class="n">internalEvents</span><span class="p">,</span>
+        <span class="s1">&#39;linkages&#39;</span><span class="p">:</span><span class="n">linkages</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">chunks</span></div>
+
+
+<div class="viewcode-block" id="getLinkages"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.getLinkages">[docs]</a><span class="k">def</span> <span class="nf">getLinkages</span><span class="p">(</span><span class="n">projRefs</span><span class="p">,</span> <span class="n">linkages</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    extracts all relations where a given set of events is described</span>
+
+<span class="sd">    :param str[] projRefs: roles to analyze</span>
+<span class="sd">    :param str[] linkages: dcr description to analyze</span>
+
+<span class="sd">    :returns: the list of relations where projRefs events are involved</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">projRefs</span><span class="p">:</span>
+        <span class="n">testRef</span><span class="o">=</span><span class="n">ref</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">testRef</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">lineUpd</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">lineUpd</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">testRef</span> <span class="o">==</span> <span class="n">elem</span><span class="p">)</span> <span class="ow">and</span> <span class="n">elem</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+                        <span class="n">lineUpd</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">ref</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>   
+                <span class="n">linkages</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lineUpd</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">linkages</span></div>
+
+<div class="viewcode-block" id="getRoles"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.getRoles">[docs]</a><span class="k">def</span> <span class="nf">getRoles</span><span class="p">(</span><span class="n">pi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves list of roles belonging to the process pi</span>
+
+<span class="sd">    :param pi: process id (eg &quot;p1&quot;)</span>
+
+<span class="sd">    :returns: the list of roles of the projection (eg: [&quot;r1&quot;,&quot;r2&quot;,&quot;r3&quot;]).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">db</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">dcrs</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;TextExtraction&#39;</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/dcrTexts.json&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">dcrs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+    <span class="n">roles</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">dcrs</span><span class="p">[</span><span class="s1">&#39;roleMapping&#39;</span><span class="p">]:</span>
+        <span class="n">roles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">roles</span></div>
+
+
+<div class="viewcode-block" id="getRoleMapping"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.getRoleMapping">[docs]</a><span class="k">def</span> <span class="nf">getRoleMapping</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="n">role</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves role id from name</span>
+
+<span class="sd">    :param pi: process id (eg &quot;p1&quot;)</span>
+<span class="sd">    :param role: role name (eg &quot;Driver&quot;)</span>
+<span class="sd">    :returns: the role id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">db</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="n">dcrs</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;TextExtraction&#39;</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/dcrTexts.json&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">dcrs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">dcrs</span><span class="p">[</span><span class="s1">&#39;roleMapping&#39;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">role</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">elem</span>
+    
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="s1">&#39;err- role not found&#39;</span></div>
+
+
+<span class="c1">##### COMPOSITION FUNCTIONS</span>
+
+<div class="viewcode-block" id="transitiveIncludeExclude"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.transitiveIncludeExclude">[docs]</a><span class="k">def</span> <span class="nf">transitiveIncludeExclude</span><span class="p">(</span><span class="n">rExt</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">rGlob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    enriches the list of external events with the list of transitive include/exclude relations stemming from e:</span>
+<span class="sd">    the target is consecutive condition/milestone and include/exclude relations.</span>
+
+<span class="sd">    :param rExt: list of external events</span>
+<span class="sd">    :param e: event to analyze</span>
+<span class="sd">    :param l: relation to analyze</span>
+<span class="sd">    :param rGlob: list of relations defined in the global graph</span>
+
+<span class="sd">    :returns: the list of external events enriched with transitive exclude / include relations</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span><span class="p">((</span><span class="n">e</span><span class="o">==</span><span class="n">getReceiver</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">getType</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;condition&#39;</span><span class="p">,</span> <span class="s1">&#39;milestone&#39;</span><span class="p">])):</span>
+        <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">rGlob</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">((</span><span class="n">getType</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">,</span><span class="s1">&#39;exclude&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">getReceiver</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span><span class="o">==</span><span class="n">getSender</span><span class="p">(</span><span class="n">l</span><span class="p">))):</span>
+                <span class="n">rExt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rExt</span></div>
+
+
+<div class="viewcode-block" id="transitiveResponse"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.transitiveResponse">[docs]</a><span class="k">def</span> <span class="nf">transitiveResponse</span><span class="p">(</span><span class="n">rExt</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">rGlob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    enriches the list of external events with the list of transitive response relations stemming from e:</span>
+<span class="sd">    the target is consecutive milestone and response relations.</span>
+
+<span class="sd">    :param rExt: list of external events</span>
+<span class="sd">    :param e: event to analyze</span>
+<span class="sd">    :param l: relation to analyze</span>
+<span class="sd">    :param rGlob: list of relations defined in the global graph</span>
+
+<span class="sd">    :returns: the list of external events enriched with transitive response relations</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span><span class="p">((</span><span class="n">e</span><span class="o">==</span><span class="n">getSender</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="ow">and</span><span class="p">(</span><span class="n">getType</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;milestone&#39;</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">rGlob</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">getType</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;response&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">getSender</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span><span class="o">==</span><span class="n">getReceiver</span><span class="p">(</span><span class="n">l</span><span class="p">))):</span>
+                <span class="n">rExt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rExt</span></div>
+
+
+<div class="viewcode-block" id="computeExternalRelations"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.computeExternalRelations">[docs]</a><span class="k">def</span> <span class="nf">computeExternalRelations</span><span class="p">(</span><span class="n">externalLinkages</span><span class="p">,</span><span class="n">externalIds</span><span class="p">,</span><span class="n">eGlob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    extracts the list of relations involving external events</span>
+
+<span class="sd">    :param externalLinkages: list of external relations retrieved</span>
+<span class="sd">    :param externalIds: list of names of external events</span>
+<span class="sd">    :param eGlob: list of names of global events</span>
+
+<span class="sd">    :returns: the list of relations involving external events updated with the global events names.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_externalLinkages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">externalLinkages</span><span class="p">:</span>
+        <span class="n">sender</span> <span class="o">=</span> <span class="n">getSender</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="n">receiver</span> <span class="o">=</span> <span class="n">getReceiver</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="n">arrow_link</span> <span class="o">=</span> <span class="n">getArrowLink</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sender</span> <span class="ow">in</span> <span class="n">externalIds</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">eGlob</span><span class="p">:</span>
+                <span class="n">toTest</span> <span class="o">=</span> <span class="n">getRole</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> 
+                <span class="k">if</span> <span class="n">toTest</span> <span class="ow">in</span> <span class="n">sender</span><span class="p">:</span>
+                    <span class="n">newLink</span> <span class="o">=</span> <span class="n">toTest</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">arrow_link</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">receiver</span>
+                    <span class="n">_externalLinkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newLink</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># receiver in externalIds:</span>
+            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">eGlob</span><span class="p">:</span>
+                <span class="n">toTest</span> <span class="o">=</span> <span class="n">getRole</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>  
+                <span class="k">if</span> <span class="n">toTest</span> <span class="ow">in</span> <span class="n">receiver</span><span class="p">:</span>
+                    <span class="n">newLink</span> <span class="o">=</span> <span class="n">sender</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">arrow_link</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">toTest</span>    
+                    <span class="n">_externalLinkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newLink</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">_externalLinkages</span></div>
+
+
+<div class="viewcode-block" id="computeExternalEvents"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.computeExternalEvents">[docs]</a><span class="k">def</span> <span class="nf">computeExternalEvents</span><span class="p">(</span><span class="n">rExt</span><span class="p">,</span> <span class="n">eProj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    computes the list of external events out of the list of external relations</span>
+
+<span class="sd">    :param rExt: list of external relations retrieved</span>
+<span class="sd">    :param eProj: list of names of projection events</span>
+
+<span class="sd">    :returns: the list of external events linked to the projection e</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">eExt</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rExt</span><span class="p">:</span>
+        <span class="n">sender</span> <span class="o">=</span> <span class="n">getSender</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">receiver</span> <span class="o">=</span> <span class="n">getReceiver</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">((</span><span class="n">sender</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">eExt</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sender</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">eProj</span><span class="p">)):</span>
+            <span class="n">eExt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">((</span><span class="n">receiver</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">eExt</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">receiver</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">eProj</span><span class="p">)):</span>
+            <span class="n">eExt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">receiver</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">eExt</span></div>
+
+
+<div class="viewcode-block" id="retrieveExternalRelations"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.retrieveExternalRelations">[docs]</a><span class="k">def</span> <span class="nf">retrieveExternalRelations</span><span class="p">(</span><span class="n">eProj</span><span class="p">,</span> <span class="n">rProj</span><span class="p">,</span> <span class="n">eGlob</span><span class="p">,</span> <span class="n">rGlob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    computes the list of external events out of the list of external relations</span>
+
+<span class="sd">    :param eProj: list of projection events</span>
+<span class="sd">    :param rProj: list of relations belonging to the relation </span>
+<span class="sd">    :param eGlob: list of global events</span>
+<span class="sd">    :param rGlob: list of global relations</span>
+
+<span class="sd">    :returns: the list of external events of the projection, and the list of external events of the projection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rExt</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">eProj</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">rGlob</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">((</span><span class="n">l</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rProj</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="n">getReceiver</span><span class="p">(</span><span class="n">l</span><span class="p">))):</span>
+                <span class="n">rExt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="c1"># direct relations</span>
+                <span class="n">rExt</span> <span class="o">=</span> <span class="n">transitiveIncludeExclude</span><span class="p">(</span><span class="n">rExt</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">rGlob</span><span class="p">)</span>
+                <span class="n">rExt</span> <span class="o">=</span> <span class="n">transitiveResponse</span><span class="p">(</span><span class="n">rExt</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">rGlob</span><span class="p">)</span>
+
+    <span class="n">eExt</span> <span class="o">=</span> <span class="n">computeExternalEvents</span><span class="p">(</span><span class="n">rExt</span><span class="p">,</span> <span class="n">eProj</span><span class="p">)</span>
+    <span class="n">rExt</span> <span class="o">=</span> <span class="n">computeExternalRelations</span><span class="p">(</span><span class="n">rExt</span><span class="p">,</span><span class="n">eExt</span><span class="p">,</span><span class="n">eGlob</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">eExt</span><span class="p">,</span> <span class="n">rExt</span></div>
+
+
+<div class="viewcode-block" id="getEventDeclarationFromName"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.getEventDeclarationFromName">[docs]</a><span class="k">def</span> <span class="nf">getEventDeclarationFromName</span><span class="p">(</span><span class="n">ext_names</span><span class="p">,</span><span class="n">all_events</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    computes the list of external events </span>
+
+
+<span class="sd">    :param ext_names: list of external events names</span>
+<span class="sd">    :param all_events: list of the declaration of all events</span>
+
+<span class="sd">    :returns: the list of external events declarations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">externalEvents</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">all_events</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ext_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">getRole</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="ow">in</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">externalEvents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">externalEvents</span></div>
+
+
+<div class="viewcode-block" id="applyComposition"><a class="viewcode-back" href="../../../Utils.html#src.utils.chunking.applyComposition">[docs]</a><span class="k">def</span> <span class="nf">applyComposition</span><span class="p">(</span><span class="n">roleIds</span><span class="p">,</span> <span class="n">rProj</span><span class="p">,</span> <span class="n">chunks</span><span class="p">):</span>    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieve list of external events names and declarations, and external relations </span>
+
+<span class="sd">    :param roleIds: list of local events of the projection</span>
+<span class="sd">    :param rProj: list of the relations of the projection</span>
+<span class="sd">    :param chunks: chunked version of the dcr global graph</span>
+
+<span class="sd">    :returns: the list of external events names, the list of external events declarations, and the list of external relations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">externalLinkages</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">eGlob</span><span class="o">=</span><span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;internalEvents&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">]</span>
+    <span class="n">rGlob</span><span class="o">=</span><span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;linkages&#39;</span><span class="p">]</span>
+
+    <span class="c1"># retrieve relations</span>
+    <span class="n">eProj</span><span class="o">=</span><span class="n">roleIds</span>
+    <span class="n">eExt</span><span class="p">,</span> <span class="n">rExt</span> <span class="o">=</span> <span class="n">retrieveExternalRelations</span><span class="p">(</span><span class="n">eProj</span><span class="p">,</span><span class="n">rProj</span><span class="p">,</span><span class="n">eGlob</span><span class="p">,</span><span class="n">rGlob</span><span class="p">)</span>
+
+    <span class="c1"># retrieve corresponding events</span>
+    <span class="n">externalEvents</span> <span class="o">=</span> <span class="n">getEventDeclarationFromName</span><span class="p">(</span><span class="n">eExt</span><span class="p">,</span><span class="n">eGlob</span><span class="p">)</span>        
+
+    <span class="k">return</span> <span class="n">eExt</span><span class="p">,</span> <span class="n">externalEvents</span><span class="p">,</span> <span class="n">rExt</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">DCRChoreo Backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../apiDoc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../projectionGenerators.html">Projection Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Orange Labs.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

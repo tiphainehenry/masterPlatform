@@ -1,0 +1,566 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.utils.graphManager &#8212; DCRChoreo Backend v0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.utils.graphManager</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="k">import</span> <span class="n">getRoleMapping</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set of functions to manage dcr graph execution </span>
+<span class="sd">    ...</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    :retrieveMarkingOnId(markings, elem):  retrieves all markings belonging to elem id</span>
+<span class="sd">    :retrieveMarkingOnName(markings, activity_name): retrieves all markings of elem name</span>
+<span class="sd">    :initializeGraph(filename): initialize cytoscape data with initial markings</span>
+<span class="sd">    :retrieveActivityRelations(relations, activity_id, dataProj): retrieves all relations involving elem name</span>
+<span class="sd">    :preExecCheck(fromCondition, fromMilestone, markings): checks if an event is executable</span>
+<span class="sd">    :postExecManager(toCondition, toInclude, toExclude, toRespond, markings): applies execution effect to projection events </span>
+<span class="sd">    :updCytoData(dataProj, markings): update cytoscape data projection with a new marking </span>
+<span class="sd">    :executeNode(execInfo): update cytoscape data projection with a new marking </span>
+<span class="sd">    :executeApprovedNode(processID, role, activity_name): updates projection after approved event execution</span>
+<span class="sd">    :execLogg(roleID, processID, activity_name, status, start_timestamp, data): update log with new execution </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="retrieveMarkingOnId"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.retrieveMarkingOnId">[docs]</a><span class="k">def</span> <span class="nf">retrieveMarkingOnId</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves all markings belonging to elem id</span>
+
+<span class="sd">    :param markings: list of projection markings</span>
+<span class="sd">    :param elem: event to analyze</span>
+
+<span class="sd">    :returns: corresponding marking or []</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">markings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">item</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="retrieveMarkingOnName"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.retrieveMarkingOnName">[docs]</a><span class="k">def</span> <span class="nf">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">activity_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves all markings of elem name</span>
+
+<span class="sd">    :param markings: list of projection markings</span>
+<span class="sd">    :param activity_name: event name to analyze</span>
+
+<span class="sd">    :returns: corresponding marking or []</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">markings</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">activity_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">elem</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="initializeGraph"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.initializeGraph">[docs]</a><span class="k">def</span> <span class="nf">initializeGraph</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    initialize cytoscape data with initial markings</span>
+
+<span class="sd">    :param filename: filename to analyze</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+
+    <span class="n">markings</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;markings&#39;</span><span class="p">]</span>
+
+    <span class="n">dataFilename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;vect&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dataFilename</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="n">dataProj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+
+    <span class="n">updProj</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">dataProj</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;nodes&#39;</span><span class="p">:</span>
+            <span class="c1"># filter out external events</span>
+            <span class="k">if</span> <span class="p">((</span><span class="s1">&#39;classes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;external&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">])):</span>
+                <span class="n">elemMarking</span> <span class="o">=</span> <span class="n">retrieveMarkingOnId</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elemMarking</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">elemMarking</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;classes&#39;</span><span class="p">:</span> <span class="s1">&#39;included executable&#39;</span><span class="p">})</span>
+
+        <span class="n">updProj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dataFilename</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">updProj</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="retrieveActivityRelations"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.retrieveActivityRelations">[docs]</a><span class="k">def</span> <span class="nf">retrieveActivityRelations</span><span class="p">(</span><span class="n">relations</span><span class="p">,</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">dataProj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves all relations involving elem name</span>
+
+<span class="sd">    :param relations: matrix relations of the projection</span>
+<span class="sd">    :param activity_id: event name to analyze</span>
+<span class="sd">    :param dataProj: projection data</span>
+
+<span class="sd">    :returns: </span>
+<span class="sd">        :Json[] toCondition: list of conditions stemming out of activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">        :Json[] fromCondition: list of conditions stemming towards activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">        :Json[] fromMilestone: list of milestones stemming towards activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">        :Json[] toInclude: list of include constraints stemming out of activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">        :Json[] toExclude: list of exclude constraints stemming out of activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">        :Json[] toRespond: list of response constraints stemming out of activity_id conditions with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">conditions</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;condition&#39;</span><span class="p">]</span>
+    <span class="n">milestones</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;milestone&#39;</span><span class="p">]</span>
+    <span class="n">responses</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span>
+    <span class="n">excludes</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;exclude&#39;</span><span class="p">]</span>
+    <span class="n">includes</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span>
+
+    <span class="n">toCondition</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">conditions</span><span class="p">[</span><span class="n">activity_id</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">toCondition</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;vectid&#39;</span><span class="p">:</span> <span class="n">cnt</span><span class="p">,</span>
+                <span class="s1">&#39;projid&#39;</span><span class="p">:</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">cnt</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
+
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="n">fromCondition</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">conditionFrom</span> <span class="ow">in</span> <span class="n">conditions</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">conditionFrom</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conditionFrom</span><span class="p">[</span><span class="n">activity_id</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">fromCondition</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;vectid&#39;</span><span class="p">:</span> <span class="n">cnt</span><span class="p">,</span>
+                <span class="s1">&#39;projid&#39;</span><span class="p">:</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">cnt</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">fromMilestone</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">milestoneFrom</span> <span class="ow">in</span> <span class="n">milestones</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">milestoneFrom</span><span class="p">[</span><span class="n">activity_id</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">fromMilestone</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;vectid&#39;</span><span class="p">:</span> <span class="n">cnt</span><span class="p">,</span>
+                <span class="s1">&#39;projid&#39;</span><span class="p">:</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">cnt</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">toInclude</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">to_include</span> <span class="ow">in</span> <span class="n">includes</span><span class="p">[</span><span class="n">activity_id</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">to_include</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">toInclude</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;vectid&#39;</span><span class="p">:</span> <span class="n">cnt</span><span class="p">,</span>
+                <span class="s1">&#39;projid&#39;</span><span class="p">:</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">cnt</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">toExclude</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">to_exclude</span> <span class="ow">in</span> <span class="n">excludes</span><span class="p">[</span><span class="n">activity_id</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">to_exclude</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">toExclude</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;vectid&#39;</span><span class="p">:</span> <span class="n">cnt</span><span class="p">,</span>
+                <span class="s1">&#39;projid&#39;</span><span class="p">:</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">cnt</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;u&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)})</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">toRespond</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">to_resp</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">[</span><span class="n">activity_id</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">to_resp</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">toRespond</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;vectid&#39;</span><span class="p">:</span> <span class="n">cnt</span><span class="p">,</span>
+                <span class="s1">&#39;projid&#39;</span><span class="p">:</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">cnt</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    print(&#39;From Conditions:&#39;)</span>
+<span class="sd">    print(fromCondition)</span>
+<span class="sd">    print(&#39;To Conditions:&#39;)</span>
+<span class="sd">    print(toCondition)</span>
+<span class="sd">    print(&#39;Milestones:&#39;)</span>
+<span class="sd">    print(fromMilestone)</span>
+<span class="sd">    print(&#39;Include:&#39;)</span>
+<span class="sd">    print(toInclude)</span>
+<span class="sd">    print(&#39;Exclude:&#39;)</span>
+<span class="sd">    print(toExclude)</span>
+<span class="sd">    print(&#39;Responses:&#39;)</span>
+<span class="sd">    print(toRespond)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">toCondition</span><span class="p">,</span> <span class="n">fromCondition</span><span class="p">,</span> <span class="n">fromMilestone</span><span class="p">,</span> <span class="n">toInclude</span><span class="p">,</span> <span class="n">toExclude</span><span class="p">,</span> <span class="n">toRespond</span></div>
+
+
+<div class="viewcode-block" id="preExecCheck"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.preExecCheck">[docs]</a><span class="k">def</span> <span class="nf">preExecCheck</span><span class="p">(</span><span class="n">fromCondition</span><span class="p">,</span> <span class="n">fromMilestone</span><span class="p">,</span> <span class="n">markings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    checks if an event is executable</span>
+
+<span class="sd">    :param Json[] fromCondition: list of conditions stemming towards activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">    :param Json[] fromMilestone: list of milestones stemming towards activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">    :param str[] markings: markings of the projection to analyze</span>
+
+<span class="sd">    :returns: a boolean &gt; true: executable, false: not executable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># if conditions not empty: get markings of conditions --&gt; if not executed yet and included: error</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fromCondition</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">fromCondition</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;projid&#39;</span><span class="p">])[</span><span class="s1">&#39;executed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">)[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] error - elem condition not executed&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># if milestones not empty --&gt; similar behavior</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fromMilestone</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">fromMilestone</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;projid&#39;</span><span class="p">])[</span><span class="s1">&#39;executed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">)[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] error - elem milestone not executed&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="postExecManager"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.postExecManager">[docs]</a><span class="k">def</span> <span class="nf">postExecManager</span><span class="p">(</span><span class="n">toCondition</span><span class="p">,</span> <span class="n">toInclude</span><span class="p">,</span> <span class="n">toExclude</span><span class="p">,</span> <span class="n">toRespond</span><span class="p">,</span> <span class="n">markings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    applies execution effect to projection events </span>
+
+<span class="sd">    :param toCondition: list of conditions stemming out of activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">    :param toInclude: list of include constraints stemming out of activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">    :param toExclude: list of exclude constraints stemming out of activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">    :param toRespond: list of response constraints stemming out of activity_id conditions with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
+<span class="sd">    :param markings: markings of the projection to analyze</span>
+
+<span class="sd">    :returns: updated markings of the projection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">toInclude</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">toInclude</span><span class="p">:</span>
+            <span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;projid&#39;</span><span class="p">])[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">toCondition</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">toCondition</span><span class="p">:</span>
+            <span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;projid&#39;</span><span class="p">])[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">toExclude</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">toExclude</span><span class="p">:</span>
+            <span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;projid&#39;</span><span class="p">])[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">toRespond</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">toRespond</span><span class="p">:</span>
+            <span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;projid&#39;</span><span class="p">])[</span><span class="s1">&#39;pending&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;projid&#39;</span><span class="p">])[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">markings</span></div>
+
+
+<div class="viewcode-block" id="updCytoData"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.updCytoData">[docs]</a><span class="k">def</span> <span class="nf">updCytoData</span><span class="p">(</span><span class="n">dataProj</span><span class="p">,</span> <span class="n">markings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    update cytoscape data projection with a new marking </span>
+
+<span class="sd">    :param Json[] dataProj: cytoscape node description</span>
+<span class="sd">    :param str[] markings: markings of the projection to analyze</span>
+
+<span class="sd">    :returns: updated cytoscape node description</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">dataProj</span><span class="p">:</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;nodes&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;classes&#39;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;external&#39;</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">]):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">if</span> <span class="n">retrieveMarkingOnId</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">)[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;included  executable&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">retrieveMarkingOnId</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">)[</span><span class="s1">&#39;executed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;executed&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">retrieveMarkingOnId</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">)[</span><span class="s1">&#39;pending&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;pending executable&#39;</span><span class="p">)</span>
+                <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;classes&#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">classes</span><span class="p">)})</span>
+
+    <span class="k">return</span> <span class="n">dataProj</span></div>
+
+
+<div class="viewcode-block" id="executeNode"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.executeNode">[docs]</a><span class="k">def</span> <span class="nf">executeNode</span><span class="p">(</span><span class="n">execInfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    update cytoscape data projection with a new marking </span>
+
+<span class="sd">    :param Json execInfo: execution request to process</span>
+
+<span class="sd">    :returns: execution status (rejected request or success)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">projId</span> <span class="o">=</span> <span class="n">execInfo</span><span class="p">[</span><span class="s1">&#39;projId&#39;</span><span class="p">]</span>
+    <span class="n">activity_name</span> <span class="o">=</span> <span class="n">execInfo</span><span class="p">[</span><span class="s1">&#39;idClicked&#39;</span><span class="p">]</span>
+    <span class="n">processID</span> <span class="o">=</span> <span class="n">execInfo</span><span class="p">[</span><span class="s1">&#39;processID&#39;</span><span class="p">]</span>
+
+    <span class="c1"># check if not a receive choreography event:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">activity_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">activity_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">activity_name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;rejected - receive choreography event&#39;</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;waiting&#39;</span>
+    <span class="c1"># retrieve activity data</span>
+
+    <span class="n">roleMapping</span> <span class="o">=</span> <span class="n">getRoleMapping</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">projId</span><span class="p">)</span>
+
+    <span class="n">dbPath</span> <span class="o">=</span> <span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="n">DCRdb</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+
+    <span class="n">dataProj</span> <span class="o">=</span> <span class="n">DCRdb</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+    <span class="n">dataVect</span> <span class="o">=</span> <span class="n">DCRdb</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;vect&#39;</span><span class="p">]</span>
+
+    <span class="c1"># check if not external event</span>
+    <span class="n">activity_id</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">dataProj</span><span class="p">[</span><span class="n">activity_id</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">activity_name</span><span class="p">):</span>
+        <span class="n">activity_id</span> <span class="o">=</span> <span class="n">activity_id</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="s1">&#39;external&#39;</span> <span class="ow">in</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">activity_id</span><span class="p">][</span><span class="s1">&#39;classes&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s1">&#39;rejected - external event&#39;</span>
+
+    <span class="c1"># retrieve markings activity_name and check inclusion:</span>
+    <span class="n">markings</span> <span class="o">=</span> <span class="n">dataVect</span><span class="p">[</span><span class="s1">&#39;markings&#39;</span><span class="p">]</span>
+    <span class="n">activity_marking</span> <span class="o">=</span> <span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">activity_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">activity_marking</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] error - elem not included&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;rejected - not included&#39;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] success - elem included&#39;</span><span class="p">)</span>
+        <span class="c1"># retrieve activity relations (conditions, milestones, included, excluded, response)</span>
+        <span class="n">relations</span> <span class="o">=</span> <span class="n">dataVect</span><span class="p">[</span><span class="s1">&#39;relations&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">toCondition</span><span class="p">,</span> <span class="n">fromCondition</span><span class="p">,</span> <span class="n">fromMilestone</span><span class="p">,</span> <span class="n">toInclude</span><span class="p">,</span> <span class="n">toExclude</span><span class="p">,</span> <span class="n">toRespond</span> <span class="o">=</span> <span class="n">retrieveActivityRelations</span><span class="p">(</span><span class="n">relations</span><span class="p">,</span>
+                                                                                                               <span class="n">activity_id</span><span class="p">,</span> <span class="n">dataProj</span><span class="p">)</span>
+
+        <span class="c1"># pre_execution evaluation</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">preExecCheck</span><span class="p">(</span><span class="n">fromCondition</span><span class="p">,</span> <span class="n">fromMilestone</span><span class="p">,</span> <span class="n">markings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;throw error - prexec conditions not executed&#39;</span>
+
+        <span class="c1"># retrieve semiinternal events</span>
+        <span class="n">publicInfos</span> <span class="o">=</span> <span class="n">DCRdb</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="s1">&#39;Public&#39;</span><span class="p">][</span><span class="s1">&#39;vect&#39;</span><span class="p">]</span>
+        <span class="n">publicEvents</span> <span class="o">=</span> <span class="n">publicInfos</span><span class="p">[</span><span class="s1">&#39;activityNames&#39;</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="o">+</span> \
+            <span class="n">publicInfos</span><span class="p">[</span><span class="s1">&#39;activityNames&#39;</span><span class="p">][</span><span class="s1">&#39;send&#39;</span><span class="p">]</span> <span class="o">+</span> \
+            <span class="n">publicInfos</span><span class="p">[</span><span class="s1">&#39;activityNames&#39;</span><span class="p">][</span><span class="s1">&#39;receive&#39;</span><span class="p">]</span>
+
+        <span class="c1"># execution</span>
+        <span class="k">if</span> <span class="n">activity_name</span> <span class="ow">in</span> <span class="n">publicEvents</span><span class="p">:</span>
+            <span class="c1"># execute event onChain</span>
+            <span class="k">return</span> <span class="s1">&#39;BC exec&#39;</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># local update</span>
+            <span class="c1"># Update markings:</span>
+            <span class="n">activity_marking</span><span class="p">[</span><span class="s1">&#39;executed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">activity_marking</span><span class="p">[</span><span class="s1">&#39;pending&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># post_execution evaluation  --&gt; upd markings included, excluded, response</span>
+            <span class="n">markings</span> <span class="o">=</span> <span class="n">postExecManager</span><span class="p">(</span>
+                <span class="n">toCondition</span><span class="p">,</span> <span class="n">toInclude</span><span class="p">,</span> <span class="n">toExclude</span><span class="p">,</span> <span class="n">toRespond</span><span class="p">,</span> <span class="n">markings</span><span class="p">)</span>
+
+            <span class="c1"># update projData classes and rewrite</span>
+            <span class="n">updProj</span> <span class="o">=</span> <span class="n">updCytoData</span><span class="p">(</span><span class="n">dataProj</span><span class="p">,</span> <span class="n">markings</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">DCRdb</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="s1">&#39;executed&#39;</span></div>
+
+
+<div class="viewcode-block" id="executeApprovedNode"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.executeApprovedNode">[docs]</a><span class="k">def</span> <span class="nf">executeApprovedNode</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">activity_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    updates projection after approved event execution </span>
+<span class="sd">    step 1. update marking to true</span>
+<span class="sd">    step 2. apply post exec function</span>
+
+<span class="sd">    :param processID: process ID</span>
+<span class="sd">    :param role: projection ID</span>
+<span class="sd">    :param activity_name: activity named whose execution is approved</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># retrieve activity data</span>
+    <span class="n">dbPath</span> <span class="o">=</span> <span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="n">DCRdb</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+
+    <span class="n">roleMapping</span> <span class="o">=</span> <span class="n">getRoleMapping</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+
+    <span class="n">dataProj</span> <span class="o">=</span> <span class="n">DCRdb</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+    <span class="n">dataVect</span> <span class="o">=</span> <span class="n">DCRdb</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;vect&#39;</span><span class="p">]</span>
+
+    <span class="c1"># retrieve markings activity_name:</span>
+    <span class="n">markings</span> <span class="o">=</span> <span class="n">dataVect</span><span class="p">[</span><span class="s1">&#39;markings&#39;</span><span class="p">]</span>
+    <span class="n">activity_marking</span> <span class="o">=</span> <span class="n">retrieveMarkingOnName</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">activity_name</span><span class="p">)</span>
+
+    <span class="c1"># retrieve activity relations (conditions, milestones, included, excluded, response)</span>
+    <span class="n">activity_id</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span><span class="p">((</span><span class="n">dataProj</span><span class="p">[</span><span class="n">activity_id</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">activity_name</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">activity_id</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataProj</span><span class="p">))):</span>
+        <span class="n">activity_id</span> <span class="o">=</span> <span class="n">activity_id</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">activity_id</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataProj</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;activity not found&#39;</span>  <span class="c1"># append status to execlog (?)</span>
+
+    <span class="n">relations</span> <span class="o">=</span> <span class="n">dataVect</span><span class="p">[</span><span class="s1">&#39;relations&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">toCondition</span><span class="p">,</span> <span class="n">fromCondition</span><span class="p">,</span> <span class="n">fromMilestone</span><span class="p">,</span> <span class="n">toInclude</span><span class="p">,</span> <span class="n">toExclude</span><span class="p">,</span> <span class="n">toRespond</span> <span class="o">=</span> <span class="n">retrieveActivityRelations</span><span class="p">(</span><span class="n">relations</span><span class="p">,</span>
+                                                                                                           <span class="n">activity_id</span><span class="p">,</span> <span class="n">dataProj</span><span class="p">)</span>
+
+    <span class="c1"># execution</span>
+    <span class="c1"># Update markings:</span>
+    <span class="n">activity_marking</span><span class="p">[</span><span class="s1">&#39;executed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">activity_marking</span><span class="p">[</span><span class="s1">&#39;pending&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># post_execution evaluation  --&gt; upd markings included, excluded, response</span>
+    <span class="n">markings</span> <span class="o">=</span> <span class="n">postExecManager</span><span class="p">(</span>
+        <span class="n">toCondition</span><span class="p">,</span> <span class="n">toInclude</span><span class="p">,</span> <span class="n">toExclude</span><span class="p">,</span> <span class="n">toRespond</span><span class="p">,</span> <span class="n">markings</span><span class="p">)</span>
+
+    <span class="c1"># update projData classes and rewrite data and vect</span>
+    <span class="n">updProj</span> <span class="o">=</span> <span class="n">updCytoData</span><span class="p">(</span><span class="n">dataProj</span><span class="p">,</span> <span class="n">markings</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">DCRdb</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s1">&#39;executed&#39;</span>  <span class="c1"># append status to execlog (?)</span></div>
+
+
+<div class="viewcode-block" id="execLogg"><a class="viewcode-back" href="../../../Utils.html#src.utils.graphManager.execLogg">[docs]</a><span class="k">def</span> <span class="nf">execLogg</span><span class="p">(</span><span class="n">roleID</span><span class="p">,</span> <span class="n">processID</span><span class="p">,</span> <span class="n">activity_name</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    update log with new execution </span>
+
+<span class="sd">    :param roleID: projection ID</span>
+<span class="sd">    :param processID: process ID</span>
+<span class="sd">    :param activity_name: activity name processed</span>
+<span class="sd">    :param status: exec status</span>
+<span class="sd">    :param start_timestamp: exec timestamp</span>
+<span class="sd">    :param data: user txt input (if any)</span>
+<span class="sd">     </span>
+<span class="sd">    :returns: updated cytoscape node description</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dbPath</span> <span class="o">=</span> <span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="n">DCRdb</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">roleID</span> <span class="o">==</span> <span class="s1">&#39;Public&#39;</span><span class="p">):</span>
+        <span class="n">execData</span> <span class="o">=</span> <span class="n">DCRdb</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="s1">&#39;Public&#39;</span><span class="p">][</span><span class="s1">&#39;exec&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">roleMapping</span> <span class="o">=</span> <span class="n">getRoleMapping</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">roleID</span><span class="p">)</span>
+        <span class="n">execData</span> <span class="o">=</span> <span class="n">DCRdb</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;exec&#39;</span><span class="p">]</span>
+
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">date_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S&quot;</span><span class="p">)</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">execData</span><span class="p">[</span><span class="s1">&#39;execLogs&#39;</span><span class="p">])</span>
+    <span class="n">execData</span><span class="p">[</span><span class="s1">&#39;execLogs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span>
+        <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="n">activity_name</span><span class="p">,</span>
+        <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+        <span class="s1">&#39;timestamp_startTask&#39;</span><span class="p">:</span> <span class="n">start_timestamp</span><span class="p">,</span>
+        <span class="s1">&#39;timestamp_endTask&#39;</span><span class="p">:</span> <span class="n">date_time</span><span class="p">,</span>
+        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span>
+    <span class="p">})</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">DCRdb</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">DCRChoreo Backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../apiDoc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../projectionGenerators.html">Projection Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Orange Labs.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

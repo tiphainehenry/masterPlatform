@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Components &#8212; DCRChoreo Frontend v0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="react-components">
+<span id="front-ref"></span><h1>React Components<a class="headerlink" href="#react-components" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="graph-display">
+<h2>Graph display<a class="headerlink" href="#graph-display" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="graph-interactive-template">
+<h3>Graph interactive template<a class="headerlink" href="#graph-interactive-template" title="Permalink to this headline">¶</a></h3>
+<dl class="js class">
+<dt id="DCRgraph">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">DCRgraph</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#DCRgraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Responsive DCR graph display. Event execution requests are available &gt; the public DCR smart contract is called if the node is public.</p>
+<dl class="js function">
+<dt id="DCRgraph.DCRgraph.componentWillMount">
+<code class="sig-prename descclassname"><span class="pre">DCRgraph.DCRgraph.</span></code><code class="sig-name descname"><span class="pre">componentWillMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DCRgraph.DCRgraph.componentWillMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the smart contract stored markings</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="DCRgraph.DCRgraph.componentDidMount">
+<code class="sig-prename descclassname"><span class="pre">DCRgraph.DCRgraph.</span></code><code class="sig-name descname"><span class="pre">componentDidMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DCRgraph.DCRgraph.componentDidMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the graph display into the user window, and sets graph listeners.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="DCRgraph.DCRgraph.loadContract">
+<code class="sig-prename descclassname"><span class="pre">DCRgraph.DCRgraph.</span></code><code class="sig-name descname"><span class="pre">loadContract</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DCRgraph.DCRgraph.loadContract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to DCR-manager smart contrat and calls the markings.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="DCRgraph.DCRgraph.fetchBCid">
+<code class="sig-prename descclassname"><span class="pre">DCRgraph.DCRgraph.</span></code><code class="sig-name descname"><span class="pre">fetchBCid</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DCRgraph.DCRgraph.fetchBCid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the corresponding blockchain id of the clicked event before calling the SC.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="DCRgraph.DCRgraph.runBCCheck">
+<code class="sig-prename descclassname"><span class="pre">DCRgraph.DCRgraph.</span></code><code class="sig-name descname"><span class="pre">runBCCheck</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DCRgraph.DCRgraph.runBCCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the DCR-manager smart contract to check whether an event is executable.
+Catches the execution status, and updates all projections accordingly via a backend call.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="DCRgraph.DCRgraph.setUpListeners">
+<code class="sig-prename descclassname"><span class="pre">DCRgraph.DCRgraph.</span></code><code class="sig-name descname"><span class="pre">setUpListeners</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DCRgraph.DCRgraph.setUpListeners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listens to the graph for any node click.
+If a click occurs on a node, an API request is sent to the backend: if the event is private, its execution is directly processed.
+If it is public, the function runBCCheck is called.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="js class">
+<dt id="PublicMarkings">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">PublicMarkings</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PublicMarkings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component loading and displaying the blockchain public markings (in the form [event_id,markings,dataHash(opt)])</p>
+<dl class="js function">
+<dt id="PublicMarkings.PublicMarkings.componentWillMount">
+<code class="sig-prename descclassname"><span class="pre">PublicMarkings.PublicMarkings.</span></code><code class="sig-name descname"><span class="pre">componentWillMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PublicMarkings.PublicMarkings.componentWillMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates labels to display choreography names instead of ids, and connects to web3.js via connectsToBC()</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="PublicMarkings.PublicMarkings.connectsToBC">
+<code class="sig-prename descclassname"><span class="pre">PublicMarkings.PublicMarkings.</span></code><code class="sig-name descname"><span class="pre">connectsToBC</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PublicMarkings.PublicMarkings.connectsToBC" title="Permalink to this definition">¶</a></dt>
+<dd><p>connects to web3.js</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="PublicMarkings.PublicMarkings.checkHash">
+<code class="sig-prename descclassname"><span class="pre">PublicMarkings.PublicMarkings.</span></code><code class="sig-name descname"><span class="pre">checkHash</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PublicMarkings.PublicMarkings.checkHash" title="Permalink to this definition">¶</a></dt>
+<dd><p>optional function used to check the authenticity of a data set by the user (the hash is stored in the smart contract)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="js class">
+<dt id="ExecLogger">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ExecLogger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ExecLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component displaying the execution logs of the projection of interest</p>
+</dd></dl>
+
+</div>
+<div class="section" id="graph-views">
+<h3>Graph views<a class="headerlink" href="#graph-views" title="Permalink to this headline">¶</a></h3>
+<dl class="js class">
+<dt id="ViewPublic">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ViewPublic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ViewPublic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component displaying the public view (the ‘blockchain view’) of a process choreography.</p>
+<dl class="js function">
+<dt id="ViewPublic.ViewPublic.componentDidMount">
+<code class="sig-prename descclassname"><span class="pre">ViewPublic.ViewPublic.</span></code><code class="sig-name descname"><span class="pre">componentDidMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ViewPublic.ViewPublic.componentDidMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the graph display to the user window dimensions.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="ViewPublic.ViewPublic.shouldComponentUpdate">
+<code class="sig-prename descclassname"><span class="pre">ViewPublic.ViewPublic.</span></code><code class="sig-name descname"><span class="pre">shouldComponentUpdate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nextProps</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ViewPublic.ViewPublic.shouldComponentUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>detects whether the view should be changed because of a sidebar trigger</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="ViewPublic.ViewPublic.componentDidUpdate">
+<code class="sig-prename descclassname"><span class="pre">ViewPublic.ViewPublic.</span></code><code class="sig-name descname"><span class="pre">componentDidUpdate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">prevProps</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ViewPublic.ViewPublic.componentDidUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>if a view update occurs, updates all state variables (new processID, projectionID, execLogs, and activity names)</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="ViewPublic.ViewPublic.componentWillMount">
+<code class="sig-prename descclassname"><span class="pre">ViewPublic.ViewPublic.</span></code><code class="sig-name descname"><span class="pre">componentWillMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ViewPublic.ViewPublic.componentWillMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the view data according to processID and projectionID.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="ViewPublic.ViewPublic.loadContract">
+<code class="sig-prename descclassname"><span class="pre">ViewPublic.ViewPublic.</span></code><code class="sig-name descname"><span class="pre">loadContract</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ViewPublic.ViewPublic.loadContract" title="Permalink to this definition">¶</a></dt>
+<dd><p>connects to web3.js and loads public markings associated to the process.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="js class">
+<dt id="ViewRi">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ViewRi</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ViewRi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component displaying the role projection view of a process choreography – calls DCRGraph, PublicMarkings, and ExecLogger</p>
+<dl class="js function">
+<dt id="ViewRi.ViewRi.shouldComponentUpdate">
+<code class="sig-prename descclassname"><span class="pre">ViewRi.ViewRi.</span></code><code class="sig-name descname"><span class="pre">shouldComponentUpdate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nextProps</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ViewRi.ViewRi.shouldComponentUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>detects whether the view should be changed because of a sidebar trigger</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="ViewRi.ViewRi.componentDidUpdate">
+<code class="sig-prename descclassname"><span class="pre">ViewRi.ViewRi.</span></code><code class="sig-name descname"><span class="pre">componentDidUpdate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">prevProps</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ViewRi.ViewRi.componentDidUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>if a view update occurs, updates all state variables (new processID, projectionID, execLogs, and activity names)</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="ViewRi.ViewRi.componentWillMount">
+<code class="sig-prename descclassname"><span class="pre">ViewRi.ViewRi.</span></code><code class="sig-name descname"><span class="pre">componentWillMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ViewRi.ViewRi.componentWillMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the view data according to processID and projectionID.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="js class">
+<dt id="WelcomeInstance">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">WelcomeInstance</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WelcomeInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Welcome component</p>
+</dd></dl>
+
+<dl class="js class">
+<dt id="Sidebar">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Sidebar</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sidebar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sidebar component to access role projection instance execution pannels.</p>
+<dl class="js function">
+<dt id="Sidebar.Sidebar.componentDidMount">
+<code class="sig-prename descclassname"><span class="pre">Sidebar.Sidebar.</span></code><code class="sig-name descname"><span class="pre">componentDidMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Sidebar.Sidebar.componentDidMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all processes and their role projections, and stores it into the tree state variable</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="Sidebar.Sidebar.delete">
+<code class="sig-prename descclassname"><span class="pre">Sidebar.Sidebar.</span></code><code class="sig-name descname"><span class="pre">delete</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">elem</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sidebar.Sidebar.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a process instance via an API call to the delete route.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> – process id to delete</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="graph-creation-edition">
+<h2>Graph creation/edition<a class="headerlink" href="#graph-creation-edition" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="misc">
+<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this headline">¶</a></h3>
+<dl class="js class">
+<dt id="WelcomeModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">WelcomeModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WelcomeModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Welcome component</p>
+</dd></dl>
+
+<dl class="js class">
+<dt id="SidebarModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">SidebarModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SidebarModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component to access graph edition / creation functionalities.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="creation-from-text-import">
+<h3>Creation from Text Import<a class="headerlink" href="#creation-from-text-import" title="Permalink to this headline">¶</a></h3>
+<dl class="js class">
+<dt id="Create">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component to generate a new process instance out of a dcr input file.</p>
+<dl class="js function">
+<dt id="Create.onFormSubmit">
+<code class="sig-prename descclassname"><span class="pre">Create.</span></code><code class="sig-name descname"><span class="pre">onFormSubmit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Create.onFormSubmit" title="Permalink to this definition">¶</a></dt>
+<dd><p>uploads file on user click.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="Create.onChange">
+<code class="sig-prename descclassname"><span class="pre">Create.</span></code><code class="sig-name descname"><span class="pre">onChange</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Create.onChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates filepath on new upload.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> – upload event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="Create.fileUpload">
+<code class="sig-prename descclassname"><span class="pre">Create.</span></code><code class="sig-name descname"><span class="pre">fileUpload</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Create.fileUpload" title="Permalink to this definition">¶</a></dt>
+<dd><p>upload filename and process it into the backend to generate projections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> – dcr textual representation (see examples in the DCRinput folder).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="js class">
+<dt id="LoadToBC">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">LoadToBC</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LoadToBC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component uploading a new public instance into the smart contract graph manager</p>
+<dl class="js function">
+<dt id="LoadToBC.LoadToBC.componentDidMount">
+<code class="sig-prename descclassname"><span class="pre">LoadToBC.LoadToBC.</span></code><code class="sig-name descname"><span class="pre">componentDidMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LoadToBC.LoadToBC.componentDidMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks whether any process instance has been uploaded.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="LoadToBC.LoadToBC.componentWillMount">
+<code class="sig-prename descclassname"><span class="pre">LoadToBC.LoadToBC.</span></code><code class="sig-name descname"><span class="pre">componentWillMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LoadToBC.LoadToBC.componentWillMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>uploads the public view stored locally after having generated the projection and connects to web3.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="LoadToBC.LoadToBC.connectToWeb3">
+<code class="sig-prename descclassname"><span class="pre">LoadToBC.LoadToBC.</span></code><code class="sig-name descname"><span class="pre">connectToWeb3</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LoadToBC.LoadToBC.connectToWeb3" title="Permalink to this definition">¶</a></dt>
+<dd><p>connects to web3.js</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="LoadToBC.LoadToBC.handleCreateWkf">
+<code class="sig-prename descclassname"><span class="pre">LoadToBC.LoadToBC.</span></code><code class="sig-name descname"><span class="pre">handleCreateWkf</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LoadToBC.LoadToBC.handleCreateWkf" title="Permalink to this definition">¶</a></dt>
+<dd><p>launches a transaction to the smart contract workflow manager to create a new workflow.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="edition">
+<h3>Edition<a class="headerlink" href="#edition" title="Permalink to this headline">¶</a></h3>
+<dl class="js class">
+<dt id="Edit">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Edit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component displaying all possible projections to update</p>
+<dl class="js function">
+<dt id="Edit.Edit.componentDidMount">
+<code class="sig-prename descclassname"><span class="pre">Edit.Edit.</span></code><code class="sig-name descname"><span class="pre">componentDidMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Edit.Edit.componentDidMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all processes and their role projections, and stores it into the tree state variable</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="js class">
+<dt id="EditionDeck">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">EditionDeck</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">props</span></em><span class="sig-paren">)</span><a class="headerlink" href="#EditionDeck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template component to edit a projection</p>
+<p>Loads all editing functions from the utils folder.</p>
+<dl class="js function">
+<dt id="EditionDeck.EditionDeck.componentDidMount">
+<code class="sig-prename descclassname"><span class="pre">EditionDeck.EditionDeck.</span></code><code class="sig-name descname"><span class="pre">componentDidMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EditionDeck.EditionDeck.componentDidMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the graph display to the window, activates the editing menu, and sets up click listeners.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="EditionDeck.EditionDeck.componentWillMount">
+<code class="sig-prename descclassname"><span class="pre">EditionDeck.EditionDeck.</span></code><code class="sig-name descname"><span class="pre">componentWillMount</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EditionDeck.EditionDeck.componentWillMount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instanciates component with the right process and projection view.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="EditionDeck.EditionDeck.setUpNodeListeners">
+<code class="sig-prename descclassname"><span class="pre">EditionDeck.EditionDeck.</span></code><code class="sig-name descname"><span class="pre">setUpNodeListeners</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EditionDeck.EditionDeck.setUpNodeListeners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listeners to monitor node click events.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="EditionDeck.EditionDeck.setUpEdgeListeners">
+<code class="sig-prename descclassname"><span class="pre">EditionDeck.EditionDeck.</span></code><code class="sig-name descname"><span class="pre">setUpEdgeListeners</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EditionDeck.EditionDeck.setUpEdgeListeners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listeners to monitor edge/relations click events.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="EditionDeck.EditionDeck.saveGraph">
+<code class="sig-prename descclassname"><span class="pre">EditionDeck.EditionDeck.</span></code><code class="sig-name descname"><span class="pre">saveGraph</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EditionDeck.EditionDeck.saveGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switcher function to save graphs (whether private storage or BC trigger for negociation).</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="EditionDeck.EditionDeck.privateGraphUpd">
+<code class="sig-prename descclassname"><span class="pre">EditionDeck.EditionDeck.</span></code><code class="sig-name descname"><span class="pre">privateGraphUpd</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EditionDeck.EditionDeck.privateGraphUpd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private graph update processing &gt; calls the API to update the markings and nodes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="utils">
+<h1>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="new-activity-tuning">
+<h2>New activity tuning<a class="headerlink" href="#new-activity-tuning" title="Permalink to this headline">¶</a></h2>
+<dl class="js function">
+<dt id="handleActivityName">
+<code class="sig-name descname"><span class="pre">handleActivityName</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#handleActivityName" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle activity update</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e:</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="handleTenant">
+<code class="sig-name descname"><span class="pre">handleTenant</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#handleTenant" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle local tenant name update</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e:</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="handleSender">
+<code class="sig-name descname"><span class="pre">handleSender</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#handleSender" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle sender choreography name update</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e:</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="handleReceiver">
+<code class="sig-name descname"><span class="pre">handleReceiver</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#handleReceiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle receiver choreography name update</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e:</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="handleMI">
+<code class="sig-name descname"><span class="pre">handleMI</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#handleMI" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle include marking state change</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e:</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="handleME">
+<code class="sig-name descname"><span class="pre">handleME</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#handleME" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle executed marking state change</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e:</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="handleMP">
+<code class="sig-name descname"><span class="pre">handleMP</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">e:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#handleMP" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle pending marking state change</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e:</strong> – click event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="editing-menu">
+<h2>Editing menu<a class="headerlink" href="#editing-menu" title="Permalink to this headline">¶</a></h2>
+<dl class="js function">
+<dt id="getMenuStyle">
+<code class="sig-name descname"><span class="pre">getMenuStyle</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#getMenuStyle" title="Permalink to this definition">¶</a></dt>
+<dd><p>cytoscape editing menu definition</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="updActivity">
+<code class="sig-name descname"><span class="pre">updActivity</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#updActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle activity update (name, markings, tenant(s))</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="remove">
+<code class="sig-name descname"><span class="pre">remove</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove event or relation</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addLocalActivity">
+<code class="sig-name descname"><span class="pre">addLocalActivity</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#addLocalActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>add local event</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addChoreoActivity">
+<code class="sig-name descname"><span class="pre">addChoreoActivity</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#addChoreoActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>add choreography event</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addRelation">
+<code class="sig-name descname"><span class="pre">addRelation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">type:</span></em><span class="sig-paren">)</span><a class="headerlink" href="#addRelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>protocol to add new relation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type:</strong> – relation type (‘condition’,’milesone’,’response’,’include’,’exclude’)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addCondition">
+<code class="sig-name descname"><span class="pre">addCondition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#addCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>add condition relation</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addMilestone">
+<code class="sig-name descname"><span class="pre">addMilestone</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#addMilestone" title="Permalink to this definition">¶</a></dt>
+<dd><p>add milestone relation</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addResponse">
+<code class="sig-name descname"><span class="pre">addResponse</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#addResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>add response relation</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addInclude">
+<code class="sig-name descname"><span class="pre">addInclude</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#addInclude" title="Permalink to this definition">¶</a></dt>
+<dd><p>add include relation</p>
+</dd></dl>
+
+<dl class="js function">
+<dt id="addExclude">
+<code class="sig-name descname"><span class="pre">addExclude</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#addExclude" title="Permalink to this definition">¶</a></dt>
+<dd><p>add exclude relation</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">DCRChoreo Frontend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">React Components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#graph-display">Graph display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#graph-creation-edition">Graph creation/edition</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#utils">Utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#new-activity-tuning">New activity tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#editing-menu">Editing menu</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="introduction.html" title="previous chapter">Introduction</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Orange Labs.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/frontDoc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

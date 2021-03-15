@@ -1,0 +1,321 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.projalgoPublic &#8212; DCRChoreo Backend v0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.projalgoPublic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="k">import</span> <span class="n">cleanName</span><span class="p">,</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">groupItems</span><span class="p">,</span> <span class="n">generateDictEvent</span><span class="p">,</span> <span class="n">generateDictRelation</span><span class="p">,</span> <span class="n">getRole</span><span class="p">,</span> <span class="n">getRoleList</span><span class="p">,</span> <span class="n">getSender</span><span class="p">,</span> <span class="n">getReceiver</span>
+<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="k">import</span> <span class="n">extractChunks</span><span class="p">,</span> <span class="n">applyComposition</span><span class="p">,</span> <span class="n">getEventDeclarationFromName</span>
+<span class="kn">from</span> <span class="nn">src.utils.vectorization</span> <span class="k">import</span> <span class="n">vectorize</span>
+<span class="kn">from</span> <span class="nn">src.utils.graphDataTranslator</span> <span class="k">import</span> <span class="n">generateGraph</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set of functions to generate the public view of a dcr text description</span>
+<span class="sd">    &gt;&gt; json, cytoscape, and vectorized views</span>
+<span class="sd">    ...</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    :filterOnChoreo(cNames, linkages): retrieves relations where choreography events are involved</span>
+<span class="sd">    :addRoleExternals(events, filename): retrieves external events to a projection</span>
+<span class="sd">    :addExternalEvents(cNames, chunks, filename): retrieves external events and relations</span>
+<span class="sd">    :retrieveRelations(events, relations): retrieves relations missing after a projection (events are chunked due to sender and receiver projections)</span>
+<span class="sd">    :generatePublicProjection(chunks, filename): generates public projection out of dcr textual chunked representation</span>
+<span class="sd">    :projectPublic(processID, data, target): generates public projection (text, cytoscape, and vector descriptions) out of a textual DCR description</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="filterOnChoreo"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoPublic.filterOnChoreo">[docs]</a><span class="k">def</span> <span class="nf">filterOnChoreo</span><span class="p">(</span><span class="n">cNames</span><span class="p">,</span> <span class="n">linkages</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves relations where choreography events are involved</span>
+
+<span class="sd">    :param cNames: choreography names</span>
+<span class="sd">    :param linkages: list of relations</span>
+<span class="sd">    :returns: the list of relations where choreography events are involved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">choreoLinkages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">linkages</span><span class="p">:</span>
+        <span class="n">event1</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">event2</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">event1</span> <span class="ow">in</span> <span class="n">cNames</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">event2</span> <span class="ow">in</span> <span class="n">cNames</span><span class="p">):</span>
+            <span class="n">choreoLinkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">choreoLinkages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">choreoLinkages</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#--&gt; No choreography relation retrieved&quot;</span><span class="p">]</span>
+
+    <span class="c1"># + [&quot;\n## WrongLinks ##&quot;] + wrongLinks</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">## Linkages ##&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">choreoLinkages</span></div>
+
+
+<div class="viewcode-block" id="addRoleExternals"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoPublic.addRoleExternals">[docs]</a><span class="k">def</span> <span class="nf">addRoleExternals</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves external events to a projection</span>
+
+<span class="sd">    :param events: events to analyze</span>
+<span class="sd">    :param filename: filename where projection data is stored</span>
+<span class="sd">    :returns: retrieved external events to the projection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+    <span class="n">extEvents</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;externalEvents&#39;</span><span class="p">]]</span>
+    <span class="n">publicEvents</span> <span class="o">=</span> <span class="n">getRoleList</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+    <span class="n">newExtEvents</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">extEvents</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">publicEvents</span><span class="p">:</span>
+            <span class="n">newExtEvents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">newExtEvents</span></div>
+
+
+<div class="viewcode-block" id="addExternalEvents"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoPublic.addExternalEvents">[docs]</a><span class="k">def</span> <span class="nf">addExternalEvents</span><span class="p">(</span><span class="n">cNames</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves external events and relations </span>
+
+<span class="sd">    :param cNames: choreography events</span>
+<span class="sd">    :param chunks: projection decomposition</span>
+<span class="sd">    :param filename: filename where projection data is stored</span>
+<span class="sd">    :returns: retrieved external ids, event definitions, and involved relations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">externalIds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">externalLinkages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;linkages&#39;</span><span class="p">]:</span>
+        <span class="n">event1</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">event2</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># if (event1 in cNames) and (event2 not in cNames):</span>
+        <span class="c1">#    externalIds.append(event2)</span>
+        <span class="c1">#    externalLinkages.append(line)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">event2</span> <span class="ow">in</span> <span class="n">cNames</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">event1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cNames</span><span class="p">):</span>  <span class="c1"># direct relation</span>
+            <span class="n">externalIds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event1</span><span class="p">)</span>
+            <span class="n">externalLinkages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="n">externalEvents</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_id</span> <span class="ow">in</span> <span class="n">externalIds</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;internalEvents&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">externalEvents</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">_id</span> <span class="o">==</span> <span class="n">elem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">externalEvents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="n">externalEvents</span> <span class="o">=</span> <span class="p">[</span><span class="n">getEventDeclarationFromName</span><span class="p">(</span>
+        <span class="n">elem</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">externalEvents</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">externalIds</span><span class="p">,</span> <span class="n">externalEvents</span><span class="p">,</span> <span class="n">externalLinkages</span></div>
+
+
+<div class="viewcode-block" id="retrieveRelations"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoPublic.retrieveRelations">[docs]</a><span class="k">def</span> <span class="nf">retrieveRelations</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">relations</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retrieves relations missing after a projection (events are chunked due to sender and receiver projections)</span>
+
+<span class="sd">    :param events: list of choreography events</span>
+<span class="sd">    :param relations: projection relations</span>
+<span class="sd">    :returns: set of retrieved relations missed out due to projection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">missingRelations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">getRoleList</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">getSender</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span> <span class="ow">in</span> <span class="n">events</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">getReceiver</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span> <span class="ow">in</span> <span class="n">events</span><span class="p">)):</span>
+            <span class="n">missingRelations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">missingRelations</span></div>
+
+
+<div class="viewcode-block" id="generatePublicProjection"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoPublic.generatePublicProjection">[docs]</a><span class="k">def</span> <span class="nf">generatePublicProjection</span><span class="p">(</span><span class="n">chunks</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    generates public projection out of dcr textual chunked representation</span>
+
+<span class="sd">    :param chunks: dcr textual chunked representation</span>
+<span class="sd">    :param filename: filename where projection will be stored</span>
+<span class="sd">    :returns: public projection and list of external ids to the projection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Extract choreography events and relations</span>
+    <span class="n">cNames</span> <span class="o">=</span> <span class="n">getRoleList</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">])</span>
+    <span class="n">choreoLinkages</span> <span class="o">=</span> <span class="n">filterOnChoreo</span><span class="p">(</span><span class="n">cNames</span><span class="p">,</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;linkages&#39;</span><span class="p">])</span>
+    <span class="c1"># Add role external events to the public projection</span>
+    <span class="n">roleExternals</span> <span class="o">=</span> <span class="n">addRoleExternals</span><span class="p">(</span><span class="n">cNames</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">public_events</span> <span class="o">=</span> <span class="n">roleExternals</span><span class="o">+</span><span class="n">cNames</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">public_events</span><span class="p">:</span>
+        <span class="k">if</span><span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">cEvent</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">getRole</span><span class="p">(</span><span class="n">cEvent</span><span class="p">)</span> <span class="o">==</span> <span class="n">elem</span><span class="p">):</span>
+                    <span class="n">public_events</span><span class="p">[</span><span class="n">public_events</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">)]</span> <span class="o">=</span> <span class="n">cEvent</span>
+
+    <span class="n">public_relations</span> <span class="o">=</span> <span class="n">retrieveRelations</span><span class="p">(</span><span class="n">public_events</span><span class="p">,</span> <span class="n">chunks</span><span class="p">[</span><span class="s1">&#39;linkages&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Look for external events</span>
+    <span class="n">externalIds</span><span class="p">,</span> <span class="n">externalEvents</span><span class="p">,</span> <span class="n">externalLinkages</span> <span class="o">=</span> <span class="n">addExternalEvents</span><span class="p">(</span>
+        <span class="n">public_events</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="c1"># Merge projection items</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="n">getRoleList</span><span class="p">(</span><span class="n">public_events</span><span class="p">)</span> <span class="o">+</span> <span class="n">externalIds</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">public_events</span> <span class="o">+</span> <span class="n">externalEvents</span>
+
+    <span class="n">linkages</span> <span class="o">=</span> <span class="n">public_relations</span> <span class="o">+</span> <span class="n">externalLinkages</span>
+
+    <span class="n">projGrouping</span> <span class="o">=</span> <span class="n">groupItems</span><span class="p">(</span><span class="s1">&#39;Public&#39;</span><span class="p">,</span> <span class="n">tasks</span><span class="p">)</span>
+    <span class="n">projection</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;##### Public Projection #######&quot;</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">events</span> <span class="o">+</span> <span class="n">projGrouping</span> <span class="o">+</span> <span class="n">linkages</span>
+
+    <span class="c1"># generate dict</span>
+    <span class="n">privateEvents</span> <span class="o">=</span> <span class="n">generateDictEvent</span><span class="p">(</span><span class="n">public_events</span><span class="p">)</span>
+    <span class="n">externalEvents</span> <span class="o">=</span> <span class="n">generateDictEvent</span><span class="p">(</span><span class="n">externalEvents</span><span class="p">)</span>
+    <span class="n">relations</span> <span class="o">=</span> <span class="n">generateDictRelation</span><span class="p">(</span><span class="n">linkages</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;public&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;privateEvents&#39;</span><span class="p">:</span> <span class="n">privateEvents</span><span class="p">,</span>
+        <span class="s1">&#39;externalEvents&#39;</span><span class="p">:</span> <span class="n">externalEvents</span><span class="p">,</span>
+        <span class="s1">&#39;relations&#39;</span><span class="p">:</span> <span class="n">relations</span>
+    <span class="p">}</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">projection</span><span class="p">,</span> <span class="n">externalIds</span></div>
+
+
+<div class="viewcode-block" id="projectPublic"><a class="viewcode-back" href="../../projectionGenerators.html#src.projalgoPublic.projectPublic">[docs]</a><span class="k">def</span> <span class="nf">projectPublic</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    generates public projection (text, cytoscape, and vector descriptions) out of a textual DCR description</span>
+
+<span class="sd">    :param processID: the ID of the current process. eg: &quot;p1&quot;</span>
+<span class="sd">    :param data: json description of the global dcr</span>
+<span class="sd">    :param target: the path where the projection will be saved. eg: &#39;./client/src/projections/&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] Starting Public Projection&#39;</span><span class="p">)</span>
+
+    <span class="n">chunks</span><span class="p">,</span> <span class="n">roles</span> <span class="o">=</span> <span class="n">extractChunks</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># generate choreography projection</span>
+    <span class="n">projection</span><span class="p">,</span> <span class="n">externalIds</span> <span class="o">=</span> <span class="n">generatePublicProjection</span><span class="p">(</span>
+        <span class="n">chunks</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;dcrTexts.json&quot;</span><span class="p">))</span>
+    <span class="n">generateGraph</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">externalIds</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="s2">&quot;Public&quot;</span><span class="p">)</span>
+    <span class="n">vectorize</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;temp_vectPublic&quot;</span><span class="p">))</span>
+
+    <span class="c1"># addFullMarkings(os.path.join(target,&quot;vectChoreo&quot;))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] Public Projection generated&#39;</span><span class="p">)</span></div>
+
+
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#    main()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DCRChoreo Backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiDoc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projectionGenerators.html">Projection Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Orange Labs.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
