@@ -60,9 +60,13 @@ class ViewRi extends React.Component {
 
 
   render() {
+    console.log(this.state)
+    // this.state.data.unshift({group:"nodes",classes:"external choreography",data:{id:"c1s", name:"toto"}})
+    // this.state.data[1].data["parent"] = "c1s"
+    // this.state.data[2].data["parent"] = "c1s"
     return <div key={this.state.processID}>
       <Header />
-      <Container fluid >
+      <Container fluid>
         <Row>
           <Col>
             {this.state.projectionsExist ?

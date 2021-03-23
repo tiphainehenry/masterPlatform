@@ -4783,8 +4783,17 @@
       "data": [
         {
           "data": {
+            "id": "g1", 
+            "name": "test groupe"
+          }, 
+          "classes": "group", 
+          "group": "nodes"
+        },
+        {
+          "data": {
             "id": "e1", 
-            "name": "Admin\nIssueInvoice\nResponsible"
+            "name": "Admin\nIssueInvoice\nResponsible",
+            "parent": "g1"
           }, 
           "classes": "choreography", 
           "group": "nodes"
@@ -4792,7 +4801,8 @@
         {
           "data": {
             "id": "e2", 
-            "name": "Responsible\nResendInvoice\nAdmin"
+            "name": "Responsible\nResendInvoice\nAdmin",
+            "parent": "g1"
           }, 
           "classes": "choreography", 
           "group": "nodes"

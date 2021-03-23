@@ -49,13 +49,16 @@
       "style": {
         "line-color": "#FFA500",
         "target-arrow-color": "#FFA500",
-        "target-arrow-shape": "circle-triangle"     
+        "target-arrow-shape": "circle-triangle",
+        "curve-style": "bezier"
+
       }
     },
     {
       "selector": "edge.milestone",
       "style": {
         "line-color": "#BC1AF2",
+        
         "target-arrow-color": "#BC1AF2",
         "target-arrow-shape": "diamond"
       }

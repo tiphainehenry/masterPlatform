@@ -46,8 +46,7 @@ def upd(data):
     dataPath='./client/src/projections/dcrTexts.json'
 
     _data = removeGroups(data)
-
-    projectGlobal(_data, target)
+    projectGlobal(data, target)
 
     with open(dataPath) as json_file:
         dataDict = json.load(json_file)
@@ -59,11 +58,11 @@ def upd(data):
 
     for role in getRoles():
         print('[INFO] Starting projection on role '+role)
-        projRole(_data, target, role)
+        projRole(data, target, role)
         with open(os.path.join(target,'exec'+getId(role)+'.json'), 'w') as outfile:
             json.dump({"execLogs":[]}, outfile, indent=2)
 
-    projectPublic(_data, target)
+    projectPublic(data, target)
 
 @app.route('/')
 def index():
@@ -168,7 +167,8 @@ def reinitialise():
 def inputFileLaunch():
     file = request.files['file']
     data = file.readlines()
-
+    print("-----------------------------------------------------------")
+    print(data)
     upd(data)
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}

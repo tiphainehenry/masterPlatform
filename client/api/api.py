@@ -53,7 +53,7 @@ def updWithName(dataTxt, pi):
 
     _data = removeGroups(dataTxt)
 
-    projectGlobal(pi, _data, target)
+    projectGlobal(pi, dataTxt, target)
 
     with open(dataPath) as json_file:
         dataDict = json.load(json_file)
@@ -65,11 +65,11 @@ def updWithName(dataTxt, pi):
 
     for role in getRoles(pi):
         print('[INFO] Starting projection on role '+role)
-        projRole(pi, _data, target, role)
+        projRole(pi, dataTxt, target, role)
         with open(os.path.join(target, 'exec'+getId(pi,role)+'.json'), 'w') as outfile:
             json.dump({"execLogs": []}, outfile, indent=2)
 
-    projectPublic(pi, _data, target)
+    projectPublic(pi, dataTxt, target)
 
     # merge all
     processData = {'id': pi}
@@ -286,7 +286,7 @@ def inputFileLaunch():
 
     file = request.files['file']
     data = file.readlines()
-
+    print("-----------------------------------")
     processID = str(request.form['processID'])
 
     updWithName(data, processID)

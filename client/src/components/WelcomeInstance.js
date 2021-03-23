@@ -189,9 +189,9 @@ class WelcomeInstance extends React.Component {
                               {process[1].map(item =>
                                 <ul>
                                   <Nav.Item >
-                                    <Nav.Link as={Link} 
+                                    <Nav.Link as={Link}
                                       to={{
-                                        pathname: './tenantInstance/'+process[0].split(' ')[1]+'/'+item[0]
+                                        pathname: './tenantInstance/' + process[0].split(' ')[1] + '/' + item[0]
                                       }}
                                     >
                                       Proj {item[1]}
@@ -201,7 +201,7 @@ class WelcomeInstance extends React.Component {
 
                               )}
                               <Nav.Item>
-                                <Nav.Link as={Link} 
+                                <Nav.Link as={Link}
                                   to={{
                                     pathname: './publicInstance',
                                     state: {

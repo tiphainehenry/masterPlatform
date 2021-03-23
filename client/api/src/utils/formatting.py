@@ -102,6 +102,8 @@ def removeGroups(data):
 
     cnt = 0
     for line in data:
+        print(type(line))
+        # line.decode('utf-8')
         if "Group" in line:
             gName = line.split("Group")[1].split(
                 '{')[0].replace('"', '').strip()

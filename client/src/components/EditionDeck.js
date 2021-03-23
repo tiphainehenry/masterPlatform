@@ -18,8 +18,11 @@ import 'cytoscape-context-menus/cytoscape-context-menus.css';
 import axios from 'axios';
 
 import COSEBilkent from 'cytoscape-cose-bilkent';
+import Dagre from 'cytoscape-dagre'
+import Klay from 'cytoscape-klay'
 
-
+Cytoscape.use(Dagre)
+Cytoscape.use(Klay)
 Cytoscape.use(COSEBilkent);
 Cytoscape.use(contextMenus);
 
@@ -314,7 +317,7 @@ class EditionDeck extends React.Component {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
-
+    
 
     return <>
       <div>

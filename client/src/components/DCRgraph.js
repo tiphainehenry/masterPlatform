@@ -16,9 +16,13 @@ import getWeb3 from '../getWeb3';
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
 
+import Dagre from 'cytoscape-dagre'
+import Klay from 'cytoscape-klay'
 import COSEBilkent from 'cytoscape-cose-bilkent';
 
 Cytoscape.use(COSEBilkent);
+Cytoscape.use(Dagre)
+Cytoscape.use(Klay)
 
 var node_style = require('../style/nodeStyle.json');
 var edge_style = require('../style/edgeStyle.json');
@@ -120,7 +124,6 @@ class DCRgraph extends React.Component {
         pend: pendVector,
         dataHashes: hashesVector
       })
-
       this.cy.fit();
 
     } catch (error) {
@@ -152,6 +155,10 @@ class DCRgraph extends React.Component {
       }
     });
 
+    // this.props.data.unshift({group:"nodes",classes:"external choreography",data:{id:"c1s", name:"toto"}})
+  this.props.data.forEach(e => {
+      console.log(e.data)
+    })
 
     this.cy.fit();
 
@@ -323,6 +330,7 @@ class DCRgraph extends React.Component {
       }
     });
 
+  
     if (hasPending) {
       // If ongoing graph execution, revert. 
       console.log('not possible yet: we spotted a pending event --> the instance is under execution!');
@@ -360,7 +368,6 @@ class DCRgraph extends React.Component {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
-
 
     return <div>
 

@@ -76,7 +76,14 @@
         "style": {
         "border-color": "#1E90FF",
         "text-outline-color": "yellow",
-        "text-outline-width": 2        }
+        "text-outline-width": 0        }
+      },
+      {
+        "selector":"node.group",
+        "style":{
+          "border-color":"#1E90FF",
+          "backgroundColor": "#A9BCCF"
+        }
       }
     
   ]

@@ -77,7 +77,7 @@ def generateGlobalProjection(data, filename):
         'relations':globRelations
     }
     data['roleMapping']=roleMapping
-        
+    print(filename)
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)
     return projection, []
@@ -90,9 +90,13 @@ def projectGlobal(processID, data, target):
     :param data: json description of the global dcr
     :param target: the path where the projection will be saved. eg: './client/src/projections/'
     """ 
-
+    this_folder = os.path.dirname(os.path.abspath(__file__))
+    print(os.path.join(this_folder, '..\..\src\projections\dcrTexts.json'))
     print('[INFO] Starting Global Projection')
-    projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json")) 
-    generateGraph(processID, projection, externalIds, target, "Global")
-    vectorize(projection, os.path.join(target,"temp_vectGlobal"))
+    # projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json"))
+    # generateGraph(processID, projection, externalIds, target, "Global")
+    # vectorize(projection, os.path.join(target,"temp_vectGlobal"))
+    projection, externalIds = generateGlobalProjection(data, os.path.join(this_folder, '..\..\src\projections\dcrTexts.json')) 
+    generateGraph(processID, projection, externalIds, this_folder + "\..\..\src\projections\\", "Global")
+    vectorize(projection, os.path.join(this_folder + "\..\..\src\projections\\" ,"temp_vectGlobal"))
     print('[INFO] Global Projection generated')
