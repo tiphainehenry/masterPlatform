@@ -48,8 +48,15 @@ def updWithName(dataTxt, pi):
     :param pi: process id to be generated. eg: 'p1'
     """ 
 
-    target = './client/src/projections/'
-    dataPath = './client/src/projections/dcrTexts.json'
+    # target = './client/src/projections/'
+    # dataPath = './client/src/projections/dcrTexts.json'
+    this_folder = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(this_folder, '..\src\projections\\')
+    dataPath = os.path.join(this_folder, '..\src\projections\dcrTexts.json')
+    print("target datapath")
+    print(this_folder)
+    print(target)
+    print(dataPath)
 
     _data = removeGroups(dataTxt)
 
@@ -74,25 +81,25 @@ def updWithName(dataTxt, pi):
     # merge all
     processData = {'id': pi}
 
-    with open('./client/src/projections/dcrTexts.json') as json_file:
+    with open(os.path.join(this_folder, '..\src\projections\dcrTexts.json')) as json_file:
         dataTxt = json.load(json_file)
     
     processData['TextExtraction'] = dataTxt
 
-    with open('./client/src/projections/temp_dataGlobal.json') as json_file:
+    with open(os.path.join(this_folder, '..\src\projections\\temp_dataGlobal.json')) as json_file:
         dataGlob = json.load(json_file)
-    with open('./client/src/projections/temp_vectGlobal.json') as json_file:
+    with open(os.path.join(this_folder, '..\src\projections\\temp_vectGlobal.json')) as json_file:
         vectGlob = json.load(json_file)
     processData['Global'] = {
         'data': dataGlob,
         'vect': vectGlob
     }
 
-    with open('./client/src/projections/temp_dataPublic.json') as json_file:
+    with open(os.path.join(this_folder, '..\src\projections\\temp_dataPublic.json')) as json_file:
         dataPub = json.load(json_file)
-    with open('./client/src/projections/temp_vectPublic.json') as json_file:
+    with open(os.path.join(this_folder, '..\src\projections\\temp_vectPublic.json')) as json_file:
         vectPub = json.load(json_file)
-    with open('./client/src/projections/temp_execPublic.json') as json_file:
+    with open(os.path.join(this_folder, '..\src\projections\\temp_execPublic.json')) as json_file:
         execPub = json.load(json_file)
     processData['Public'] = {
         'data': dataPub,
@@ -102,13 +109,12 @@ def updWithName(dataTxt, pi):
 
     for role in getRoles(pi):
         roleMapping = getRoleMapping(pi,role)
-        rolePath= './client/src/projections/temp_data'+roleMapping['id']+'.json'
-
-        with open('./client/src/projections/temp_data'+roleMapping['id']+'.json') as json_file:
+        rolePath= os.path.join(this_folder, '..\src\projections\\temp_data'+roleMapping['id']+'.json')
+        with open(os.path.join(this_folder, '..\src\projections\\temp_data'+roleMapping['id']+'.json')) as json_file:
             dataR = json.load(json_file)
-        with open('./client/src/projections/temp_vect'+roleMapping['id']+'.json') as json_file:
+        with open(os.path.join(this_folder, '..\src\projections\\temp_vect'+roleMapping['id']+'.json')) as json_file:
             vectR = json.load(json_file)
-        with open('./client/src/projections/exec'+roleMapping['id']+'.json') as json_file:
+        with open(os.path.join(this_folder, '..\src\projections\exec'+roleMapping['id']+'.json')) as json_file:
             execR = json.load(json_file)
         processData[roleMapping['id']] = {
             'data': dataR,
@@ -120,9 +126,9 @@ def updWithName(dataTxt, pi):
             }
         }
 
-        os.remove('./client/src/projections/temp_data'+roleMapping['id']+'.json')
-        os.remove('./client/src/projections/temp_vect'+roleMapping['id']+'.json')
-        os.remove('./client/src/projections/exec'+roleMapping['id']+'.json')
+        os.remove(os.path.join(this_folder, '..\src\projections\\temp_data'+roleMapping['id']+'.json'))
+        os.remove(os.path.join(this_folder, '..\src\projections\\temp_vect'+roleMapping['id']+'.json'))
+        os.remove(os.path.join(this_folder, '..\src\projections\exec'+roleMapping['id']+'.json'))
 
     ## save
     dataPath=os.path.join(target, 'DCR_Projections.json')
@@ -137,13 +143,13 @@ def updWithName(dataTxt, pi):
 
 
     # rm temp files
-    os.remove('./client/src/projections/temp_dataPublic.json')
-    os.remove('./client/src/projections/temp_vectPublic.json')
-    os.remove('./client/src/projections/temp_execPublic.json')
-    os.remove('./client/src/projections/temp_dataGlobal.json')
-    os.remove('./client/src/projections/temp_vectGlobal.json')
+    os.remove(os.path.join(this_folder, '..\src\projections\\temp_dataPublic.json'))
+    os.remove(os.path.join(this_folder, '..\src\projections\\temp_vectPublic.json'))
+    os.remove(os.path.join(this_folder, '..\src\projections\\temp_execPublic.json'))
+    os.remove(os.path.join(this_folder, '..\src\projections\\temp_dataGlobal.json'))
+    os.remove(os.path.join(this_folder, '..\src\projections\\temp_vectGlobal.json'))
 
-    os.remove('./client/src/projections/dcrTexts.json')
+    os.remove(os.path.join(this_folder, '..\src\projections\dcrTexts.json'))
 
 @app.route('/')
 def index():
