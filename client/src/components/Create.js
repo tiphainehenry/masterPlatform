@@ -16,8 +16,8 @@ class Create extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null, 
-      processID:''
+      file: null,
+      processID: ''
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -31,7 +31,9 @@ class Create extends React.Component {
   onFormSubmit(e) {
     e.preventDefault() // Stop form submit
     this.fileUpload(this.state.file).then((response) => {
-      console.log(response.data);
+      console.log(response);
+      if (response.data === "ok")
+        this._LoadToBC.handleCreateWkf()
     })
   }
 
@@ -50,23 +52,23 @@ class Create extends React.Component {
   fileUpload(file) {
     const url = `http://localhost:5000/inputFile`;
 
-    var processNum = Object.keys(ProcessDB).length +1;
-    var processID = 'p'+ processNum;
+    var processNum = Object.keys(ProcessDB).length + 1;
+    var processID = 'p' + processNum;
 
-    this.setState({processID: processID});
+    this.setState({ processID: processID });
 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('processID', processID);
 
     axios.post(`http://localhost:5000/inputFile`).then(
-        (response) => {
-            var result = response.data;
-            console.log(result);
-        },
-        (error) => {
-            console.log(error);
-        }
+      (response) => {
+        var result = response.data;
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
     );
 
 
@@ -92,17 +94,18 @@ class Create extends React.Component {
             <div class="bg-green pt-5 pb-3">
               <div class="container">
                 <h2>My Process Models - Import and project a new process model</h2>
-                <h5>Step 1 </h5>
-
+                <h5>Step 1 </h5>  
                 <p>Load a DCR file to be projected. The three input files used for our experiments are accessible in the <a href='https://github.com/tiphainehenry/react-cyto/'>dcrInputs repository</a> of our github.</p>
+                <p>Instanciate the public chunk of the workflow onchain.</p>
+                <p>Make sure you have Metamask installed on your favorite browser. The smart contract is deployed on the Ropsten network.</p>
                 <form onSubmit={this.onFormSubmit}>
                   <input type="file" onChange={this.onChange} />
-                  <button class="btn btn-primary my-2 my-sm-0" type="submit">Upload and project</button>
+                  <button class="btn btn-primary my-2 my-sm-0" type="submit">Upload a project</button>
                 </form>
                 <hr />
-                <LoadToBC />
+                <LoadToBC ref={ref => (this._LoadToBC = ref)} />
                 <hr />
-                <h5>Step 3</h5>
+                <h5>Step 2</h5>
                 <p>To execute the process, navigate between the different role projections accessible via the 'My running instances' header. </p>
                 <p>
                   Each graph comprises four types of events. </p>
@@ -126,7 +129,7 @@ class Create extends React.Component {
                   Each projection holds a marking with both internal and external event states. These are set to one if the event is activated, and null otherwise.
                         </p>
 
-                      <Button href="/welcomeInstance"> Access the instances</Button>
+                <Button href="/welcomeInstance"> Access the instances</Button>
                 <hr />
 
 
