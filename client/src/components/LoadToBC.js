@@ -155,8 +155,13 @@ class LoadToBC extends React.Component {
     const stylesheet = node_style.concat(edge_style)
 
     return <div>
+      <h5>Step 2</h5>
+      <p>Instanciate the public chunk of the workflow onchain by clicking on the button below. </p>
+      <p>Make sure you have Metamask installed on your favorite browser. The smart contract is deployed on the Ropsten network.</p>
 
-      {/* <Button class="btn btn-primary my-2 my-sm-0" onClick={this.handleCreateWkf}>{this.state.wkState}</Button> */}
+      <Button class="btn btn-primary my-2 my-sm-0" onClick={this.handleCreateWkf}>{this.state.wkState}</Button>
+
+
       {this.state.lenDataDB > 0 ?
         <CytoscapeComponent elements={this.state.data}
           stylesheet={stylesheet}
@@ -172,4 +177,5 @@ class LoadToBC extends React.Component {
     </div>;
   }
 }
+
 export default LoadToBC
