@@ -1,6 +1,7 @@
 from src.utils.formatting import cleanName, getFileName, groupItems, getRoleTenant, getSender, getReceiver, getRole, getArrowLink, getChoreographyDetails, getType, getRoleList,generateDictEvent,generateDictRelation
 import numpy as np
 import json
+import os
 
 
 """
@@ -246,14 +247,17 @@ def getRoles(pi):
     :returns: the list of roles of the projection (eg: ["r1","r2","r3"]).
     """
 
+    this_folder = os.path.dirname(os.path.abspath(__file__))
     try:
-        dbPath='./client/src/projections/DCR_Projections.json'
+        # dbPath='./client/src/projections/DCR_Projections.json'
+        dbPath = os.path.join(this_folder, '..\..\..\src\projections\DCR_Projections.json')
         with open(dbPath) as json_file:
             db = json.load(json_file)
 
         dcrs = db[pi]['TextExtraction']
     except:
-        dbPath='./client/src/projections/dcrTexts.json'
+        # dbPath='./client/src/projections/dcrTexts.json'
+        dbPath = os.path.join(this_folder, '..\..\..\src\projections\dcrTexts.json')
         with open(dbPath) as json_file:
             dcrs = json.load(json_file)
 
@@ -272,15 +276,17 @@ def getRoleMapping(pi,role):
     :param role: role name (eg "Driver")
     :returns: the role id.
     """
-
+    this_folder = os.path.dirname(os.path.abspath(__file__))
     try:
-        dbPath='./client/src/projections/DCR_Projections.json'
+        # dbPath='./client/src/projections/DCR_Projections.json'
+        dbPath = os.path.join(this_folder, '..\..\..\src\projections\DCR_Projections.json')
         with open(dbPath) as json_file:
             db = json.load(json_file)
 
         dcrs = db[pi]['TextExtraction']
     except:
-        dbPath='./client/src/projections/dcrTexts.json'
+        # dbPath='./client/src/projections/dcrTexts.json'
+        dbPath = os.path.join(this_folder, '..\..\..\src\projections\dcr_Texts.json')
         with open(dbPath) as json_file:
             dcrs = json.load(json_file)
 

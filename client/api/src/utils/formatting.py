@@ -100,7 +100,6 @@ def removeGroups(data):
     # extract group elems
     groupElems = []
 
-    print(data)
     cnt = 0
     for line in data:
         if "Group" in line:
@@ -109,7 +108,6 @@ def removeGroups(data):
             events = line.split('{')[1].split('}')[0].split(' ')
             groupElems.append({'gName': gName,
                                'events': events})
-    print(groupElems)
     # for each elem, scan relations and replace adequatly
 
     # extract relations:
@@ -161,8 +159,7 @@ def removeGroups(data):
         if ('[' in line) and ('-' not in line) and ('>' not in line):
             events.append(line.strip())
 
-    newData = events + groupElems + updatev2
-    print(newData)
+    newData = events + updatev2
     return newData
 
 

@@ -91,7 +91,6 @@ def projectGlobal(processID, data, target):
     :param target: the path where the projection will be saved. eg: './client/src/projections/'
     """ 
     this_folder = os.path.dirname(os.path.abspath(__file__))
-    print(os.path.join(this_folder, '..\..\src\projections\dcrTexts.json'))
     print('[INFO] Starting Global Projection')
     # projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json"))
     # generateGraph(processID, projection, externalIds, target, "Global")
