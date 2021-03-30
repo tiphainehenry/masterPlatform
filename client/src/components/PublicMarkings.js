@@ -96,7 +96,6 @@ class PublicMarkings extends React.Component {
       var labels = []
       for(var i=0; i< this.props.activityNames.length; i++){
         console.log(this.props.activityNames[i]);
-  
         var name = this.props.activityNames[i];
   
         for(var j=0; j<Object.keys(ProcessDB[this.props.processID]['TextExtraction']['global']['events']).length; j++){

@@ -74,7 +74,6 @@ class ViewPublic extends React.Component {
    * if a view update occurs, updates all state variables (new processID, projectionID, execLogs, and activity names)
    */
   componentDidUpdate(prevProps) {
-
     // update processID
     if (!equal(this.props.location.state['currentProcess'][0], prevProps.location.state['currentProcess'][0]) ||
       !equal(this.props.location.state['currentInstance'], prevProps.location.state['currentInstance'])
@@ -130,6 +129,7 @@ class ViewPublic extends React.Component {
     })
 
     this.loadContract();
+
 
   }
 
@@ -188,7 +188,9 @@ class ViewPublic extends React.Component {
    */
   componentDidMount = async () => {
     this.cy.fit();
-
+    // this.cy.wheelSensitivity(0.4)
+    console.log("lol");
+    console.log(this.cy);
   };
 
   render() {
@@ -217,7 +219,8 @@ class ViewPublic extends React.Component {
                       stylesheet={stylesheet}
                       layout={layout}
                       style={style}
-                      cy={(cy) => { this.cy = cy }}
+                      cy={(cy) => {this.cy = cy}}
+                      wheelSensitivity={0.3}
                       boxSelectionEnabled={false}
                     />
                   </Card.Body>

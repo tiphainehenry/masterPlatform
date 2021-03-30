@@ -4,7 +4,7 @@
       "style": {
         "width": 5,
         "curve-style": "bezier",
-        "source-endpoint": "inside-to-node"
+        "source-endpoint": "outside-to-node"
       }
     },
     {

@@ -19,6 +19,7 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
 import COSEBilkent from 'cytoscape-cose-bilkent';
+import { createPortal } from 'react-dom';
 
 Cytoscape.use(COSEBilkent);
 Cytoscape.use(Dagre)
@@ -161,6 +162,7 @@ class DCRgraph extends React.Component {
     })
 
     this.cy.fit();
+
 
     this.setUpListeners();
   };
