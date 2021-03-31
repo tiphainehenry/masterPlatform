@@ -17,6 +17,9 @@ import getWeb3 from '../getWeb3';
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
 import COSEBilkent from 'cytoscape-cose-bilkent';
+import panzoom from 'cytoscape-panzoom';
+
+panzoom(Cytoscape);
 Cytoscape.use(COSEBilkent);
 
 var node_style = require('../style/nodeStyle.json');
@@ -188,9 +191,17 @@ class ViewPublic extends React.Component {
    */
   componentDidMount = async () => {
     this.cy.fit();
-    // this.cy.wheelSensitivity(0.4)
-    console.log("lol");
-    console.log(this.cy);
+    this.cy.panzoom()
+    this.cy.nodes().forEach(node => {
+      const classes = node._private.classes
+      if (classes.has("choreography") || classes.has("external"))
+        if (classes.has("executed"))
+          node.addClass("choreoExecuted")
+        else if (classes.has("pending"))
+          node.addClass("choreoPending")
+        else if (classes.has("executable"))
+          node.addClass("choreoExecutable")
+    })
   };
 
   render() {

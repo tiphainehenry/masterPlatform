@@ -82,8 +82,13 @@
   {
     "selector": "node.choreography",
     "style": {
-      
-      "border-color": "#1E90FF",
+      "backgroundColor": "white",
+      "background-image": "https://i.ibb.co/tsrHCBh/blue.png",
+      "background-fit": "cover",
+      "background-width": "100%",
+      "background-height": "100%",
+      "color": "white",
+      "border-color": "#ffa533",
       "text-outline-color": "yellow",
       "text-outline-width": 0
     }
@@ -93,6 +98,39 @@
     "style": {
       "border-color": "#1E90FF",
       "backgroundColor": "#A9BCCF"
+    }
+  },
+  {
+    "selector": "node.choreoExecuted",
+    "style": {
+      "backgroundColor": "white",
+      "background-image": "https://i.ibb.co/kMvv177/blue-validated.png",
+      "background-fit": "cover",
+      "background-width": "100%",
+      "background-height": "100%",
+      "color": "#29A81A"   
+    }
+  },
+  {
+    "selector": "node.choreoPending",
+    "style": {
+      "backgroundColor": "white",
+      "background-image": "https://i.ibb.co/TT3DGvr/blue-pending.png",
+      "background-fit": "cover",
+      "background-width": "100%",
+      "background-height": "100%",
+      "color": "#29A81A"   
+    }
+  },
+  {
+    "selector": "node.choreoExecutable",
+    "style": {
+      "backgroundColor": "white",
+      "background-image": "hhttps://i.ibb.co/nb8rjSW/blue-green.png",
+      "background-fit": "cover",
+      "background-width": "100%",
+      "background-height": "100%",
+      "color": "#29A81A"   
     }
   }
 ]
