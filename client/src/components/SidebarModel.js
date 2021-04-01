@@ -29,6 +29,7 @@ class SidebarModel extends React.Component {
                 //onSelect={selectedKey => alert(`selected ${selectedKey}`)}
                 >
                     <Nav.Link href="/create">Import a Projection</Nav.Link>
+                    <Nav.Link href="/new">Create a new projection</Nav.Link>
                     <Nav.Link href="/edit">Edit a projection</Nav.Link>
 
                 </Nav>

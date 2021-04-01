@@ -9,6 +9,7 @@ import {
   BrowserRouter
 } from "react-router-dom";
 import Homepage from './components/Homepage';
+import NewInstance from './components/NewInstance';
 import ViewPublic from './components/ViewPublic';
 import ViewRi from './components/ViewRi';
 import Edit from './components/Edit';
@@ -27,6 +28,7 @@ const App = () => (
       <Route exact path="/edit" component={Edit} />
       <Route exact path="/editing" component={EditionDeck} />
       <Route exact path="/create" component={Create} />
+      <Route exact path="/new" component={NewInstance} />
       <Switch>
           <Route 
           exact 
