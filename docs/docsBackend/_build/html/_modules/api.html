@@ -40,20 +40,21 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
 
-<span class="kn">from</span> <span class="nn">simplejson</span> <span class="k">import</span> <span class="n">JSONDecodeError</span>
-<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">jsonify</span>
-<span class="kn">from</span> <span class="nn">flask_cors</span> <span class="k">import</span> <span class="n">CORS</span><span class="p">,</span> <span class="n">cross_origin</span>
-<span class="kn">from</span> <span class="nn">flask_restful</span> <span class="k">import</span> <span class="n">reqparse</span><span class="p">,</span> <span class="n">abort</span><span class="p">,</span> <span class="n">Api</span><span class="p">,</span> <span class="n">Resource</span>
-<span class="kn">from</span> <span class="nn">werkzeug.utils</span> <span class="k">import</span> <span class="n">secure_filename</span>
-<span class="kn">from</span> <span class="nn">src.projalgoGlobal</span> <span class="k">import</span> <span class="n">projectGlobal</span>
-<span class="kn">from</span> <span class="nn">src.projalgoPublic</span> <span class="k">import</span> <span class="n">projectPublic</span>
-<span class="kn">from</span> <span class="nn">src.projalgoRoles</span> <span class="k">import</span> <span class="n">projRole</span>
-<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="k">import</span> <span class="n">removeGroups</span>
-<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="k">import</span> <span class="n">getRoles</span><span class="p">,</span> <span class="n">getRoleMapping</span>
-<span class="kn">from</span> <span class="nn">src.utils.graphManager</span> <span class="k">import</span> <span class="n">executeNode</span><span class="p">,</span> <span class="n">executeApprovedNode</span><span class="p">,</span> <span class="n">execLogg</span>
+<span class="kn">from</span> <span class="nn">simplejson</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">flask_cors</span> <span class="kn">import</span> <span class="n">CORS</span><span class="p">,</span> <span class="n">cross_origin</span>
+<span class="kn">from</span> <span class="nn">flask_restful</span> <span class="kn">import</span> <span class="n">reqparse</span><span class="p">,</span> <span class="n">abort</span><span class="p">,</span> <span class="n">Api</span><span class="p">,</span> <span class="n">Resource</span>
+<span class="kn">from</span> <span class="nn">werkzeug.utils</span> <span class="kn">import</span> <span class="n">secure_filename</span>
+<span class="kn">from</span> <span class="nn">src.projalgoGlobal</span> <span class="kn">import</span> <span class="n">projectGlobal</span>
+<span class="kn">from</span> <span class="nn">src.projalgoPublic</span> <span class="kn">import</span> <span class="n">projectPublic</span>
+<span class="kn">from</span> <span class="nn">src.projalgoRoles</span> <span class="kn">import</span> <span class="n">projRole</span>
+<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="kn">import</span> <span class="n">removeGroups</span>
+<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="kn">import</span> <span class="n">getRoles</span><span class="p">,</span> <span class="n">getRoleMapping</span>
+<span class="kn">from</span> <span class="nn">src.utils.graphManager</span> <span class="kn">import</span> <span class="n">executeNode</span><span class="p">,</span> <span class="n">executeApprovedNode</span><span class="p">,</span> <span class="n">execLogg</span><span class="p">,</span> <span class="n">initializeGraph</span><span class="p">,</span> <span class="n">retrieveMarkingOnId</span>
 
-<span class="kn">from</span> <span class="nn">src.utils.vectorization</span> <span class="k">import</span> <span class="n">vectorizeRole</span>
+<span class="kn">from</span> <span class="nn">src.utils.vectorization</span> <span class="kn">import</span> <span class="n">vectorizeRole</span><span class="p">,</span> <span class="n">vectorizeRoleFromCyto</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;HELLO WORLD&#39;</span><span class="p">)</span>
@@ -82,12 +83,19 @@
 <span class="sd">    :param pi: process id to be generated. eg: &#39;p1&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span> 
 
-    <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;./client/src/projections/&#39;</span>
-    <span class="n">dataPath</span> <span class="o">=</span> <span class="s1">&#39;./client/src/projections/dcrTexts.json&#39;</span>
+    <span class="c1"># target = &#39;./client/src/projections/&#39;</span>
+    <span class="c1"># dataPath = &#39;./client/src/projections/dcrTexts.json&#39;</span>
+    <span class="n">this_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">dataPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections\dcrTexts.json&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;target datapath&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">this_folder</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dataPath</span><span class="p">)</span>
 
     <span class="n">_data</span> <span class="o">=</span> <span class="n">removeGroups</span><span class="p">(</span><span class="n">dataTxt</span><span class="p">)</span>
 
-    <span class="n">projectGlobal</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">_data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">projectGlobal</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">dataTxt</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dataPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">dataDict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
@@ -99,34 +107,34 @@
 
     <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">getRoles</span><span class="p">(</span><span class="n">pi</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[INFO] Starting projection on role &#39;</span><span class="o">+</span><span class="n">role</span><span class="p">)</span>
-        <span class="n">projRole</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">_data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="n">projRole</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">dataTxt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="o">+</span><span class="n">getId</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="n">role</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s2">&quot;execLogs&quot;</span><span class="p">:</span> <span class="p">[]},</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-    <span class="n">projectPublic</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">_data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">projectPublic</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">dataTxt</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
     <span class="c1"># merge all</span>
     <span class="n">processData</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">pi</span><span class="p">}</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/dcrTexts.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections\dcrTexts.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">dataTxt</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
     
     <span class="n">processData</span><span class="p">[</span><span class="s1">&#39;TextExtraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataTxt</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_dataGlobal.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_dataGlobal.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">dataGlob</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_vectGlobal.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_vectGlobal.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">vectGlob</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
     <span class="n">processData</span><span class="p">[</span><span class="s1">&#39;Global&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">dataGlob</span><span class="p">,</span>
         <span class="s1">&#39;vect&#39;</span><span class="p">:</span> <span class="n">vectGlob</span>
     <span class="p">}</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_dataPublic.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_dataPublic.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">dataPub</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_vectPublic.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_vectPublic.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">vectPub</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_execPublic.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_execPublic.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">execPub</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
     <span class="n">processData</span><span class="p">[</span><span class="s1">&#39;Public&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">dataPub</span><span class="p">,</span>
@@ -136,13 +144,12 @@
 
     <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">getRoles</span><span class="p">(</span><span class="n">pi</span><span class="p">):</span>
         <span class="n">roleMapping</span> <span class="o">=</span> <span class="n">getRoleMapping</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="n">role</span><span class="p">)</span>
-        <span class="n">rolePath</span><span class="o">=</span> <span class="s1">&#39;./client/src/projections/temp_data&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_data&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">rolePath</span><span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_data&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_data&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">dataR</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_vect&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_vect&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">vectR</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/exec&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections\exec&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">execR</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
         <span class="n">processData</span><span class="p">[</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">dataR</span><span class="p">,</span>
@@ -154,9 +161,9 @@
             <span class="p">}</span>
         <span class="p">}</span>
 
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_data&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_vect&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/exec&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_data&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_vect&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections\exec&#39;</span><span class="o">+</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span><span class="p">))</span>
 
     <span class="c1">## save</span>
     <span class="n">dataPath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s1">&#39;DCR_Projections.json&#39;</span><span class="p">)</span>
@@ -171,13 +178,13 @@
 
 
     <span class="c1"># rm temp files</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_dataPublic.json&#39;</span><span class="p">)</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_vectPublic.json&#39;</span><span class="p">)</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_execPublic.json&#39;</span><span class="p">)</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_dataGlobal.json&#39;</span><span class="p">)</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/temp_vectGlobal.json&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_dataPublic.json&#39;</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_vectPublic.json&#39;</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_execPublic.json&#39;</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_dataGlobal.json&#39;</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections</span><span class="se">\\</span><span class="s1">temp_vectGlobal.json&#39;</span><span class="p">))</span>
 
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;./client/src/projections/dcrTexts.json&#39;</span><span class="p">)</span></div>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\src\projections\dcrTexts.json&#39;</span><span class="p">))</span></div>
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
@@ -320,7 +327,7 @@
 
     <span class="n">file</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----------------------------------&quot;</span><span class="p">)</span>
     <span class="n">processID</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;processID&#39;</span><span class="p">])</span>
 
     <span class="n">updWithName</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">processID</span><span class="p">)</span>
@@ -362,25 +369,85 @@
     <span class="n">projID</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;projID&#39;</span><span class="p">]</span>
     <span class="n">newData</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;newData&#39;</span><span class="p">]</span>
 
-    <span class="c1">#data: </span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">newData</span><span class="p">)</span>
+    <span class="c1">#vectorize</span>
+    <span class="n">vect</span> <span class="o">=</span> <span class="n">vectorizeRoleFromCyto</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">projID</span><span class="p">,</span> <span class="n">newData</span><span class="p">)</span>
+
+    <span class="c1">#initialize and clean nodes, remove class duplicates. </span>
+    <span class="n">markings</span><span class="o">=</span><span class="n">vect</span><span class="p">[</span><span class="s1">&#39;markings&#39;</span><span class="p">]</span>
+    <span class="n">updProj</span><span class="o">=</span><span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">newData</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;nodes&#39;</span><span class="p">:</span>
+            <span class="c1"># filter out external events</span>
+            <span class="k">if</span> <span class="p">((</span><span class="s1">&#39;classes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;external&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">])):</span>
+                <span class="n">elemMarking</span> <span class="o">=</span> <span class="n">retrieveMarkingOnId</span><span class="p">(</span><span class="n">markings</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elemMarking</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">elemMarking</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;classes&#39;</span><span class="p">:</span> <span class="s1">&#39;included executable&#39;</span><span class="p">})</span>
+
+        <span class="n">updProj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="c1">#print(vect)</span>
 
     <span class="n">newRoleProjection</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;data&#39;</span><span class="p">:</span><span class="n">newData</span><span class="p">,</span>
-        <span class="s1">&#39;vect&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;data&#39;</span><span class="p">:</span><span class="n">updProj</span><span class="p">,</span>
+        <span class="s1">&#39;vect&#39;</span><span class="p">:</span><span class="n">vect</span><span class="p">,</span>
         <span class="s1">&#39;exec&#39;</span><span class="p">:{</span>
         <span class="s2">&quot;execLogs&quot;</span><span class="p">:</span> <span class="p">[]</span>
       <span class="p">}</span>
     <span class="p">}</span>
-
-    <span class="n">vectorizeRole</span><span class="p">(</span><span class="n">newData</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;./client/src/projections&#39;</span><span class="p">,</span><span class="s2">&quot;temp_vect&quot;</span><span class="o">+</span><span class="n">projID</span><span class="p">))</span>
+    <span class="c1">#pprint.pprint(newRoleProjection)</span>
 
     <span class="c1">#store</span>
     <span class="n">projDBPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">projDBPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">dataProj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+    
+    <span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">projID</span><span class="p">][</span><span class="s1">&#39;v_upd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">newRoleProjection</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">projDBPath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dataProj</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">:</span> <span class="s1">&#39;*&#39;</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="switchProj"><a class="viewcode-back" href="../apiDoc.html#api.switchProj">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/switchProj&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">switchProj</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    switches current projection for an alternative one at the demand of the local tenant. </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="c1">#retrieve post data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">processID</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;processID&#39;</span><span class="p">]</span>
+    <span class="n">projID</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;projID&#39;</span><span class="p">]</span>
+    <span class="n">roleMapping</span> <span class="o">=</span> <span class="n">getRoleMapping</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span><span class="n">projID</span><span class="p">)</span>
+
+    <span class="c1">#open db</span>
+    <span class="n">projDBPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">projDBPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+        <span class="n">dataProj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+    
+    <span class="c1">#update proj</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;v_upd&#39;</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+    <span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;vect&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;v_upd&#39;</span><span class="p">][</span><span class="s1">&#39;vect&#39;</span><span class="p">]</span>
+
+    <span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;init&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;data&#39;</span><span class="p">:</span><span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;v_upd&#39;</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;vect&#39;</span><span class="p">:</span><span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]][</span><span class="s1">&#39;v_upd&#39;</span><span class="p">][</span><span class="s1">&#39;vect&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    
+    <span class="c1">#clean db and save</span>
+    <span class="n">dataProj</span><span class="p">[</span><span class="n">processID</span><span class="p">][</span><span class="n">roleMapping</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;v_upd&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">projDBPath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dataProj</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+    <span class="k">return</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">:</span> <span class="s1">&#39;*&#39;</span><span class="p">}</span></div>
+
 
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>

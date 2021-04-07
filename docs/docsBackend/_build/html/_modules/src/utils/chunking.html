@@ -33,9 +33,10 @@
           <div class="body" role="main">
             
   <h1>Source code for src.utils.chunking</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="k">import</span> <span class="n">cleanName</span><span class="p">,</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">groupItems</span><span class="p">,</span> <span class="n">getRoleTenant</span><span class="p">,</span> <span class="n">getSender</span><span class="p">,</span> <span class="n">getReceiver</span><span class="p">,</span> <span class="n">getRole</span><span class="p">,</span> <span class="n">getArrowLink</span><span class="p">,</span> <span class="n">getChoreographyDetails</span><span class="p">,</span> <span class="n">getType</span><span class="p">,</span> <span class="n">getRoleList</span><span class="p">,</span><span class="n">generateDictEvent</span><span class="p">,</span><span class="n">generateDictRelation</span>
+<span></span><span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="kn">import</span> <span class="n">cleanName</span><span class="p">,</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">groupItems</span><span class="p">,</span> <span class="n">getRoleTenant</span><span class="p">,</span> <span class="n">getSender</span><span class="p">,</span> <span class="n">getReceiver</span><span class="p">,</span> <span class="n">getRole</span><span class="p">,</span> <span class="n">getArrowLink</span><span class="p">,</span> <span class="n">getChoreographyDetails</span><span class="p">,</span> <span class="n">getType</span><span class="p">,</span> <span class="n">getRoleList</span><span class="p">,</span><span class="n">generateDictEvent</span><span class="p">,</span><span class="n">generateDictRelation</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -281,14 +282,17 @@
 <span class="sd">    :returns: the list of roles of the projection (eg: [&quot;r1&quot;,&quot;r2&quot;,&quot;r3&quot;]).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">this_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+        <span class="c1"># dbPath=&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+        <span class="n">dbPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\..\..\src\projections\DCR_Projections.json&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">db</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 
         <span class="n">dcrs</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;TextExtraction&#39;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/dcrTexts.json&#39;</span>
+        <span class="c1"># dbPath=&#39;./client/src/projections/dcrTexts.json&#39;</span>
+        <span class="n">dbPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\..\..\src\projections\dcrTexts.json&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">dcrs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 
@@ -307,15 +311,17 @@
 <span class="sd">    :param role: role name (eg &quot;Driver&quot;)</span>
 <span class="sd">    :returns: the role id.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="n">this_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+        <span class="c1"># dbPath=&#39;./client/src/projections/DCR_Projections.json&#39;</span>
+        <span class="n">dbPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\..\..\src\projections\DCR_Projections.json&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">db</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 
         <span class="n">dcrs</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">pi</span><span class="p">][</span><span class="s1">&#39;TextExtraction&#39;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="n">dbPath</span><span class="o">=</span><span class="s1">&#39;./client/src/projections/dcrTexts.json&#39;</span>
+        <span class="c1"># dbPath=&#39;./client/src/projections/dcrTexts.json&#39;</span>
+        <span class="n">dbPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span> <span class="s1">&#39;..\..\..\src\projections\dcr_Texts.json&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">dcrs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 

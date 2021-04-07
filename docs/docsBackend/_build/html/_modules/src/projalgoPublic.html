@@ -39,10 +39,10 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="k">import</span> <span class="n">cleanName</span><span class="p">,</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">groupItems</span><span class="p">,</span> <span class="n">generateDictEvent</span><span class="p">,</span> <span class="n">generateDictRelation</span><span class="p">,</span> <span class="n">getRole</span><span class="p">,</span> <span class="n">getRoleList</span><span class="p">,</span> <span class="n">getSender</span><span class="p">,</span> <span class="n">getReceiver</span>
-<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="k">import</span> <span class="n">extractChunks</span><span class="p">,</span> <span class="n">applyComposition</span><span class="p">,</span> <span class="n">getEventDeclarationFromName</span>
-<span class="kn">from</span> <span class="nn">src.utils.vectorization</span> <span class="k">import</span> <span class="n">vectorize</span>
-<span class="kn">from</span> <span class="nn">src.utils.graphDataTranslator</span> <span class="k">import</span> <span class="n">generateGraph</span>
+<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="kn">import</span> <span class="n">cleanName</span><span class="p">,</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">groupItems</span><span class="p">,</span> <span class="n">generateDictEvent</span><span class="p">,</span> <span class="n">generateDictRelation</span><span class="p">,</span> <span class="n">getRole</span><span class="p">,</span> <span class="n">getRoleList</span><span class="p">,</span> <span class="n">getSender</span><span class="p">,</span> <span class="n">getReceiver</span>
+<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="kn">import</span> <span class="n">extractChunks</span><span class="p">,</span> <span class="n">applyComposition</span><span class="p">,</span> <span class="n">getEventDeclarationFromName</span>
+<span class="kn">from</span> <span class="nn">src.utils.vectorization</span> <span class="kn">import</span> <span class="n">vectorize</span>
+<span class="kn">from</span> <span class="nn">src.utils.graphDataTranslator</span> <span class="kn">import</span> <span class="n">generateGraph</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set of functions to generate the public view of a dcr text description</span>

@@ -17,6 +17,7 @@ import EditionDeck from './components/EditionDeck';
 import Create from './components/Create';
 import WelcomeInstance from './components/WelcomeInstance';
 import WelcomeModel from './components/WelcomeModel';
+import CreationDeck from './components/CreationDeck';
 
 
 const App = () => (
@@ -29,6 +30,7 @@ const App = () => (
       <Route exact path="/editing" component={EditionDeck} />
       <Route exact path="/create" component={Create} />
       <Route exact path="/new" component={NewInstance} />
+      <Route exact path="/creation" component={CreationDeck} />
       <Switch>
           <Route 
           exact 

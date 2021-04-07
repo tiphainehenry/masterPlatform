@@ -638,7 +638,7 @@ representation as available.</p>
 <dl class="function">
 <dt id="src.utils.vectorization.generateInitialMarking">
 <code class="descclassname">src.utils.vectorization.</code><code class="descname">generateInitialMarking</code><span class="sig-paren">(</span><em>eventsList</em>, <em>events</em>, <em>relations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#generateInitialMarking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.generateInitialMarking" title="Permalink to this definition">¶</a></dt>
-<dd><p>generates initial markings of a projection</p>
+<dd><p>generates initial markings of a projection. Executed and pending markings are set to zero.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -777,6 +777,15 @@ representation as available.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.utils.vectorization.vectorizeRoleFromCyto">
+<code class="descclassname">src.utils.vectorization.</code><code class="descname">vectorizeRoleFromCyto</code><span class="sig-paren">(</span><em>processID</em>, <em>roleID</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/utils/vectorization.html#vectorizeRoleFromCyto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.utils.vectorization.vectorizeRoleFromCyto" title="Permalink to this definition">¶</a></dt>
+<dd><p>vectorizes the cytoscape representation of the projected dcr graph.
+First: generates all relation matrices, and then the markings.
+:param data: cytoscape description of the role dcr graphs
+:param filename: filename to save vectorizations</p>
 </dd></dl>
 
 </div>

@@ -116,15 +116,14 @@ class Edit extends React.Component {
                   <div class="bg-green">
                     <Nav >
                       {this.state.tree.map((process, i) => {
+                        console.log(process);
                         return <Nav key={i} title={process[0]} class='sidebarLink'>
                           <div style={{ 'padding-right': '10%', 'width': '20vw' }}>
                             <ListGroup>
                               <ListGroup.Item class='processHeader'>
                                 {process[0]}
                               </ListGroup.Item>
-
                               <ListGroup.Item>
-
                                 {process[1].map(item =>
                                   <ul>
                                     <Nav.Item >

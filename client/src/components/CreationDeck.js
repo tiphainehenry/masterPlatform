@@ -24,7 +24,7 @@ import Klay from 'cytoscape-klay'
 Cytoscape.use(Dagre)
 Cytoscape.use(Klay)
 Cytoscape.use(COSEBilkent);
-Cytoscape.use(contextMenus);
+// Cytoscape.use(contextMenus);
 
 var node_style = require('../style/nodeStyle.json');
 var edge_style = require('../style/edgeStyle.json');
@@ -35,16 +35,20 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 /**
  * Template component to edit a projection
  */
-class EditionDeck extends React.Component {
+class CreationDeck extends React.Component {
 
   /**
    * Loads all editing functions from the utils folder.
    */
   constructor(props) {
     super(props);
+    console.log(Object.keys(ProcessDB)[0]);
+    console.log(ProcessDB[Object.keys(ProcessDB)[0]]);
     this.state = {
-      data: ProcessDB[Object.keys(ProcessDB)[0]]['Global'],
-      processID: Object.keys(ProcessDB)[0],
+      // data: ProcessDB[Object.keys(ProcessDB)[0]]['Global'],
+      // processID: Object.keys(ProcessDB)[0],
+      data:null,
+      processID: 'p2',
       processName: this.props.location.state['currentProcess'][1],
       projectionID: 'Global',
 
@@ -115,6 +119,7 @@ class EditionDeck extends React.Component {
    * - Updates the total number of new activities to keep the counter updated for second changes.
    */
   componentDidMount = async () => {
+    console.log(this.cy)
     this.cy.fit();
     this.cy.contextMenus(this.getMenuStyle());
 
@@ -152,7 +157,8 @@ class EditionDeck extends React.Component {
           'processID': processID,
           'processName': this.props.location.state['currentProcess'][1],
           'projectionID': projectionID,
-          'data': ProcessDB[processID][projectionID]['init']['data']
+          'data': null
+          // 'data': ProcessDB[processID][projectionID]['init']['data']
         });
       }
     }
@@ -318,7 +324,7 @@ class EditionDeck extends React.Component {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
-    
+    console.log("state");
     console.log(this.state);
     return <>
       <div>
@@ -341,7 +347,7 @@ class EditionDeck extends React.Component {
                       <Col sm={9}>
                         <Card style={{ height: '95%', 'marginTop': '3vh' }}>
                           <Card.Body >
-                            <CytoscapeComponent elements={this.state.data}
+                            <CytoscapeComponent
                               stylesheet={stylesheet}
                               layout={layout}
                               style={style}
@@ -429,4 +435,4 @@ class EditionDeck extends React.Component {
   }
 }
 
-export default EditionDeck
+export default CreationDeck
