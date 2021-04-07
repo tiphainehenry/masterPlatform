@@ -45,9 +45,7 @@ class CreationDeck extends React.Component {
     console.log(Object.keys(ProcessDB)[0]);
     console.log(ProcessDB[Object.keys(ProcessDB)[0]]);
     this.state = {
-      // data: ProcessDB[Object.keys(ProcessDB)[0]]['Global'],
-      // processID: Object.keys(ProcessDB)[0],
-      data:null,
+      data: {},
       processID: 'p2',
       processName: this.props.location.state['currentProcess'][1],
       projectionID: 'Global',
@@ -134,7 +132,7 @@ class CreationDeck extends React.Component {
 
     });
     this.setState({
-      newActivityCnt:newActivityCnt
+      newActivityCnt: newActivityCnt
     });
 
   };
@@ -157,8 +155,7 @@ class CreationDeck extends React.Component {
           'processID': processID,
           'processName': this.props.location.state['currentProcess'][1],
           'projectionID': projectionID,
-          'data': null
-          // 'data': ProcessDB[processID][projectionID]['init']['data']
+          'data': {}
         });
       }
     }
@@ -194,12 +191,12 @@ class CreationDeck extends React.Component {
             break;
           case 1:
             console.log('target');
-            this.setState({
-              target: {
-                ID: event.target['_private']['data']['id'],
-                type: type
-              }
-            });
+              this.setState({
+                target: {
+                  ID: event.target['_private']['data']['id'],
+                  type: type
+                }
+              });
             break;
           default: console.log('num selected nodes: ' + this.state.numSelected);
         }
@@ -217,17 +214,22 @@ class CreationDeck extends React.Component {
           numSelected: this.state.numSelected + 1
         });
       }
-
       else if (event.target['_private']['classes'].has('selected')) {
         this.cy.getElementById(event.target['_private']['data']['id']).removeClass('selected');
-
-        if (this.state.numSelected != 1) {
-          this.setState({ numSelected: this.state.numSelected - 1 });
+        if (event.target['_private']['data']['id'] === this.state.source.ID) {
+          this.setState({source:{ID:"", type:""}, numSelected:0})
+        } else {
+          this.setState({target:{ID:"", type:""}, numSelected:1})
         }
-
       }
       else {
-        console.log('two elements already selected');
+        this.setState({ numSelected: 0 })
+        this.cy.nodes().forEach(ele => ele.removeClass('selected'))
+        this.setState({
+          source: {ID:"", type:""},
+          target: {ID:"", type:""}
+        })
+        console.log('reset selection numselected = ' + this.state.numSelected);
       }
     });
 
@@ -338,7 +340,7 @@ class CreationDeck extends React.Component {
               <div class="bg-green pt-5 pb-3">
 
                 <div class='container'>
-                  <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
+                  <h2>Creating [process {this.state.processID}]</h2>
 
                   <div className="well">Right click on the graph to see the menu</div>
 

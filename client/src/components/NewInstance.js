@@ -25,8 +25,8 @@ class NewInstance extends React.Component {
    * Lists all processes and their role projections, and stores it into the tree state variable
    */
   componentDidMount = async () => {
-    this.setState({numProcess : (Object.keys(ProcessDB).length + 2)})
-    console.log(Object.keys(ProcessDB).length +2);
+    
+    this.setState({numProcess : 44})
   };
 
   onChange(e) {
@@ -34,7 +34,7 @@ class NewInstance extends React.Component {
   }
 
   render() {
-    var tmp = "process p" + Object.keys(ProcessDB).length + 2
+    var tmp = "process p" + (Object.keys(ProcessDB).length + 2)
     return <>
       <div>
         <Header />
