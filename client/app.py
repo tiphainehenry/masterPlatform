@@ -42,8 +42,8 @@ def getId(role):
 
 
 def upd(data):
-    target='./client/src/projections/'
-    dataPath='./client/src/projections/dcrTexts.json'
+    target='../../client/src/projections/'
+    dataPath='../../client/src/projections/dcrTexts.json'
 
     _data = removeGroups(data)
     projectGlobal(data, target)

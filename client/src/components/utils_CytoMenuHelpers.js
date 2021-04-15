@@ -4,11 +4,7 @@ const cytoMenuHelpers = {
     * handle activity update (name, markings, tenant(s))
     */
     updActivity: function () {
-
-        if (this.state.elemClicked.classes.has('choreography')) {
-            alert('choreography task - negociation stage to implement')
-        }
-        else {
+        console.log(this.state.elemClicked);
             var id = this.state.elemClicked.id;
 
 
@@ -35,11 +31,10 @@ const cytoMenuHelpers = {
                 this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
             }
             else {
-
-                this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.elemClicked.activityName);
+                this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.elemClicked.activityName + "\n" + this.state.tenantName);
             }
 
-        }
+        
     },
 
     /**
@@ -110,9 +105,7 @@ const cytoMenuHelpers = {
     */
     addChoreoActivity: function () {
 
-        alert('choreography task - negociation stage to implement');
 
-        if (false) {
             console.log('add choreography activity');
 
             var label = 'NewActivity' + this.state.newActivityCnt;
@@ -129,7 +122,6 @@ const cytoMenuHelpers = {
             this.setState({
                 newActivityCnt: this.state.newActivityCnt + 1
             });
-        }
 
     },
 

@@ -8,6 +8,7 @@ import Header from './Header';
 
 import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
 import SidebarModel from './SidebarModel';
+import LoadToBC from './LoadToBC';
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -16,7 +17,6 @@ import contextMenus from 'cytoscape-context-menus';
 import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
 import axios from 'axios';
-
 import COSEBilkent from 'cytoscape-cose-bilkent';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
@@ -49,7 +49,13 @@ class CreationDeck extends React.Component {
       processID: 'p2',
       processName: this.props.location.state['currentProcess'][1],
       projectionID: 'Global',
-
+      edges: {
+        condition: ' -->* ',
+        milestone: ' --<> ',
+        exclude: ' -->% ',
+        response: ' *--> ',
+        include: ' -->+ '
+      },
       elemClicked: {
         id: '',
         activityName: '',
@@ -105,7 +111,6 @@ class CreationDeck extends React.Component {
 
     this.getMenuStyle = getMenuStyle.bind(this);
 
-    this.saveGraph = this.saveGraph.bind(this);
     this.privateGraphUpd = this.privateGraphUpd.bind(this);
 
   }
@@ -119,6 +124,7 @@ class CreationDeck extends React.Component {
   componentDidMount = async () => {
     console.log(this.cy)
     this.cy.fit();
+    this.cy.remove('nodes')
     this.cy.contextMenus(this.getMenuStyle());
 
     this.setUpNodeListeners();
@@ -191,12 +197,12 @@ class CreationDeck extends React.Component {
             break;
           case 1:
             console.log('target');
-              this.setState({
-                target: {
-                  ID: event.target['_private']['data']['id'],
-                  type: type
-                }
-              });
+            this.setState({
+              target: {
+                ID: event.target['_private']['data']['id'],
+                type: type
+              }
+            });
             break;
           default: console.log('num selected nodes: ' + this.state.numSelected);
         }
@@ -217,17 +223,17 @@ class CreationDeck extends React.Component {
       else if (event.target['_private']['classes'].has('selected')) {
         this.cy.getElementById(event.target['_private']['data']['id']).removeClass('selected');
         if (event.target['_private']['data']['id'] === this.state.source.ID) {
-          this.setState({source:{ID:"", type:""}, numSelected:0})
+          this.setState({ source: { ID: "", type: "" }, numSelected: 0 })
         } else {
-          this.setState({target:{ID:"", type:""}, numSelected:1})
+          this.setState({ target: { ID: "", type: "" }, numSelected: 1 })
         }
       }
       else {
         this.setState({ numSelected: 0 })
         this.cy.nodes().forEach(ele => ele.removeClass('selected'))
         this.setState({
-          source: {ID:"", type:""},
-          target: {ID:"", type:""}
+          source: { ID: "", type: "" },
+          target: { ID: "", type: "" }
         })
         console.log('reset selection numselected = ' + this.state.numSelected);
       }
@@ -260,23 +266,7 @@ class CreationDeck extends React.Component {
    * We check the graph subgraph type to assess if we need to trigger the SC negociation stage. 
    * If one of the subgraph elems is a choreography, then we will need to call the SC for peer concertation. 
    * Otherwise we can update the private projection directly. 
-   */
-  saveGraph() {
 
-    var publicUpd = false;
-    this.cy.elements().forEach(function (ele) {
-      if (ele['_private']['classes'].has('choreography') && ele['_private']['classes'].has('subgraph')) {
-        publicUpd = true;
-      }
-    });
-
-    if (publicUpd) {
-      alert('choreography task - negociation stage to implement')
-    }
-    else {
-      this.privateGraphUpd();
-    }
-  }
 
   /**
    * Private graph update processing > calls the API to update the markings and nodes.
@@ -289,37 +279,77 @@ class CreationDeck extends React.Component {
       var newData = [];
 
       // retrieve data 
-      this.cy.elements().forEach(function (ele) {
-        var newEle = {
-          "data": ele['_private']['data'],
-          "group": ele['_private']['group'],// group can be two types: nodes == activity, or edges == relation
-        };
+      this.cy.elements().forEach(function (ele, id) {
+        console.log(ele)
+        var newEle = {}
+        if (ele['_private']['group'] === "nodes") {
+          if (ele['_private']['classes'].has("choreography")) {
+            var tmp = ele['_private']['data']['name'].split(' ')
+            newEle = {
+              "name": "e" + id++ + "[" + tmp[1] + " src=" + tmp[0] + " trg=" + tmp[2] + "]"
+            }
+          } else {
 
-        var classes = Array.from(ele['_private']['classes']).join(' ');
-        if (classes != '') {
-          newEle['classes'] = classes;
+            var tmp = ele['_private']['data']['name'].split('\n')
+            newEle = {
+              "name": tmp[0] + " [role=" + tmp[1] + "]",
+            };
+          }
+        } else if (ele['_private']['group'] === "edges") {
+          console.log("edges");
+          var src = ele['_private']['data']['source']
+          var trg = ele['_private']['data']['target']
+          var link = this.state.edges[ele['_private']['classes'].values().next().value]
+          newEle = { "link": src + link + trg }
         }
         newData.push(newEle);
-      });
-
-      // generate vect, text extraction (role, role mapping, global/events) , and save to new version
-      axios.post(`http://localhost:5000/privateGraphUpd`,
-        {
-          newData: newData,
-          projID: this.state.projectionID,
-          processID: this.state.processID
-        },
-        { "headers": { "Access-Control-Allow-Origin": "*" } }
-      );
-
-      console.log('new graph version saved!')
-      //window.location = '/welcomeinstance';
+      }.bind(this));
+      this.fileUpload(this.createFile(newData))
     }
     else {
       console.log('save aborted');
     }
   }
 
+  createFile(data) {
+    var arrayEvent = []
+    var arrayLink = []
+
+    data.forEach(line => {
+      if (line.hasOwnProperty('name')) 
+        arrayEvent.push(line['name'])
+      else
+        arrayLink.push(line['link'])
+    })
+    const newdata = arrayEvent.concat(arrayLink)
+    return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
+  }
+
+  fileUpload(file) {
+    const url = `http://localhost:5000/inputFile`;
+
+    var processNum = Object.keys(ProcessDB).length + 2;
+    var processID = 'p' + processNum;
+
+    this.setState({ processID: processID });
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('processID', processID);
+    for (var k of formData.values()) {
+      console.log(k)
+    }
+
+    axios.post(`http://localhost:5000/inputFile`).then(
+      (response) => {
+        var result = response.data;
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
   ///// Render
 
   render() {
@@ -332,6 +362,9 @@ class CreationDeck extends React.Component {
       <div>
         <Header />
         <Container fluid >
+          <Row>
+            <LoadToBC></LoadToBC>
+          </Row>
           <Row >
             <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
               <SidebarModel />
@@ -424,7 +457,7 @@ class CreationDeck extends React.Component {
                       </Col>
                     </Row>
                   </div>
-                  <Button onClick={this.saveGraph}>save new version</Button>
+                  <Button onClick={this.privateGraphUpd}>save new version</Button>
 
                 </div>
               </div>

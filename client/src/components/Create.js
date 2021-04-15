@@ -15,6 +15,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 class Create extends React.Component {
   constructor(props) {
     super(props);
+    this.loadToBC = React.createRef()
     this.state = {
       file: null, 
       processID:''
@@ -33,7 +34,7 @@ class Create extends React.Component {
     this.fileUpload(this.state.file).then((response) => {
       console.log(response.data);
       if (response.data === "ok") {
-        
+        this.loadToBC.current.handleCreateWkf()
       }
     })
   }
@@ -55,12 +56,13 @@ class Create extends React.Component {
 
     var processNum = Object.keys(ProcessDB).length +1;
     var processID = 'p'+ processNum;
-
+    
     this.setState({processID: processID});
-
+    
     const formData = new FormData();
     formData.append('file', file);
     formData.append('processID', processID);
+    
 
     axios.post(`http://localhost:5000/inputFile`).then(
         (response) => {
@@ -103,9 +105,9 @@ class Create extends React.Component {
                   <button class="btn btn-primary my-2 my-sm-0" type="submit">Upload and project</button>
                 </form>
                 <hr />
-                <LoadToBC />
+                <LoadToBC  ref={this.loadToBC} />
                 <hr />
-                <h5>Step 3</h5>
+                <h5>Step 2</h5>
                 <p>To execute the process, navigate between the different role projections accessible via the 'My running instances' header. </p>
                 <p>
                   Each graph comprises four types of events. </p>
