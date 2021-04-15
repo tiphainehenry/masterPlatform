@@ -309,7 +309,7 @@ def delete():
     data = request.get_json(silent=True)
     processID = data['processID']
 
-    projDBPath='./client/src/projections/DCR_Projections.json'
+    projDBPath='../../client/src/projections/DCR_Projections.json'
     with open(projDBPath) as json_file:
         dataProj = json.load(json_file)
 

@@ -95,29 +95,40 @@ class DCRgraph extends React.Component {
   async loadContract() {
 
     try {
+      console.log("1");
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
+      console.log("1");
+      console.log(web3);
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
+      console.log("1");
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
+      console.log("1");
       const deployedNetwork = PublicDCRManager.networks[networkId];
+      console.log("1");
       const instance = new web3.eth.Contract(
         PublicDCRManager.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
       var wkID = this.props.processName.replace('p', '') - 1;
+      console.log(await instance.methods.getIncluded(wkID));
       const inclVector = await instance.methods.getIncluded(wkID).call();
+      console.log("1");
       const execVector = await instance.methods.getExecuted(wkID).call();
+      console.log("1");
       const pendVector = await instance.methods.getPending(wkID).call();
+      console.log("1");
       const hashesVector = await instance.methods.getHashes(wkID).call();
 
       this.setState({
         web3, accounts, contract: instance,
       });
+      console.log("1");
 
       this.setState({
         incl: inclVector,
@@ -129,9 +140,9 @@ class DCRgraph extends React.Component {
 
     } catch (error) {
       // Catch any errors for any of the above operations.
-      //alert(
-      //  `Failed to load web3, accounts, or contract. Check console for details.`,
-      //);
+      alert(
+       `Failed to load web3, accounts, or contract. Check console for details.`,
+      );
       console.error(error);
     };
 

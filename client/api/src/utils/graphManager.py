@@ -301,7 +301,7 @@ def executeNode(execInfo):
 
     roleMapping = getRoleMapping(processID, projId)
 
-    dbPath = './client/src/projections/DCR_Projections.json'
+    dbPath = '../../client/src/projections/DCR_Projections.json'
     with open(dbPath) as json_data:
         DCRdb = json.load(json_data)
 
@@ -431,7 +431,7 @@ def execLogg(roleID, processID, activity_name, status, start_timestamp, data):
     :returns: updated cytoscape node description
     """
 
-    dbPath = './client/src/projections/DCR_Projections.json'
+    dbPath = '../../client/src/projections/DCR_Projections.json'
     with open(dbPath) as json_data:
         DCRdb = json.load(json_data)
 
