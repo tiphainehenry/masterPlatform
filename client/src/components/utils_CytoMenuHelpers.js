@@ -5,36 +5,36 @@ const cytoMenuHelpers = {
     */
     updActivity: function () {
         console.log(this.state.elemClicked);
-            var id = this.state.elemClicked.id;
+        var id = this.state.elemClicked.id;
 
 
-            console.log('updating activity ' + id);
+        console.log('updating activity ' + id);
 
-            /// Marking
+        /// Marking
 
-            this.cy.getElementById(this.state.elemClicked.id).removeClass('included');
-            this.cy.getElementById(this.state.elemClicked.id).removeClass('executed');
-            this.cy.getElementById(this.state.elemClicked.id).removeClass('pending');
+        this.cy.getElementById(this.state.elemClicked.id).removeClass('included');
+        this.cy.getElementById(this.state.elemClicked.id).removeClass('executed');
+        this.cy.getElementById(this.state.elemClicked.id).removeClass('pending');
 
-            if (this.state.markings.executed === 1) {
-                this.cy.getElementById(this.state.elemClicked.id).addClass('executed');
-            }
-            if (this.state.markings.included === 1) {
-                this.cy.getElementById(this.state.elemClicked.id).addClass('included executable');
-            }
-            if (this.state.markings.pending === 1) {
-                this.cy.getElementById(this.state.elemClicked.id).addClass('pending executable');
-            }
+        if (this.state.markings.executed === 1) {
+            this.cy.getElementById(this.state.elemClicked.id).addClass('executed');
+        }
+        if (this.state.markings.included === 1) {
+            this.cy.getElementById(this.state.elemClicked.id).addClass('included executable');
+        }
+        if (this.state.markings.pending === 1) {
+            this.cy.getElementById(this.state.elemClicked.id).addClass('pending executable');
+        }
 
-            /// Name
-            if (this.state.elemClicked.classes.has("choreography")) {
-                this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
-            }
-            else {
-                this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.elemClicked.activityName + "\n" + this.state.tenantName);
-            }
+        /// Name
+        if (this.state.elemClicked.classes.has("choreography")) {
+            this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
+        }
+        else {
+            this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.elemClicked.activityName + "\n" + this.state.tenantName);
+        }
 
-        
+
     },
 
     /**
@@ -90,7 +90,8 @@ const cytoMenuHelpers = {
             group: 'nodes',
             data: {
                 id: label,
-                name: label
+                name: label,
+                nbr: this.state.newActivityCnt
             },
             classes: "subgraph"
         });
@@ -106,22 +107,23 @@ const cytoMenuHelpers = {
     addChoreoActivity: function () {
 
 
-            console.log('add choreography activity');
+        console.log('add choreography activity');
 
-            var label = 'NewActivity' + this.state.newActivityCnt;
+        var label = 'NewActivity' + this.state.newActivityCnt;
 
-            this.cy.add({
-                group: 'nodes',
-                data: {
-                    id: label,
-                    name: this.state.choreographyNames.sender + "\n" + label + "\n" + this.state.choreographyNames.receiver
-                },
-                classes: "subgraph choreography"
-            });
+        this.cy.add({
+            group: 'nodes',
+            data: {
+                id: label,
+                name: this.state.choreographyNames.sender + " " + label + " " + this.state.choreographyNames.receiver,
+                nbr: this.state.newActivityCnt
+            },
+            classes: "subgraph choreography"
+        });
 
-            this.setState({
-                newActivityCnt: this.state.newActivityCnt + 1
-            });
+        this.setState({
+            newActivityCnt: this.state.newActivityCnt + 1
+        });
 
     },
 
@@ -135,9 +137,10 @@ const cytoMenuHelpers = {
     */
     addRelation(type) {
 
-        // CHECK TYPE OF SOURCE AND TARGET: 
-
-        if ((this.state.source.type == 'subgraph') && (this.state.target.type == 'subgraph')) {
+        // CHECK SOURCE AND TARGET AND THEIR TYPE: 
+        if ((this.state.target.ID === '') || (this.state.source.ID === ''))
+            return
+        if ((this.state.source.type === 'subgraph') && (this.state.target.type === 'subgraph')) {
             // TWO SUBGRAPHS: OPERATIONS OK
             console.log('add relation ' + type);
             console.log('source ' + this.state.source.ID + ' ' + this.state.source.type);
@@ -152,10 +155,7 @@ const cytoMenuHelpers = {
                 },
                 classes: type,
             });
-        }
-
-        else {
-            // INSPECT CONDITIONS.
+        } else {   // INSPECT CONDITIONS.
             switch (type) {
                 case 'include':
                 case 'exclude':

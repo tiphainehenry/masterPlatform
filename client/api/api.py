@@ -293,7 +293,7 @@ def inputFileLaunch():
     data = file.readlines()
     print("-----------------------------------")
     processID = str(request.form['processID'])
-
+    print(data)
     updWithName(data, processID)
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}

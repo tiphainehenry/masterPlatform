@@ -16,7 +16,7 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import contextMenus from 'cytoscape-context-menus';
 import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
-import axios from 'axios';
+import axios, { post } from 'axios';
 import COSEBilkent from 'cytoscape-cose-bilkent';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
@@ -44,6 +44,8 @@ class CreationDeck extends React.Component {
     super(props);
     console.log(Object.keys(ProcessDB)[0]);
     console.log(ProcessDB[Object.keys(ProcessDB)[0]]);
+    this.loadToBC = React.createRef()
+
     this.state = {
       data: {},
       processID: 'p2',
@@ -111,6 +113,7 @@ class CreationDeck extends React.Component {
 
     this.getMenuStyle = getMenuStyle.bind(this);
 
+    this.fileUpload = this.fileUpload.bind(this);
     this.privateGraphUpd = this.privateGraphUpd.bind(this);
 
   }
@@ -129,17 +132,6 @@ class CreationDeck extends React.Component {
 
     this.setUpNodeListeners();
     this.setUpEdgeListeners();
-
-    var newActivityCnt = 0;
-    this.cy.nodes().forEach(function (ele) {
-      if (ele['_private']['data']['id'].includes('NewActivity')) {
-        newActivityCnt++;
-      }
-
-    });
-    this.setState({
-      newActivityCnt: newActivityCnt
-    });
 
   };
 
@@ -221,12 +213,8 @@ class CreationDeck extends React.Component {
         });
       }
       else if (event.target['_private']['classes'].has('selected')) {
-        this.cy.getElementById(event.target['_private']['data']['id']).removeClass('selected');
-        if (event.target['_private']['data']['id'] === this.state.source.ID) {
-          this.setState({ source: { ID: "", type: "" }, numSelected: 0 })
-        } else {
-          this.setState({ target: { ID: "", type: "" }, numSelected: 1 })
-        }
+        this.cy.$('selected').removeClass('selected')
+        this.setState({ source: { ID: "", type: "" }, target: { ID: "", type: "" }, numSelected: 0 })
       }
       else {
         this.setState({ numSelected: 0 })
@@ -261,6 +249,40 @@ class CreationDeck extends React.Component {
     })
   }
 
+  fileUpload(file) {
+    const url = `http://localhost:5000/inputFile`;
+
+    var processNum = Object.keys(ProcessDB).length + 1;
+    var processID = 'p' + processNum;
+
+    this.setState({ processID: processID });
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('processID', processID);
+
+
+    axios.post(`http://localhost:5000/inputFile`).then(
+      (response) => {
+        var result = response.data;
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+
+    return post(url, formData, config)
+  }
+
   /**
    * Switcher function to save graphs (whether private storage or BC trigger for negociation).
    * We check the graph subgraph type to assess if we need to trigger the SC negociation stage. 
@@ -279,6 +301,7 @@ class CreationDeck extends React.Component {
       var newData = [];
 
       // retrieve data 
+
       this.cy.elements().forEach(function (ele, id) {
         console.log(ele)
         var newEle = {}
@@ -286,84 +309,90 @@ class CreationDeck extends React.Component {
           if (ele['_private']['classes'].has("choreography")) {
             var tmp = ele['_private']['data']['name'].split(' ')
             newEle = {
-              "name": "e" + id++ + "[" + tmp[1] + " src=" + tmp[0] + " trg=" + tmp[2] + "]"
+              "name": "e" + id++ + "[" + tmp[1] + " src=" + tmp[0] + " trg=" + tmp[2] + "]\n"
             }
           } else {
 
             var tmp = ele['_private']['data']['name'].split('\n')
             newEle = {
-              "name": tmp[0] + " [role=" + tmp[1] + "]",
+              "name": '"' + tmp[0] + '"' +  " [role=" + tmp[1] + "]\n",
             };
           }
         } else if (ele['_private']['group'] === "edges") {
-          console.log("edges");
-          var src = ele['_private']['data']['source']
-          var trg = ele['_private']['data']['target']
+          var src = this.findName(ele['_private']['data']['source'])
+          var trg = this.findName(ele['_private']['data']['target'])
           var link = this.state.edges[ele['_private']['classes'].values().next().value]
-          newEle = { "link": src + link + trg }
+          console.log(src + link + trg)
+          newEle = { "link": src + link + trg + '\n' }
         }
         newData.push(newEle);
       }.bind(this));
-      this.fileUpload(this.createFile(newData))
+      this.createFile(newData)
     }
     else {
       console.log('save aborted');
     }
   }
 
+  /**
+   * Compares IDs and names of the edges to detect inconsistants names
+   * 
+   */
+  findName(id) {
+    const node = this.cy.getElementById(id)
+    if (node["_private"]["classes"].has("choreography")) {
+      const name = node["_private"]["data"]["name"].split(' ')
+      console.log(node["_private"]["data"]["name"]);
+      console.log(name);
+      return (name[2])
+    } else {
+      const name = node["_private"]["data"]["name"].split('\n')
+      console.log(name[0]);
+      return (name[0])
+    }
+  }
+
+  /**
+     * Create an input File to send to the API
+     * 
+     */
   createFile(data) {
     var arrayEvent = []
     var arrayLink = []
 
     data.forEach(line => {
-      if (line.hasOwnProperty('name')) 
+      if (line.hasOwnProperty('name'))
         arrayEvent.push(line['name'])
       else
         arrayLink.push(line['link'])
     })
     const newdata = arrayEvent.concat(arrayLink)
+    console.log(newdata)
+    const file = new File(newdata, 'creationDeck.txt', { type: "text/plain" })
+    this.fileUpload(file)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data === "ok") {
+          // this.loadToBC.current.handleCreateWkf()
+          console.log("is ok loadtoBC");
+        }
+      })
     return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
   }
 
-  fileUpload(file) {
-    const url = `http://localhost:5000/inputFile`;
-
-    var processNum = Object.keys(ProcessDB).length + 2;
-    var processID = 'p' + processNum;
-
-    this.setState({ processID: processID });
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('processID', processID);
-    for (var k of formData.values()) {
-      console.log(k)
-    }
-
-    axios.post(`http://localhost:5000/inputFile`).then(
-      (response) => {
-        var result = response.data;
-        console.log(result);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
   ///// Render
 
   render() {
+
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
-    console.log("state");
-    console.log(this.state);
     return <>
       <div>
         <Header />
         <Container fluid >
           <Row>
-            <LoadToBC></LoadToBC>
+            <LoadToBC ref={this.loadToBC}></LoadToBC>
           </Row>
           <Row >
             <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>

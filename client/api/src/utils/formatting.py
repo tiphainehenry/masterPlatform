@@ -213,6 +213,8 @@ def getRoleList(e):
     """
 
     # remove comments
+    print("rolelist")
+    print(e)
     events = []
     for elem in e:
         if((elem[0] != '#') and (getRole(elem) not in events)):

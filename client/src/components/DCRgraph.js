@@ -116,7 +116,7 @@ class DCRgraph extends React.Component {
       );
 
       var wkID = this.props.processName.replace('p', '') - 1;
-      console.log(await instance.methods.getIncluded(wkID));
+      console.log(instance.methods);
       const inclVector = await instance.methods.getIncluded(wkID).call();
       console.log("1");
       const execVector = await instance.methods.getExecuted(wkID).call();

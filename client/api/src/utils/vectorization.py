@@ -94,7 +94,12 @@ def generateRelationMatrix(relationType, eventsList, relations):
             relationList.append(r_elems)
 
     # update matrix
+    print("toto")
+    print(relationList)
+    print(eventsList)
     for relation in relationList:
+        print("pppp")
+        print(relation)
         relationMatrix[eventsList.index(
             relation['r_from'])][eventsList.index(relation['r_to'])] = 1
 
@@ -121,6 +126,9 @@ def generateRelationMatrices(chunks):
 
     relations = chunks['linkages']
     events = chunks['events'] + chunks['internalEvents']
+
+    print("toto")
+    print(chunks)
 
     if relations == []:
         return [], [0, 0, 0, 0, 0]
@@ -261,7 +269,8 @@ def vectorize(data, filename):
     :param filename: filename to save vectorization
 
     """
-
+    print("test")
+    print(data)
     chunks, roles = extractChunks(data)
 
     relations, fullRelations = generateRelationMatrices(chunks)
