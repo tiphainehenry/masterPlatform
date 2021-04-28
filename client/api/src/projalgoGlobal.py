@@ -33,7 +33,11 @@ def generateGlobalProjection(data, filename):
     """
 
     chunks, roles = extractChunks(data)
-
+    print("2.1/ chunks")
+    print(chunks)
+    print("2.2/ roles")
+    print(roles)
+    
     # Extract events
     globalEvents = []
     globEv = []
@@ -92,11 +96,11 @@ def projectGlobal(processID, data, target):
     """ 
     this_folder = os.path.dirname(os.path.abspath(__file__))
     print('[INFO] Starting Global Projection')
-    print(os.path.join(target,"dcrTexts.json"))
     projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json"))
+    print("3/projection ")
+    print(projection)
+    print("4/ externalIDS")
+    print(externalIds)
     generateGraph(processID, projection, externalIds, target, "Global")
     vectorize(projection, os.path.join(target,"temp_vectGlobal"))
-    # projection, externalIds = generateGlobalProjection(data, os.path.join(this_folder, '..\..\src\projections\dcrTexts.json')) 
-    # generateGraph(processID, projection, externalIds, this_folder + "\..\..\src\projections\\", "Global")
-    # vectorize(projection, os.path.join(this_folder + "\..\..\src\projections\\" ,"temp_vectGlobal"))
     print('[INFO] Global Projection generated')

@@ -58,7 +58,8 @@ def updWithName(dataTxt, pi):
     print(dataPath)
 
     _data = removeGroups(dataTxt)
-
+    print("2/ updWithName  -----------------------")
+    print(dataTxt)
     projectGlobal(pi, dataTxt, target)
 
     with open(dataPath) as json_file:

@@ -137,7 +137,8 @@ def extractChunks(data):
     :returns: dict description of the dcr text. Dict keys: {events,internalEvents,linkages}
     
     """
-
+    print("2.3/ chunk's data")
+    print(data)
     events, internalEvents = [], []
     groupings, linkages = [], []
     roles = []
@@ -146,6 +147,8 @@ def extractChunks(data):
     for line in data:
         if (line[0] !=  '#'):
             if ('src' in line) and ('tgt' in line):
+                print("FOUND A CHOREO")
+                print(line)
                 lineclean = line.replace('= ', '=').replace(' =', '=').replace(' = ', '=')
                 events.append(lineclean)
                 for elem in line.split(' '):

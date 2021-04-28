@@ -301,21 +301,28 @@ class CreationDeck extends React.Component {
       var newData = [];
 
       // retrieve data 
-
       this.cy.elements().forEach(function (ele, id) {
         console.log(ele)
+        console.log("id = " + id);
         var newEle = {}
+
+        console.log("then id = " +id);
+
         if (ele['_private']['group'] === "nodes") {
           if (ele['_private']['classes'].has("choreography")) {
+            id++
             var tmp = ele['_private']['data']['name'].split(' ')
+            tmp = tmp.filter(e => e !== "")
             newEle = {
-              "name": "e" + id++ + "[" + tmp[1] + " src=" + tmp[0] + " trg=" + tmp[2] + "]\n"
+              "name": "e" + id + "[" + tmp[1] + " src=" + tmp[0] + " tgt=" + tmp[2] + "]\n"
             }
+            console.log("name is = e"+ id)
+            ele['_private']['data']['name'] = "e"+id
           } else {
 
             var tmp = ele['_private']['data']['name'].split('\n')
             newEle = {
-              "name": '"' + tmp[0] + '"' +  " [role=" + tmp[1] + "]\n",
+              "name": '"' + tmp[0] + '"' + " [role=" + tmp[1] + "]\n",
             };
           }
         } else if (ele['_private']['group'] === "edges") {
@@ -327,7 +334,7 @@ class CreationDeck extends React.Component {
         }
         newData.push(newEle);
       }.bind(this));
-      this.createFile(newData)
+      this.createFile( newData)
     }
     else {
       console.log('save aborted');
@@ -338,13 +345,16 @@ class CreationDeck extends React.Component {
    * Compares IDs and names of the edges to detect inconsistants names
    * 
    */
+  nameToId() {
+
+  }
   findName(id) {
     const node = this.cy.getElementById(id)
     if (node["_private"]["classes"].has("choreography")) {
-      const name = node["_private"]["data"]["name"].split(' ')
-      console.log(node["_private"]["data"]["name"]);
-      console.log(name);
-      return (name[2])
+      // var name = node["_private"]["data"]["name"] + ""
+      // name = name.substr(0, name.indexOf('['))
+      // console.log(name);
+      return (node["_private"]["data"]["name"] + "")
     } else {
       const name = node["_private"]["data"]["name"].split('\n')
       console.log(name[0]);
@@ -357,6 +367,7 @@ class CreationDeck extends React.Component {
      * 
      */
   createFile(data) {
+    console.log(data)
     var arrayEvent = []
     var arrayLink = []
 
@@ -373,7 +384,7 @@ class CreationDeck extends React.Component {
       .then((response) => {
         console.log(response.data);
         if (response.data === "ok") {
-          // this.loadToBC.current.handleCreateWkf()
+          this.loadToBC.current.handleCreateWkf()
           console.log("is ok loadtoBC");
         }
       })

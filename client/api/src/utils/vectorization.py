@@ -127,7 +127,7 @@ def generateRelationMatrices(chunks):
     relations = chunks['linkages']
     events = chunks['events'] + chunks['internalEvents']
 
-    print("toto")
+    print("toto2")
     print(chunks)
 
     if relations == []:

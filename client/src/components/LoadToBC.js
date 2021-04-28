@@ -92,8 +92,6 @@ class LoadToBC extends React.Component {
 
       this.setState({ web3, accounts, contract: instance });
 
-      console.log('ok');
-
       // Checking if contract already populated
       const { contract } = this.state;
       this.setState({ wkState: 'Create Global Workflow OnChain.' })
