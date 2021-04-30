@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-
+import '../style/App.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import activityUpdHelpers from './utils_ActivityUpdHelpers';
 import cytoMenuHelpers from './utils_CytoMenuHelpers';
 import { getMenuStyle } from './utils_ContextMenuHelpers';
@@ -128,6 +130,8 @@ class CreationDeck extends React.Component {
     console.log(this.cy)
     this.cy.fit();
     this.cy.remove('nodes')
+    // this.addLocalActivity()
+    // this.addChoreoActivity()
     this.cy.contextMenus(this.getMenuStyle());
 
     this.setUpNodeListeners();
@@ -201,11 +205,14 @@ class CreationDeck extends React.Component {
 
         // update states
         this.cy.getElementById(event.target['_private']['data']['id']).addClass('selected');
-
+        var name = event.target['_private']['data']['name'].split(' ')
+        if (name.length > 1) {
+          name = name[1]
+        }
         this.setState({
           elemClicked: {
             id: event.target['_private']['data']['id'],
-            activityName: event.target['_private']['data']['name'],
+            activityName: name,
             classes: event.target['_private']['classes'],
             type: event.target['_private']['group']
           },
@@ -295,8 +302,10 @@ class CreationDeck extends React.Component {
    * 
    */
   privateGraphUpd() {
-
-    if (window.confirm('Confirm new graph version?')) {
+    console.log(this.cy)
+    if (this.cy) {
+      window.alert('Graph is empty')
+    } else if (window.confirm('Confirm new graph version?')) {
 
       var newData = [];
 
@@ -306,7 +315,7 @@ class CreationDeck extends React.Component {
         console.log("id = " + id);
         var newEle = {}
 
-        console.log("then id = " +id);
+        console.log("then id = " + id);
 
         if (ele['_private']['group'] === "nodes") {
           if (ele['_private']['classes'].has("choreography")) {
@@ -316,8 +325,8 @@ class CreationDeck extends React.Component {
             newEle = {
               "name": "e" + id + "[" + tmp[1] + " src=" + tmp[0] + " tgt=" + tmp[2] + "]\n"
             }
-            console.log("name is = e"+ id)
-            ele['_private']['data']['name'] = "e"+id
+            console.log("name is = e" + id)
+            ele['_private']['data']['name'] = "e" + id
           } else {
 
             var tmp = ele['_private']['data']['name'].split('\n')
@@ -334,7 +343,7 @@ class CreationDeck extends React.Component {
         }
         newData.push(newEle);
       }.bind(this));
-      this.createFile( newData)
+      this.createFile(newData)
     }
     else {
       console.log('save aborted');
@@ -356,7 +365,7 @@ class CreationDeck extends React.Component {
       // console.log(name);
       return (node["_private"]["data"]["name"] + "")
     } else {
-      const name = node["_private"]["data"]["name"].split('\n')
+      const name = node["_private"]["data"]["name"].split(' ')
       console.log(name[0]);
       return (name[0])
     }
@@ -391,6 +400,16 @@ class CreationDeck extends React.Component {
     return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
   }
 
+
+  switchDest() {
+    const tmp = this.state.choreographyNames.sender
+    this.setState({
+      choreographyNames: {
+        sender: this.state.choreographyNames.receiver,
+        receiver: tmp
+      }
+    })
+  }
   ///// Render
 
   render() {
@@ -457,6 +476,8 @@ class CreationDeck extends React.Component {
 
                                 <Form.Label>Choreography Sender </Form.Label>
                                 <Form.Control type="address" onChange={this.handleSender} placeholder={'enter sender name'} value={this.state.choreographyNames.sender} />
+                                <br />
+                                <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
                                 <br />
                                 <Form.Label>Choreography Receiver</Form.Label>
                                 <Form.Control type="address" onChange={this.handleReceiver} placeholder={'enter receiver name'} value={this.state.choreographyNames.receiver} />

@@ -6,12 +6,8 @@ const cytoMenuHelpers = {
     updActivity: function () {
         console.log(this.state.elemClicked);
         var id = this.state.elemClicked.id;
-
-
         console.log('updating activity ' + id);
-
         /// Marking
-
         this.cy.getElementById(this.state.elemClicked.id).removeClass('included');
         this.cy.getElementById(this.state.elemClicked.id).removeClass('executed');
         this.cy.getElementById(this.state.elemClicked.id).removeClass('pending');
@@ -26,14 +22,21 @@ const cytoMenuHelpers = {
             this.cy.getElementById(this.state.elemClicked.id).addClass('pending executable');
         }
 
-        /// Name
+        /// Remove space in name and assign Name
+        const tmp = this.cy.getElementById(this.state.elemClicked.id)
+        console.log(tmp);
+        if (this.state.elemClicked.activityName !== tmp.data('properName')) {
+            console.log("verif");
+            console.log(tmp.data('name').split(' ')[1]);
+            this.setState({ elemeClicked: { activityName: tmp.data('name').split(' ')[1] } })
+        }
         if (this.state.elemClicked.classes.has("choreography")) {
-            this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
+            tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
         }
         else {
-            this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.elemClicked.activityName + "\n" + this.state.tenantName);
+            tmp.data('name', this.state.tenantName + ' ' + this.state.elemClicked.activityName);
         }
-
+        tmp.data('properName', tmp.data('name'));
 
     },
 
@@ -84,14 +87,14 @@ const cytoMenuHelpers = {
     */
     addLocalActivity: function () {
         console.log('add local activity');
-
         var label = 'NewActivity' + this.state.newActivityCnt;
         this.cy.add({
             group: 'nodes',
             data: {
                 id: label,
                 name: label,
-                nbr: this.state.newActivityCnt
+                nbr: this.state.newActivityCnt,
+                properName: label
             },
             classes: "subgraph"
         });
@@ -105,7 +108,6 @@ const cytoMenuHelpers = {
     * add choreography event
     */
     addChoreoActivity: function () {
-
 
         console.log('add choreography activity');
 
@@ -124,7 +126,6 @@ const cytoMenuHelpers = {
         this.setState({
             newActivityCnt: this.state.newActivityCnt + 1
         });
-
     },
 
 

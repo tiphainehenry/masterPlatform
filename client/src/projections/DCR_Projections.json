@@ -3454,27 +3454,57 @@
       "vect": {
         "markings": [
           {
+            "include": 0, 
             "executed": 0, 
-            "include": 1, 
             "id": "e1s", 
             "pending": 0
           }, 
           {
-            "executed": 0, 
             "include": 0, 
+            "executed": 0, 
             "id": "e2r", 
             "pending": 0
           }, 
           {
+            "include": 0, 
             "executed": 0, 
-            "include": 1, 
-            "id": "NewActivity2", 
+            "id": "e4r", 
             "pending": 0
           }, 
           {
-            "executed": 0, 
             "include": 1, 
-            "id": "NewActivity3", 
+            "executed": 1, 
+            "id": "ReceiveInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "ScanInvoice", 
+            "pending": 1
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "CreateInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "FixInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "CheckInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "PayInvoice", 
             "pending": 0
           }
         ], 
@@ -3485,21 +3515,96 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
                 0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -3511,21 +3616,96 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
                 0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -3537,21 +3717,96 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
                 0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -3563,15 +3818,74 @@
                 0.0, 
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -3581,6 +3895,22 @@
                 0.0, 
                 1.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ]
             ], 
@@ -3589,21 +3919,96 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
                 0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -3615,72 +4020,268 @@
       }, 
       "data": [
         {
+          "group": "nodes", 
+          "classes": "external choreography", 
           "data": {
             "id": "e1s", 
-            "name": "!(NewActivity0, A-->B)"
-          }, 
-          "classes": "external choreography", 
-          "group": "nodes"
+            "name": "!(IssueInvoice, Admin-->Responsible)"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "external choreography", 
           "data": {
             "id": "e2r", 
-            "name": "?(NewActivity1, B-->A)"
-          }, 
+            "name": "?(ResendInvoice, Responsible-->Admin)"
+          }
+        }, 
+        {
+          "group": "nodes", 
           "classes": "external choreography", 
-          "group": "nodes"
+          "data": {
+            "id": "e4r", 
+            "name": "?(ConfirmPayment, Finance-->Admin)"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "included  executable executed", 
           "data": {
-            "id": "NewActivity2", 
-            "name": "NewActivity2"
-          }, 
-          "classes": "included executable", 
-          "group": "nodes"
+            "id": "ReceiveInvoice", 
+            "name": "ReceiveInvoice"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "included  executable pending executable", 
           "data": {
-            "id": "NewActivity3", 
-            "name": "NewActivity3"
-          }, 
+            "id": "ScanInvoice", 
+            "name": "ScanInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "", 
+          "data": {
+            "id": "CreateInvoice", 
+            "name": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "", 
+          "data": {
+            "id": "FixInvoice", 
+            "name": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
           "classes": "external choreography", 
-          "group": "nodes"
+          "data": {
+            "id": "CheckInvoice", 
+            "name": "CheckInvoice"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "external choreography", 
           "data": {
-            "source": "NewActivity3", 
-            "id": "NewActivity3_e2r_condition", 
-            "target": "e2r"
-          }, 
+            "id": "PayInvoice", 
+            "name": "PayInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
           "classes": "condition", 
-          "group": "edges"
+          "data": {
+            "source": "ReceiveInvoice", 
+            "id": "ReceiveInvoice_ScanInvoice_condition", 
+            "target": "ScanInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "ReceiveInvoice", 
+            "id": "ReceiveInvoice_ScanInvoice_response", 
+            "target": "ScanInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "ScanInvoice", 
+            "id": "ReceiveInvoice_ScanInvoice_response_back", 
+            "target": "ReceiveInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "ScanInvoice", 
+            "id": "ScanInvoice_CreateInvoice_condition", 
+            "target": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1s_condition", 
+            "target": "e1s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1s_response", 
+            "target": "e1s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e1s", 
+            "id": "CreateInvoice_e1s_response_back", 
+            "target": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "include", 
+          "data": {
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1s_include", 
+            "target": "e1s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1s_response", 
+            "target": "e1s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e1s", 
+            "id": "FixInvoice_e1s_response_back", 
+            "target": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e2r", 
+            "id": "e2r_FixInvoice_condition", 
+            "target": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2r_condition", 
+            "target": "e2r"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2r_response", 
+            "target": "e2r"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e2r", 
+            "id": "CheckInvoice_e2r_response_back", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "PayInvoice", 
+            "id": "PayInvoice_e4r_condition", 
+            "target": "e4r"
+          }
         }
       ], 
       "init": {
         "vect": {
           "markings": [
             {
+              "include": 0, 
               "executed": 0, 
-              "include": 1, 
               "id": "e1s", 
               "pending": 0
             }, 
             {
-              "executed": 0, 
               "include": 0, 
+              "executed": 0, 
               "id": "e2r", 
               "pending": 0
             }, 
             {
+              "include": 0, 
               "executed": 0, 
-              "include": 1, 
-              "id": "NewActivity2", 
+              "id": "e4r", 
               "pending": 0
             }, 
             {
-              "executed": 0, 
               "include": 1, 
-              "id": "NewActivity3", 
+              "executed": 0, 
+              "id": "ReceiveInvoice", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "ScanInvoice", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "CreateInvoice", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "FixInvoice", 
+              "pending": 0
+            }, 
+            {
+              "include": 1, 
+              "executed": 0, 
+              "id": "CheckInvoice", 
+              "pending": 0
+            }, 
+            {
+              "include": 1, 
+              "executed": 0, 
+              "id": "PayInvoice", 
               "pending": 0
             }
           ], 
@@ -3691,21 +4292,96 @@
                   0.0, 
                   0.0, 
                   0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
-                  0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
                   0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0, 
@@ -3717,21 +4393,96 @@
                   0.0, 
                   0.0, 
                   0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
-                  0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
                   0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0, 
@@ -3743,21 +4494,96 @@
                   0.0, 
                   0.0, 
                   0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
-                  0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
                   0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0, 
@@ -3769,15 +4595,74 @@
                   0.0, 
                   0.0, 
                   0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
                   0.0, 
                   0.0, 
                   0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  1.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0, 
@@ -3787,6 +4672,22 @@
                   0.0, 
                   1.0, 
                   0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
                   0.0
                 ]
               ], 
@@ -3795,21 +4696,96 @@
                   0.0, 
                   0.0, 
                   0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
-                  0.0, 
-                  0.0
-                ], 
-                [
                   0.0, 
                   0.0, 
                   0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0, 
@@ -3821,45 +4797,1144 @@
         }, 
         "data": [
           {
+            "group": "nodes", 
+            "classes": "external choreography", 
             "data": {
               "id": "e1s", 
-              "name": "!(NewActivity0, A-->B)"
-            }, 
-            "classes": "external choreography", 
-            "group": "nodes"
+              "name": "!(IssueInvoice, Admin-->Responsible)"
+            }
           }, 
           {
+            "group": "nodes", 
+            "classes": "external choreography", 
             "data": {
               "id": "e2r", 
-              "name": "?(NewActivity1, B-->A)"
-            }, 
-            "classes": "external choreography", 
-            "group": "nodes"
+              "name": "?(ResendInvoice, Responsible-->Admin)"
+            }
           }, 
           {
+            "group": "nodes", 
+            "classes": "external choreography", 
             "data": {
-              "id": "NewActivity2", 
-              "name": "NewActivity2"
-            }, 
+              "id": "e4r", 
+              "name": "?(ConfirmPayment, Finance-->Admin)"
+            }
+          }, 
+          {
+            "group": "nodes", 
             "classes": "included executable", 
-            "group": "nodes"
+            "data": {
+              "id": "ReceiveInvoice", 
+              "name": "ReceiveInvoice"
+            }
           }, 
           {
+            "group": "nodes", 
             "data": {
-              "id": "NewActivity3", 
-              "name": "NewActivity3"
-            }, 
+              "id": "ScanInvoice", 
+              "name": "ScanInvoice"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "data": {
+              "id": "CreateInvoice", 
+              "name": "CreateInvoice"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "data": {
+              "id": "FixInvoice", 
+              "name": "FixInvoice"
+            }
+          }, 
+          {
+            "group": "nodes", 
             "classes": "external choreography", 
-            "group": "nodes"
+            "data": {
+              "id": "CheckInvoice", 
+              "name": "CheckInvoice"
+            }
           }, 
           {
+            "group": "nodes", 
+            "classes": "external choreography", 
             "data": {
-              "source": "NewActivity3", 
-              "id": "NewActivity3_e2r_condition", 
-              "target": "e2r"
-            }, 
+              "id": "PayInvoice", 
+              "name": "PayInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
             "classes": "condition", 
-            "group": "edges"
+            "data": {
+              "source": "ReceiveInvoice", 
+              "id": "ReceiveInvoice_ScanInvoice_condition", 
+              "target": "ScanInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "ReceiveInvoice", 
+              "id": "ReceiveInvoice_ScanInvoice_response", 
+              "target": "ScanInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "ScanInvoice", 
+              "id": "ReceiveInvoice_ScanInvoice_response_back", 
+              "target": "ReceiveInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "ScanInvoice", 
+              "id": "ScanInvoice_CreateInvoice_condition", 
+              "target": "CreateInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "CreateInvoice", 
+              "id": "CreateInvoice_e1s_condition", 
+              "target": "e1s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "CreateInvoice", 
+              "id": "CreateInvoice_e1s_response", 
+              "target": "e1s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "e1s", 
+              "id": "CreateInvoice_e1s_response_back", 
+              "target": "CreateInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "include", 
+            "data": {
+              "source": "FixInvoice", 
+              "id": "FixInvoice_e1s_include", 
+              "target": "e1s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "FixInvoice", 
+              "id": "FixInvoice_e1s_response", 
+              "target": "e1s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "e1s", 
+              "id": "FixInvoice_e1s_response_back", 
+              "target": "FixInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "e2r", 
+              "id": "e2r_FixInvoice_condition", 
+              "target": "FixInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e2r_condition", 
+              "target": "e2r"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e2r_response", 
+              "target": "e2r"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "e2r", 
+              "id": "CheckInvoice_e2r_response_back", 
+              "target": "CheckInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "PayInvoice", 
+              "id": "PayInvoice_e4r_condition", 
+              "target": "e4r"
+            }
+          }
+        ]
+      }, 
+      "exec": {
+        "execLogs": [
+          {
+            "status": "executed", 
+            "task": "ReceiveInvoice", 
+            "timestamp_endTask": "04/29/2021, 22:58:26", 
+            "timestamp_startTask": "29/04/2021 \u00e0 22:58:26", 
+            "data": "Test", 
+            "id": 0
+          }
+        ]
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "e1r", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "e2s", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "e3s", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "CheckInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "CreateInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "FixInvoice", 
+            "pending": 0
+          }
+        ], 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                1.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                1.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ]
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "external choreography", 
+          "data": {
+            "id": "e1r", 
+            "name": "?(IssueInvoice, Admin-->Responsible)"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "external choreography", 
+          "data": {
+            "id": "e2s", 
+            "name": "!(ResendInvoice, Responsible-->Admin)"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "external choreography", 
+          "data": {
+            "id": "e3s", 
+            "name": "!(ApproveInvoice, Responsible-->Finance)"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "CheckInvoice", 
+            "name": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "external choreography", 
+          "data": {
+            "id": "CreateInvoice", 
+            "name": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "external choreography", 
+          "data": {
+            "id": "FixInvoice", 
+            "name": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e1r", 
+            "id": "e1r_CheckInvoice_condition", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2s_condition", 
+            "target": "e2s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2s_response", 
+            "target": "e2s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e2s", 
+            "id": "CheckInvoice_e2s_response_back", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3s_condition", 
+            "target": "e3s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3s_response", 
+            "target": "e3s"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e3s", 
+            "id": "CheckInvoice_e3s_response_back", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1r_condition", 
+            "target": "e1r"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1r_response", 
+            "target": "e1r"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e1r", 
+            "id": "CreateInvoice_e1r_response_back", 
+            "target": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "include", 
+          "data": {
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1r_include", 
+            "target": "e1r"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1r_response", 
+            "target": "e1r"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e1r", 
+            "id": "FixInvoice_e1r_response_back", 
+            "target": "FixInvoice"
+          }
+        }
+      ], 
+      "init": {
+        "vect": {
+          "markings": [
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "e1r", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "e2s", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "e3s", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "CheckInvoice", 
+              "pending": 0
+            }, 
+            {
+              "include": 1, 
+              "executed": 0, 
+              "id": "CreateInvoice", 
+              "pending": 0
+            }, 
+            {
+              "include": 1, 
+              "executed": 0, 
+              "id": "FixInvoice", 
+              "pending": 0
+            }
+          ], 
+          "relations": [
+            {
+              "exclude": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "include": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "response": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  1.0, 
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "condition": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  1.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  1.0, 
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "milestone": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ]
+            }
+          ]
+        }, 
+        "data": [
+          {
+            "group": "nodes", 
+            "classes": "external choreography", 
+            "data": {
+              "id": "e1r", 
+              "name": "?(IssueInvoice, Admin-->Responsible)"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "classes": "external choreography", 
+            "data": {
+              "id": "e2s", 
+              "name": "!(ResendInvoice, Responsible-->Admin)"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "classes": "external choreography", 
+            "data": {
+              "id": "e3s", 
+              "name": "!(ApproveInvoice, Responsible-->Finance)"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "data": {
+              "id": "CheckInvoice", 
+              "name": "CheckInvoice"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "classes": "external choreography", 
+            "data": {
+              "id": "CreateInvoice", 
+              "name": "CreateInvoice"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "classes": "external choreography", 
+            "data": {
+              "id": "FixInvoice", 
+              "name": "FixInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "e1r", 
+              "id": "e1r_CheckInvoice_condition", 
+              "target": "CheckInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e2s_condition", 
+              "target": "e2s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e2s_response", 
+              "target": "e2s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "e2s", 
+              "id": "CheckInvoice_e2s_response_back", 
+              "target": "CheckInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e3s_condition", 
+              "target": "e3s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e3s_response", 
+              "target": "e3s"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "e3s", 
+              "id": "CheckInvoice_e3s_response_back", 
+              "target": "CheckInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "condition", 
+            "data": {
+              "source": "CreateInvoice", 
+              "id": "CreateInvoice_e1r_condition", 
+              "target": "e1r"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "CreateInvoice", 
+              "id": "CreateInvoice_e1r_response", 
+              "target": "e1r"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "e1r", 
+              "id": "CreateInvoice_e1r_response_back", 
+              "target": "CreateInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "include", 
+            "data": {
+              "source": "FixInvoice", 
+              "id": "FixInvoice_e1r_include", 
+              "target": "e1r"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response", 
+            "data": {
+              "source": "FixInvoice", 
+              "id": "FixInvoice_e1r_response", 
+              "target": "e1r"
+            }
+          }, 
+          {
+            "group": "edges", 
+            "classes": "response back", 
+            "data": {
+              "source": "e1r", 
+              "id": "FixInvoice_e1r_response_back", 
+              "target": "FixInvoice"
+            }
           }
         ]
       }, 
@@ -3867,25 +5942,31 @@
         "execLogs": []
       }
     }, 
-    "r2": {
+    "r3": {
       "vect": {
         "markings": [
           {
+            "include": 0, 
             "executed": 0, 
+            "id": "e3r", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "e4s", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "PayInvoice", 
+            "pending": 0
+          }, 
+          {
             "include": 1, 
-            "id": "e1r", 
-            "pending": 0
-          }, 
-          {
             "executed": 0, 
-            "include": 0, 
-            "id": "e2s", 
-            "pending": 0
-          }, 
-          {
-            "executed": 0, 
-            "include": 0, 
-            "id": "NewActivity3", 
+            "id": "CheckInvoice", 
             "pending": 0
           }
         ], 
@@ -3895,14 +5976,23 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -3912,14 +6002,23 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -3929,14 +6028,23 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
-                1.0
+                0.0, 
+                0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -3946,9 +6054,11 @@
               [
                 0.0, 
                 0.0, 
-                1.0
+                1.0, 
+                0.0
               ], 
               [
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -3956,6 +6066,13 @@
               [
                 0.0, 
                 1.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
                 0.0
               ]
             ], 
@@ -3963,14 +6080,23 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -3981,84 +6107,107 @@
       }, 
       "data": [
         {
-          "data": {
-            "id": "e1r", 
-            "name": "?(NewActivity0, A-->B)"
-          }, 
+          "group": "nodes", 
           "classes": "external choreography", 
-          "group": "nodes"
+          "data": {
+            "id": "e3r", 
+            "name": "?(ApproveInvoice, Responsible-->Finance)"
+          }
         }, 
         {
-          "data": {
-            "id": "e2s", 
-            "name": "!(NewActivity1, B-->A)"
-          }, 
+          "group": "nodes", 
           "classes": "external choreography", 
-          "group": "nodes"
+          "data": {
+            "id": "e4s", 
+            "name": "!(ConfirmPayment, Finance-->Admin)"
+          }
         }, 
         {
+          "group": "nodes", 
           "data": {
-            "id": "NewActivity3", 
-            "name": "NewActivity3"
-          }, 
-          "group": "nodes"
+            "id": "PayInvoice", 
+            "name": "PayInvoice"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "external choreography", 
           "data": {
-            "source": "e1r", 
-            "id": "e1r_NewActivity3_condition", 
-            "target": "NewActivity3"
-          }, 
+            "id": "CheckInvoice", 
+            "name": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
           "classes": "condition", 
-          "group": "edges"
+          "data": {
+            "source": "e3r", 
+            "id": "e3r_PayInvoice_condition", 
+            "target": "PayInvoice"
+          }
         }, 
         {
-          "data": {
-            "source": "NewActivity3", 
-            "id": "NewActivity3_e2s_condition", 
-            "target": "e2s"
-          }, 
+          "group": "edges", 
           "classes": "condition", 
-          "group": "edges"
+          "data": {
+            "source": "PayInvoice", 
+            "id": "PayInvoice_e4s_condition", 
+            "target": "e4s"
+          }
         }, 
         {
+          "group": "edges", 
+          "classes": "condition", 
           "data": {
-            "source": "e2s", 
-            "id": "e2s_NewActivity3_response", 
-            "target": "NewActivity3"
-          }, 
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3r_condition", 
+            "target": "e3r"
+          }
+        }, 
+        {
+          "group": "edges", 
           "classes": "response", 
-          "group": "edges"
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3r_response", 
+            "target": "e3r"
+          }
         }, 
         {
-          "data": {
-            "source": "NewActivity3", 
-            "id": "e2s_NewActivity3_response_back", 
-            "target": "e2s"
-          }, 
+          "group": "edges", 
           "classes": "response back", 
-          "group": "edges"
+          "data": {
+            "source": "e3r", 
+            "id": "CheckInvoice_e3r_response_back", 
+            "target": "CheckInvoice"
+          }
         }
       ], 
       "init": {
         "vect": {
           "markings": [
             {
+              "include": 0, 
               "executed": 0, 
+              "id": "e3r", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "e4s", 
+              "pending": 0
+            }, 
+            {
+              "include": 0, 
+              "executed": 0, 
+              "id": "PayInvoice", 
+              "pending": 0
+            }, 
+            {
               "include": 1, 
-              "id": "e1r", 
-              "pending": 0
-            }, 
-            {
               "executed": 0, 
-              "include": 0, 
-              "id": "e2s", 
-              "pending": 0
-            }, 
-            {
-              "executed": 0, 
-              "include": 0, 
-              "id": "NewActivity3", 
+              "id": "CheckInvoice", 
               "pending": 0
             }
           ], 
@@ -4068,14 +6217,23 @@
                 [
                   0.0, 
                   0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
                   0.0, 
                   0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0
@@ -4085,14 +6243,23 @@
                 [
                   0.0, 
                   0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
                   0.0, 
                   0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0
@@ -4102,14 +6269,23 @@
                 [
                   0.0, 
                   0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
                   0.0, 
                   0.0, 
-                  1.0
+                  0.0, 
+                  0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
                   0.0, 
                   0.0, 
                   0.0
@@ -4119,9 +6295,11 @@
                 [
                   0.0, 
                   0.0, 
-                  1.0
+                  1.0, 
+                  0.0
                 ], 
                 [
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0
@@ -4129,6 +6307,13 @@
                 [
                   0.0, 
                   1.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  1.0, 
+                  0.0, 
+                  0.0, 
                   0.0
                 ]
               ], 
@@ -4136,14 +6321,23 @@
                 [
                   0.0, 
                   0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
                   0.0, 
                   0.0, 
+                  0.0, 
                   0.0
                 ], 
                 [
+                  0.0, 
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
                   0.0, 
                   0.0, 
                   0.0
@@ -4154,63 +6348,80 @@
         }, 
         "data": [
           {
-            "data": {
-              "id": "e1r", 
-              "name": "?(NewActivity0, A-->B)"
-            }, 
+            "group": "nodes", 
             "classes": "external choreography", 
-            "group": "nodes"
+            "data": {
+              "id": "e3r", 
+              "name": "?(ApproveInvoice, Responsible-->Finance)"
+            }
           }, 
           {
-            "data": {
-              "id": "e2s", 
-              "name": "!(NewActivity1, B-->A)"
-            }, 
+            "group": "nodes", 
             "classes": "external choreography", 
-            "group": "nodes"
+            "data": {
+              "id": "e4s", 
+              "name": "!(ConfirmPayment, Finance-->Admin)"
+            }
           }, 
           {
+            "group": "nodes", 
             "data": {
-              "id": "NewActivity3", 
-              "name": "NewActivity3"
-            }, 
-            "group": "nodes"
+              "id": "PayInvoice", 
+              "name": "PayInvoice"
+            }
           }, 
           {
+            "group": "nodes", 
+            "classes": "external choreography", 
             "data": {
-              "source": "e1r", 
-              "id": "e1r_NewActivity3_condition", 
-              "target": "NewActivity3"
-            }, 
+              "id": "CheckInvoice", 
+              "name": "CheckInvoice"
+            }
+          }, 
+          {
+            "group": "edges", 
             "classes": "condition", 
-            "group": "edges"
+            "data": {
+              "source": "e3r", 
+              "id": "e3r_PayInvoice_condition", 
+              "target": "PayInvoice"
+            }
           }, 
           {
-            "data": {
-              "source": "NewActivity3", 
-              "id": "NewActivity3_e2s_condition", 
-              "target": "e2s"
-            }, 
+            "group": "edges", 
             "classes": "condition", 
-            "group": "edges"
+            "data": {
+              "source": "PayInvoice", 
+              "id": "PayInvoice_e4s_condition", 
+              "target": "e4s"
+            }
           }, 
           {
+            "group": "edges", 
+            "classes": "condition", 
             "data": {
-              "source": "e2s", 
-              "id": "e2s_NewActivity3_response", 
-              "target": "NewActivity3"
-            }, 
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e3r_condition", 
+              "target": "e3r"
+            }
+          }, 
+          {
+            "group": "edges", 
             "classes": "response", 
-            "group": "edges"
+            "data": {
+              "source": "CheckInvoice", 
+              "id": "CheckInvoice_e3r_response", 
+              "target": "e3r"
+            }
           }, 
           {
-            "data": {
-              "source": "NewActivity3", 
-              "id": "e2s_NewActivity3_response_back", 
-              "target": "e2s"
-            }, 
+            "group": "edges", 
             "classes": "response back", 
-            "group": "edges"
+            "data": {
+              "source": "e3r", 
+              "id": "CheckInvoice_e3r_response_back", 
+              "target": "CheckInvoice"
+            }
           }
         ]
       }, 
@@ -4223,60 +6434,198 @@
         "externalEvents": [
           {
             "id": 0, 
-            "event": "NewActivity3 [role=B]"
+            "event": "CheckInvoice [role=Responsible]"
+          }, 
+          {
+            "id": 1, 
+            "event": "PayInvoice [role=Finance]"
           }
         ], 
-        "role": "A", 
+        "role": "Admin", 
         "relations": [
           {
-            "relation": "NewActivity3 -->* e2r", 
+            "relation": "ReceiveInvoice -->* ScanInvoice", 
             "id": 0
+          }, 
+          {
+            "relation": "ReceiveInvoice *--> ScanInvoice", 
+            "id": 1
+          }, 
+          {
+            "relation": "ScanInvoice -->* CreateInvoice", 
+            "id": 2
+          }, 
+          {
+            "relation": "CreateInvoice -->* e1s", 
+            "id": 3
+          }, 
+          {
+            "relation": "CreateInvoice *--> e1s", 
+            "id": 4
+          }, 
+          {
+            "relation": "FixInvoice -->+ e1s", 
+            "id": 5
+          }, 
+          {
+            "relation": "FixInvoice *--> e1s", 
+            "id": 6
+          }, 
+          {
+            "relation": "e2r -->* FixInvoice", 
+            "id": 7
+          }, 
+          {
+            "relation": "CheckInvoice -->* e2r", 
+            "id": 8
+          }, 
+          {
+            "relation": "CheckInvoice *--> e2r", 
+            "id": 9
+          }, 
+          {
+            "relation": "PayInvoice -->* e4r", 
+            "id": 10
           }
         ], 
         "privateEvents": [
           {
             "id": 0, 
-            "event": "e1s[\"!(NewActivity0, A-&gt;B)\"]"
+            "event": "e1s[\"!(IssueInvoice, Admin-&gt;Responsible)\"]"
           }, 
           {
             "id": 1, 
-            "event": "e2r[\"?(NewActivity1, B-&gt;A)\"]"
+            "event": "e2r[\"?(ResendInvoice, Responsible-&gt;Admin)\"]"
           }, 
           {
             "id": 2, 
-            "event": "NewActivity2 [role=A]"
+            "event": "e4r[\"?(ConfirmPayment, Finance-&gt;Admin)\"]"
+          }, 
+          {
+            "id": 3, 
+            "event": "ReceiveInvoice [role=Admin]"
+          }, 
+          {
+            "id": 4, 
+            "event": "ScanInvoice [role=Admin]"
+          }, 
+          {
+            "id": 5, 
+            "event": "CreateInvoice [role=Admin]"
+          }, 
+          {
+            "id": 6, 
+            "event": "FixInvoice [role=Admin]"
           }
         ]
       }, 
       "r2": {
-        "externalEvents": [], 
-        "role": "B", 
+        "externalEvents": [
+          {
+            "id": 0, 
+            "event": "CreateInvoice [role=Admin]"
+          }, 
+          {
+            "id": 1, 
+            "event": "FixInvoice [role=Admin]"
+          }
+        ], 
+        "role": "Responsible", 
         "relations": [
           {
-            "relation": "e1r -->* NewActivity3", 
+            "relation": "e1r -->* CheckInvoice", 
             "id": 0
           }, 
           {
-            "relation": "NewActivity3 -->* e2s", 
+            "relation": "CheckInvoice -->* e2s", 
             "id": 1
           }, 
           {
-            "relation": "e2s *--> NewActivity3", 
+            "relation": "CheckInvoice *--> e2s", 
             "id": 2
+          }, 
+          {
+            "relation": "CheckInvoice -->* e3s", 
+            "id": 3
+          }, 
+          {
+            "relation": "CheckInvoice *--> e3s", 
+            "id": 4
+          }, 
+          {
+            "relation": "CreateInvoice -->* e1r", 
+            "id": 5
+          }, 
+          {
+            "relation": "CreateInvoice *--> e1r", 
+            "id": 6
+          }, 
+          {
+            "relation": "FixInvoice -->+ e1r", 
+            "id": 7
+          }, 
+          {
+            "relation": "FixInvoice *--> e1r", 
+            "id": 8
           }
         ], 
         "privateEvents": [
           {
             "id": 0, 
-            "event": "e1r[\"?(NewActivity0, A-&gt;B)\"]"
+            "event": "e1r[\"?(IssueInvoice, Admin-&gt;Responsible)\"]"
           }, 
           {
             "id": 1, 
-            "event": "e2s[\"!(NewActivity1, B-&gt;A)\"]"
+            "event": "e2s[\"!(ResendInvoice, Responsible-&gt;Admin)\"]"
           }, 
           {
             "id": 2, 
-            "event": "NewActivity3 [role=B]"
+            "event": "e3s[\"!(ApproveInvoice, Responsible-&gt;Finance)\"]"
+          }, 
+          {
+            "id": 3, 
+            "event": "CheckInvoice [role=Responsible]"
+          }
+        ]
+      }, 
+      "r3": {
+        "externalEvents": [
+          {
+            "id": 0, 
+            "event": "CheckInvoice [role=Responsible]"
+          }
+        ], 
+        "role": "Finance", 
+        "relations": [
+          {
+            "relation": "e3r -->* PayInvoice", 
+            "id": 0
+          }, 
+          {
+            "relation": "PayInvoice -->* e4s", 
+            "id": 1
+          }, 
+          {
+            "relation": "CheckInvoice -->* e3r", 
+            "id": 2
+          }, 
+          {
+            "relation": "CheckInvoice *--> e3r", 
+            "id": 3
+          }
+        ], 
+        "privateEvents": [
+          {
+            "id": 0, 
+            "event": "e3r[\"?(ApproveInvoice, Responsible-&gt;Finance)\"]"
+          }, 
+          {
+            "id": 1, 
+            "event": "e4s[\"!(ConfirmPayment, Finance-&gt;Admin)\"]"
+          }, 
+          {
+            "id": 2, 
+            "event": "PayInvoice [role=Finance]"
           }
         ]
       }, 
@@ -4284,80 +6633,224 @@
         "events": [
           {
             "id": 0, 
-            "event": "e1[NewActivity0 src=A tgt=B]"
+            "event": "e1[IssueInvoice src=Admin tgt=Responsible]"
           }, 
           {
             "id": 1, 
-            "event": "e2[NewActivity1 src=B tgt=A]"
+            "event": "e2[ResendInvoice src=Responsible tgt=Admin]"
           }, 
           {
             "id": 2, 
-            "event": "NewActivity2 [role=A]"
+            "event": "e3[ApproveInvoice src=Responsible tgt=Finance]"
           }, 
           {
             "id": 3, 
-            "event": "NewActivity3 [role=B]"
+            "event": "e4[ConfirmPayment src=Finance tgt=Admin]"
+          }, 
+          {
+            "id": 4, 
+            "event": "ReceiveInvoice [role=Admin]"
+          }, 
+          {
+            "id": 5, 
+            "event": "ScanInvoice [role=Admin]"
+          }, 
+          {
+            "id": 6, 
+            "event": "CreateInvoice [role=Admin]"
+          }, 
+          {
+            "id": 7, 
+            "event": "FixInvoice [role=Admin]"
+          }, 
+          {
+            "id": 8, 
+            "event": "CheckInvoice [role=Responsible]"
+          }, 
+          {
+            "id": 9, 
+            "event": "PayInvoice [role=Finance]"
           }
         ], 
         "relations": [
           {
-            "relation": "e1 -->* NewActivity3", 
+            "relation": "ReceiveInvoice -->* ScanInvoice", 
             "id": 0
           }, 
           {
-            "relation": "NewActivity3 -->* e2", 
+            "relation": "ReceiveInvoice *--> ScanInvoice", 
             "id": 1
           }, 
           {
-            "relation": "e2 *--> NewActivity3", 
+            "relation": "ScanInvoice -->* CreateInvoice", 
             "id": 2
+          }, 
+          {
+            "relation": "CreateInvoice -->* e1", 
+            "id": 3
+          }, 
+          {
+            "relation": "CreateInvoice *--> e1", 
+            "id": 4
+          }, 
+          {
+            "relation": "FixInvoice -->+ e1", 
+            "id": 5
+          }, 
+          {
+            "relation": "FixInvoice *--> e1", 
+            "id": 6
+          }, 
+          {
+            "relation": "e1 -->* CheckInvoice", 
+            "id": 7
+          }, 
+          {
+            "relation": "CheckInvoice -->* e2", 
+            "id": 8
+          }, 
+          {
+            "relation": "CheckInvoice *--> e2", 
+            "id": 9
+          }, 
+          {
+            "relation": "e2 -->* FixInvoice", 
+            "id": 10
+          }, 
+          {
+            "relation": "CheckInvoice -->* e3", 
+            "id": 11
+          }, 
+          {
+            "relation": "CheckInvoice *--> e3", 
+            "id": 12
+          }, 
+          {
+            "relation": "e3 -->* PayInvoice", 
+            "id": 13
+          }, 
+          {
+            "relation": "PayInvoice -->* e4", 
+            "id": 14
           }
         ]
       }, 
       "roleMapping": [
         {
-          "role": "A", 
+          "role": "Admin", 
           "id": "r1"
         }, 
         {
-          "role": "B", 
+          "role": "Responsible", 
           "id": "r2"
+        }, 
+        {
+          "role": "Finance", 
+          "id": "r3"
         }
       ], 
       "externalEvents": [
         {
           "id": 0, 
-          "event": "NewActivity3 [role=B]"
+          "event": "CheckInvoice [role=Responsible]"
+        }, 
+        {
+          "id": 1, 
+          "event": "PayInvoice [role=Finance]"
+        }, 
+        {
+          "id": 0, 
+          "event": "CreateInvoice [role=Admin]"
+        }, 
+        {
+          "id": 1, 
+          "event": "FixInvoice [role=Admin]"
         }
       ], 
       "public": {
         "externalEvents": [], 
         "relations": [
           {
-            "relation": "e1 -->* NewActivity3", 
+            "relation": "CreateInvoice -->* e1", 
             "id": 0
           }, 
           {
-            "relation": "NewActivity3 -->* e2", 
+            "relation": "CreateInvoice *--> e1", 
             "id": 1
           }, 
           {
-            "relation": "e2 *--> NewActivity3", 
+            "relation": "FixInvoice -->+ e1", 
             "id": 2
+          }, 
+          {
+            "relation": "FixInvoice *--> e1", 
+            "id": 3
+          }, 
+          {
+            "relation": "e1 -->* CheckInvoice", 
+            "id": 4
+          }, 
+          {
+            "relation": "CheckInvoice -->* e2", 
+            "id": 5
+          }, 
+          {
+            "relation": "CheckInvoice *--> e2", 
+            "id": 6
+          }, 
+          {
+            "relation": "e2 -->* FixInvoice", 
+            "id": 7
+          }, 
+          {
+            "relation": "CheckInvoice -->* e3", 
+            "id": 8
+          }, 
+          {
+            "relation": "CheckInvoice *--> e3", 
+            "id": 9
+          }, 
+          {
+            "relation": "e3 -->* PayInvoice", 
+            "id": 10
+          }, 
+          {
+            "relation": "PayInvoice -->* e4", 
+            "id": 11
           }
         ], 
         "privateEvents": [
           {
             "id": 0, 
-            "event": "NewActivity3 [role=B]"
+            "event": "CheckInvoice [role=Responsible]"
           }, 
           {
             "id": 1, 
-            "event": "e1[NewActivity0 src=A tgt=B]\n"
+            "event": "PayInvoice [role=Finance]"
           }, 
           {
             "id": 2, 
-            "event": "e2[NewActivity1 src=B tgt=A]\n"
+            "event": "CreateInvoice [role=Admin]"
+          }, 
+          {
+            "id": 3, 
+            "event": "FixInvoice [role=Admin]"
+          }, 
+          {
+            "id": 4, 
+            "event": "e1[IssueInvoice src=Admin tgt=Responsible]\n"
+          }, 
+          {
+            "id": 5, 
+            "event": "e2[ResendInvoice src=Responsible tgt=Admin]\n"
+          }, 
+          {
+            "id": 6, 
+            "event": "e3[ApproveInvoice src=Responsible tgt=Finance]\n"
+          }, 
+          {
+            "id": 7, 
+            "event": "e4[ConfirmPayment src=Finance tgt=Admin]\n"
           }
         ]
       }
@@ -4368,177 +6861,137 @@
           "default": [
             "e1", 
             "e2", 
-            "NewActivity2", 
-            "NewActivity3"
+            "e3", 
+            "e4", 
+            "ReceiveInvoice", 
+            "ScanInvoice", 
+            "CreateInvoice", 
+            "FixInvoice", 
+            "CheckInvoice", 
+            "PayInvoice"
           ], 
           "receive": [
             "e1r", 
             "e2r", 
-            "NewActivity2", 
-            "NewActivity3"
+            "e3r", 
+            "e4r", 
+            "ReceiveInvoice", 
+            "ScanInvoice", 
+            "CreateInvoice", 
+            "FixInvoice", 
+            "CheckInvoice", 
+            "PayInvoice"
           ], 
           "send": [
             "e1s", 
             "e2s", 
-            "NewActivity2", 
-            "NewActivity3"
+            "e3s", 
+            "e4s", 
+            "ReceiveInvoice", 
+            "ScanInvoice", 
+            "CreateInvoice", 
+            "FixInvoice", 
+            "CheckInvoice", 
+            "PayInvoice"
           ]
         }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ]
+        "fullMarkings": {
+          "included": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
           ], 
-          "include": [
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ]
+          "executed": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
           ], 
-          "response": [
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "1"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0", 
-              "0", 
-              "0", 
-              "1"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "1", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ]
+          "pending": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
           ]
         }, 
         "markings": [
           {
+            "include": 0, 
             "executed": 0, 
-            "include": 1, 
             "id": "e1", 
             "pending": 0
           }, 
           {
-            "executed": 0, 
             "include": 0, 
+            "executed": 0, 
             "id": "e2", 
             "pending": 0
           }, 
           {
+            "include": 0, 
             "executed": 0, 
-            "include": 1, 
-            "id": "NewActivity2", 
+            "id": "e3", 
             "pending": 0
           }, 
           {
-            "executed": 0, 
             "include": 0, 
-            "id": "NewActivity3", 
+            "executed": 0, 
+            "id": "e4", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "ReceiveInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "ScanInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "CreateInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "FixInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "CheckInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "PayInvoice", 
             "pending": 0
           }
         ], 
@@ -4549,9 +7002,9 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4561,9 +7014,105 @@
                 0.0, 
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4575,9 +7124,9 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4587,9 +7136,105 @@
                 0.0, 
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4601,21 +7246,117 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
                 0.0, 
                 0.0, 
                 0.0, 
-                1.0
-              ], 
-              [
                 0.0, 
                 0.0, 
                 0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                1.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4627,15 +7368,93 @@
                 0.0, 
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 1.0
               ], 
               [
                 0.0, 
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4644,6 +7463,24 @@
               [
                 0.0, 
                 1.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0
               ]
@@ -4653,9 +7490,9 @@
                 0.0, 
                 0.0, 
                 0.0, 
-                0.0
-              ], 
-              [
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4665,9 +7502,105 @@
                 0.0, 
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0, 
@@ -4676,94 +7609,874 @@
             ]
           }
         ], 
-        "fullMarkings": {
-          "included": [
-            "1", 
-            "0", 
-            "1", 
-            "0"
+        "fullRelations": {
+          "exclude": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
           ], 
-          "executed": [
-            "0", 
-            "0", 
-            "0", 
-            "0"
+          "include": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
           ], 
-          "pending": [
-            "0", 
-            "0", 
-            "0", 
-            "0"
+          "response": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "1", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "1", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
           ]
         }
       }, 
       "data": [
         {
+          "group": "nodes", 
+          "classes": "choreography", 
           "data": {
             "id": "e1", 
-            "name": "A\nNewActivity0\nB"
-          }, 
-          "classes": "included executable", 
-          "group": "nodes"
+            "name": "Admin\nIssueInvoice\nResponsible"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "choreography", 
           "data": {
             "id": "e2", 
-            "name": "B\nNewActivity1\nA"
-          }, 
+            "name": "Responsible\nResendInvoice\nAdmin"
+          }
+        }, 
+        {
+          "group": "nodes", 
           "classes": "choreography", 
-          "group": "nodes"
+          "data": {
+            "id": "e3", 
+            "name": "Responsible\nApproveInvoice\nFinance"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "choreography", 
           "data": {
-            "id": "NewActivity2", 
-            "name": "NewActivity2"
-          }, 
+            "id": "e4", 
+            "name": "Finance\nConfirmPayment\nAdmin"
+          }
+        }, 
+        {
+          "group": "nodes", 
           "classes": "included executable", 
-          "group": "nodes"
-        }, 
-        {
           "data": {
-            "id": "NewActivity3", 
-            "name": "NewActivity3"
-          }, 
-          "group": "nodes"
+            "id": "ReceiveInvoice", 
+            "name": "ReceiveInvoice"
+          }
         }, 
         {
+          "group": "nodes", 
+          "data": {
+            "id": "ScanInvoice", 
+            "name": "ScanInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "CreateInvoice", 
+            "name": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "FixInvoice", 
+            "name": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "CheckInvoice", 
+            "name": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "PayInvoice", 
+            "name": "PayInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "ReceiveInvoice", 
+            "id": "ReceiveInvoice_ScanInvoice_condition", 
+            "target": "ScanInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "ReceiveInvoice", 
+            "id": "ReceiveInvoice_ScanInvoice_response", 
+            "target": "ScanInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "ScanInvoice", 
+            "id": "ReceiveInvoice_ScanInvoice_response_back", 
+            "target": "ReceiveInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "ScanInvoice", 
+            "id": "ScanInvoice_CreateInvoice_condition", 
+            "target": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1_condition", 
+            "target": "e1"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1_response", 
+            "target": "e1"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
           "data": {
             "source": "e1", 
-            "id": "e1_NewActivity3_condition", 
-            "target": "NewActivity3"
-          }, 
-          "classes": "condition", 
-          "group": "edges"
+            "id": "CreateInvoice_e1_response_back", 
+            "target": "CreateInvoice"
+          }
         }, 
         {
+          "group": "edges", 
+          "classes": "include", 
           "data": {
-            "source": "NewActivity3", 
-            "id": "NewActivity3_e2_condition", 
-            "target": "e2"
-          }, 
-          "classes": "condition", 
-          "group": "edges"
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1_include", 
+            "target": "e1"
+          }
         }, 
         {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1_response", 
+            "target": "e1"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e1", 
+            "id": "FixInvoice_e1_response_back", 
+            "target": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e1", 
+            "id": "e1_CheckInvoice_condition", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2_condition", 
+            "target": "e2"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2_response", 
+            "target": "e2"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
           "data": {
             "source": "e2", 
-            "id": "e2_NewActivity3_response", 
-            "target": "NewActivity3"
-          }, 
-          "classes": "response", 
-          "group": "edges"
+            "id": "CheckInvoice_e2_response_back", 
+            "target": "CheckInvoice"
+          }
         }, 
         {
+          "group": "edges", 
+          "classes": "condition", 
           "data": {
-            "source": "NewActivity3", 
-            "id": "e2_NewActivity3_response_back", 
-            "target": "e2"
-          }, 
+            "source": "e2", 
+            "id": "e2_FixInvoice_condition", 
+            "target": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3_condition", 
+            "target": "e3"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3_response", 
+            "target": "e3"
+          }
+        }, 
+        {
+          "group": "edges", 
           "classes": "response back", 
-          "group": "edges"
+          "data": {
+            "source": "e3", 
+            "id": "CheckInvoice_e3_response_back", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_PayInvoice_condition", 
+            "target": "PayInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "PayInvoice", 
+            "id": "PayInvoice_e4_condition", 
+            "target": "e4"
+          }
         }
       ]
     }, 
@@ -4773,123 +8486,113 @@
           "default": [
             "e1", 
             "e2", 
-            "NewActivity3"
+            "e3", 
+            "e4", 
+            "CheckInvoice", 
+            "PayInvoice", 
+            "CreateInvoice", 
+            "FixInvoice"
           ], 
           "receive": [
             "e1r", 
             "e2r", 
-            "NewActivity3"
+            "e3r", 
+            "e4r", 
+            "CheckInvoice", 
+            "PayInvoice", 
+            "CreateInvoice", 
+            "FixInvoice"
           ], 
           "send": [
             "e1s", 
             "e2s", 
-            "NewActivity3"
+            "e3s", 
+            "e4s", 
+            "CheckInvoice", 
+            "PayInvoice", 
+            "CreateInvoice", 
+            "FixInvoice"
           ]
         }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
+        "fullMarkings": {
+          "included": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "1", 
+            "0"
           ], 
-          "include": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
+          "executed": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
           ], 
-          "response": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "1"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0", 
-              "0", 
-              "1"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "1", 
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
+          "pending": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
           ]
         }, 
         "markings": [
           {
+            "include": 0, 
             "executed": 0, 
-            "include": 1, 
             "id": "e1", 
             "pending": 0
           }, 
           {
-            "executed": 0, 
             "include": 0, 
+            "executed": 0, 
             "id": "e2", 
             "pending": 0
           }, 
           {
-            "executed": 0, 
             "include": 0, 
-            "id": "NewActivity3", 
+            "executed": 0, 
+            "id": "e3", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "e4", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "CheckInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "PayInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "CreateInvoice", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "FixInvoice", 
             "pending": 0
           }
         ], 
@@ -4899,14 +8602,79 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -4916,14 +8684,79 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -4933,14 +8766,79 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
-                1.0
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                1.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -4950,9 +8848,39 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 1.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -4960,6 +8888,41 @@
               [
                 0.0, 
                 1.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                1.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ]
             ], 
@@ -4967,14 +8930,79 @@
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
                 0.0, 
                 0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0
               ], 
               [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0, 
                 0.0, 
                 0.0, 
                 0.0
@@ -4982,83 +9010,624 @@
             ]
           }
         ], 
-        "fullMarkings": {
-          "included": [
-            "1", 
-            "0", 
-            "0"
+        "fullRelations": {
+          "exclude": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
           ], 
-          "executed": [
-            "0", 
-            "0", 
-            "0"
+          "include": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
           ], 
-          "pending": [
-            "0", 
-            "0", 
-            "0"
+          "response": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "1", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "1", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "1", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
           ]
         }
       }, 
       "data": [
         {
+          "group": "nodes", 
+          "classes": "choreography", 
           "data": {
             "id": "e1", 
-            "name": "A\nNewActivity0\nB"
-          }, 
-          "classes": "included executable", 
-          "group": "nodes"
+            "name": "Admin\nIssueInvoice\nResponsible"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "choreography", 
           "data": {
             "id": "e2", 
-            "name": "B\nNewActivity1\nA"
-          }, 
+            "name": "Responsible\nResendInvoice\nAdmin"
+          }
+        }, 
+        {
+          "group": "nodes", 
           "classes": "choreography", 
-          "group": "nodes"
-        }, 
-        {
           "data": {
-            "id": "NewActivity3", 
-            "name": "NewActivity3"
-          }, 
-          "group": "nodes"
+            "id": "e3", 
+            "name": "Responsible\nApproveInvoice\nFinance"
+          }
         }, 
         {
+          "group": "nodes", 
+          "classes": "choreography", 
+          "data": {
+            "id": "e4", 
+            "name": "Finance\nConfirmPayment\nAdmin"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "CheckInvoice", 
+            "name": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "PayInvoice", 
+            "name": "PayInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "included executable", 
+          "data": {
+            "id": "CreateInvoice", 
+            "name": "CreateInvoice"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "data": {
+            "id": "FixInvoice", 
+            "name": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1_condition", 
+            "target": "e1"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CreateInvoice", 
+            "id": "CreateInvoice_e1_response", 
+            "target": "e1"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
           "data": {
             "source": "e1", 
-            "id": "e1_NewActivity3_condition", 
-            "target": "NewActivity3"
-          }, 
-          "classes": "condition", 
-          "group": "edges"
+            "id": "CreateInvoice_e1_response_back", 
+            "target": "CreateInvoice"
+          }
         }, 
         {
+          "group": "edges", 
+          "classes": "include", 
           "data": {
-            "source": "NewActivity3", 
-            "id": "NewActivity3_e2_condition", 
-            "target": "e2"
-          }, 
-          "classes": "condition", 
-          "group": "edges"
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1_include", 
+            "target": "e1"
+          }
         }, 
         {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "FixInvoice", 
+            "id": "FixInvoice_e1_response", 
+            "target": "e1"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e1", 
+            "id": "FixInvoice_e1_response_back", 
+            "target": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e1", 
+            "id": "e1_CheckInvoice_condition", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2_condition", 
+            "target": "e2"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e2_response", 
+            "target": "e2"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
           "data": {
             "source": "e2", 
-            "id": "e2_NewActivity3_response", 
-            "target": "NewActivity3"
-          }, 
-          "classes": "response", 
-          "group": "edges"
+            "id": "CheckInvoice_e2_response_back", 
+            "target": "CheckInvoice"
+          }
         }, 
         {
+          "group": "edges", 
+          "classes": "condition", 
           "data": {
-            "source": "NewActivity3", 
-            "id": "e2_NewActivity3_response_back", 
-            "target": "e2"
-          }, 
+            "source": "e2", 
+            "id": "e2_FixInvoice_condition", 
+            "target": "FixInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3_condition", 
+            "target": "e3"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "CheckInvoice", 
+            "id": "CheckInvoice_e3_response", 
+            "target": "e3"
+          }
+        }, 
+        {
+          "group": "edges", 
           "classes": "response back", 
-          "group": "edges"
+          "data": {
+            "source": "e3", 
+            "id": "CheckInvoice_e3_response_back", 
+            "target": "CheckInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_PayInvoice_condition", 
+            "target": "PayInvoice"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "PayInvoice", 
+            "id": "PayInvoice_e4_condition", 
+            "target": "e4"
+          }
         }
       ], 
       "exec": {
