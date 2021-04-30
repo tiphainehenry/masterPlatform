@@ -130,8 +130,8 @@ class CreationDeck extends React.Component {
     console.log(this.cy)
     this.cy.fit();
     this.cy.remove('nodes')
-    // this.addLocalActivity()
-    // this.addChoreoActivity()
+      // this.addLocalActivity()
+      // this.addChoreoActivity()
     this.cy.contextMenus(this.getMenuStyle());
 
     this.setUpNodeListeners();
