@@ -94,12 +94,12 @@ def generateRelationMatrix(relationType, eventsList, relations):
             relationList.append(r_elems)
 
     # update matrix
-    print("toto")
-    print(relationList)
-    print(eventsList)
+    #print("toto")
+    #print(relationList)
+    #print(eventsList)
     for relation in relationList:
-        print("pppp")
-        print(relation)
+        #print("pppp")
+        #print(relation)
         relationMatrix[eventsList.index(
             relation['r_from'])][eventsList.index(relation['r_to'])] = 1
 
@@ -122,13 +122,10 @@ def generateRelationMatrices(chunks):
     :returns: relation matrices of size NxN where N=number of events, and list of all relation matrices
     """
 
-    #print('[INFO] Generating Relation Matrices')
+    print('[INFO] Generating Relation Matrices')
 
     relations = chunks['linkages']
     events = chunks['events'] + chunks['internalEvents']
-
-    print("toto2")
-    print(chunks)
 
     if relations == []:
         return [], [0, 0, 0, 0, 0]
@@ -269,8 +266,8 @@ def vectorize(data, filename):
     :param filename: filename to save vectorization
 
     """
-    print("test")
-    print(data)
+    #print("test")
+    #print(data)
     chunks, roles = extractChunks(data)
 
     relations, fullRelations = generateRelationMatrices(chunks)
@@ -320,6 +317,7 @@ def vectorizeRole(data, filename):
         'markings': generateInitialMarkings(chunks)
     }
     path = filename+'.json'
+
     with open(path, 'w') as outfile:
         json.dump(bitvectors, outfile, indent=2, cls=NumpyEncoder)
 
@@ -367,10 +365,10 @@ def vectorizeRoleFromCyto(processID, roleID, data):
         rel_matrices[relation_type] = relationMatrix2List
 
     #display relation matrices:
-    for rel in ['condition','response','include','exclude','milestone']:
-        print(rel)
-        for elem in rel_matrices[rel]:
-            print(elem)
+    #for rel in ['condition','response','include','exclude','milestone']:
+       #print(rel)
+    #    for elem in rel_matrices[rel]:
+           #print(elem)
 
     #MARKINGS:
     markings = []

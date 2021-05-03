@@ -191,7 +191,7 @@ def projectPublic(processID, data, target):
 
     :param processID: the ID of the current process. eg: "p1"
     :param data: json description of the global dcr
-    :param target: the path where the projection will be saved. eg: './client/src/projections/'
+    :param target: the path where the projection will be saved. eg: '../../client/src/projections/'
     """
 
     print('[INFO] Starting Public Projection')

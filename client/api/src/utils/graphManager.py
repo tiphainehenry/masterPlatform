@@ -53,7 +53,7 @@ def retrieveMarkingOnName(markings, activity_name):
     """
 
     for elem in markings:
-        print(elem['id'])
+       #print(elem['id'])
 
         if elem['id'] == activity_name:
             return elem
@@ -67,7 +67,7 @@ def initializeGraph(filename):
     :param filename: filename to analyze
 
     """
-
+    print("[DEBUG]"+ filename)
     with open(filename) as json_data:
         data = json.load(json_data)
 
@@ -78,15 +78,17 @@ def initializeGraph(filename):
         dataProj = json.load(json_data)
 
     updProj = []
+    print("INIT STAGE")
     for elem in dataProj:
+        print(elem)
         if elem['group'] == 'nodes':
             # filter out external events
-            if (('classes' not in elem.keys()) or ('external' not in elem['classes'])):
+            if (('classes' not in elem.keys()) or ('type_projChoreo' in elem['classes']) or ('external' not in elem['classes'])):
                 elemMarking = retrieveMarkingOnId(markings, elem)
-
+                print(elemMarking)
                 if(len(elemMarking) != 0):
                     if (elemMarking['include'] == 1):
-                        elem.update({'classes': 'included executable'})
+                        elem['classes'] = elem['classes']+ ' included executable'
 
         updProj.append(elem)
 
@@ -110,7 +112,7 @@ def retrieveActivityRelations(relations, activity_id, dataProj):
         :Json[] toExclude: list of exclude constraints stemming out of activity_id with keys {'vectid','projid'}
         :Json[] toRespond: list of response constraints stemming out of activity_id conditions with keys {'vectid','projid'}
     """
-    print(relations)
+   #print(relations)
     conditions = relations['condition']
     milestones = relations['milestone']
     responses = relations['response']
@@ -130,7 +132,7 @@ def retrieveActivityRelations(relations, activity_id, dataProj):
     fromCondition = []
     cnt = 0
     for conditionFrom in conditions:
-        print(conditionFrom)
+       #print(conditionFrom)
         if conditionFrom[activity_id] == 1:
             fromCondition.append({
                 'vectid': cnt,
@@ -174,18 +176,18 @@ def retrieveActivityRelations(relations, activity_id, dataProj):
         cnt = cnt + 1
 
     """
-    print('From Conditions:')
-    print(fromCondition)
-    print('To Conditions:')
-    print(toCondition)
-    print('Milestones:')
-    print(fromMilestone)
-    print('Include:')
-    print(toInclude)
-    print('Exclude:')
-    print(toExclude)
-    print('Responses:')
-    print(toRespond)
+   #print('From Conditions:')
+   #print(fromCondition)
+   #print('To Conditions:')
+   #print(toCondition)
+   #print('Milestones:')
+   #print(fromMilestone)
+   #print('Include:')
+   #print(toInclude)
+   #print('Exclude:')
+   #print(toExclude)
+   #print('Responses:')
+   #print(toRespond)
     """
     return toCondition, fromCondition, fromMilestone, toInclude, toExclude, toRespond
 
@@ -263,11 +265,14 @@ def updCytoData(dataProj, markings):
 
     for elem in dataProj:
         if(elem['group'] == 'nodes'):
+            print('[DEBUG]')
+            print(elem)
             if ('classes' in elem.keys()) and ('external' in elem['classes']):
                 pass
             else:
-                classes = []
-
+                classes= []
+                if ('classes' in elem.keys()) and ('type_projChoreo' in elem['classes']):
+                    classes.append('type_projChoreo ')
                 if retrieveMarkingOnId(markings, elem)['include'] == 1:
                     classes.append('included  executable')
                 if retrieveMarkingOnId(markings, elem)['executed'] == 1:
@@ -275,6 +280,7 @@ def updCytoData(dataProj, markings):
                 if retrieveMarkingOnId(markings, elem)['pending'] == 1:
                     classes.append('pending executable')
                 elem.update({'classes': ' '.join(classes)})
+            print(elem)
 
     return dataProj
 
@@ -376,7 +382,7 @@ def executeApprovedNode(processID, role, activity_name):
 
     """
     # retrieve activity data
-    dbPath = './client/src/projections/DCR_Projections.json'
+    dbPath = '../../client/src/projections/DCR_Projections.json'
     with open(dbPath) as json_data:
         DCRdb = json.load(json_data)
 

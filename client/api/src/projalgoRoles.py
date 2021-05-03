@@ -176,6 +176,8 @@ def projRole(processID, data, target, role):
     roleMapping=getRoleMapping(processID, role)
     projection, externalIds = generateDCRText(processID, chunks, role, choreoEventsProj, os.path.join(target,"dcrTexts.json"))            
     generateGraph(processID, projection, externalIds, target, role)
+
+    print("[DEBUG] Vectorizing"+ role)
     vectorizeRole(projection, os.path.join(target,"temp_vect"+roleMapping['id']))
 
     print('[INFO] Projection of role '+role+' generated')

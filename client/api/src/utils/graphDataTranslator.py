@@ -252,13 +252,13 @@ def bodyInternal(event, num_task, externalIds):
             },
             # 'position': { "x": num_task*100, "y": 100},
             'group': "nodes",
-            'classes': "external choreography"
+            'classes': "external type_internal"
         }
     else:
         body = {
             'data': {
                 'id': _id,
-                'name': tsk
+                'name': src+"\n"+tsk
             },
             # 'position': { "x": num_task*100, "y": 100},
             'group': "nodes"
@@ -287,6 +287,8 @@ def bodyExternal(event, num_task, externalIds):
     name = event.split('[')[1].replace(']', '').replace(
         '"', '').replace('-&gt;', '-->').strip()
 
+    #print("I am  a body external >"+_id)
+    #exit(-1)
     body = {
         'data': {
             'id': _id,
@@ -294,7 +296,7 @@ def bodyExternal(event, num_task, externalIds):
         },
         # 'position': { "x": num_task*100, "y": 100},
         'group': "nodes",
-        'classes': "external choreography"
+        'classes': "type_projChoreo"
     }
 
     return body
@@ -327,7 +329,7 @@ def bodyChoreo(event, num_task, externalIds):
             },
             # 'position': { "x": num_task*100, "y": 100},
             'group': "nodes",
-            'classes': "external choreography"
+            'classes': "external type_choreography"
         }
 
     else:
@@ -340,7 +342,7 @@ def bodyChoreo(event, num_task, externalIds):
             },
             # 'position': { "x": num_task*100, "y": 100},
             'group': "nodes",
-            'classes': "choreography"
+            'classes': "choreography type_choreography"
 
         }
 
