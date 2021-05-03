@@ -60,9 +60,11 @@
       }
     },
     {
-        "selector": "node.external",
+        "selector": "node.external,node.type_projReceiver",
         "style": {
-          "shape":"octagon"
+          "shape":"octagon",
+          "opacity":0.6,
+          "border-style": "dashed"
           }
         },
         {
