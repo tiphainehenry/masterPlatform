@@ -18,7 +18,7 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import contextMenus from 'cytoscape-context-menus';
 import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
-import axios, { post } from 'axios';
+import axios, { get, post } from 'axios';
 import COSEBilkent from 'cytoscape-cose-bilkent';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
@@ -33,7 +33,6 @@ var edge_style = require('../style/edgeStyle.json');
 var cyto_style = require('../style/cytoStyle.json')['edit'];
 
 var ProcessDB = require('../projections/DCR_Projections.json');
-
 /**
  * Template component to edit a projection
  */
@@ -49,9 +48,10 @@ class CreationDeck extends React.Component {
     this.loadToBC = React.createRef()
 
     this.state = {
-      data: {},
-      processID: 'p2',
-      processName: this.props.location.state['currentProcess'][1],
+      iterator: 0,
+      data: [],
+      processID: this.props.location.state['currentProcess'],
+      processName: this.props.location.state['currentProcess'],
       projectionID: 'Global',
       edges: {
         condition: ' -->* ',
@@ -117,7 +117,7 @@ class CreationDeck extends React.Component {
 
     this.fileUpload = this.fileUpload.bind(this);
     this.privateGraphUpd = this.privateGraphUpd.bind(this);
-
+    this.saveToLibrary = this.saveToLibrary.bind(this)
   }
 
   /**
@@ -125,17 +125,15 @@ class CreationDeck extends React.Component {
    * - Fits the graph display to the window, 
    * - Activates the editing menu, and sets up click listeners,
    * - Updates the total number of new activities to keep the counter updated for second changes.
+   * - Load the template if it has already been saved
    */
   componentDidMount = async () => {
-    console.log(this.cy)
     this.cy.fit();
     this.cy.remove('nodes')
-      // this.addLocalActivity()
-      // this.addChoreoActivity()
     this.cy.contextMenus(this.getMenuStyle());
-
     this.setUpNodeListeners();
     this.setUpEdgeListeners();
+    this.getTemplate();
 
   };
 
@@ -149,8 +147,8 @@ class CreationDeck extends React.Component {
 
     console.log(this.props.location);
     if (typeof (this.props.location.state) !== 'undefined') {
-      if (typeof (this.props.location.state['currentProcess'][1]) !== 'undefined') {
-        processID = this.props.location.state['currentProcess'][1];
+      if (typeof (this.props.location.state['currentProcess']) !== 'undefined') {
+        processID = this.props.location.state['currentProcess'];
         var projectionID = this.props.location.state['currentInstance'];
 
         this.setState({
@@ -256,6 +254,11 @@ class CreationDeck extends React.Component {
     })
   }
 
+  ////////  CALL API    ////////
+  /**
+   * Instanciate the process in the BC
+   * 
+   */
   fileUpload(file) {
     const url = `http://localhost:5000/inputFile`;
 
@@ -268,8 +271,14 @@ class CreationDeck extends React.Component {
     formData.append('file', file);
     formData.append('processID', processID);
 
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
 
-    axios.post(`http://localhost:5000/inputFile`).then(
+    axios.post(`http://localhost:5000/inputFile`, formData, config).then(
       (response) => {
         var result = response.data;
         console.log(result);
@@ -278,16 +287,51 @@ class CreationDeck extends React.Component {
         console.log(error);
       }
     );
+  }
+  /**
+   * Get the template data if it already exist in DB
+   * @returns 
+   * 
+   */
+  getTemplate() {
+    axios.get(`http://localhost:5000/library?processID=` + this.state.processID).then(
+      (response) => {
+        var result = response;
+        if (result.data !== "KO") {
+          this.cy.add(result.data)
+          console.log(this.cy.filter('nodes'))
+          this.setState({ newActivityCnt: this.cy.filter('nodes').length })
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 
+  /**
+   * Save the current graph template in the DB
+   * @param {Graph content} data 
+   * @returns 
+   */
+  postLibrary(data) {
 
     const config = {
       headers: {
-        'content-type': 'multipart/form-data',
+        'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     };
 
-    return post(url, formData, config)
+    axios.post(`http://localhost:5000/library`, { "data": data, "processID": this.state.processID }, config).then(
+      (response) => {
+        var result = response.data;
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   /**
@@ -354,15 +398,9 @@ class CreationDeck extends React.Component {
    * Compares IDs and names of the edges to detect inconsistants names
    * 
    */
-  nameToId() {
-
-  }
   findName(id) {
     const node = this.cy.getElementById(id)
     if (node["_private"]["classes"].has("choreography")) {
-      // var name = node["_private"]["data"]["name"] + ""
-      // name = name.substr(0, name.indexOf('['))
-      // console.log(name);
       return (node["_private"]["data"]["name"] + "")
     } else {
       const name = node["_private"]["data"]["name"].split(' ')
@@ -400,7 +438,10 @@ class CreationDeck extends React.Component {
     return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
   }
 
-
+  /**
+  * Switch the sender and receiver of the selected activity
+  * 
+  */
   switchDest() {
     const tmp = this.state.choreographyNames.sender
     this.setState({
@@ -410,6 +451,19 @@ class CreationDeck extends React.Component {
       }
     })
   }
+  /**
+  * Save a graph as a template and send it to the API
+  * 
+  */
+  saveToLibrary() {
+    const tmp = this.cy.json(true)
+    this.setState({ data: tmp.elements, iterator: 1 })
+    // this.cy.remove('nodes')
+    this.postLibrary(tmp.elements)
+    alert("saved")
+
+  }
+
   ///// Render
 
   render() {
@@ -518,8 +572,8 @@ class CreationDeck extends React.Component {
                       </Col>
                     </Row>
                   </div>
-                  <Button onClick={this.privateGraphUpd}>save new version</Button>
-
+                  <Button onClick={this.privateGraphUpd}>Instantiate</Button>
+                  <Button onClick={this.saveToLibrary}>save</Button>
                 </div>
               </div>
             </Col>

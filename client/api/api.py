@@ -51,8 +51,6 @@ def updWithName(dataTxt, pi):
     target = '../../client/src/projections/'
     dataPath = '../../client/src/projections/dcrTexts.json'
     this_folder = os.path.dirname(os.path.abspath(__file__))
-    # target = os.path.join(this_folder, '..\src\projections\\')
-    # dataPath = os.path.join(this_folder, '..\src\projections\dcrTexts.json')
     print("target datapath")
     print(target)
     print(dataPath)
@@ -154,6 +152,61 @@ def updWithName(dataTxt, pi):
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
+
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
+
+
+@app.route('/library', methods=['POST', 'GET'])
+def SaveToLibrary():
+    """
+     Save a Template into the Library / return a certain template from the library 
+    """ 
+
+    dataPath = '../../client/src/projections/Library.json'
+    print(request.method)
+    if request.method == 'POST':
+        data = request.get_json(silent=True)
+
+        processID = byteify(data['processID'])
+        graph = byteify(data['data'])
+
+        template = {processID: graph}
+        graph = byteify(template)
+
+        with open(dataPath,"r+") as json_file:
+            library = json.load(json_file)
+            if (processID in library):
+                library.pop(processID)
+            json_file.truncate(0)
+            library.update(template)
+            json_file.seek(0)
+            json.dump(library, json_file)
+        return 'OK', 200, {'Access-Control-Allow-Origin': '*'}
+    else:
+        key = request.args.get('processID', default = "", type = str)
+        all = request.args.get('all', default = "", type = str)
+        with open(dataPath, "r") as json_file:
+            library = json.load(json_file)
+            if not all == "":
+                print(library.keys())
+                return jsonify(library.keys())
+            if not(key in library):
+                return "KO", 200, {'Access-Control-Allow-Origin': '*'}
+            else:
+                return jsonify(library[key]), 200
+        # return 'OK', 200, {'Access-Control-Allow-Origin': '*'}
+        
+
+        
 
 
 @app.route('/process', methods=['POST', 'GET'])
