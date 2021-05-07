@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../style/App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
@@ -15,7 +15,6 @@ import LoadToBC from './LoadToBC';
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
 
-import contextMenus from 'cytoscape-context-menus';
 import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
 import axios, { post } from 'axios';
@@ -144,19 +143,14 @@ class CreationDeck extends React.Component {
    */
   componentWillMount() {
 
-    var processID = this.state.processID;
-    var projectionID = this.state.projectionID;
-
     console.log(this.props.location);
     if (typeof (this.props.location.state) !== 'undefined') {
       if (typeof (this.props.location.state['currentProcess'][1]) !== 'undefined') {
-        processID = this.props.location.state['currentProcess'][1];
-        var projectionID = this.props.location.state['currentInstance'];
 
         this.setState({
-          'processID': processID,
+          'processID': this.props.location.state['currentProcess'][1],
           'processName': this.props.location.state['currentProcess'][1],
-          'projectionID': projectionID,
+          'projectionID': this.props.location.state['currentInstance'],
           'data': {}
         });
       }
@@ -177,7 +171,7 @@ class CreationDeck extends React.Component {
 
         var type = '';
         if (event.target['_private']['classes'].has('subgraph')) {
-          var type = 'subgraph';
+          type = 'subgraph';
         }
 
         /// monitor clicked elements
@@ -317,10 +311,12 @@ class CreationDeck extends React.Component {
 
         console.log("then id = " + id);
 
+        var tmp='';
+
         if (ele['_private']['group'] === "nodes") {
           if (ele['_private']['classes'].has("choreography")) {
             id++
-            var tmp = ele['_private']['data']['name'].split(' ')
+            tmp = ele['_private']['data']['name'].split(' ')
             tmp = tmp.filter(e => e !== "")
             newEle = {
               "name": "e" + id + "[" + tmp[1] + " src=" + tmp[0] + " tgt=" + tmp[2] + "]\n"
@@ -329,9 +325,9 @@ class CreationDeck extends React.Component {
             ele['_private']['data']['name'] = "e" + id
           } else {
 
-            var tmp = ele['_private']['data']['name'].split('\n')
+          tmp = ele['_private']['data']['name'].split('\n')
             newEle = {
-              "name": '"' + tmp[0] + '"' + " [role=" + tmp[1] + "]\n",
+              "name": '"' + tmp[0] + '" [role=' + tmp[1] + "]\n", // eslint-disable-line prefer-template
             };
           }
         } else if (ele['_private']['group'] === "edges") {

@@ -1,19 +1,14 @@
 import React from 'react';
 import Header from './Header';
-import DCRgraph from './DCRgraph';
-import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import Sidebar from './SidebarInstance';
+import { Button, Row, Col, Container } from 'react-bootstrap';
 
 import { Nav } from "react-bootstrap";
-import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 
-import { Navbar, NavDropdown } from 'react-bootstrap';
-import { NavLink } from "react-router-dom"
+import { Table } from 'react-bootstrap';
 import '../style/boosted.min.css';
 import axios from 'axios';
 
-import ListGroup from 'react-bootstrap/ListGroup';
 import '../style/Dashboard.css'
 
 var ProcessDB = require('../projections/DCR_Projections.json');
@@ -55,6 +50,8 @@ class WelcomeInstance extends React.Component {
 
       newActivityCnt: 0,
 
+      numProcesses: 0,
+
       source: { ID: '', type: '' },
       target: { ID: '', type: '' }
     };
@@ -95,7 +92,7 @@ class WelcomeInstance extends React.Component {
         });
 
         var process = [];
-        process.push('process ' + name);
+        process.push(name);
         process.push(roles);
         tree.push(process);
 
@@ -105,7 +102,7 @@ class WelcomeInstance extends React.Component {
 
     }
 
-    this.setState({ 'tree': tree });
+    this.setState({ 'tree': tree, 'numProcesses': numProcess });
 
   }
 
@@ -115,10 +112,9 @@ class WelcomeInstance extends React.Component {
    */
   delete(elem) {
 
-    var txt;
     var r = window.confirm("Proceed to deletion of instance " + elem + "?");
-    if (r == true) {
-      txt = "You pressed OK!";
+    if (r === true) {
+      console.log("You pressed OK!");
 
       var headers = {
         "Access-Control-Allow-Origin": "*",
@@ -126,8 +122,34 @@ class WelcomeInstance extends React.Component {
 
       axios.post(`http://localhost:5000/delete`,
         {
-          processID: elem.split(' ')[1]
+          processID: elem
         },
+        { "headers": headers }
+      ).then(
+        (response) => {
+          var result = response.data;
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
+    } else {
+      console.log("You pressed Cancel!");
+    }
+  }
+
+  deleteAll(event) {
+    var r = window.confirm("Proceed to deletion of all instances?");
+    if (r === true) {
+      console.log("You pressed OK!");
+
+      var headers = {
+        "Access-Control-Allow-Origin": "*",
+      };
+
+      axios.post(`http://localhost:5000/deleteAll`,
         { "headers": headers }
       ).then(
         (response) => {
@@ -141,8 +163,9 @@ class WelcomeInstance extends React.Component {
 
 
     } else {
-      txt = "You pressed Cancel!";
+      console.log("You pressed Cancel!");
     }
+
   }
 
 
@@ -152,55 +175,52 @@ class WelcomeInstance extends React.Component {
       <Container fluid >
         <Row >
           <Col >
-            <div class="bg-green pt-5 pb-3">
+            <div className="bg-green pt-5 pb-3">
 
-              <div class='container'>
+              <div className='container'>
 
 
-                <div class="row align-items-center">
+                <div className="row align-items-center">
 
-                  <div class="col-12 col-md-6 col-lg-4">
+                  <div className="col-6 col-md-6 col-lg-4">
                     <h2>Instance Pannel</h2>
-                    <p class="lead">
-                      Welcome to the instance panel. Click on the sidebar or below to access running DCR projections. If none, first import a graph via the
+                    <p className="lead">
+                      Welcome to the instance panel. Click below to access running DCR projections. If none, first import a graph via the
         <a href='/welcomemodel'> My Process Models </a> dongle.
       </p>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-8">
-                    <img src="Medium_cible_rvb.jpg" alt="" id='resize-verysmall' class="img-fluid" loading="lazy" />
+                  <div className="col-6 col-md-6 col-lg-8">
+                    <img src="Medium_cible_rvb.jpg" alt="" id='resize-verysmall' className="img-fluid" loading="lazy" />
                   </div>
                 </div>
 
-
                 <div className="well">Choose the process projection instance to manage:</div>
 
-                <div class="bg-green">
-                  <Nav >
-                    {this.state.tree.map((process, i) => {
-                      return <Nav key={i} title={process[0]} class='sidebarLink'>
-                        <div style={{ 'padding-right': '10%', 'width': '20vw' }}>
-                          <ListGroup>
-                            <ListGroup.Item class='processHeader'>
-                              {process[0]}
-                            </ListGroup.Item>
+                <div className="bg-green">
+                  <Nav>
 
-                            <ListGroup.Item>
+                    <Table >
 
-                              {process[1].map(item =>
-                                <ul>
-                                  <Nav.Item >
+                      <tbody>
+                        {this.state.tree.map((process, i) => {
+                          return <Nav key={i} title={process[0]} >
+                            <tr>
+                              <td className="align-middle">{process[0]}</td>
+                              
+                                {process[1].map((item,i) =>
+                                  <td key={i} className="align-middle" >
                                     <Nav.Link as={Link}
                                       to={{
-                                        pathname: './tenantInstance/' + process[0].split(' ')[1] + '/' + item[0]
+                                        pathname: './tenantInstance/' + process[0] + '/' + item[0]
                                       }}
                                     >
-                                      Proj {item[1]}
-                                    </Nav.Link>
-                                  </Nav.Item>
-                                </ul>
+                                      {item[1]} Projection
+                                      </Nav.Link>
+                                  </td>
 
-                              )}
-                              <Nav.Item>
+                                )}
+                              
+                              <td className="align-middle">
                                 <Nav.Link as={Link}
                                   to={{
                                     pathname: './publicInstance',
@@ -210,30 +230,40 @@ class WelcomeInstance extends React.Component {
                                     }
                                   }}
                                 >
-                                  [BC] Public
+                                  Public Projection [BC]
                                  </Nav.Link>
-                              </Nav.Item>
+                              </td>
+                              <td className="align-middle">
+                                <Link type="button" className="btn btn-sm btn-danger" value={process[0]} to={'./welcomeinstance'} onClick={() => this.delete(process[0])}>Delete</Link>
+                              </td>
 
-                              <hr />
-                              <Col><Link value={process[0]} to={'./welcomeinstance'} onClick={() => this.delete(process[0])}>delete instances</Link></Col>
+                            </tr>
 
-                            </ListGroup.Item>
-                          </ListGroup>
-                        </div>
+                          </Nav>
+                        }
+                        )
+                        }
+                      </tbody>
 
-                      </Nav>
-                    }
-                    )
-                    }
-
-
+                    </Table>
                   </Nav>
 
+
+
+
+
                 </div>
+                <br />
+
+
+                {this.state.numProcesses === 0 ? <div></div> :
+                  <div className="well">
+                    <Button variant="danger" onClick={() => this.deleteAll()}>[DANGER] Delete all instances</Button>
+                  </div>
+                }
 
               </div>
             </div>
-
 
           </Col>
         </Row>

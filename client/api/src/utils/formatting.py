@@ -278,7 +278,7 @@ def getType(relation):
     return relType
 
 
-def generateDictEvent(events):
+def generateDictEvent(events, addresses):
     """
     generates dictionnary of events out of a list of textual descriptions
 
@@ -290,10 +290,31 @@ def generateDictEvent(events):
     ind = 0
     for elem in events:
         if ((elem[0].strip() != '#') and ('Declaration' not in elem)):
+            roleName =''
+            eventName=''
+            eventName = elem.split('[')[0].strip()
+            if('role=' in elem):
+                roleName=elem.split('role=')[1].replace(']','').strip()
+            elif('src=' in elem):
+                roleName=elem.split('src=')[1].split(' ')[0].strip()
+            elif(('!(' in elem) or ('?(' in elem)):
+                roleName=elem.split(', ')[1].split('-&')[0].strip()
+            else:
+                print(elem)
+                print('oops - wrong elem definition')
+            
+            for pk_data in addresses:
+                if(pk_data['role']==roleName):
+                    pk = pk_data['pk'].strip()
+
             dictList.append({
                 'id': ind,
-                'event': elem
+                'event': elem, 
+                'eventName':eventName,
+                'role': roleName,
+                'address': pk
             })
+
             ind = ind+1
 
     return dictList

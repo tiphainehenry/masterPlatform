@@ -175,7 +175,8 @@ def extractRoleChunks(data):
 
     for line in data:
 
-        if line[0] != '#':
+        if ((line[0] != '#') & (line[0:8] != 'pk[role=')):
+
             if 'role' in line:
                 internalEvents.append(line)
             elif ('src=' in line) or ('?' in line) or ('!' in line):

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import '../style/boosted.min.css';
 import Header from './Header';
-import axios, { post } from 'axios';
+import { post } from 'axios';
 import LoadToBC from './LoadToBC';
-import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
+import { Button, Row, Col, Container } from 'react-bootstrap';
 import SidebarModel from './SidebarModel';
 
 var ProcessDB = require('../projections/DCR_Projections.json');
@@ -63,18 +63,6 @@ class Create extends React.Component {
     formData.append('file', file);
     formData.append('processID', processID);
     
-
-    axios.post(`http://localhost:5000/inputFile`).then(
-        (response) => {
-            var result = response.data;
-            console.log(result);
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
-
-
     const config = {
       headers: {
         'content-type': 'multipart/form-data',

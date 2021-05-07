@@ -120,10 +120,9 @@ def generateDCRText(processID, chunks, role, choreoEventsProj, filename):
     projection = ["##### Projection over role [" + role + "] #######"] + events + projGrouping + linkages 
 
     #generate dict
-    Pev=generateDictEvent(projEvents)
-    Eev=generateDictEvent(externalEvents)
+    Pev=generateDictEvent(projEvents,chunks['addresses'])
+    Eev=generateDictEvent(externalEvents,chunks['addresses'])
     relations=generateDictRelation(linkages)
-
        
     with open(filename) as json_file:
         data = json.load(json_file)
@@ -177,7 +176,7 @@ def projRole(processID, data, target, role):
     projection, externalIds = generateDCRText(processID, chunks, role, choreoEventsProj, os.path.join(target,"dcrTexts.json"))            
     generateGraph(processID, projection, externalIds, target, role)
 
-    print("[DEBUG] Vectorizing"+ role)
+    #print("[DEBUG] Vectorizing"+ role)
     vectorizeRole(projection, os.path.join(target,"temp_vect"+roleMapping['id']))
 
     print('[INFO] Projection of role '+role+' generated')

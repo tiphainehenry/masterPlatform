@@ -1,12 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import DCRgraph from './DCRgraph';
-import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import Sidebar from './SidebarInstance';
-import { useLocation } from 'react-router-dom';
-
-import equal from 'fast-deep-equal';
-import { useParams } from "react-router";
+import { Row, Col, Container } from 'react-bootstrap';
 
 var ProcessDB = require('../projections/DCR_Projections.json')
 
@@ -60,7 +55,7 @@ class ViewRi extends React.Component {
 
 
   render() {
-    console.log(this.state)
+    //console.log(this.state)
     // this.state.data.unshift({group:"nodes",classes:"external choreography",data:{id:"c1s", name:"toto"}})
     // this.state.data[1].data["parent"] = "c1s"
     // this.state.data[2].data["parent"] = "c1s"
@@ -78,7 +73,7 @@ class ViewRi extends React.Component {
                 processName={this.state.processName}
                 projectionID={this.state.projectionID}
               /> :
-              <div class="bg-green pt-5 pb-3">No projection yet, please go to the process models portal</div>
+              <div className="bg-green pt-5 pb-3">No projection yet, please go to the process models portal</div>
             }
 
           </Col>

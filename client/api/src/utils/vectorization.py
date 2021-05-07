@@ -122,7 +122,7 @@ def generateRelationMatrices(chunks):
     :returns: relation matrices of size NxN where N=number of events, and list of all relation matrices
     """
 
-    print('[INFO] Generating Relation Matrices')
+    #print('[INFO] Generating Relation Matrices')
 
     relations = chunks['linkages']
     events = chunks['events'] + chunks['internalEvents']

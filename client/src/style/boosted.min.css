@@ -34,6 +34,11 @@
   background-color: #faf89f;
 }
 
+.bg-idheader {
+    margin-top:1em;
+    font-size: 90%;
+}
+
 .bg-green{
   margin-top:5%;
 }  

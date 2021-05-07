@@ -1,13 +1,9 @@
 import React from 'react';
-import CardGroup from 'react-bootstrap/CardGroup';
-import RoleDescription from './roleDescription';
 
 import Header from './Header';
 import ExecLogger from './execLogger';
 import PublicMarkings from './PublicMarkings';
-import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import Sidebar from './SidebarInstance';
-
+import { Card, Row, Col, Container } from 'react-bootstrap';
 
 import equal from 'fast-deep-equal'
 
@@ -38,7 +34,6 @@ class ViewPublic extends React.Component {
     this.state = {
       projType: 'Public Projection',
 
-      processData: '',
       activityNames: [],
       execLogs: '',
 
@@ -121,7 +116,7 @@ class ViewPublic extends React.Component {
         });
       }
     }
-    var processID = this.props.location.state['currentProcess'][1];
+    processID = this.props.location.state['currentProcess'][1];
     var ProcessDataPublic = ProcessDB[processID][this.state.projectionID];
     console.log(ProcessDataPublic);
 

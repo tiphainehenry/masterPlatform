@@ -81,7 +81,8 @@ def generateGlobalProjection(data, filename):
         'relations':globRelations
     }
     data['roleMapping']=roleMapping
-    #print(filename)
+
+    data['addresses']=chunks['addresses']
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)
     return projection, []

@@ -290,16 +290,18 @@ def inputFileLaunch():
     reads input dcr textual representation 
     """ 
 
-    file = request.files['file']
-    data = file.readlines()
-    print("-----------------------------------")
-    processID = str(request.form['processID'])
-    #print(data)
-    updWithName(data, processID)
+    try:
+        file = request.files['file']
+        data = file.readlines()
+        print("-----------------------------------")
+        processID = str(request.form['processID'])
+        #print(data)
+        updWithName(data, processID)
 
-    return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+        return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
-
+    except:
+        return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
 
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
@@ -315,6 +317,21 @@ def delete():
         dataProj = json.load(json_file)
 
     dataProj.pop(processID, None)
+
+    with open(projDBPath, 'w') as outfile:
+        json.dump(dataProj, outfile, indent=2)
+
+    return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+
+
+@app.route('/deleteAll', methods=['GET', 'POST'])
+def deleteAll():
+    """
+    deletes all process instances! 
+    """ 
+
+    projDBPath='../../client/src/projections/DCR_Projections.json'
+    dataProj = {}
 
     with open(projDBPath, 'w') as outfile:
         json.dump(dataProj, outfile, indent=2)

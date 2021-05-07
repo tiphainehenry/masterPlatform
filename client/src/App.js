@@ -2,10 +2,8 @@ import React from 'react';
 import './style/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
-  Link,
   BrowserRouter
 } from "react-router-dom";
 import Homepage from './components/Homepage';

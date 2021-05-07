@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import CytoscapeComponent from 'react-cytoscapejs';
 import PublicDCRManager from "../contracts/PublicDCRManager.json";
 import getWeb3 from "../getWeb3";
@@ -25,7 +24,7 @@ class LoadToBC extends React.Component {
       lenDataDB: 0,
       wkState: '... waiting for Smart Contract instanciation ...',
 
-
+      addresses:[],
       includedStates: '',
       executedStates: '',
       pendingStates: '',
@@ -53,6 +52,30 @@ class LoadToBC extends React.Component {
 
     var lenDataDB = Object.keys(ProcessDB).length;
     if (lenDataDB > 0) {
+
+      // connect list of activities to corresponding role first, and then to the right role address
+      var activities = ProcessDB[Object.keys(ProcessDB)[0]]['TextExtraction']['public']['privateEvents']
+
+      var orderedPk = []
+      var orderedNames= ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['activityNames']['default'];
+      for (let i in orderedNames){
+        console.log(orderedNames[i]);
+        var matchingPk = ''
+        Object.keys(activities).forEach(k => {
+          if(activities[k].eventName === orderedNames[i]){
+            //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
+            matchingPk = activities[k].address;
+          }
+        });
+        if(matchingPk !== ''){
+          orderedPk.push(matchingPk);
+        }
+
+      }
+
+      console.log(orderedPk)
+      console.log(orderedNames)
+
       this.setState({
         data: ProcessDB[Object.keys(ProcessDB)[0]]['Global']['data'],
         processName: Object.keys(ProcessDB)[0],
@@ -66,8 +89,8 @@ class LoadToBC extends React.Component {
         excludesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['exclude'],
         responsesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['response'],
         conditionsFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['condition'],
-        milestonesFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['milestone']
-
+        milestonesFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['milestone'],
+        addresses: orderedPk
       })
     }
 
@@ -93,7 +116,6 @@ class LoadToBC extends React.Component {
       this.setState({ web3, accounts, contract: instance });
 
       // Checking if contract already populated
-      const { contract } = this.state;
       this.setState({ wkState: 'Create Global Workflow OnChain.' })
 
     } catch (error) {
@@ -114,22 +136,31 @@ class LoadToBC extends React.Component {
 
     const { accounts, contract } = this.state;
 
+
     try {
 
-      await contract.methods.createWorkflow(
-        this.state.includedStates,
-        this.state.executedStates,
-        this.state.pendingStates,
+      if(this.state.includedStates.length === 0){
+        alert("oops -didnt have time to update freshly updated db [to be implemented]");  
+      }
+      else{
 
-        this.state.activityNames,
-        this.state.processName,
-
-        this.state.includesTo,
-        this.state.excludesTo,
-        this.state.responsesTo,
-        this.state.conditionsFrom,
-        this.state.milestonesFrom
-      ).send({ from: accounts[0] });
+        await contract.methods.createWorkflow(
+          this.state.includedStates,
+          this.state.executedStates,
+          this.state.pendingStates,
+  
+          this.state.addresses,
+          this.state.activityNames,
+          this.state.processName,
+  
+          this.state.includesTo,
+          this.state.excludesTo,
+          this.state.responsesTo,
+          this.state.conditionsFrom,
+          this.state.milestonesFrom
+        ).send({ from: accounts[0] });
+          
+      }
 
       //axios.post(`http://localhost:5000/reinit`, 
       //{
@@ -142,6 +173,7 @@ class LoadToBC extends React.Component {
     }
     catch (err) {
       window.alert(err);
+
       this.setState({ wkState: 'Create Global Workflow OnChain' });
     }
 

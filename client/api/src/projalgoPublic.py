@@ -167,8 +167,8 @@ def generatePublicProjection(chunks, filename):
         events + projGrouping + linkages
 
     # generate dict
-    privateEvents = generateDictEvent(public_events)
-    externalEvents = generateDictEvent(externalEvents)
+    privateEvents = generateDictEvent(public_events, chunks['addresses'])
+    externalEvents = generateDictEvent(externalEvents, chunks['addresses'])
     relations = generateDictRelation(linkages)
 
     with open(filename) as json_file:

@@ -67,33 +67,33 @@ def initializeGraph(filename):
     :param filename: filename to analyze
 
     """
-    print("[DEBUG]"+ filename)
     with open(filename) as json_data:
         data = json.load(json_data)
 
     markings = data['markings']
 
     dataFilename = filename.replace('vect', 'data')
-    with open(dataFilename) as json_data:
-        dataProj = json.load(json_data)
 
-    updProj = []
-    print("INIT STAGE")
-    for elem in dataProj:
-        print(elem)
-        if elem['group'] == 'nodes':
-            # filter out external events
-            if (('classes' not in elem.keys()) or ('type_projChoreo' in elem['classes']) or ('external' not in elem['classes'])):
-                elemMarking = retrieveMarkingOnId(markings, elem)
-                print(elemMarking)
-                if(len(elemMarking) != 0):
-                    if (elemMarking['include'] == 1):
-                        elem['classes'] = elem['classes']+ ' included executable'
+    try:
+        with open(dataFilename) as json_data:
+            dataProj = json.load(json_data)
+        updProj = []
+        for elem in dataProj:
+            if elem['group'] == 'nodes':
+                # filter out external events
+                if (('classes' not in elem.keys()) or ('type_projChoreo' in elem['classes']) or ('external' not in elem['classes'])):
+                    elemMarking = retrieveMarkingOnId(markings, elem)
+                    if(len(elemMarking) != 0):
+                        if (elemMarking['include'] == 1):
+                            elem['classes'] = elem['classes']+ ' included executable'
 
-        updProj.append(elem)
+            updProj.append(elem)
 
-    with open(os.path.join(dataFilename), 'w') as outfile:
-        json.dump(updProj, outfile, indent=2)
+        with open(os.path.join(dataFilename), 'w') as outfile:
+            json.dump(updProj, outfile, indent=2)
+
+    except: 
+        pass #global vec: no need to generate it here
 
 
 def retrieveActivityRelations(relations, activity_id, dataProj):
@@ -265,8 +265,6 @@ def updCytoData(dataProj, markings):
 
     for elem in dataProj:
         if(elem['group'] == 'nodes'):
-            print('[DEBUG]')
-            print(elem)
             if ('classes' in elem.keys()) and ('external' in elem['classes']):
                 pass
             else:
@@ -280,8 +278,7 @@ def updCytoData(dataProj, markings):
                 if retrieveMarkingOnId(markings, elem)['pending'] == 1:
                     classes.append('pending executable')
                 elem.update({'classes': ' '.join(classes)})
-            print(elem)
-
+     
     return dataProj
 
 
