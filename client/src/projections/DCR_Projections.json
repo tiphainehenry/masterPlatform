@@ -17,7 +17,7 @@
           }, 
           {
             "include": 1, 
-            "executed": 0, 
+            "executed": 1, 
             "id": "ReceiveInvoice", 
             "pending": 0
           }, 
@@ -182,7 +182,7 @@
         }, 
         {
           "group": "nodes", 
-          "classes": "included executable", 
+          "classes": "included  executable executed", 
           "data": {
             "id": "ReceiveInvoice", 
             "name": "ReceiveInvoice"
@@ -450,7 +450,16 @@
         ]
       }, 
       "exec": {
-        "execLogs": []
+        "execLogs": [
+          {
+            "status": "executed", 
+            "task": "ReceiveInvoice", 
+            "timestamp_endTask": "05/12/2021, 13:17:12", 
+            "timestamp_startTask": "12/05/2021 \u00e0 13:17:12", 
+            "data": "Test", 
+            "id": 0
+          }
+        ]
       }
     }, 
     "r2": {

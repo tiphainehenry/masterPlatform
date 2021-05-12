@@ -649,10 +649,10 @@
                         "name": "revert",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [
-                          780,
-                          781
+                          115,
+                          116
                         ],
-                        "referencedDeclaration": 780,
+                        "referencedDeclaration": 115,
                         "src": "555:6:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_revert_pure$__$returns$__$",
@@ -1069,10 +1069,10 @@
                         "name": "revert",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [
-                          780,
-                          781
+                          115,
+                          116
                         ],
-                        "referencedDeclaration": 780,
+                        "referencedDeclaration": 115,
                         "src": "772:6:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_revert_pure$__$returns$__$",
@@ -2001,10 +2001,10 @@
                                     null
                                   ],
                                   "overloadedDeclarations": [
-                                    780,
-                                    781
+                                    115,
+                                    116
                                   ],
-                                  "referencedDeclaration": 780,
+                                  "referencedDeclaration": 115,
                                   "type": "function () pure",
                                   "value": "revert"
                                 },
@@ -2463,10 +2463,10 @@
                                     null
                                   ],
                                   "overloadedDeclarations": [
-                                    780,
-                                    781
+                                    115,
+                                    116
                                   ],
-                                  "referencedDeclaration": 780,
+                                  "referencedDeclaration": 115,
                                   "type": "function () pure",
                                   "value": "revert"
                                 },
@@ -2639,7 +2639,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-05-11T14:20:31.140Z",
+  "updatedAt": "2021-05-12T11:10:33.851Z",
   "devdoc": {
     "methods": {}
   },

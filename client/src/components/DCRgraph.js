@@ -107,7 +107,7 @@ class DCRgraph extends React.Component {
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
-      console.log("1");
+      console.log(networkId);
       const deployedNetwork = PublicDCRManager.networks[networkId];
       console.log("1");
       const instance = new web3.eth.Contract(

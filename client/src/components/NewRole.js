@@ -54,8 +54,10 @@ class NewRole extends React.Component {
         try {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
-
+            console.log(accounts);
             const networkId = await web3.eth.net.getId();
+            console.log(networkId);
+
             const deployedNetwork = AdminRoleManager.networks[networkId];
             console.log(deployedNetwork);
             const instance = new web3.eth.Contract(
