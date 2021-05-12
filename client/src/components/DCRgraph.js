@@ -114,7 +114,7 @@ class DCRgraph extends React.Component {
         PublicDCRManager.abi,
         deployedNetwork && deployedNetwork.address,
       );
-
+        console.log(instance);
       var wkID = this.props.processName.replace('p', '') - 1;
       console.log(instance.methods);
       const inclVector = await instance.methods.getIncluded(wkID).call();

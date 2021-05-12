@@ -65,8 +65,9 @@ class NewRole extends React.Component {
                 deployedNetwork && deployedNetwork.address,
             );
             console.log(instance);
-            // instance.methods.name().call((err, res) => {console.log(err)})*
-            var res = await instance.methods.newRole('0xB075d6DA74408C291c86c0e651dd10e962efc82D', "test").call()
+            const res = await instance.methods.name().call();
+            console.log(res);
+            // var res = await instance.methods.newRole('0xB075d6DA74408C291c86c0e651dd10e962efc82D', "test").call()
             // console.log(await AdminRoleManager.methods.getRoleCount().call())
             // console.log(res)
 
