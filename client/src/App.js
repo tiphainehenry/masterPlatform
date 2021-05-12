@@ -18,6 +18,7 @@ import Create from './components/Create';
 import WelcomeInstance from './components/WelcomeInstance';
 import WelcomeModel from './components/WelcomeModel';
 import CreationDeck from './components/CreationDeck';
+import NewRole from './components/NewRole';
 
 
 const App = () => (
@@ -31,6 +32,7 @@ const App = () => (
       <Route exact path="/create" component={Create} />
       <Route exact path="/new" component={NewInstance} />
       <Route exact path="/creation" component={CreationDeck} />
+      <Route exact path="/newrole" component={NewRole} />
       <Switch>
           <Route 
           exact 

@@ -31,6 +31,7 @@ class SidebarModel extends React.Component {
                     <Nav.Link style={{paddingTop:"5vh"}} href="/create">Import a Projection</Nav.Link>
                     <Nav.Link href="/new">Create a new projection</Nav.Link>
                     <Nav.Link href="/edit">Edit a projection</Nav.Link>
+                    <Nav.Link href="/newrole">Manage roles</Nav.Link>
 
                 </Nav>
             </div>
