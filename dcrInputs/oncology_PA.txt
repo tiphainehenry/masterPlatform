@@ -1,0 +1,29 @@
+## declare events
+
+# Role PUBLIC ETH addresses
+pk[role=Doctor] = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB
+pk[role=Nurse] = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819
+pk[role=CP] = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5
+pk[role=PA]= 0xC9f167B5056B03eB29963aB8e6F78bB12Cf5BA17
+
+# Choreography exchanges
+e5[MakePrescription src=PA tgt=CP]
+e6[DontTrustPrep(CP) src=CP tgt=PA]
+e7[DontTrustPrep(N) src=Nurse tgt=PA]
+
+# Internal processes
+"SignPA" [role=PA]
+
+## link events
+e5 *--> SignPA
+e5 -->* SignPA
+e5 --<> SignPA
+
+SignPA -->* e6
+e6 *--> SignPA
+
+SignPA -->* SignCP
+SignPA --<> SignCP
+
+SignCP -->* e7
+e7 *--> SignCP

@@ -14,10 +14,13 @@ from flask_restful import reqparse, abort, Api, Resource
 from werkzeug.utils import secure_filename
 from src.projalgoGlobal import projectGlobal
 from src.projalgoPublic import projectPublic
-from src.projalgoRoles import projRole
-from src.utils.formatting import removeGroups
+from src.projalgoRoles import projRole, projRole_fromLocalRequest
+from src.utils.formatting import removeGroups,getChoreographyDetails
+from src.utils.vectorization import getRelationElems
 from src.utils.chunking import getRoles, getRoleMapping
 from src.utils.graphManager import executeNode, executeApprovedNode, execLogg, initializeGraph, retrieveMarkingOnId
+
+from src.utils.chunking import extractChunks, getLinkages,applyComposition, getRoles, getRoleMapping
 
 from src.utils.vectorization import vectorizeRole, vectorizeRoleFromCyto
 
@@ -40,7 +43,7 @@ def getId(processID, role):
     roleMapping = getRoleMapping(processID,role)
     return roleMapping['id']
 
-def updWithName(dataTxt, pi):
+def updWithName(dataTxt, pi, projType):
     """
     generates projections from textual representation
 
@@ -106,6 +109,8 @@ def updWithName(dataTxt, pi):
         'exec': execPub,
         'vect': vectPub
     }
+
+    processData['projType']=projType
 
     for role in getRoles(pi):
         roleMapping = getRoleMapping(pi,role)
@@ -283,6 +288,119 @@ def processBCData():
 
 #    return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
+@app.route('/localProj', methods=['GET', 'POST'])
+
+def localProj():
+    """
+    updates local projection 
+    """ 
+
+    try:
+        file = request.files['file']
+        localData = file.readlines()
+        print("-----------------------------------")
+        processID = str(request.form['processID'])
+        roleID = str(request.form['roleID'])
+        roleNum = str(request.form['roleNum'])
+
+        dataPath='../../client/src/projections/DCR_Projections.json'
+        with open(dataPath) as json_file:
+            dataJson = json.load(json_file)
+
+        #Update public projection
+        publicData = dataJson[processID]['TextExtraction']['public']
+    
+        # step1: enrich private events and relations --> scan all. If not matching: then add relation. 
+        localChunks, localRoles = extractChunks(localData)
+        localRelations = []
+        roleIds = []
+
+        localEvents=[] 
+        
+        for elem in localChunks['events']:
+            localEvents.append(str(elem).strip()) 
+        for elem in localChunks['internalEvents']:
+            localEvents.append(str(elem).strip()) 
+
+        for r in localChunks['linkages']:
+            lr = getRelationElems(r)
+            for rData in publicData['relations']:
+                #print(getRelationElems(str(rData['relation'])))
+                pr = getRelationElems(rData['relation'])
+                if (((lr['r_from'] != pr['r_from']) | (lr['r_to'] != pr['r_to']) | (lr['r_type'] != pr['r_type'])) and (rData['relation'] not in localRelations)):
+                    localRelations.append(rData['relation'])
+                    if(pr['r_from'] not in roleIds):
+                        roleIds.append(pr['r_from'])
+                    if(pr['r_to'] not in roleIds):
+                        roleIds.append(pr['r_to'])
+
+            localRelations.append(r)
+            if(lr['r_from'] not in roleIds):
+                roleIds.append(lr['r_from'])
+            if(lr['r_to'] not in roleIds):
+                roleIds.append(lr['r_to'])
+
+        addresses=[]
+        for elem in publicData['privateEvents']:
+            newA = 'pk[role='+elem['role']+']='+elem['address']
+            if(newA not in addresses):
+                addresses.append(str(newA))
+
+        localEvents = list(set(localEvents))        
+        projText=addresses+localEvents+localRelations
+
+        # step2: retrieve external events, and save them as such: 'external events', plus choreography. 
+
+        #print(publicData.keys())
+        #print(roles)
+
+        # step 3: generate local projection (data and vect)
+        target = '../../client/src/projections/'
+        dataPath = '../../client/src/projections/dcrTexts.json'
+        this_folder = os.path.dirname(os.path.abspath(__file__))
+        
+        projRole_fromLocalRequest(processID, projText, target, roleID, roleNum)
+
+        dataPath=os.path.join(target, 'temp_data'+roleNum+'.json')
+        with open(dataPath) as json_file:
+            dataR = json.load(json_file)
+
+        vectPath=os.path.join(target, 'temp_vect'+roleNum+'.json')
+        with open(vectPath) as json_file:
+            vectR = json.load(json_file)
+
+        dcrPath=os.path.join(target, 'DCR_Projections.json')
+        with open(dcrPath) as json_file:
+            dataJson = json.load(json_file)
+
+        dataJson[processID][roleNum] = {
+            'data': dataR,
+            'exec': dataJson[processID][roleNum]['exec'],
+            'vect': vectR,
+            'init':{
+                'data': dataR,
+                'vect': vectR
+            }
+        }
+
+        dataJson['projType']='p_to_g'
+        with open(dcrPath, 'w') as outfile:
+            json.dump(dataJson, outfile, indent=2)
+
+        os.remove(os.path.join(this_folder, '../src/projections/temp_data'+roleNum+'.json'))
+        os.remove(os.path.join(this_folder, '../src/projections/temp_vect'+roleNum['id']+'.json'))
+        os.remove(os.path.join(this_folder, '../src/projections/temp_local.json'))
+
+        # step 4: enrich public SC with new events (new relation matrix and new events (make bitvector bigger))
+        #updWithName(data, processID)
+
+        # unlock execution after all local projections have been done --> send event // and add a proj success variable. 
+        return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+
+    except:
+        return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
+
+
 
 @app.route('/inputFile', methods=['GET', 'POST'])
 def inputFileLaunch():
@@ -295,8 +413,9 @@ def inputFileLaunch():
         data = file.readlines()
         print("-----------------------------------")
         processID = str(request.form['processID'])
-        #print(data)
-        updWithName(data, processID)
+        projType = str(request.form['projType'])
+
+        updWithName(data, processID, projType)
 
         return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 

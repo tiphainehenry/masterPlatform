@@ -441,14 +441,14 @@ def generateGraph(pi, data, externalIds, target, role):
     """
 
     # chunk events
-
+    print('hehe')
+    print(data)
     if (role not in ['Global', 'Public']):
         chunks = extractRoleChunks(data)
         # generate tasks and relations
         cTasks = cytoTasks(
             chunks['events']+chunks['internalEvents'], externalIds)
         cEdges = cytoEdges(chunks['linkages'])
-
     else:
         # generate tasks and relations
         chunks, roles = extractChunks(data)

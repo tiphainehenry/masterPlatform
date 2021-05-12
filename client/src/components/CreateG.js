@@ -12,7 +12,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 /**
  * Component to generate a new process instance out of a dcr input file.
  */
-class Create extends React.Component {
+class CreateG extends React.Component {
   constructor(props) {
     super(props);
     this.loadToBC = React.createRef()
@@ -62,6 +62,7 @@ class Create extends React.Component {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('processID', processID);
+    formData.append('projType', 'g_to_p');
     
     const config = {
       headers: {
@@ -84,10 +85,11 @@ class Create extends React.Component {
           <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
             <div class="bg-green pt-5 pb-3">
               <div class="container">
-                <h2>My Process Models - Import and project a new process model</h2>
+                <h2>My Process Models - Global input to local projections.</h2> 
+                <h3>Import and project a new process model</h3>
                 <h5>Step 1 </h5>
 
-                <p>Load a DCR file to be projected. The three input files used for our experiments are accessible in the <a href='https://github.com/tiphainehenry/react-cyto/'>dcrInputs repository</a> of our github.</p>
+                <p>Load a GLOBAL DCR file to be projected (i.e. a process that declares both the private and public tasks of the participants.) The three input files used for our experiments are accessible in the <a href='https://github.com/tiphainehenry/react-cyto/'>dcrInputs repository</a> of our github.</p>
                 <form onSubmit={this.onFormSubmit}>
                   <input type="file" onChange={this.onChange} />
                   <button class="btn btn-primary my-2 my-sm-0" type="submit">Upload and project</button>
@@ -136,4 +138,4 @@ class Create extends React.Component {
   }
 }
 
-export default Create
+export default CreateG

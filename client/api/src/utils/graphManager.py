@@ -206,6 +206,8 @@ def preExecCheck(fromCondition, fromMilestone, markings):
     # if conditions not empty: get markings of conditions --> if not executed yet and included: error
     if (len(fromCondition) != 0):
         for elem in fromCondition:
+            print(elem['projid'])
+            print(elem)
             if (retrieveMarkingOnName(markings, elem['projid'])['executed'] == 0) and (retrieveMarkingOnName(markings, elem)['include'] == 1):
                 print('[INFO] error - elem condition not executed')
                 return False

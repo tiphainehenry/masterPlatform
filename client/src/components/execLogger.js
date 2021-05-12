@@ -117,8 +117,9 @@ class ExecLogger extends React.Component {
               <Card id="exec" style={{height:'70%','marginTop':'3vh'}}>
               <Card.Header as="p" style= {{color:'white', 'backgroundColor': '#32a86f', 'borderBottom':'white'}}>
                   Execution logs</Card.Header>
-                <Card.Body style={{height:'20%'}}>
+                <Card.Body style={{height:'20%', 'overflowY': 'scroll', height: '20vh'}}>
                   <div className="card-text" >
+                    
                     {this.props.execLogs.execLogs.map(item=> 
                     <div key={'div'+item.id}>
                       <Row  key={item.id} style= {{'fontSize': '10pt', 'fontWeight': 200}} xs={1} md={5} >
@@ -138,7 +139,7 @@ class ExecLogger extends React.Component {
                       }}/>
             </div>
 
-                    )}
+                    ).reverse()}
                   </div>
                 </Card.Body>
               </Card>

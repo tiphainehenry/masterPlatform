@@ -72,9 +72,10 @@ class LoadToBC extends React.Component {
         }
 
       }
-
-      console.log(orderedPk)
-      console.log(orderedNames)
+      let approvalList = [...new Set(orderedPk)];
+      console.log(orderedPk);
+      console.log(orderedNames);
+      console.log(approvalList);
 
       this.setState({
         data: ProcessDB[Object.keys(ProcessDB)[0]]['Global']['data'],
@@ -90,7 +91,8 @@ class LoadToBC extends React.Component {
         responsesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['response'],
         conditionsFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['condition'],
         milestonesFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['milestone'],
-        addresses: orderedPk
+        addresses: orderedPk,
+        approvalList: approvalList
       })
     }
 
@@ -145,11 +147,10 @@ class LoadToBC extends React.Component {
       else{
 
         await contract.methods.createWorkflow(
-          this.state.includedStates,
-          this.state.executedStates,
-          this.state.pendingStates,
+          [this.state.includedStates,this.state.executedStates,this.state.pendingStates], //marking
   
           this.state.addresses,
+          this.state.approvalList,
           this.state.activityNames,
           this.state.processName,
   

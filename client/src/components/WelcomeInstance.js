@@ -4,6 +4,7 @@ import { Button, Row, Col, Container } from 'react-bootstrap';
 
 import { Nav } from "react-bootstrap";
 import { Link } from 'react-router-dom';
+import TableScrollbar from 'react-table-scrollbar';
 
 import { Table } from 'react-bootstrap';
 import '../style/boosted.min.css';
@@ -74,7 +75,7 @@ class WelcomeInstance extends React.Component {
       try {
         var dcrText = ProcessDB[Object.keys(ProcessDB)[j]]['TextExtraction']
         var name = ProcessDB[Object.keys(ProcessDB)[j]]['id']
-
+        var type = ProcessDB[Object.keys(ProcessDB)[j]]['projType']
         var roleLength = dcrText['roleMapping'].length;
 
         var i;
@@ -94,6 +95,8 @@ class WelcomeInstance extends React.Component {
         var process = [];
         process.push(name);
         process.push(roles);
+        process.push(type);
+
         tree.push(process);
 
       }
@@ -101,6 +104,8 @@ class WelcomeInstance extends React.Component {
       }
 
     }
+
+    tree.sort();
 
     this.setState({ 'tree': tree, 'numProcesses': numProcess });
 
@@ -198,14 +203,15 @@ class WelcomeInstance extends React.Component {
 
                 <div className="bg-green">
                   <Nav>
-
-                    <Table >
+                  <TableScrollbar rows={8}>
+                    <Table>
 
                       <tbody>
                         {this.state.tree.map((process, i) => {
                           return <Nav key={i} title={process[0]} >
                             <tr>
                               <td className="align-middle">{process[0]}</td>
+                              <td className="align-middle">{process[2]}</td>
                               
                                 {process[1].map((item,i) =>
                                   <td key={i} className="align-middle" >
@@ -246,10 +252,8 @@ class WelcomeInstance extends React.Component {
                       </tbody>
 
                     </Table>
+                    </TableScrollbar>
                   </Nav>
-
-
-
 
 
                 </div>

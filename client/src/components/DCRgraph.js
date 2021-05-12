@@ -50,6 +50,7 @@ class DCRgraph extends React.Component {
       bcRes: '',
       owner: '',
 
+      addressProj:'',
       incl: '',
       exec: '',
       pend: '',
@@ -57,12 +58,20 @@ class DCRgraph extends React.Component {
       activityData: '',
       wkID: '',
       dataValues: [],
-      altVersionExists: false
-    };
+      altVersionExists: false,
+      file: null, 
+      processID:'',
 
+      hasApproved:false
+    };
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.fileUpload = this.fileUpload.bind(this);
     this.fetchBCid = this.fetchBCid.bind(this);
     this.loadContract = this.loadContract.bind(this);
     this.handleProjSwitch = this.handleProjSwitch.bind(this);
+    this.handleLocalProj = this.handleLocalProj.bind(this);
+
   }
 
   /**
@@ -112,6 +121,9 @@ class DCRgraph extends React.Component {
       const pendVector = await instance.methods.getPending(wkID).call();
       const hashesVector = await instance.methods.getHashes(wkID).call();
 
+      const hasApproved =  await instance.methods.hasApproved(wkID).call();
+      const approvalList =  await instance.methods.getApprovalsOutcome(wkID).call();
+
       this.setState({
         web3, accounts, contract: instance,
       });
@@ -120,13 +132,15 @@ class DCRgraph extends React.Component {
         incl: inclVector,
         exec: execVector,
         pend: pendVector,
-        dataHashes: hashesVector
+        dataHashes: hashesVector,
+        hasApproved:parseInt(hasApproved),
+        approvalList:approvalList.reduce((a, b)=> parseInt(a)*parseInt(b), 1)
       })
       this.cy.fit();
 
     } catch (error) {
       // Catch any errors for any of the above operations.
-      alert(
+      console.log(
         `[Load contract issue] Failed to load web3, accounts, or contract. Check console for details.`,
       );
       console.error(error);
@@ -153,15 +167,30 @@ class DCRgraph extends React.Component {
       }
     });
 
+    var addresses = ProcessDB[this.props.processID]['TextExtraction']['public']['privateEvents'];
+
+    var addressProj=''
+
+    for(let id in addresses){
+
+      if(addresses[id]['role']===this.props.id){
+        addressProj=addresses[id]['address'];
+      }      
+    }
+
+    this.setState({'addressProj':addressProj});
+
+    this.loadContract();
+    this.cy.fit();
+    this.setUpListeners();
+
     // this.props.data.unshift({group:"nodes",classes:"external choreography",data:{id:"c1s", name:"toto"}})
     //this.props.data.forEach(e => {
     //    console.log(e.data)
     //  })
 
-    this.cy.fit();
 
 
-    this.setUpListeners();
   };
 
 
@@ -319,6 +348,71 @@ class DCRgraph extends React.Component {
     })
   }
 
+  handleLocalProj(){
+
+    // fetching external events
+
+    // updating smart contract (only once)
+
+    // able to execute only when all local projections have succeeded
+
+  }
+
+    /**
+   * uploads file on user click.
+   * @param e click event
+   */
+  onFormSubmit = async (e) => {
+    const { accounts, contract } = this.state;
+
+    try{
+      e.preventDefault() // Stop form submit
+      this.fileUpload(this.state.file).then((response) => {
+        console.log(response.data);  
+      })  
+    }
+    catch(err){
+      console.log(err);
+    }
+    await contract.methods.localProjectionApproval(this.state.wkID).send({ from: accounts[0] });
+    
+  }
+
+  /**
+   * updates filepath on new upload.
+   * @param e upload event
+   */
+  onChange(e) {
+    this.setState({ file: e.target.files[0] })
+  }
+
+  /**
+   * upload filename and process it into the backend to generate projections.
+   * @param file dcr textual representation (see examples in the DCRinput folder).
+   */
+  fileUpload(file) {
+    const url = `http://localhost:5000/localProj`;
+    
+    this.setState({processID: this.props.processName});
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('processID', this.props.processName);
+    formData.append('roleID', this.props.id);
+    formData.append('roleNum', this.props.projectionID);
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+
+    return axios.post(url, formData, config);
+
+
+  }
+
   /**
    * Updates private projection on demand --> checks if any ungoing pending activities exist. 
    * If no pending activities is spotted, then launch update via an API call.
@@ -367,18 +461,39 @@ class DCRgraph extends React.Component {
 
   }
 
-
   render() {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
 
     return <div>
+
       <div className="bg-green pt-5 pb-3">
 
         <div className='container'>
           <h2>Process {this.props.processName}</h2>
           <h3>Private Projection for the role {this.props.id}</h3>
+
+          {this.state.web3===null? <div>Loading web3...</div>:<div></div>}
+
+          <div style={((this.state.web3!==null) && (this.state.owner !== this.state.addressProj)) ? {} : { display: 'none', 'marginTop': '3vh' }} >
+          <h3 style={{color:'red'}}>Wrong address, connected with account {this.state.owner} instead of {this.state.addressProj}</h3>
+          </div>
+
+          <div style={((this.state.owner === this.state.addressProj) &&(this.state.hasApproved === 0))? {} : { display: 'none' }}>
+          <form onSubmit={this.onFormSubmit}>
+                  <input type="file" onChange={this.onChange} />
+                  <Button className="btn btn-primary my-2 my-sm-0" type="submit">Upload and project my local projection</Button>
+                </form>
+        </div>
+
+        <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 1) && (this.state.approvalList === 0))? {} : { display: 'none' }}>
+            Successful user projection. Waiting for other participants submissions. ({this.state.approvalList})
+        </div>
+
+        <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 1) && (this.state.approvalList === 1))? {} : { display: 'none' }}>
+          <div style={(this.state.owner === this.state.addressProj) ? {} : { display: 'none' }}>
+          <div>
           <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
           The local tasks are updated locally via API calls.
                   The public tasks are updated after a call to the smart contract instance of the public projection. </p>
@@ -387,10 +502,14 @@ class DCRgraph extends React.Component {
 
           <p> Click on one of the nodes of the graph below to update the state of the workflow execution. NB. A task needs to be enabled (with a white background here) to be successful. Black tasks are external tasks, managed by another tenant.</p>
 
+
+        <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
+
           <Card style={{ height: '90%', 'marginTop': '3vh' }}>
+
             <Card.Header as="p" style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
-              {this.props.id} Projection
-              <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
+              {this.props.id} Projection - ETH address: {this.state.addressProj}
+
             </Card.Header>
             <Card.Body >
               <CytoscapeComponent elements={this.props.data}
@@ -402,7 +521,6 @@ class DCRgraph extends React.Component {
               />
             </Card.Body>
           </Card>
-
           <ExecLogger execLogs={this.props.execLogs} activityNames={this.state.activityNames} />
           <PublicMarkings
             activityNames={this.state.activityNames["default"]}
@@ -418,9 +536,12 @@ class DCRgraph extends React.Component {
             <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button> :
             <></>
           }
-
+          </div>
+          
         </div>
       </div>
+      </div>
+</div>
 
     </div>;
   }
