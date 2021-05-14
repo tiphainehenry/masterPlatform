@@ -64,10 +64,12 @@ class NewRole extends React.Component {
                 AdminRoleManager.abi,
                 deployedNetwork && deployedNetwork.address,
             );
-            console.log(instance);
-            const res = await instance.methods.name().call();
-            console.log(res);
-            // var res = await instance.methods.newRole('0xB075d6DA74408C291c86c0e651dd10e962efc82D', "test").call()
+            this.setState({instance: instance})
+            console.log(instance)
+            // const res = await instance.methods.getRoles().call();
+            const aze = await instance.methods.getmessage().call();
+            // console.log(res);
+            console.log(aze);
             // console.log(await AdminRoleManager.methods.getRoleCount().call())
             // console.log(res)
 
@@ -83,9 +85,23 @@ class NewRole extends React.Component {
     }
 
     async manageRole() {
-        console.log(await this.state.contract.methods.getRoleCount().call())
-        var res = await AdminRoleManager.methods.newRole('0xB075d6DA74408C291c86c0e651dd10e962efc82D', "test").call()
-        console.log(await AdminRoleManager.methods.getRoleCount().call())
+        if (this.state.isNew) {
+            const address = '0xB075d6DA74408C291c86c0e651dd10e962efc82D'
+            var res = await this.state.instance.methods.newRole(address, this.state.name).call()
+            console.log(res);
+            res = await this.state.instance.methods.getRoleCount().call()
+            console.log(res)
+        }
+         else {
+            const address = '0xB075d6DA74408C291c86c0e651dd10e962efc82D'
+            var aze = await this.state.instance.methods.getName(address).call()
+            console.log(aze);
+            var res = await this.state.instance.methods.getRoles().call()
+            console.log(res);
+        }
+        // console.log(await this.state.contract.methods.getRoleCount().call())
+        // var res = await AdminRoleManager.methods.newRole('0xB075d6DA74408C291c86c0e651dd10e962efc82D', "test").call()
+        // console.log(await AdminRoleManager.methods.getRoleCount().call())
     }
     render() {
         console.log(this.state)
@@ -94,7 +110,7 @@ class NewRole extends React.Component {
         if (this.state.isNew) {
             address.push(<div className='row'>
                 <label className='col-md-2'>Address : </label>
-                <input type="input" name="name" onChange={e => this.onChange(e)}></input>
+                <input type="input" name="address" onChange={e => this.onChange(e)}></input>
             </div>)
         } else {
             address.push(<div className='row'>
