@@ -19,11 +19,13 @@ import WelcomeInstance from './components/WelcomeInstance';
 import WelcomeModel from './components/WelcomeModel';
 import CreationDeck from './components/CreationDeck';
 import NewRole from './components/NewRole';
+import Headers from './components/Header';
 
 
 const App = () => (
   <BrowserRouter>
       <div className="sans-serif">
+      <Headers/>
       <Route exact path="/" component={Homepage} />
       <Route exact path="/welcomeinstance" component={WelcomeInstance} />
       <Route exact path="/welcomemodel" component={WelcomeModel} />

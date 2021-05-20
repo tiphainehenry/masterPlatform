@@ -23,6 +23,8 @@ class NewRole extends React.Component {
             address: "",
             name: "",
             selectValue: "",
+            roles: [],
+            addresses: [],
         };
 
     }
@@ -35,47 +37,33 @@ class NewRole extends React.Component {
     };
 
     onChange(e) {
-        console.log(e.target.value)
-        console.log(e.target.name)
         if (e.target.name === "address")
-            this.setState({ adress: e.target.value })
+            this.setState({ address: e.target.value })
         else if (e.target.name === "name")
             this.setState({ name: e.target.value })
         else if (e.target.name === "selector") {
-            console.log((e.target.value === ""));
             this.setState({ isNew: (e.target.value === "") })
             this.setState({ selectValue: e.target.value })
         }
 
     }
-
+    /**
+     * Connect to Smart contract
+     */
     async connectsToBC() {
 
         try {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
-            console.log(accounts);
             const networkId = await web3.eth.net.getId();
-            console.log(networkId);
-
             const deployedNetwork = AdminRoleManager.networks[networkId];
-            console.log(deployedNetwork);
             const instance = new web3.eth.Contract(
                 AdminRoleManager.abi,
                 deployedNetwork && deployedNetwork.address,
             );
-            this.setState({instance: instance})
-            console.log(instance)
-            // const res = await instance.methods.getRoles().call();
-            const aze = await instance.methods.getmessage().call();
-            // console.log(res);
-            console.log(aze);
-            // console.log(await AdminRoleManager.methods.getRoleCount().call())
-            // console.log(res)
-
+            this.setState({ instance: instance })
             this.setState({ web3, accounts, contract: instance });
-
-
+            this.getRoles()
         } catch (error) {
             //alert(
             //  `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -83,41 +71,66 @@ class NewRole extends React.Component {
             console.error(error);
         }
     }
-
+    /**
+     * get the list of available roles in the SC then split the name and the address of the role
+     */
+    async getRoles() {
+        const roles = await this.state.instance.methods.getRoles().call()
+        var tmpRoles = []
+        var tmpAddress = []
+        roles.forEach(line => {
+            tmpRoles.push(line.split('///')[0])
+            tmpAddress.push(line.split('///')[1])
+        });
+        this.setState({ roles: tmpRoles, addresses: tmpAddress })
+    }
+    /**
+     * Create a new Role if Isnew or update an already existing Role
+     * For now all addresses are hard coded  
+     */
+    //TODO Add the addresses to the SC call 
     async manageRole() {
+
         if (this.state.isNew) {
             const address = '0xB075d6DA74408C291c86c0e651dd10e962efc82D'
-            var res = await this.state.instance.methods.newRole(address, this.state.name).call()
-            console.log(res);
-            res = await this.state.instance.methods.getRoleCount().call()
-            console.log(res)
+            try {
+                const res = await this.state.instance.methods.newRole(this.state.address, this.state.name).send({ from: this.state.accounts[0] })
+            }
+            catch {
+                alert('Unable to create this role')
+            }
         }
-         else {
-            const address = '0xB075d6DA74408C291c86c0e651dd10e962efc82D'
-            var aze = await this.state.instance.methods.getName(address).call()
-            console.log(aze);
-            var res = await this.state.instance.methods.getRoles().call()
-            console.log(res);
+        else {
+            try {
+
+                const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+                var res = await this.state.instance.methods.updateRole(address, this.state.name).send({ from: this.state.accounts[0] })
+            } catch {
+                alert('Unable to update this role')
+            }
         }
-        // console.log(await this.state.contract.methods.getRoleCount().call())
-        // var res = await AdminRoleManager.methods.newRole('0xB075d6DA74408C291c86c0e651dd10e962efc82D', "test").call()
-        // console.log(await AdminRoleManager.methods.getRoleCount().call())
+        this.getRoles()
     }
     render() {
-        console.log(this.state)
-
         const address = []
         if (this.state.isNew) {
             address.push(<div className='row'>
                 <label className='col-md-2'>Address : </label>
-                <input type="input" name="address" onChange={e => this.onChange(e)}></input>
+                <input type="input" name="address" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)}></input>
             </div>)
+            address.push(<div>
+                <Button onClick={() => this.manageRole()} class="btn btn-primary my-2 my-sm-0">Create</Button>
+            </div>
+            )
         } else {
             address.push(<div className='row'>
-                <label>Adress : azert</label>
+                <label className='col-md-12'>Adress : 0x{this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]}</label>
+            </div>)
+            address.push(<div>
+                <Button onClick={() => this.manageRole()} class="btn btn-primary my-2 my-sm-0">Update</Button>
             </div>)
         }
-
+        var Answer = this.state.roles.map((x, y) => <option key={y}>{x}</option>)
         return <>
             <div>
                 <Header />
@@ -133,19 +146,20 @@ class NewRole extends React.Component {
                                     <h5>Select a role</h5>
                                     <select name='selector' onChange={e => this.onChange(e)} style={{ 'width': '40%', 'marginLeft': '25%' }}>
                                         <option value="">Create a new role</option>
-                                        <option value="toto">toto</option>
+                                        {Answer}
                                     </select>
                                     <br />
                                     <br />
                                     <div className='row'>
                                         <label className='col-md-2'>Name : </label>
-                                        <input type="input" name="name" onChange={e => this.onChange(e)}></input>
+                                        <input type="input" onPaste={e => this.onChange(e)} name="name" onChange={e => this.onChange(e)}></input>
                                     </div>
                                     <br />
                                     {address}
-                                    <Button onClick={() => this.manageRole()} class="btn btn-primary my-2 my-sm-0">{this.state.IsNew ? "Create" : "Update"}</Button>
                                     <br />
                                     <br />
+                                    {/* <Button onClick={() => this.btnfct()} class="btn btn-primary my-2 my-sm-0">GET roles</Button> */}
+
                                 </div>
                             </div>
                         </Col>
