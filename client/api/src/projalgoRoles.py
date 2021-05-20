@@ -135,7 +135,7 @@ def generateDCRTextLocal(processID, role_id, chunks, role, choreoEventsProj, fil
             'relations':relations
         }
 
-    print(data.keys())
+    #print(data.keys())
 
     try:
         extDict=data['externalEvents']

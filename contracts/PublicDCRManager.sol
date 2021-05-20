@@ -9,10 +9,16 @@ contract PublicDCRManager {
         string indexed workflowName,
         address indexed creator
     );
+
     event LogExecution(
         uint256 indexed workflowId,
         uint256 indexed activityId,
         address indexed executor
+    );
+
+    event LogWorkflowProjection(
+        uint256 indexed workflowId,
+        address indexed creator
     );
 
     // variable declarations.
@@ -23,14 +29,16 @@ contract PublicDCRManager {
         string[] activityNames;
         bytes[] ipfsActivityHashes;
         uint256 numActivities; //number of included activities
-        uint256[][] includesTo;
-        uint256[][] excludesTo;
-        uint256[][] responsesTo;
-        uint256[][] conditionsFrom;
-        uint256[][] milestonesFrom;
+        uint256[][][] relations; //includesTo, excludesTo, responsesTo, conditionsFrom, milestonesFrom
+        //uint256[][] excludesTo;
+        //uint256[][] responsesTo;
+        //uint256[][] conditionsFrom;
+        //uint256[][] milestonesFrom;
         
-        ApprovalList approvalList;
-        
+        //ApprovalList approvalList;
+        address[] approvalAddresses;
+        uint[] approvalOutcomes;
+
         Activity execStatus;
     }
     
@@ -45,10 +53,9 @@ contract PublicDCRManager {
         uint256 status; //0=no, 1=yes
     }
     
-    struct ApprovalList{
-        address[] addresses;
-        uint[] approval;
-    }
+    //struct ApprovalList{
+        
+    //}
 
     Workflow[] workflows;
     
@@ -62,23 +69,30 @@ contract PublicDCRManager {
       * @return workflow name.
       */
       
-    function localProjectionApproval(uint256 workflowId) public payable returns (uint[] memory){
+    function localProjectionApproval(uint256 workflowId, address myAddress) public payable returns (uint[] memory){
         // get id of approvalList.addresses corresponding to msgSender. If (approval[id]==0): set to one;
+        
+        require(myAddress==msg.sender, "Must be role owner.");
+
         for (
             uint256 id = 0;
-            id < workflows[workflowId].approvalList.addresses.length;
+            id < workflows[workflowId].approvalAddresses.length;
             id++
         ) {
-            if((msg.sender == workflows[workflowId].approvalList.addresses[id]) && workflows[workflowId].approvalList.approval[id] != 1){
-                workflows[workflowId].approvalList.approval[id] = 1;
+            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].approvalOutcomes[id] != 1){
+                workflows[workflowId].approvalOutcomes[id] = 1;
+
+                emit LogWorkflowProjection(workflowId, myAddress);
+                return workflows[workflowId].approvalOutcomes;
             }
         }
         
-        return workflows[workflowId].approvalList.approval;
+        return workflows[workflowId].approvalOutcomes;
+        
     }  
      
     
-    function getWorflowName(uint256 workflowId)
+    function getWorkflowName(uint256 workflowId)
         public
         view
         returns (string memory)
@@ -107,7 +121,7 @@ contract PublicDCRManager {
     }
 
     function getWkfLength(uint256 workflowId) public view returns (uint256) {
-        return workflows[workflowId].includesTo.length;
+        return workflows[workflowId].relations[0].length;
     }
 
     function getIncluded(uint256 workflowId)
@@ -139,7 +153,7 @@ contract PublicDCRManager {
         view
         returns (uint256[][] memory)
     {
-        return workflows[workflowId].conditionsFrom;
+        return workflows[workflowId].relations[3];
     }
 
     function getHashes(uint256 workflowId)
@@ -166,33 +180,39 @@ contract PublicDCRManager {
         return workflows[workflowId].roleAddresses[activityId];
     }
 
+    function getAddresses(uint256 workflowId)
+        public
+        view
+        returns (address[] memory)
+    {
+        return workflows[workflowId].approvalAddresses;
+    }
+
+
     function getApprovalsOutcome(uint256 workflowId)
         public
         view
         returns (uint[] memory)
     {
-        return (workflows[workflowId].approvalList.approval);
+        return (workflows[workflowId].approvalOutcomes);
     }
 
-    function hasApproved(uint256 workflowId)
+    function hasApproved(uint256 workflowId, address myAddress)
         public
         view
         returns (uint)
     {
-        uint res = 0;
+        //uint res = 0;
         for (
             uint256 id = 0;
-            id < workflows[workflowId].approvalList.addresses.length;
+            id < workflows[workflowId].approvalAddresses.length;
             id++
         ) {
-            if((msg.sender == workflows[workflowId].approvalList.addresses[id]) && workflows[workflowId].approvalList.approval[id] != 1){
-                res=0;
-            }
-            else{
-                res=1;
+            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].approvalOutcomes[id] == 1){
+                return 1;
             }
         }
-        return res;
+        return 0;
     }
 
     ///////////////// Utils /////////////////////////
@@ -216,11 +236,11 @@ contract PublicDCRManager {
         // all conditions executed
         for (
             uint256 id = 0;
-            id < workflows[workflowId].conditionsFrom.length;
+            id < workflows[workflowId].relations[3].length;
             id++
         ) {
             uint256[] memory conditionsRow =
-                workflows[workflowId].conditionsFrom[id];
+                workflows[workflowId].relations[3][id];
             if (conditionsRow[activityId] == 1) {
                 if (
                     (workflows[workflowId].markings.executed[id] == 0) &&
@@ -235,11 +255,11 @@ contract PublicDCRManager {
         // no milestones pending
         for (
             uint256 id = 0;
-            id < workflows[workflowId].milestonesFrom.length;
+            id < workflows[workflowId].relations[4].length; // milestonesFrom
             id++
         ) {
             uint256[] memory milestonesRow =
-                workflows[workflowId].milestonesFrom[id];
+                workflows[workflowId].relations[4][id];
             if (milestonesRow[activityId] == 1) {
                 if (
                     (workflows[workflowId].markings.pending[id] == 1) &&
@@ -256,51 +276,6 @@ contract PublicDCRManager {
     }
 
     ///////////////// Main functions /////////////////////////
-
-    function createWorkflow(
-        // packed state variables
-        uint256[][] memory markingStates, // included, executed, pending
-
-        //process information
-        address[] memory _roleAddresses,
-        address[] memory _addresses,
-
-        string[] memory _activityNames,
-        string memory _name,
-
-        
-        // relations
-        uint256[][] memory _includesTo,
-        uint256[][] memory _excludesTo,
-        uint256[][] memory _responsesTo,
-        uint256[][] memory _conditionsFrom,
-        uint256[][] memory _milestonesFrom
-    ) public payable {
-        Activity memory execStatus = Activity(0, 0);
-        
-        ApprovalList memory approval = ApprovalList(_addresses,new uint[](_addresses.length));
-        Marking memory markings = Marking( markingStates[0],markingStates[1],markingStates[2]);        
-        Workflow memory wf =
-            Workflow(
-                _name,
-                markings,
-                _roleAddresses,
-                _activityNames,
-                new bytes[](markingStates[0].length),
-                markingStates[0].length,
-                _includesTo,
-                _excludesTo,
-                _responsesTo,
-                _conditionsFrom,
-                _milestonesFrom,
-                approval,
-                execStatus
-            );
-        workflows.push(wf);
-
-        emit LogWorkflowCreation(workflows.length - 1, wf.name, msg.sender);
-    }
-
     function checkCliquedIndex(uint256 workflowId, uint256 activityId)
         public
     //        bytes memory ipfsHash
@@ -315,17 +290,17 @@ contract PublicDCRManager {
             //            workflows[workflowId].ipfsActivityHashes[activityId] = ipfsHash;
 
             uint256[] memory exclude_vect_check =
-                workflows[workflowId].excludesTo[activityId];
+                workflows[workflowId].relations[1][activityId]; // excludes
             uint256[] memory response_vect_check =
-                workflows[workflowId].responsesTo[activityId];
+                workflows[workflowId].relations[2][activityId]; // responsesTo
 
             // add include relations
             uint256[] memory include_vect_check =
-                workflows[workflowId].includesTo[activityId];
+                workflows[workflowId].relations[0][activityId]; // includes
 
             // update with condition relations ok
             uint256[] memory conditionsTo =
-                workflows[workflowId].conditionsFrom[activityId]; //extract row condition
+                workflows[workflowId].relations[3][activityId]; //extract row condition
             for (uint256 id = 0; id < conditionsTo.length; id++) {
                 if (conditionsTo[id] == 1) {
                     include_vect_check[id] = 1;
@@ -334,7 +309,7 @@ contract PublicDCRManager {
 
             for (
                 uint256 id = 0;
-                id < workflows[workflowId].excludesTo.length;
+                id < workflows[workflowId].relations[1].length; // excludesTo
                 id++
             ) {
                 // exclude and include relations pass
@@ -360,4 +335,55 @@ contract PublicDCRManager {
             workflows[workflowId].execStatus.status = 1;
         }
     }
+
+    function createWorkflow(
+        // packed state variables
+        uint256[][] memory markingStates, // included, executed, pending
+
+        //process information
+        address[] memory _roleAddresses,
+        address[] memory _approvalAddresses,
+
+        string[] memory _activityNames,
+        string memory _name,
+
+        // relations
+        uint256[][][] memory _relations
+        //uint256[][] memory _excludesTo,
+        //uint256[][] memory _responsesTo,
+        //uint256[][] memory _conditionsFrom,
+        //uint256[][] memory _milestonesFrom
+    ) public payable {
+        Activity memory execStatus = Activity(0, 0);
+        
+        //ApprovalList memory approval = ApprovalList(_approvalAddresses,new uint[](_approvalAddresses.length));
+        
+        Marking memory markings = Marking(markingStates[0],markingStates[1],markingStates[2]);
+        
+        //uint[][][] memory relations = new uint[][][];
+        
+        //relations.push(_includesTo);
+        //relations.push(_excludesTo);
+        //relations.push(_responsesTo);
+        //relations.push(_conditionsFrom);
+        //relations.push(_milestonesFrom);
+        
+        Workflow memory wf =
+            Workflow(
+                _name,
+                markings,
+                _roleAddresses,
+                _activityNames,
+                new bytes[](markingStates[0].length),
+                markingStates[0].length,
+                _relations,
+                _approvalAddresses,
+                new uint[](_approvalAddresses.length),
+                execStatus
+            );
+        workflows.push(wf);
+
+        emit LogWorkflowCreation(workflows.length - 1, wf.name, msg.sender);
+    }
+
 }

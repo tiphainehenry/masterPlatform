@@ -30,7 +30,7 @@ class CreateG extends React.Component {
    * @param e click event
    */
   onFormSubmit(e) {
-    e.preventDefault() // Stop form submit
+    e.preventDefault(); // Stop form submit
     this.fileUpload(this.state.file).then((response) => {
       console.log(response.data);
       if (response.data === "ok") {

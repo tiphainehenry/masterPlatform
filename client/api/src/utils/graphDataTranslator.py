@@ -441,8 +441,6 @@ def generateGraph(pi, data, externalIds, target, role):
     """
 
     # chunk events
-    print('hehe')
-    print(data)
     if (role not in ['Global', 'Public']):
         chunks = extractRoleChunks(data)
         # generate tasks and relations

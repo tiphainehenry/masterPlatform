@@ -1,6 +1,7 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button'
+import {Button, Card, Spinner} from 'react-bootstrap';
+import { BoxLoading,SolarSystemLoading,LadderLoading, RollBoxLoading,ThreeHorseLoading,WaveLoading} from 'react-loadingg';
+
 
 import axios from 'axios';
 import ExecLogger from './execLogger';
@@ -50,7 +51,9 @@ class DCRgraph extends React.Component {
       bcRes: '',
       owner: '',
 
-      addressProj:'',
+      projType:'',
+
+      addressProj: '',
       incl: '',
       exec: '',
       pend: '',
@@ -59,10 +62,11 @@ class DCRgraph extends React.Component {
       wkID: '',
       dataValues: [],
       altVersionExists: false,
-      file: null, 
-      processID:'',
-
-      hasApproved:false
+      file: null,
+      processID: '',
+      test:'',
+      BCQuery: JSON.parse(localStorage.getItem('BCQuery')) || false,
+      hasApproved: 0
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -70,8 +74,8 @@ class DCRgraph extends React.Component {
     this.fetchBCid = this.fetchBCid.bind(this);
     this.loadContract = this.loadContract.bind(this);
     this.handleProjSwitch = this.handleProjSwitch.bind(this);
-    this.handleLocalProj = this.handleLocalProj.bind(this);
-
+    this.refreshBCQuery = this.refreshBCQuery.bind(this);
+    this.reinitBCQuery = this.reinitBCQuery.bind(this);
   }
 
   /**
@@ -121,8 +125,16 @@ class DCRgraph extends React.Component {
       const pendVector = await instance.methods.getPending(wkID).call();
       const hashesVector = await instance.methods.getHashes(wkID).call();
 
-      const hasApproved =  await instance.methods.hasApproved(wkID).call();
-      const approvalList =  await instance.methods.getApprovalsOutcome(wkID).call();
+      var acc = web3.currentProvider.selectedAddress;
+      const hasApproved = await instance.methods.hasApproved(wkID, acc).call();
+      //console.log('hasApproved',hasApproved);
+      //console.log('wkID',wkID);
+
+      //console.log(acc);
+      const approvalList = await instance.methods.getApprovalsOutcome(wkID).call();
+      const approvalOutcome = approvalList.reduce((a, b) => parseInt(a) * parseInt(b), 1)
+
+      const approvalAddresses = await instance.methods.getAddresses(wkID).call();
 
       this.setState({
         web3, accounts, contract: instance,
@@ -133,10 +145,22 @@ class DCRgraph extends React.Component {
         exec: execVector,
         pend: pendVector,
         dataHashes: hashesVector,
-        hasApproved:parseInt(hasApproved),
-        approvalList:approvalList.reduce((a, b)=> parseInt(a)*parseInt(b), 1)
+        hasApproved: parseInt(hasApproved),
+        approvalList: approvalList,
+        approvalOutcome: approvalOutcome,
+        approvalAddresses: approvalAddresses,
+        wkID:wkID
+
       })
       this.cy.fit();
+
+      instance.events.LogWorkflowProjection().on('data', (event) => {
+        this.refreshBCQuery();
+      })
+      .on('error', console.error);
+
+      //this.setState({hasCandidates:true,bestProfiles:[[1, 1445],[7, 1012],[4, 1012]]})  
+
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -168,17 +192,21 @@ class DCRgraph extends React.Component {
     });
 
     var addresses = ProcessDB[this.props.processID]['TextExtraction']['public']['privateEvents'];
+    var projType = ProcessDB[this.props.processID]['projType'];
 
-    var addressProj=''
+    var addressProj = ''
 
-    for(let id in addresses){
+    for (let id in addresses) {
 
-      if(addresses[id]['role']===this.props.id){
-        addressProj=addresses[id]['address'];
-      }      
+      if (addresses[id]['role'] === this.props.id) {
+        addressProj = addresses[id]['address'];
+      }
     }
 
-    this.setState({'addressProj':addressProj});
+    this.setState({ 
+      'addressProj': addressProj ,
+      'projType':projType
+  });
 
     this.loadContract();
     this.cy.fit();
@@ -189,11 +217,25 @@ class DCRgraph extends React.Component {
     //    console.log(e.data)
     //  })
 
-
-
   };
 
+  refreshBCQuery = () => {
 
+    this.setState({
+      BCQuery: !this.state.BCQuery
+    },() => {
+      localStorage.setItem('BCQuery', JSON.stringify(this.state.BCQuery))
+    });
+  }
+
+  reinitBCQuery = () => {
+    this.setState({
+      BCQuery: false
+    },() => {
+      localStorage.setItem('BCQuery', JSON.stringify(false))
+    });
+
+  }
   /**
    * Fetches the corresponding blockchain id of the clicked event before calling the SC.
    */
@@ -254,7 +296,7 @@ class DCRgraph extends React.Component {
           break;
         case '4':
           const rightAddress = await contract.methods.getRoleAddresses(this.state.wkID, this.state.indexClicked).call();
-          window.alert('Authentication issue - wrong user tried to execute task.\nExpected '+rightAddress+'...');
+          window.alert('Authentication issue - wrong user tried to execute task.\nExpected ' + rightAddress + '...');
           this.setState({ bcRes: 'BC exec - rejected - authentication error' });
           break;
         case '0':
@@ -348,34 +390,36 @@ class DCRgraph extends React.Component {
     })
   }
 
-  handleLocalProj(){
-
-    // fetching external events
-
-    // updating smart contract (only once)
-
-    // able to execute only when all local projections have succeeded
-
-  }
-
-    /**
-   * uploads file on user click.
-   * @param e click event
-   */
+  /**
+ * uploads file on user click.
+ * @param e click event
+ */
   onFormSubmit = async (e) => {
     const { accounts, contract } = this.state;
 
-    try{
+    try {
       e.preventDefault() // Stop form submit
       this.fileUpload(this.state.file).then((response) => {
-        console.log(response.data);  
-      })  
+        console.log(response.data);
+      })
+    }
+    catch (err) {
+      console.log(err);
+      this.reinitBCQuery();
+    }
+
+    try{
+      var acc = this.state.web3.currentProvider.selectedAddress;
+      await contract.methods.localProjectionApproval(this.state.wkID, acc).send({ from: accounts[0] });
+      this.refreshBCQuery();
+
     }
     catch(err){
-      console.log(err);
+      localStorage.clear();
+      this.reinitBCQuery();
+  
     }
-    await contract.methods.localProjectionApproval(this.state.wkID).send({ from: accounts[0] });
-    
+
   }
 
   /**
@@ -392,9 +436,9 @@ class DCRgraph extends React.Component {
    */
   fileUpload(file) {
     const url = `http://localhost:5000/localProj`;
-    
-    this.setState({processID: this.props.processName});
-    
+
+    this.setState({ processID: this.props.processName });
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('processID', this.props.processName);
@@ -409,8 +453,6 @@ class DCRgraph extends React.Component {
     };
 
     return axios.post(url, formData, config);
-
-
   }
 
   /**
@@ -427,7 +469,6 @@ class DCRgraph extends React.Component {
         hasPending = true;
       }
     });
-
 
     if (hasPending) {
       // If ongoing graph execution, revert. 
@@ -450,15 +491,12 @@ class DCRgraph extends React.Component {
           this.setState({
             altVersionExists: false
           });
-
         },
         (error) => {
           console.log(error);
         }
       );
     }
-
-
   }
 
   render() {
@@ -474,74 +512,89 @@ class DCRgraph extends React.Component {
           <h2>Process {this.props.processName}</h2>
           <h3>Private Projection for the role {this.props.id}</h3>
 
-          {this.state.web3===null? <div>Loading web3...</div>:<div></div>}
+          {this.state.web3 === null ? <div>Loading web3...</div> :    <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 0)) && (this.state.projType == 'p_to_g') ? {} : { display: 'none' }}>
+            <form onSubmit={this.onFormSubmit}>
+              <input type="file" onChange={this.onChange} />
+              <Button className="btn btn-primary my-2 my-sm-0" type="submit">Upload and project my local projection</Button>
+            </form>
+            {this.state.BCQuery?     <Button variant="primary" disabled>
+                                <Spinner
+                                  as="span"
+                                  animation="border"
+                                  size="sm"
+                                  role="status"
+                                  aria-hidden="true"
+                                />
+                                <span className="sr-only">Loading...</span>
+                              </Button>
+                            : 
+                            <div></div>    
+    }
 
-          <div style={((this.state.web3!==null) && (this.state.owner !== this.state.addressProj)) ? {} : { display: 'none', 'marginTop': '3vh' }} >
-          <h3 style={{color:'red'}}>Wrong address, connected with account {this.state.owner} instead of {this.state.addressProj}</h3>
+          </div>
+          }
+
+          <div style={((this.state.web3 !== null) && (this.state.owner !== this.state.addressProj)) ? {} : { display: 'none', 'marginTop': '3vh' }} >
+            <h3 style={{ color: 'red' }}>Wrong address, connected with account {this.state.owner} instead of {this.state.addressProj}</h3>
           </div>
 
-          <div style={((this.state.owner === this.state.addressProj) &&(this.state.hasApproved === 0))? {} : { display: 'none' }}>
-          <form onSubmit={this.onFormSubmit}>
-                  <input type="file" onChange={this.onChange} />
-                  <Button className="btn btn-primary my-2 my-sm-0" type="submit">Upload and project my local projection</Button>
-                </form>
-        </div>
+          <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 1) && (this.state.approvalOutcome === 0)) ? {} : { display: 'none' }}>
+              <p>Successful user projection. Waiting for other participants submissions.</p>          
+              <div style={{'marginTop':'60vh'}}>
+                <SolarSystemLoading  color={'#ff7900'}/>            
+              </div>
+          </div>
 
-        <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 1) && (this.state.approvalList === 0))? {} : { display: 'none' }}>
-            Successful user projection. Waiting for other participants submissions. ({this.state.approvalList})
-        </div>
-
-        <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 1) && (this.state.approvalList === 1))? {} : { display: 'none' }}>
-          <div style={(this.state.owner === this.state.addressProj) ? {} : { display: 'none' }}>
-          <div>
-          <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
-          The local tasks are updated locally via API calls.
+          <div style={( ((this.state.web3 !== null)&&(this.state.owner === this.state.addressProj)) && (((this.state.hasApproved === 1) && (this.state.approvalOutcome === 1)) || (this.state.projType === "g_to_p") ))? {} : { display: 'none' }}>
+            <div style={(this.state.owner === this.state.addressProj) ? {} : { display: 'none' }}>
+              <div>
+                <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
+                The local tasks are updated locally via API calls.
                   The public tasks are updated after a call to the smart contract instance of the public projection. </p>
 
-          <p> Execution logs and the markings of the public graph are displayed in the panels below. </p>
+                <p> Execution logs and the markings of the public graph are displayed in the panels below. </p>
 
-          <p> Click on one of the nodes of the graph below to update the state of the workflow execution. NB. A task needs to be enabled (with a white background here) to be successful. Black tasks are external tasks, managed by another tenant.</p>
+                <p> Click on one of the nodes of the graph below to update the state of the workflow execution. NB. A task needs to be enabled (with a white background here) to be successful. Black tasks are external tasks, managed by another tenant.</p>
 
+                <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
 
-        <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
+                <Card style={{ height: '90%', 'marginTop': '3vh' }}>
 
-          <Card style={{ height: '90%', 'marginTop': '3vh' }}>
+                  <Card.Header as="p" style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
+                    {this.props.id} Projection - ETH address: {this.state.addressProj}
 
-            <Card.Header as="p" style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
-              {this.props.id} Projection - ETH address: {this.state.addressProj}
+                  </Card.Header>
+                  <Card.Body >
+                    <CytoscapeComponent elements={this.props.data}
+                      stylesheet={stylesheet}
+                      layout={layout}
+                      style={style}
+                      cy={(cy) => { this.cy = cy }}
+                      boxSelectionEnabled={true}
+                    />
+                  </Card.Body>
+                </Card>
+                <ExecLogger execLogs={this.props.execLogs} activityNames={this.state.activityNames} />
+                <PublicMarkings
+                  activityNames={this.state.activityNames["default"]}
+                  incl={this.state.incl}
+                  pend={this.state.pend}
+                  exec={this.state.exec}
+                  dataHashes={this.state.dataHashes}
+                  dataValues={this.state.dataValues}
+                  processID={this.props.processName}
+                />
 
-            </Card.Header>
-            <Card.Body >
-              <CytoscapeComponent elements={this.props.data}
-                stylesheet={stylesheet}
-                layout={layout}
-                style={style}
-                cy={(cy) => { this.cy = cy }}
-                boxSelectionEnabled={true}
-              />
-            </Card.Body>
-          </Card>
-          <ExecLogger execLogs={this.props.execLogs} activityNames={this.state.activityNames} />
-          <PublicMarkings
-            activityNames={this.state.activityNames["default"]}
-            incl={this.state.incl}
-            pend={this.state.pend}
-            exec={this.state.exec}
-            dataHashes={this.state.dataHashes}
-            dataValues={this.state.dataValues}
-            processID={this.props.processName}
-          />
+                {this.state.altVersionExists ?
+                  <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button> :
+                  <></>
+                }
+              </div>
 
-          {this.state.altVersionExists ?
-            <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button> :
-            <></>
-          }
+            </div>
           </div>
-          
         </div>
       </div>
-      </div>
-</div>
 
     </div>;
   }

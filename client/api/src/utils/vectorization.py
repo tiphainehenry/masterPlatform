@@ -94,12 +94,7 @@ def generateRelationMatrix(relationType, eventsList, relations):
             relationList.append(r_elems)
 
     # update matrix
-    #print("toto")
-    #print(relationList)
-    #print(eventsList)
     for relation in relationList:
-        #print("pppp")
-        #print(relation)
         relationMatrix[eventsList.index(
             relation['r_from'])][eventsList.index(relation['r_to'])] = 1
 
@@ -266,8 +261,6 @@ def vectorize(data, filename):
     :param filename: filename to save vectorization
 
     """
-    #print("test")
-    #print(data)
     chunks, roles = extractChunks(data)
 
     relations, fullRelations = generateRelationMatrices(chunks)
@@ -332,7 +325,6 @@ def vectorizeRoleFromCyto(processID, roleID, data):
     :param filename: filename to save vectorizations
     """
 
-    #print(data)
     nodes=[]
     edges=[]
     for elem in data:

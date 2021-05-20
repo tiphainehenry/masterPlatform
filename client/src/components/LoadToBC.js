@@ -154,11 +154,11 @@ class LoadToBC extends React.Component {
           this.state.activityNames,
           this.state.processName,
   
-          this.state.includesTo,
+          [this.state.includesTo,
           this.state.excludesTo,
           this.state.responsesTo,
           this.state.conditionsFrom,
-          this.state.milestonesFrom
+          this.state.milestonesFrom] // relations
         ).send({ from: accounts[0] });
           
       }
