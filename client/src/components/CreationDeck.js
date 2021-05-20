@@ -23,10 +23,14 @@ import COSEBilkent from 'cytoscape-cose-bilkent';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
 
+import AdminRoleManager from '../contracts/AdminRoleManager.json';
+import getWeb3 from '../getWeb3';
+
 Cytoscape.use(Dagre)
 Cytoscape.use(Klay)
 Cytoscape.use(COSEBilkent);
 // Cytoscape.use(contextMenus);
+
 
 var node_style = require('../style/nodeStyle.json');
 var edge_style = require('../style/edgeStyle.json');
@@ -144,6 +148,7 @@ class CreationDeck extends React.Component {
 
     var processID = this.state.processID;
     var projectionID = this.state.projectionID;
+    this.getRoles()
 
     console.log(this.props.location);
     if (typeof (this.props.location.state) !== 'undefined') {
@@ -161,6 +166,33 @@ class CreationDeck extends React.Component {
     }
   };
 
+
+  async getRoles() {
+
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = AdminRoleManager.networks[networkId];
+      const instance = new web3.eth.Contract(
+        AdminRoleManager.abi,
+        deployedNetwork && deployedNetwork.address,
+      );
+      var roles = await instance.methods.getRoles().call()
+      var tmpRoles = []
+      var tmpAddress = []
+      roles.forEach(line => {
+        tmpRoles.push(line.split('///')[0])
+        tmpAddress.push(line.split('///')[1])
+      });
+      this.setState({ roles: tmpRoles, addresses: tmpAddress })
+    } catch (error) {
+      //alert(
+      //  `Failed to load web3, accounts, or contract. Check console for details.`,
+      //);
+      console.error(error);
+    }
+  }
   //////////  LISTENERS /////////////////
 
   /**
@@ -299,7 +331,6 @@ class CreationDeck extends React.Component {
         var result = response;
         if (result.data !== "KO") {
           this.cy.add(result.data)
-          console.log(this.cy.filter('nodes'))
           this.setState({ newActivityCnt: this.cy.filter('nodes').length })
         }
       },
@@ -471,6 +502,9 @@ class CreationDeck extends React.Component {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
+    var roles = []
+    if (this.state.roles)
+      roles = this.state.roles.map((x, y) => <option key={y}>{x}</option>)
     return <>
       <div>
         <Header />
@@ -524,17 +558,19 @@ class CreationDeck extends React.Component {
                                 <h4>Tenants</h4>
 
                                 <Form.Label>Private Role</Form.Label>
-                                <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} />
-
+                                {/* <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} /> */}
+                                <select className='row col-md-12' onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >{roles}</select>
                                 <br />
 
                                 <Form.Label>Choreography Sender </Form.Label>
-                                <Form.Control type="address" onChange={this.handleSender} placeholder={'enter sender name'} value={this.state.choreographyNames.sender} />
+                                <select className='row col-md-12' onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender} >{roles}</select>
+                                {/* <Form.Control type="address" onChange={this.handleSender} placeholder={'enter sender name'} value={this.state.choreographyNames.sender} /> */}
                                 <br />
                                 <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
                                 <br />
                                 <Form.Label>Choreography Receiver</Form.Label>
-                                <Form.Control type="address" onChange={this.handleReceiver} placeholder={'enter receiver name'} value={this.state.choreographyNames.receiver} />
+                                <select className='row col-md-12' onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver} >{roles}</select>
+                                {/* <Form.Control type="address" onChange={this.handleReceiver} placeholder={'enter receiver name'} value={this.state.choreographyNames.receiver} /> */}
 
                                 <hr /><br />
 
