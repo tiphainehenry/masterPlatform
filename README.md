@@ -1,5 +1,11 @@
-#  Adaptive DCR Choreographies
-This portal projects an input global DCR choreography over each tenant view. 
+#  Hybrid on/off-chain DCR Choreographies
+This portal proposes a DCR choreographies design and execution platform leveraging the blockchain at both stages.
+
+Regarding the generation of local projections: 
+- the public view is pushed onchain
+- the participants generate locally their view by building on the public view off-chain.
+
+Regarding the process execution:
 - The shared public tasks are gathered together in a public DCR graph. The later is compiled and updated in the blokchain for trust purposes. 
 - The tenant projections are updated locally for privacy concerns and communicate with the public DCR vis external events. 
 
