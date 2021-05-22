@@ -3,7 +3,7 @@ This portal proposes a DCR choreographies design and execution platform leveragi
 
 Regarding the generation of local projections: 
 - the public view is pushed onchain
-- the participants generate locally their view by building on the public view off-chain.
+- the participants generate locally their view by building on the public view.
 
 Regarding the process execution:
 - The shared public tasks are gathered together in a public DCR graph. The later is compiled and updated in the blokchain for trust purposes. 
