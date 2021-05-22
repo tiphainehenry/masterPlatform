@@ -43,3 +43,4 @@ cd ~/client/api && python api.py #backend
 ganache-cli #deploy the ethereum testnet
 truffle migrate #migrate the contract
 ```
+Make sure that the database is initially empty ! (Button 'delete all instances' in the 'my instances' panel)
