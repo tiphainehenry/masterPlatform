@@ -32,8 +32,10 @@ To install the app locally, the required environment is python, node, and npm.
 After cloning the repo, in the folder ./client, launch 'pip install -r requirements.txt' and 'npm install'
 
 ### Running the code
-To run the app locally:
-- launch the frontend with the command 'cd ~/client && npm start'. 
-- launch the backend with the command 'cd ~/client/api && python api.py'.
-- deploy the ethereum testnet with 'ganache-cli'
-- migrate the contract with 'truffle migrate'
+To run the app locally, run the four commands below, one in each terminal:
+```bash
+cd ~/client && npm start #frontend 
+cd ~/client/api && python api.py #backend
+ganache-cli #deploy the ethereum testnet
+truffle migrate #migrate the contract
+```
