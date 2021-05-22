@@ -25,14 +25,15 @@ On the design side, the platform:
 
 On the execution side, each user can (1) execute its local projection, (2) have access to the execution logs of its local projection (activity start and end timestamps, state of execution of the task). 
 
-Examples of global DCR graphs are accessible in the folder ./dcrInputs/.
+Examples of DCR graphs are accessible in the folder ./dcrInputs/.
 
-## Running the code
-
-### GUI
-The Dapp runs on http://90.84.244.33:3000/. Make sure you have Metamask installed on your favorite browser. The smart contract is deployed on the Ropsten network. 
 ### Local install
 To install the app locally, the required environment is python, node, and npm.
 After cloning the repo, in the folder ./client, launch 'pip install -r requirements.txt' and 'npm install'
 
-To run the app locally, launch the frontend with the command 'cd ./client & npm start'. Launch the backend with the command python api/api.py.
+### Running the code
+To run the app locally:
+- launch the frontend with the command 'cd ~/client && npm start'. 
+- launch the backend with the command 'cd ~/client/api && python api.py'.
+- deploy the ethereum testnet with 'ganache-cli'
+- migrate the contract with 'truffle migrate'
