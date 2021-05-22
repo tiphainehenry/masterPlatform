@@ -28,8 +28,12 @@ On the execution side, each user can (1) execute its local projection, (2) have 
 Examples of DCR graphs are accessible in the folder ./dcrInputs/.
 
 ### Local install
-To install the app locally, the required environment is python, node, and npm.
-After cloning the repo, in the folder ./client, launch 'pip install -r requirements.txt' and 'npm install'
+To install the app locally, the required environment is python, node, and npm. Clone the repo. Then: 
+```bash
+cd ~/client
+pip install -r requirements.txt
+npm install
+```
 
 ### Running the code
 To run the app locally, run the four commands below, one in each terminal:
