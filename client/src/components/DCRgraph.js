@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Card, Spinner} from 'react-bootstrap';
+
 import { BoxLoading,SolarSystemLoading,LadderLoading, RollBoxLoading,ThreeHorseLoading,WaveLoading} from 'react-loadingg';
 
 
@@ -12,6 +13,7 @@ import getWeb3 from '../getWeb3';
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
+
 
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
@@ -66,7 +68,10 @@ class DCRgraph extends React.Component {
       processID: '',
       test:'',
       BCQuery: JSON.parse(localStorage.getItem('BCQuery')) || false,
-      hasApproved: 0
+      hasApproved: 0,
+
+
+      
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -248,7 +253,8 @@ class DCRgraph extends React.Component {
     switch (lastChar) {
       case 's':
         activities = this.state.activityNames["send"];
-        break;
+        break;const { create } = require('ipfs-http-client')
+
       case 'r':
         activities = this.state.activityNames["receive"];
         break;
@@ -410,7 +416,7 @@ class DCRgraph extends React.Component {
 
     try{
       var acc = this.state.web3.currentProvider.selectedAddress;
-      await contract.methods.localProjectionApproval(this.state.wkID, acc).send({ from: accounts[0] });
+      await contract.methods.confirmProjection(this.state.wkID, acc).send({ from: accounts[0] });
       this.refreshBCQuery();
 
     }

@@ -1,6 +1,7 @@
 node_modules
 client/api/src/*.pyc
 *.pyc
+client/api/src/utils/*.pyc
 package-lock.json
 client/src/contracts
 #*.json

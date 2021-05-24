@@ -7,6 +7,8 @@ import glob
 import logging
 import pprint
 
+import ipfshttpclient
+
 from simplejson import JSONDecodeError
 from flask import Flask, flash, request, redirect, url_for, session, jsonify
 from flask_cors import CORS, cross_origin
@@ -325,7 +327,6 @@ def localProj():
         for r in localChunks['linkages']:
             lr = getRelationElems(r)
             for rData in publicData['relations']:
-                #print(getRelationElems(str(rData['relation'])))
                 pr = getRelationElems(rData['relation'])
                 if (((lr['r_from'] != pr['r_from']) | (lr['r_to'] != pr['r_to']) | (lr['r_type'] != pr['r_type'])) and (rData['relation'] not in localRelations)):
                     localRelations.append(rData['relation'])
@@ -349,12 +350,7 @@ def localProj():
         localEvents = list(set(localEvents))        
         projText=addresses+localEvents+localRelations
 
-        # step2: retrieve external events, and save them as such: 'external events', plus choreography. 
-
-        #print(publicData.keys())
-        #print(roles)
-
-        # step 3: generate local projection (data and vect)
+        # step2: generate local projection (data and vect)
         target = '../../client/src/projections/'
         dataPath = '../../client/src/projections/dcrTexts.json'
         this_folder = os.path.dirname(os.path.abspath(__file__))
@@ -391,10 +387,6 @@ def localProj():
         os.remove(os.path.join(this_folder, '../src/projections/temp_vect'+roleNum['id']+'.json'))
         os.remove(os.path.join(this_folder, '../src/projections/temp_local.json'))
 
-        # step 4: enrich public SC with new events (new relation matrix and new events (make bitvector bigger))
-        #updWithName(data, processID)
-
-        # unlock execution after all local projections have been done --> send event // and add a proj success variable. 
         return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
     except:
@@ -407,7 +399,6 @@ def inputFileLaunch():
     """
     reads input dcr textual representation 
     """ 
-
     try:
         file = request.files['file']
         data = file.readlines()

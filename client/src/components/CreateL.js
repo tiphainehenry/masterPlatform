@@ -1,11 +1,17 @@
 import React from 'react';
-import ListGroup from 'react-bootstrap/ListGroup';
+
+import {Table, Button, Form, ListGroup,Row, Col, Container } from 'react-bootstrap';
+
 import '../style/boosted.min.css';
 import Header from './Header';
 import { post } from 'axios';
 import LoadToBC from './LoadToBC';
-import { Button, Row, Col, Container } from 'react-bootstrap';
 import SidebarModel from './SidebarModel';
+
+import PublicDCRManager from '../contracts/PublicDCRManager.json';
+import ipfs from '../ipfs';
+
+import getWeb3 from "../getWeb3";
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
@@ -18,12 +24,133 @@ class CreateL extends React.Component {
     this.loadToBC = React.createRef()
     this.state = {
       file: null, 
-      processID:''
+      processID:'',
+
+      ipfsHash:null,
+      buffer:'',
+      ethAddress:'',
+      blockNumber:'',
+      transactionHash:'',
+      gasUsed:'',
+      txReceipt: '',
+      web3: null,
+      accounts: null,
+      contract: null,
+
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.fileUpload = this.fileUpload.bind(this);
+    this.connectToWeb3 = this.connectToWeb3.bind(this);
+    this.captureFile = this.captureFile.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.convertToBuffer = this.convertToBuffer.bind(this);
   }
+
+  componentWillMount() {
+    this.connectToWeb3();
+  }
+
+  async connectToWeb3() {
+
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = PublicDCRManager.networks[networkId];
+      const instance = new web3.eth.Contract(
+        PublicDCRManager.abi,
+        deployedNetwork && deployedNetwork.address,
+      );
+
+      this.setState({ web3, accounts, contract: instance });
+
+      // Checking if contract already populated
+      this.setState({ wkState: 'Create Global Workflow OnChain.' })
+
+    } catch (error) {
+      alert(
+        `Failed to load web3, accounts, or contract. 
+          Check console for details.
+          Tip: Webpage should be connected to the Ropsten network via Metamask (https://metamask.io/).`,
+      );
+      console.error(error);
+    };
+  }
+
+  captureFile =(event) => {
+    event.stopPropagation()
+    event.preventDefault()
+    const file = event.target.files[0]
+    let reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => this.convertToBuffer(reader)    
+  };
+
+  convertToBuffer = async(reader) => {
+    //file is converted to a buffer to prepare for uploading to IPFS
+      const buffer = await Buffer.from(reader.result);
+    //set this buffer -using es6 syntax
+      this.setState({buffer});
+      alert('i am buffer');
+  };
+
+
+  onClick = async () => {
+
+    try{
+        this.setState({blockNumber:"waiting.."});
+        this.setState({gasUsed:"waiting..."});
+
+        // get Transaction Receipt in console on click
+        // See: https://web3js.readthedocs.io/en/1.0/web3-eth.html#gettransactionreceipt
+        await this.state.web3.eth.getTransactionReceipt(this.state.transactionHash, (err, txReceipt)=>{
+          console.log(err,txReceipt);
+          this.setState({txReceipt});
+          console.log('tx receip null');
+        }); //await for getTransactionReceipt
+
+        await this.setState({blockNumber: this.state.txReceipt.blockNumber});
+        await this.setState({gasUsed: this.state.txReceipt.gasUsed});    
+      } //try
+    catch(error){
+        console.log('onclick error');
+
+        console.log(error);
+      } //catch
+  } //onClick
+
+  onSubmit = async (event) => {
+    event.preventDefault();
+
+    console.log('Sending from Metamask account: ' + this.state.accounts[0]);
+
+    //obtain contract address from storehash.js
+    const ethAddress= await this.state.contract.options.address;
+    this.setState({ethAddress});
+
+    //save document to IPFS,return its hash#, and set hash# to state
+    //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add 
+    await ipfs.add(this.state.buffer, (err, ipfsHash) => {
+      console.log(err,ipfsHash);
+      //setState by setting ipfsHash to ipfsHash[0].hash 
+      this.setState({ ipfsHash:ipfsHash[0].hash });
+
+      // call Ethereum contract method "sendHash" and .send IPFS hash to etheruem contract 
+      //return the transaction hash from the ethereum contract
+      //see, this https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#methods-mymethod-send
+      
+      this.state.contract.methods.sendHash(this.state.ipfsHash).send({
+        from: this.state.accounts[0] 
+      }, (error, transactionHash) => {
+        console.log('onSubmit error');
+        console.log(transactionHash);
+        this.setState({transactionHash});
+      }); //storehash 
+    }) //await ipfs.add 
+  }; //onSubmit 
 
   /**
    * uploads file on user click.
@@ -96,6 +223,61 @@ class CreateL extends React.Component {
                 </form>
                 <hr />
                 <LoadToBC  ref={this.loadToBC} />
+
+                <hr />
+
+<Container>
+  <h3> Choose Public file to send to IPFS </h3>
+  <Form onSubmit={this.onSubmit}>
+    <input 
+      type = "file"
+      onChange = {this.captureFile}
+    />
+     <Button 
+     bsStyle="primary" 
+     type="submit"> 
+     Store public text extraction to IPFS and save address to metamask 
+     </Button>
+  </Form>
+
+  <hr/>
+    <Button onClick = {this.onClick}> Get Transaction Receipt </Button>
+
+      <Table bordered responsive>
+        <thead>
+          <tr>
+            <th>Tx Receipt Category</th>
+            <th>Values</th>
+          </tr>
+        </thead>
+       
+        <tbody>
+          <tr>
+            <td>IPFS Hash # stored on Eth Contract</td>
+            <td>{this.state.ipfsHash}</td>
+          </tr>
+          <tr>
+            <td>Ethereum Contract Address</td>
+            <td>{this.state.ethAddress}</td>
+          </tr>
+
+          <tr>
+            <td>Tx Hash # </td>
+            <td>{this.state.transactionHash}</td>
+          </tr>
+
+          <tr>
+            <td>Block Number # </td>
+            <td>{this.state.blockNumber}</td>
+          </tr>
+
+          <tr>
+            <td>Gas Used</td>
+            <td>{this.state.gasUsed}</td>
+          </tr>                
+        </tbody>
+    </Table>
+</Container>
                 <hr />
                 <h5>Step 2</h5>
                 <p>To execute the process, navigate between the different role projections accessible via the 'My running instances' header. </p>

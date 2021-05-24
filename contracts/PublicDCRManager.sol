@@ -22,6 +22,8 @@ contract PublicDCRManager {
     );
 
     // variable declarations.
+    string ipfsHash;
+
     struct Workflow {
         string name;
         Marking markings;
@@ -38,6 +40,7 @@ contract PublicDCRManager {
         //ApprovalList approvalList;
         address[] approvalAddresses;
         uint[] approvalOutcomes;
+        uint[] didFetch;
 
         Activity execStatus;
     }
@@ -53,45 +56,55 @@ contract PublicDCRManager {
         uint256 status; //0=no, 1=yes
     }
     
-    //struct ApprovalList{
-        
-    //}
 
     Workflow[] workflows;
-    
     
     
 
     ///////////////// Misc ////////////////////////
 
-    /** @dev Getter for workflow name.
-      * @param workflowId index of the workflow (eg 0 for the first workflow).
-      * @return workflow name.
-      */
-      
-    function localProjectionApproval(uint256 workflowId, address myAddress) public payable returns (uint[] memory){
-        // get id of approvalList.addresses corresponding to msgSender. If (approval[id]==0): set to one;
-        
-        require(myAddress==msg.sender, "Must be role owner.");
+    function sendHash(string memory x) public {
+        ipfsHash = x;
+    }
 
+    function getHash() public view returns (string memory x) {
+        return ipfsHash;
+    }
+
+
+    /** @dev Getter for workflow.
+      * @param workflowId index of the workflow (eg 0 for the first workflow).
+      * @param myAddress sender adddress (must be registered to fetch the workflow).
+      * @return workflow, update didFetch variable to one.
+      */
+    function fetchPublicView(uint256 workflowId, address myAddress)
+        public
+        payable
+        returns (Workflow memory)
+    {
+        
+        require(msg.sender == myAddress, 'wrongAddress');
+        
+        // update the didFetch variable
         for (
             uint256 id = 0;
             id < workflows[workflowId].approvalAddresses.length;
             id++
         ) {
-            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].approvalOutcomes[id] != 1){
-                workflows[workflowId].approvalOutcomes[id] = 1;
-
-                emit LogWorkflowProjection(workflowId, myAddress);
-                return workflows[workflowId].approvalOutcomes;
-            }
+            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].didFetch[id] != 1){
+                workflows[workflowId].didFetch[id] = 1;
+                }
         }
         
-        return workflows[workflowId].approvalOutcomes;
-        
-    }  
+        return workflows[workflowId];
+    }
+
      
-    
+    /** @dev Getter for workflow name.
+      * @param workflowId index of the workflow (eg 0 for the first workflow).
+      * @return workflow name.
+      */
+
     function getWorkflowName(uint256 workflowId)
         public
         view
@@ -348,26 +361,11 @@ contract PublicDCRManager {
         string memory _name,
 
         // relations
-        uint256[][][] memory _relations
-        //uint256[][] memory _excludesTo,
-        //uint256[][] memory _responsesTo,
-        //uint256[][] memory _conditionsFrom,
-        //uint256[][] memory _milestonesFrom
+        uint256[][][] memory _relations // includesto, excludesto, responsesto, conditionsfrom, milestonesFrom
     ) public payable {
+        
         Activity memory execStatus = Activity(0, 0);
-        
-        //ApprovalList memory approval = ApprovalList(_approvalAddresses,new uint[](_approvalAddresses.length));
-        
         Marking memory markings = Marking(markingStates[0],markingStates[1],markingStates[2]);
-        
-        //uint[][][] memory relations = new uint[][][];
-        
-        //relations.push(_includesTo);
-        //relations.push(_excludesTo);
-        //relations.push(_responsesTo);
-        //relations.push(_conditionsFrom);
-        //relations.push(_milestonesFrom);
-        
         Workflow memory wf =
             Workflow(
                 _name,
@@ -379,11 +377,42 @@ contract PublicDCRManager {
                 _relations,
                 _approvalAddresses,
                 new uint[](_approvalAddresses.length),
+                new uint[](_approvalAddresses.length),
                 execStatus
             );
         workflows.push(wf);
 
         emit LogWorkflowCreation(workflows.length - 1, wf.name, msg.sender);
     }
+
+    /** @dev post private projection approval function.
+      * @param workflowId index of the workflow (eg 0 for the first workflow).
+      * @param myAddress address of the sender (necessary for web3js dev).
+      * @return list of approval outcomes.
+      */
+    function confirmProjection(uint256 workflowId, address myAddress) public payable returns (uint[] memory){
+        // get id of approvalList.addresses corresponding to msgSender. If (approval[id]==0): set to one;
+        
+        require(myAddress==msg.sender, "Must be role owner.");
+
+        for (
+            uint256 id = 0;
+            id < workflows[workflowId].approvalAddresses.length;
+            id++
+        ) {
+            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].didFetch[id] == 1){ // must have fetched public view
+                if(workflows[workflowId].approvalOutcomes[id] != 1){ // must not have approved before
+                    workflows[workflowId].approvalOutcomes[id] = 1;
+                    emit LogWorkflowProjection(workflowId, myAddress);
+                    return workflows[workflowId].approvalOutcomes;
+                }
+            }
+
+        }
+        
+        return workflows[workflowId].approvalOutcomes;
+        
+    }  
+
 
 }
