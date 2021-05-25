@@ -51,13 +51,15 @@ def updWithName(dataTxt, pi):
     target = '../../client/src/projections/'
     dataPath = '../../client/src/projections/dcrTexts.json'
     this_folder = os.path.dirname(os.path.abspath(__file__))
-    print("target datapath")
-    print(target)
-    print(dataPath)
+    # target = os.path.join(this_folder, '..\src\projections\\')
+    # dataPath = os.path.join(this_folder, '..\src\projections\dcrTexts.json')
+    #print("target datapath")
+    #print(target)
+    #print(dataPath)
 
     _data = removeGroups(dataTxt)
-    print("2/ updWithName  -----------------------")
-    print(dataTxt)
+    #print("2/ updWithName  -----------------------")
+    #print(dataTxt)
     projectGlobal(pi, dataTxt, target)
 
     with open(dataPath) as json_file:
@@ -251,12 +253,12 @@ def processBCData():
         # update execLog
         role_id = getId(processID,role)
         
-        #pExec = glob.glob('./client/src/projections/exec'+role_id+'*')[0]
+        #pExec = glob.glob('../../client/src/projections/exec'+role_id+'*')[0]
         execLogg(role,processID, activity_name_details, status, start_timestamp, data)
 
     else:
 
-        dataPath='./client/src/projections/DCR_Projections.json'
+        dataPath='../../client/src/projections/DCR_Projections.json'
         with open(dataPath) as json_file:
             dataJson = json.load(json_file)
 
@@ -320,7 +322,7 @@ def processBCData():
 #    data = request.get_json(silent=True)
 #    processID = data['processID']
 
-#    dataPath = './client/src/projections/DCR_Projections.json'
+#    dataPath = '../../client/src/projections/DCR_Projections.json'
 #    with open(dataPath) as json_file:
 #        dataDict = json.load(json_file)
 #    dataGlobDict = dataDict['TextExtraction']['global']
@@ -343,16 +345,18 @@ def inputFileLaunch():
     reads input dcr textual representation 
     """ 
 
-    file = request.files['file']
-    data = file.readlines()
-    print("-----------------------------------")
-    processID = str(request.form['processID'])
-    print(data)
-    updWithName(data, processID)
+    try:
+        file = request.files['file']
+        data = file.readlines()
+        print("-----------------------------------")
+        processID = str(request.form['processID'])
+        #print(data)
+        updWithName(data, processID)
 
-    return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+        return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
-
+    except:
+        return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
 
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
@@ -368,6 +372,21 @@ def delete():
         dataProj = json.load(json_file)
 
     dataProj.pop(processID, None)
+
+    with open(projDBPath, 'w') as outfile:
+        json.dump(dataProj, outfile, indent=2)
+
+    return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+
+
+@app.route('/deleteAll', methods=['GET', 'POST'])
+def deleteAll():
+    """
+    deletes all process instances! 
+    """ 
+
+    projDBPath='../../client/src/projections/DCR_Projections.json'
+    dataProj = {}
 
     with open(projDBPath, 'w') as outfile:
         json.dump(dataProj, outfile, indent=2)
@@ -402,7 +421,7 @@ def privateGraphUpd():
 
                 if(len(elemMarking) != 0):
                     if (elemMarking['include'] == 1):
-                        elem.update({'classes': 'included executable'})
+                        elem['classes']=elem['classes']+ 'included executable'
 
         updProj.append(elem)
 
@@ -418,7 +437,7 @@ def privateGraphUpd():
     #pprint.pprint(newRoleProjection)
 
     #store
-    projDBPath='./client/src/projections/DCR_Projections.json'
+    projDBPath='../../client/src/projections/DCR_Projections.json'
     with open(projDBPath) as json_file:
         dataProj = json.load(json_file)
     
@@ -443,12 +462,12 @@ def switchProj():
     roleMapping = getRoleMapping(processID,projID)
 
     #open db
-    projDBPath='./client/src/projections/DCR_Projections.json'
+    projDBPath='../../client/src/projections/DCR_Projections.json'
     with open(projDBPath) as json_file:
         dataProj = json.load(json_file)
     
     #update proj
-    print(dataProj[processID][roleMapping['id']].keys())
+    #print(dataProj[processID][roleMapping['id']].keys())
     dataProj[processID][roleMapping['id']]['data']=dataProj[processID][roleMapping['id']]['v_upd']['data']
     dataProj[processID][roleMapping['id']]['vect']=dataProj[processID][roleMapping['id']]['v_upd']['vect']
 

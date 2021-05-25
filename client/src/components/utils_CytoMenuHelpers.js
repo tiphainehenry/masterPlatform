@@ -56,12 +56,12 @@ const cytoMenuHelpers = {
                 else {
 
                     console.log('removing node with id ' + id);
-                    var j = this.cy.getElementById(id);
+                    var jn = this.cy.getElementById(id);
 
                     this.setState({
                         numSelected: this.state.numSelected - 1
                     });
-                    this.cy.remove(j);
+                    this.cy.remove(jn);
 
                 }
 
@@ -69,8 +69,8 @@ const cytoMenuHelpers = {
 
             case 'edges':
                 console.log('removing edge with id ' + id);
-                var j = this.cy.getElementById(id);
-                this.cy.remove(j);
+                var je = this.cy.getElementById(id);
+                this.cy.remove(je);
                 break;
 
             default:
@@ -160,7 +160,7 @@ const cytoMenuHelpers = {
             switch (type) {
                 case 'include':
                 case 'exclude':
-                    if (this.state.target.type == 'subgraph') {
+                    if (this.state.target.type === 'subgraph') {
                         console.log('add relation ' + type);
                         console.log('source ' + this.state.source.ID + ' ' + this.state.source.type);
                         console.log('target ' + this.state.target.ID + ' ' + this.state.target.type);

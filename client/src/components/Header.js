@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navbar, Nav, NavDropdown} from 'react-bootstrap';
-import { NavLink } from "react-router-dom"
 import '../style/boosted.min.css';
 
 /**
@@ -8,17 +7,12 @@ import '../style/boosted.min.css';
  */
 class Header extends React.Component {
 
-  constructor(props){
-    super(props);
-  }
-
-
   
   render(){
 
     return <div>
 
-              <Navbar style={{'position': 'fixed', 'width':'100%'}} collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+              <Navbar style={{'position': 'fixed', 'width':'100%'}} collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top" className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

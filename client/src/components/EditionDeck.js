@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import activityUpdHelpers from './utils_ActivityUpdHelpers';
 import cytoMenuHelpers from './utils_CytoMenuHelpers';
@@ -139,13 +139,10 @@ class EditionDeck extends React.Component {
    */
   componentWillMount() {
 
-    var processID = this.state.processID;
-    var projectionID = this.state.projectionID;
-
     console.log(this.props.location);
     if (typeof (this.props.location.state) !== 'undefined') {
       if (typeof (this.props.location.state['currentProcess'][1]) !== 'undefined') {
-        processID = this.props.location.state['currentProcess'][1];
+        var processID = this.props.location.state['currentProcess'][1];
         var projectionID = this.props.location.state['currentInstance'];
 
         this.setState({
@@ -172,7 +169,7 @@ class EditionDeck extends React.Component {
 
         var type = '';
         if (event.target['_private']['classes'].has('subgraph')) {
-          var type = 'subgraph';
+          type = 'subgraph';
         }
 
         /// monitor clicked elements
@@ -215,7 +212,7 @@ class EditionDeck extends React.Component {
       else if (event.target['_private']['classes'].has('selected')) {
         this.cy.getElementById(event.target['_private']['data']['id']).removeClass('selected');
 
-        if (this.state.numSelected != 1) {
+        if (this.state.numSelected !== 1) {
           this.setState({ numSelected: this.state.numSelected - 1 });
         }
 
@@ -288,7 +285,7 @@ class EditionDeck extends React.Component {
         };
 
         var classes = Array.from(ele['_private']['classes']).join(' ');
-        if (classes != '') {
+        if (classes !== '') {
           newEle['classes'] = classes;
         }
         newData.push(newEle);

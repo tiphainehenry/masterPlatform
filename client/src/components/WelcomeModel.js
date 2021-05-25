@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from './Header';
-import DCRgraph from './DCRgraph';
-import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import SidebarModel from './SidebarModel';
 
 import '../style/App.css';
@@ -10,10 +9,6 @@ import '../style/App.css';
  * Welcome component 
  */
 class WelcomeModel extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
 
   render() {
     return <div>

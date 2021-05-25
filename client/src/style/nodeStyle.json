@@ -14,7 +14,7 @@
       "text-halign": "center",
       "text-valign": "center",
       "text-wrap": "wrap",
-      "text-max-width": 60,
+      "text-max-width": 60, 
       "line-height": 2,
       "label": "data(name)"
     }
@@ -25,112 +25,59 @@
       "height": 15
     }
   },
-  {
-    "selector": "node.executable",
-    "style": {
-      "border-color": "#454545",
-      "color": "#454545",
-      "background-image": "https://i.ibb.co/qjFsTN9/gray-green.png",
-      "background-fit": "cover",
-      "background-width": "100%",
-      "background-height": "100%"
+    {
+      "selector": "node.executable",
+      "style": {
+        "border-color": "#454545",
+        "color": "#454545",
+        "backgroundColor":"white"
+      }
+    },
+    {
+      "selector": "node.included",
+      "style": {
+        "backgroundColor":"white",
+        "border-style": "solid"
+      }
+    },
+    {
+     "selector": "node.executed",
+      "style": {
+        "color": "#29A81A",
+        "backgroundColor":"white"
+      }
+    },
+    {
+      "selector": "node.pending",
+      "style": {
+        "border-color": "#1E90FF"
+      }
+    },
+    {
+      "selector": "node.selected",
+      "style": {
+        "border-width": 10
+      }
+    },
+    {
+        "selector": "node.external,node.type_projReceiver",
+        "style": {
+          "shape":"octagon",
+          "opacity":0.6,
+          "border-style": "dashed"
+          }
+        },
+        {
+      "selector": "node.subgraph",
+      "style": {
+        "backgroundColor": "#ff7900"
+      }
+    },
+    {
+      "selector": "node.choreography, node.type_projChoreo",
+      "style": {
+        "shape":"octagon"
+}
     }
-  },
-  {
-    "selector": "node.included",
-    "style": {
-      "border-style": "solid",
-      "color":"white"
-    }
-  },
-  {
-    "selector": "node.executed",
-    "style": {
-      "backgroundColor": "white",
-      "background-image": "https://i.ibb.co/26d9Yvm/gray-validated.png",
-      "background-fit": "cover",
-      "background-width": "100%",
-      "background-height": "100%",
-      "color": "#29A81A"
-    }
-  },
-  {
-    "selector": "node.pending",
-    "style": {
-      "border-color": "#1E90FF"
-    }
-  },
-  {
-    "selector": "node.selected",
-    "style": {
-      "border-width": 10
-    }
-  },
-  {
-    "selector": "node.external",
-    "style": {
-      "backgroundColor": "#343a40",
-      "color": "white"
-    }
-  },
-  {
-    "selector": "node.subgraph",
-    "style": {
-      "backgroundColor": "#ff7900"
-    }
-  },
-  {
-    "selector": "node.choreography",
-    "style": {
-      "backgroundColor": "white",
-      "background-image": "https://i.ibb.co/tsrHCBh/blue.png",
-      "background-fit": "cover",
-      "background-width": "100%",
-      "background-height": "100%",
-      "color": "white",
-      "border-color": "#ffa533",
-      "text-outline-color": "yellow",
-      "text-outline-width": 0
-    }
-  },
-  {
-    "selector": "node.group",
-    "style": {
-      "border-color": "#1E90FF",
-      "backgroundColor": "#A9BCCF"
-    }
-  },
-  {
-    "selector": "node.choreoExecuted",
-    "style": {
-      "backgroundColor": "white",
-      "background-image": "https://i.ibb.co/kMvv177/blue-validated.png",
-      "background-fit": "cover",
-      "background-width": "100%",
-      "background-height": "100%",
-      "color": "#29A81A"   
-    }
-  },
-  {
-    "selector": "node.choreoPending",
-    "style": {
-      "backgroundColor": "white",
-      "background-image": "https://i.ibb.co/TT3DGvr/blue-pending.png",
-      "background-fit": "cover",
-      "background-width": "100%",
-      "background-height": "100%",
-      "color": "#29A81A"   
-    }
-  },
-  {
-    "selector": "node.choreoExecutable",
-    "style": {
-      "backgroundColor": "white",
-      "background-image": "hhttps://i.ibb.co/nb8rjSW/blue-green.png",
-      "background-fit": "cover",
-      "background-width": "100%",
-      "background-height": "100%",
-      "color": "#29A81A"   
-    }
-  }
+  
 ]

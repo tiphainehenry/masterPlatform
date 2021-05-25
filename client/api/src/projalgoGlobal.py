@@ -33,10 +33,10 @@ def generateGlobalProjection(data, filename):
     """
 
     chunks, roles = extractChunks(data)
-    print("2.1/ chunks")
-    print(chunks)
-    print("2.2/ roles")
-    print(roles)
+    #print("2.1/ chunks")
+    #print(chunks)
+    #print("2.2/ roles")
+    #print(roles)
     
     # Extract events
     globalEvents = []
@@ -81,7 +81,8 @@ def generateGlobalProjection(data, filename):
         'relations':globRelations
     }
     data['roleMapping']=roleMapping
-    print(filename)
+
+    data['addresses']=chunks['addresses']
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)
     return projection, []
@@ -92,15 +93,15 @@ def projectGlobal(processID, data, target):
 
     :param processID: the ID of the current process. eg: "p1"
     :param data: json description of the global dcr
-    :param target: the path where the projection will be saved. eg: './client/src/projections/'
+    :param target: the path where the projection will be saved. eg: '../../client/src/projections/'
     """ 
     this_folder = os.path.dirname(os.path.abspath(__file__))
     print('[INFO] Starting Global Projection')
     projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json"))
-    print("3/projection ")
-    print(projection)
-    print("4/ externalIDS")
-    print(externalIds)
+    #print("3/projection ")
+    #print(projection)
+    #print("4/ externalIDS")
+    #print(externalIds)
     generateGraph(processID, projection, externalIds, target, "Global")
     vectorize(projection, os.path.join(target,"temp_vectGlobal"))
     print('[INFO] Global Projection generated')

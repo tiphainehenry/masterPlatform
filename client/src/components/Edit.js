@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Header from './Header';
 
-import { Card, Button, Row, Col, Form, Container, Nav, ListGroup } from 'react-bootstrap';
+import { Row, Col, Container, Nav, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import SidebarModel from './SidebarModel';
@@ -106,21 +106,21 @@ class Edit extends React.Component {
               <SidebarModel />
             </Col>
             <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <div class="bg-green pt-5 pb-3">
+              <div className="bg-green pt-5 pb-3">
 
-                <div class='container'>
+                <div className='container'>
                   <h2>Edit Graph</h2>
 
                   <div className="well">Choose the process projection to edit:</div>
 
-                  <div class="bg-green">
+                  <div className="bg-green">
                     <Nav >
                       {this.state.tree.map((process, i) => {
                         console.log(process);
-                        return <Nav key={i} title={process[0]} class='sidebarLink'>
+                        return <Nav key={i} title={process[0]} className='sidebarLink'>
                           <div style={{ 'padding-right': '10%', 'width': '20vw' }}>
                             <ListGroup>
-                              <ListGroup.Item class='processHeader'>
+                              <ListGroup.Item className='processHeader'>
                                 {process[0]}
                               </ListGroup.Item>
                               <ListGroup.Item>

@@ -120,10 +120,9 @@ def generateDCRText(processID, chunks, role, choreoEventsProj, filename):
     projection = ["##### Projection over role [" + role + "] #######"] + events + projGrouping + linkages 
 
     #generate dict
-    Pev=generateDictEvent(projEvents)
-    Eev=generateDictEvent(externalEvents)
+    Pev=generateDictEvent(projEvents,chunks['addresses'])
+    Eev=generateDictEvent(externalEvents,chunks['addresses'])
     relations=generateDictRelation(linkages)
-
        
     with open(filename) as json_file:
         data = json.load(json_file)
@@ -156,7 +155,7 @@ def projRole(processID, data, target, role):
 
     :param processID: the ID of the current process. eg: "p1"
     :param data: json description of the global dcr
-    :param target: the path where the projection will be saved. eg: './client/src/projections/'
+    :param target: the path where the projection will be saved. eg: '../../client/src/projections/'
     :param role: the role to project. eg: 'Driver'
     """ 
     chunks, roles = extractChunks(data)
@@ -176,6 +175,8 @@ def projRole(processID, data, target, role):
     roleMapping=getRoleMapping(processID, role)
     projection, externalIds = generateDCRText(processID, chunks, role, choreoEventsProj, os.path.join(target,"dcrTexts.json"))            
     generateGraph(processID, projection, externalIds, target, role)
+
+    #print("[DEBUG] Vectorizing"+ role)
     vectorizeRole(projection, os.path.join(target,"temp_vect"+roleMapping['id']))
 
     print('[INFO] Projection of role '+role+' generated')

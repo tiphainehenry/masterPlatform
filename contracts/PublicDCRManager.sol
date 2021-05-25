@@ -21,6 +21,7 @@ contract PublicDCRManager {
         uint256[] included;
         uint256[] executed;
         uint256[] pending;
+        address[] roleAddresses;
         string[] activityNames;
         bytes[] ipfsActivityHashes;
         uint256 numActivities; //number of included activities
@@ -125,12 +126,26 @@ contract PublicDCRManager {
         return workflows[workflowId].activityNames[activityId];
     }
 
+    function getRoleAddresses(uint256 workflowId, uint256 activityId)
+        public
+        view
+        returns (address)
+    {
+        return workflows[workflowId].roleAddresses[activityId];
+    }
+
     ///////////////// Utils /////////////////////////
 
-    function canExecute(uint256 workflowId, uint256 activityId)
+    function canExecute(uint256 workflowId, uint256 activityId, address msgSender)
         public
         returns (bool)
     {
+        // check if msg.sender address is correct
+        if (msgSender != workflows[workflowId].roleAddresses[activityId]) {
+            workflows[workflowId].execStatus.canExecuteCheck = 4;
+            return false;
+        }
+        
         // activity must be included
         if (workflows[workflowId].included[activityId] == 0) {
             workflows[workflowId].execStatus.canExecuteCheck = 1;
@@ -186,8 +201,12 @@ contract PublicDCRManager {
         uint256[] memory _includedStates,
         uint256[] memory _executedStates,
         uint256[] memory _pendingStates,
+        
+        //process information
+        address[] memory _roleAddresses,
         string[] memory _activityNames,
         string memory _name,
+        
         // relations
         uint256[][] memory _includesTo,
         uint256[][] memory _excludesTo,
@@ -202,6 +221,7 @@ contract PublicDCRManager {
                 _includedStates,
                 _executedStates,
                 _pendingStates,
+                _roleAddresses,
                 _activityNames,
                 new bytes[](_includedStates.length),
                 _includedStates.length,
@@ -221,7 +241,7 @@ contract PublicDCRManager {
         public
     //        bytes memory ipfsHash
     {
-        if (!canExecute(workflowId, activityId)) {
+        if (!canExecute(workflowId, activityId, msg.sender)) {
             workflows[workflowId].execStatus.status = 1;
             //revert();
         } else {

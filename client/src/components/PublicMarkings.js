@@ -5,8 +5,6 @@ import Col from 'react-bootstrap/Col';
 
 import '../style/App.css';
 
-import { Button } from 'react-bootstrap';
-
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
 import getWeb3 from '../getWeb3';
 
@@ -39,7 +37,7 @@ class PublicMarkings extends React.Component {
     alert('Checking Hash');
 
     // check if BC node
-    const { accounts, contract } = this.state;
+    const { contract } = this.state;
 
     try{
         const hashesVector = await contract.methods.getHashes().call();
@@ -48,10 +46,10 @@ class PublicMarkings extends React.Component {
         var taskTriggered = ev.task;
     
         // retrieve data hash with activity id       
-        if(taskTriggered.charAt(0) =='e'){
+        if(taskTriggered.charAt(0) ==='e'){
           var lastChar = taskTriggered.charAt(taskTriggered.length-1);
   
-          console.log(lastChar)
+          //console.log(lastChar)
     
           var activities = []
           switch(lastChar){
@@ -72,7 +70,7 @@ class PublicMarkings extends React.Component {
         var activityId= activities.findIndex(isElem);
 
         // check hashes
-        if(hashesVector[activityId]==this.state.web3.utils.fromAscii(dataToCheck)){
+        if(hashesVector[activityId]===this.state.web3.utils.fromAscii(dataToCheck)){
           window.alert('success, data has been authenticated.');
         }
         else{
@@ -95,7 +93,7 @@ class PublicMarkings extends React.Component {
 
       var labels = []
       for(var i=0; i< this.props.activityNames.length; i++){
-        console.log(this.props.activityNames[i]);
+        //console.log(this.props.activityNames[i]);
         var name = this.props.activityNames[i];
   
         for(var j=0; j<Object.keys(ProcessDB[this.props.processID]['TextExtraction']['global']['events']).length; j++){
@@ -168,14 +166,14 @@ class PublicMarkings extends React.Component {
                       }}/>
 
                   {Array.from({length:this.props.activityNames.length}, (x,i)=>
-                  <div>
-                      <Row  key={i} style= {{'fontSize': '10pt', 'fontWeight': 200}} xs={1} md={3} >
-                      <Col sm>{this.state.labels[i]}</Col>
-                      <Col sm>({this.props.incl[i]},{this.props.exec[i]},{this.props.pend[i]})</Col>
-                      <Col sm>{this.props.dataHashes[i]}</Col>
+                  <div key={'div'+i}>
+                      <Row key={'row'+i} style= {{'fontSize': '10pt', 'fontWeight': 200}} xs={1} md={3} >
+                      <Col key={i+'col'+1} sm>{this.state.labels[i]}</Col>
+                      <Col key={i+'col'+2}sm>({this.props.incl[i]},{this.props.exec[i]},{this.props.pend[i]})</Col>
+                      <Col key={i+'col'+3}sm>{this.props.dataHashes[i]}</Col>
 
                     </Row>                  
-                                          <hr  style={{
+                                          <hr key={'hr'+i} style={{
                                             width: '95%', 
                                             color: 'LightGrey',
                                             backgroundColor: 'LightGrey',
