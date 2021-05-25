@@ -57,6 +57,7 @@ class CreationDeck extends React.Component {
       processID: this.props.location.state['currentProcess'],
       processName: this.props.location.state['currentProcess'],
       projectionID: 'Global',
+      roleMaps:{},
       edges: {
         condition: ' -->* ',
         milestone: ' --<> ',
@@ -377,14 +378,14 @@ class CreationDeck extends React.Component {
    * 
    */
   privateGraphUpd() {
-    console.log(this.cy)
-    if (this.cy) {
+    if (this.cy.elements().length === 0) {
       window.alert('Graph is empty')
     } else if (window.confirm('Confirm new graph version?')) {
 
       var newData = [];
 
-      // retrieve data 
+      // retrieve data
+      var rolelist = new Map()
       this.cy.elements().forEach(function (ele, id) {
         console.log(ele)
         console.log("id = " + id);
@@ -397,15 +398,23 @@ class CreationDeck extends React.Component {
             id++
             var tmp = ele['_private']['data']['name'].split(' ')
             tmp = tmp.filter(e => e !== "")
+            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])])
+            rolelist.set(tmp[2], this.state.addresses[this.state.roles.indexOf(tmp[2])])
             newEle = {
               "name": "e" + id + "[" + tmp[1] + " src=" + tmp[0] + " tgt=" + tmp[2] + "]\n"
             }
-            console.log("name is = e" + id)
             ele['_private']['data']['name'] = "e" + id
           } else {
 
-            var tmp = ele['_private']['data']['name'].split('\n')
-            newEle = {
+            var tmp = ele['_private']['data']['name'].split(' ')
+            console.log("ttototootototo");
+            console.log(tmp[1]);
+            console.log(this.state.roles.indexOf(tmp[0]));
+            console.log(this.state.addresses[this.state.roles.indexOf(tmp[0])]);
+            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])])
+            console.log(rolelist)
+            console.log(rolelist.get(tmp[0]))
+        newEle = {
               "name": '"' + tmp[0] + '"' + " [role=" + tmp[1] + "]\n",
             };
           }
@@ -413,17 +422,17 @@ class CreationDeck extends React.Component {
           var src = this.findName(ele['_private']['data']['source'])
           var trg = this.findName(ele['_private']['data']['target'])
           var link = this.state.edges[ele['_private']['classes'].values().next().value]
-          console.log(src + link + trg)
           newEle = { "link": src + link + trg + '\n' }
         }
         newData.push(newEle);
       }.bind(this));
-      this.createFile(newData)
+      this.createFile(newData, rolelist)
     }
     else {
       console.log('save aborted');
     }
   }
+
 
   /**
    * Compares IDs and names of the edges to detect inconsistants names
@@ -444,11 +453,13 @@ class CreationDeck extends React.Component {
      * Create an input File to send to the API
      * 
      */
-  createFile(data) {
-    console.log(data)
+  createFile(data, rolelist) {
     var arrayEvent = []
     var arrayLink = []
-
+    const it = rolelist.keys()
+    for (const key of it) {
+        arrayEvent.push("pk[role=" + key + "] " + rolelist.get(key))
+    }
     data.forEach(line => {
       if (line.hasOwnProperty('name'))
         arrayEvent.push(line['name'])
@@ -456,8 +467,8 @@ class CreationDeck extends React.Component {
         arrayLink.push(line['link'])
     })
     const newdata = arrayEvent.concat(arrayLink)
-    console.log(newdata)
     const file = new File(newdata, 'creationDeck.txt', { type: "text/plain" })
+    console.log(newdata)
     this.fileUpload(file)
       .then((response) => {
         console.log(response.data);
@@ -498,7 +509,6 @@ class CreationDeck extends React.Component {
   ///// Render
 
   render() {
-
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
@@ -559,17 +569,17 @@ class CreationDeck extends React.Component {
 
                                 <Form.Label>Private Role</Form.Label>
                                 {/* <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} /> */}
-                                <select className='row col-md-12' onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >{roles}</select>
+                                <select className='row col-md-12' onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} ><option value=''> ---</option>{roles}</select>
                                 <br />
 
                                 <Form.Label>Choreography Sender </Form.Label>
-                                <select className='row col-md-12' onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender} >{roles}</select>
+                                <select className='row col-md-12' onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender} ><option value=''> ---</option>{roles}</select>
                                 {/* <Form.Control type="address" onChange={this.handleSender} placeholder={'enter sender name'} value={this.state.choreographyNames.sender} /> */}
                                 <br />
                                 <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
                                 <br />
                                 <Form.Label>Choreography Receiver</Form.Label>
-                                <select className='row col-md-12' onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver} >{roles}</select>
+                                <select className='row col-md-12' onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver} ><option value=''> ---</option>{roles}</select>
                                 {/* <Form.Control type="address" onChange={this.handleReceiver} placeholder={'enter receiver name'} value={this.state.choreographyNames.receiver} /> */}
 
                                 <hr /><br />
