@@ -24,10 +24,6 @@
           {
             "executed": 0, 
             "include": 1, 
-<<<<<<< HEAD
-            "executed": 1, 
-            "id": "ReceiveInvoice", 
-=======
             "id": "e3", 
             "pending": 0
           }, 
@@ -35,7 +31,6 @@
             "executed": 0, 
             "include": 0, 
             "id": "SignPA", 
->>>>>>> 375977d2b919e536f3297e1ff3cc33bfbdefe799
             "pending": 0
           }, 
           {
