@@ -118,15 +118,35 @@ def generateRelationMatrices(chunks):
     """
 
     #print('[INFO] Generating Relation Matrices')
-
     relations = chunks['linkages']
     events = chunks['events'] + chunks['internalEvents']
+    
+    # get list of events
+    eventsList = getRoleList(events)
 
     if relations == []:
-        return [], [0, 0, 0, 0, 0]
+        nullMatrix = np.zeros((len(eventsList), len(eventsList)))
+        relationMatrices = [
+            {
+                'condition': nullMatrix,
+                'milestone': nullMatrix,
+                'response': nullMatrix,
+                'include':  nullMatrix,
+                'exclude':  nullMatrix
+            }
+        ]
+
+        fullMatrix = []
+        listRelation = nullMatrix.tolist()
+        for elem in listRelation:
+            newLine = []
+            for item in elem:
+                newLine.append(str(item).replace('.0', ''))
+            fullMatrix.append(newLine)
+
+        
+        return relationMatrices, [fullMatrix, fullMatrix, fullMatrix, fullMatrix, fullMatrix]
     else:
-        # get list of events
-        eventsList = getRoleList(events)
 
         rc, rfc = generateRelationMatrix('condition', eventsList, relations)
         rm, rfm = generateRelationMatrix('milestone', eventsList, relations)
@@ -263,6 +283,7 @@ def vectorize(data, filename):
     """
     chunks, roles = extractChunks(data)
 
+
     relations, fullRelations = generateRelationMatrices(chunks)
 
     markings = generateInitialMarkings(chunks)
@@ -285,6 +306,7 @@ def vectorize(data, filename):
             'milestone': fullRelations[4]
         }
     }
+
 
     path = filename+'.json'
     with open(path, 'w') as outfile:

@@ -1,0 +1,37 @@
+pk[role=Driver] = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB
+pk[role=Florist] = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819
+pk[role=Customer] = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5
+
+## declare events
+
+# Choreography exchanges
+e1[Shipping src=Driver tgt=Florist tgt=Customer]
+e2[CheckDelivery src=Customer tgt= Florist tgt=Driver]
+e3[Accept src=Customer tgt=Florist tgt=Driver]
+e4[Reject src=Customer tgt=Florist tgt=Driver]
+e5[Pay src=Customer tgt=Florist]
+e6[UnloadTruck src=Driver tgt=Customer tgt=Florist]
+e7[PayDriver src=Florist tgt=Driver]
+
+
+## link events
+e1 --<> e2
+e1 *--> e2
+
+e2 *--> e3
+e2 --<> e3
+
+e2 *--> e4
+e2 --<> e4
+
+e3 -->+ e5
+e3 *--> e5
+e3 -->+ e6
+e3 *--> e6
+
+e4 *--> e7 
+e5 *--> e7 
+e6 *--> e7 
+
+e5 -->% e5
+e6 -->% e6

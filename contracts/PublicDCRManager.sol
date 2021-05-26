@@ -22,16 +22,18 @@ contract PublicDCRManager {
     );
 
     // variable declarations.
-    string ipfsHash;
 
     struct Workflow {
         string name;
+        string ipfsViewHash;
+
         Marking markings;
         address[] roleAddresses;
         string[] activityNames;
         bytes[] ipfsActivityHashes;
         uint256 numActivities; //number of included activities
         uint256[][][] relations; //includesTo, excludesTo, responsesTo, conditionsFrom, milestonesFrom
+        
         //uint256[][] excludesTo;
         //uint256[][] responsesTo;
         //uint256[][] conditionsFrom;
@@ -59,18 +61,15 @@ contract PublicDCRManager {
 
     Workflow[] workflows;
     
-    
-
     ///////////////// Misc ////////////////////////
 
-    function sendHash(string memory x) public {
-        ipfsHash = x;
+    function sendHash(uint256 workflowId, string memory x) public {
+        workflows[workflowId].ipfsViewHash = x;
     }
 
-    function getHash() public view returns (string memory x) {
-        return ipfsHash;
+    function getHash(uint256 workflowId) public view returns (string memory x) {
+        return workflows[workflowId].ipfsViewHash;
     }
-
 
     /** @dev Getter for workflow.
       * @param workflowId index of the workflow (eg 0 for the first workflow).
@@ -80,7 +79,7 @@ contract PublicDCRManager {
     function fetchPublicView(uint256 workflowId, address myAddress)
         public
         payable
-        returns (Workflow memory)
+        returns (string memory)
     {
         
         require(msg.sender == myAddress, 'wrongAddress');
@@ -96,7 +95,7 @@ contract PublicDCRManager {
                 }
         }
         
-        return workflows[workflowId];
+        return workflows[workflowId].ipfsViewHash;
     }
 
      
@@ -353,6 +352,8 @@ contract PublicDCRManager {
         // packed state variables
         uint256[][] memory markingStates, // included, executed, pending
 
+        string memory _ipfsViewHash,
+
         //process information
         address[] memory _roleAddresses,
         address[] memory _approvalAddresses,
@@ -369,6 +370,7 @@ contract PublicDCRManager {
         Workflow memory wf =
             Workflow(
                 _name,
+                _ipfsViewHash,
                 markings,
                 _roleAddresses,
                 _activityNames,

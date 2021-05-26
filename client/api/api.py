@@ -305,13 +305,15 @@ def localProj():
         roleID = str(request.form['roleID'])
         roleNum = str(request.form['roleNum'])
 
+
         dataPath='../../client/src/projections/DCR_Projections.json'
         with open(dataPath) as json_file:
             dataJson = json.load(json_file)
 
         #Update public projection
-        publicData = dataJson[processID]['TextExtraction']['public']
-    
+        #publicData = dataJson[processID]['TextExtraction']['public']
+        publicData = request.form['JSONPubView']
+
         # step1: enrich private events and relations --> scan all. If not matching: then add relation. 
         localChunks, localRoles = extractChunks(localData)
         localRelations = []

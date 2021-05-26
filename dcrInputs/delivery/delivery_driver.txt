@@ -1,0 +1,45 @@
+## declare events
+
+# Choreography exchanges
+e1[Shipping src=Driver tgt=Florist tgt=Customer]
+e2[CheckDelivery src=Customer tgt= Florist tgt=Driver]
+e3[Accept src=Customer tgt=Florist tgt=Driver]
+e4[Reject src=Customer tgt=Florist tgt=Driver]
+e6[UnloadTruck src=Driver tgt=Customer tgt=Florist]
+e7[PayDriver src=Florist tgt=Driver]
+
+# Internal processes
+"ReturnTruck" [role=Driver]  
+
+## link events
+e1 --<> e2
+e1 *--> e2
+
+e2 *--> e3
+e2 --<> e3
+e2 *--> e4
+e2 --<> e4
+
+
+e3 -->+ e6
+e3 *--> e6
+
+ReturnTruck -->* e7
+ReturnTruck *--> e7
+
+e4 *--> e7
+e5 *--> e7 
+e6 *--> e7 
+
+e4 *--> ReturnTruck 
+e5 *--> ReturnTruck 
+e6 *--> ReturnTruck 
+
+## exclude events
+e3 -->% e3
+e4 -->% e4
+e4 -->% e5
+e4 -->% e6
+
+e6 -->% e6
+ReturnTruck -->% ReturnTruck

@@ -3,6 +3,8 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import PublicDCRManager from "../contracts/PublicDCRManager.json";
 import getWeb3 from "../getWeb3";
 
+import { Button, Table } from 'react-bootstrap';
+
 var node_style = require('../style/nodeStyle.json')
 var edge_style = require('../style/edgeStyle.json')
 var cyto_style = require('../style/cytoStyle.json')['dcr']
@@ -36,6 +38,8 @@ class LoadToBC extends React.Component {
     };
     this.handleCreateWkf = this.handleCreateWkf.bind(this);
     this.connectToWeb3 = this.connectToWeb3.bind(this);
+    this.getWKCreationReceipt = this.getWKCreationReceipt.bind(this);
+
   }
 
   /**
@@ -51,51 +55,54 @@ class LoadToBC extends React.Component {
   componentWillMount() {
 
     var lenDataDB = Object.keys(ProcessDB).length;
-    if (lenDataDB > 0) {
 
-      // connect list of activities to corresponding role first, and then to the right role address
-      var activities = ProcessDB[Object.keys(ProcessDB)[0]]['TextExtraction']['public']['privateEvents']
+    try{
+      if (lenDataDB > 0) {
 
-      var orderedPk = []
-      var orderedNames= ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['activityNames']['default'];
-      for (let i in orderedNames){
-        console.log(orderedNames[i]);
-        var matchingPk = ''
-        Object.keys(activities).forEach(k => {
-          if(activities[k].eventName === orderedNames[i]){
-            //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
-            matchingPk = activities[k].address;
+        // connect list of activities to corresponding role first, and then to the right role address
+        var activities = ProcessDB[Object.keys(ProcessDB)[1]]['TextExtraction']['public']['privateEvents']
+  
+        
+        var orderedPk = []
+        var orderedNames= ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['activityNames']['default'];
+        for (let i in orderedNames){
+          console.log(orderedNames[i]);
+          var matchingPk = ''
+          Object.keys(activities).forEach(k => {
+            if(activities[k].eventName === orderedNames[i]){
+              //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
+              matchingPk = activities[k].address;
+            }
+          });
+          if(matchingPk !== ''){
+            orderedPk.push(matchingPk);
           }
-        });
-        if(matchingPk !== ''){
-          orderedPk.push(matchingPk);
+  
         }
-
+        let approvalList = [...new Set(orderedPk)];
+        this.setState({
+          data: ProcessDB[Object.keys(ProcessDB)[1]]['Global']['data'],
+          processName: Object.keys(ProcessDB)[1],
+          lenDataDB: lenDataDB,
+  
+          activityNames: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['activityNames']['default'],
+          includedStates: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullMarkings']['included'],
+          executedStates: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullMarkings']['executed'],
+          pendingStates: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullMarkings']['pending'],
+          includesTo: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['include'],
+          excludesTo: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['exclude'],
+          responsesTo: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['response'],
+          conditionsFrom: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['condition'],
+          milestonesFrom: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['milestone'],
+          addresses: orderedPk,
+          approvalList: approvalList
+        })
       }
-      let approvalList = [...new Set(orderedPk)];
-      console.log(orderedPk);
-      console.log(orderedNames);
-      console.log(approvalList);
-
-      this.setState({
-        data: ProcessDB[Object.keys(ProcessDB)[0]]['Global']['data'],
-        processName: Object.keys(ProcessDB)[0],
-        lenDataDB: lenDataDB,
-
-        activityNames: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['activityNames']['default'],
-        includedStates: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullMarkings']['included'],
-        executedStates: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullMarkings']['executed'],
-        pendingStates: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullMarkings']['pending'],
-        includesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['include'],
-        excludesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['exclude'],
-        responsesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['response'],
-        conditionsFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['condition'],
-        milestonesFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['milestone'],
-        addresses: orderedPk,
-        approvalList: approvalList
-      })
+  
     }
-
+    catch{
+      console.log('initialization of the db')
+    }
     this.connectToWeb3()
 
   }
@@ -118,7 +125,7 @@ class LoadToBC extends React.Component {
       this.setState({ web3, accounts, contract: instance });
 
       // Checking if contract already populated
-      this.setState({ wkState: 'Create Global Workflow OnChain.' })
+      this.setState({ wkState: '2./ Uploaded' })
 
     } catch (error) {
       alert(
@@ -130,11 +137,42 @@ class LoadToBC extends React.Component {
     };
   }
 
+
+  /**
+   * Get workflow creation receipt.
+   */
+
+  getWKCreationReceipt = async () => {
+
+    try {
+      this.setState({ blockNumber: "waiting.." });
+      this.setState({ gasUsed: "waiting..." });
+
+      // get Transaction Receipt in console on click
+      // See: https://web3js.readthedocs.io/en/1.0/web3-eth.html#gettransactionreceipt
+      await this.state.web3.eth.getTransactionReceipt(this.state.transactionHash, (err, txReceipt) => {
+        console.log(err, txReceipt);
+        this.setState({ txReceipt });
+        console.log('tx receip null');
+      }); //await for getTransactionReceipt
+
+      await this.setState({ blockNumber: this.state.txReceipt.blockNumber });
+      await this.setState({ gasUsed: this.state.txReceipt.gasUsed });
+    } //try
+    catch (error) {
+      console.log('getWKCreationReceipt error');
+
+      console.log(error);
+    } //catch
+  } //getWKCreationReceipt
+
+
+
   /**
    * launches a transaction to the smart contract workflow manager to create a new workflow.
    */
   handleCreateWkf = async () => {
-    alert('Creating Workflow onChain');
+    alert('Save public view onchain');
 
     const { accounts, contract } = this.state;
 
@@ -145,20 +183,22 @@ class LoadToBC extends React.Component {
         alert("oops -didnt have time to update freshly updated db [to be implemented]");  
       }
       else{
+        var relations = [this.state.includesTo,
+          this.state.excludesTo,
+          this.state.responsesTo,
+          this.state.conditionsFrom,
+          this.state.milestonesFrom]
+        console.log(relations);
 
-        await contract.methods.createWorkflow(
+        await contract.methods.uploadPublicView(
           [this.state.includedStates,this.state.executedStates,this.state.pendingStates], //marking
   
+          this.props.ipfsHash,
           this.state.addresses,
           this.state.approvalList,
           this.state.activityNames,
           this.state.processName,
-  
-          [this.state.includesTo,
-          this.state.excludesTo,
-          this.state.responsesTo,
-          this.state.conditionsFrom,
-          this.state.milestonesFrom] // relations
+          relations 
         ).send({ from: accounts[0] });
           
       }
@@ -175,8 +215,9 @@ class LoadToBC extends React.Component {
     catch (err) {
       window.alert(err);
 
-      this.setState({ wkState: 'Create Global Workflow OnChain' });
+      this.setState({ wkState: '2/. Save public view onchain' });
     }
+
 
   }
 
@@ -186,7 +227,49 @@ class LoadToBC extends React.Component {
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style)
     if (window.location.href.indexOf("creation"))
-      return (null)
+      return (<div>
+      <Button onClick= {this.handleCreateWkf}>{this.state.wkState}</Button>
+     <br/>
+     <br/>
+                  <Button onClick={this.getWKCreationReceipt}> Get Transaction Receipt </Button>
+
+                  <Table bordered responsive>
+                    <thead>
+                      <tr>
+                        <th>Tx Receipt Category</th>
+                        <th>Values</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>IPFS Hash # stored on Eth Contract</td>
+                        <td>{this.props.ipfsHash}</td>
+                      </tr>
+                      <tr>
+                        <td>Ethereum Contract Address</td>
+                        <td>{this.state.ethAddress}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Tx Hash # </td>
+                        <td>{this.state.transactionHash}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Block Number # </td>
+                        <td>{this.state.blockNumber}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Gas Used</td>
+                        <td>{this.state.gasUsed}</td>
+                      </tr>
+                    </tbody>
+                  </Table>
+
+
+      </div>)
     return <div>
       {this.state.lenDataDB > 0 ?
         <CytoscapeComponent elements={this.state.data}

@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, Card, Spinner} from 'react-bootstrap';
+import { Button, Card, Spinner } from 'react-bootstrap';
 
-import { BoxLoading,SolarSystemLoading,LadderLoading, RollBoxLoading,ThreeHorseLoading,WaveLoading} from 'react-loadingg';
+import { SolarSystemLoading} from 'react-loadingg';
 
+import ipfs from '../ipfs';
 
 import axios from 'axios';
 import ExecLogger from './execLogger';
@@ -53,7 +54,7 @@ class DCRgraph extends React.Component {
       bcRes: '',
       owner: '',
 
-      projType:'',
+      projType: '',
 
       addressProj: '',
       incl: '',
@@ -66,12 +67,12 @@ class DCRgraph extends React.Component {
       altVersionExists: false,
       file: null,
       processID: '',
-      test:'',
+      test: '',
       BCQuery: JSON.parse(localStorage.getItem('BCQuery')) || false,
       hasApproved: 0,
 
+      hash: ''
 
-      
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -81,6 +82,8 @@ class DCRgraph extends React.Component {
     this.handleProjSwitch = this.handleProjSwitch.bind(this);
     this.refreshBCQuery = this.refreshBCQuery.bind(this);
     this.reinitBCQuery = this.reinitBCQuery.bind(this);
+    this.getIPFSOutput = this.getIPFSOutput.bind(this);
+    this.generatePrivateView = this.generatePrivateView.bind(this);
   }
 
   /**
@@ -154,7 +157,7 @@ class DCRgraph extends React.Component {
         approvalList: approvalList,
         approvalOutcome: approvalOutcome,
         approvalAddresses: approvalAddresses,
-        wkID:wkID
+        wkID: wkID
 
       })
       this.cy.fit();
@@ -162,7 +165,7 @@ class DCRgraph extends React.Component {
       instance.events.LogWorkflowProjection().on('data', (event) => {
         this.refreshBCQuery();
       })
-      .on('error', console.error);
+        .on('error', console.error);
 
       //this.setState({hasCandidates:true,bestProfiles:[[1, 1445],[7, 1012],[4, 1012]]})  
 
@@ -208,10 +211,10 @@ class DCRgraph extends React.Component {
       }
     }
 
-    this.setState({ 
-      'addressProj': addressProj ,
-      'projType':projType
-  });
+    this.setState({
+      'addressProj': addressProj,
+      'projType': projType
+    });
 
     this.loadContract();
     this.cy.fit();
@@ -228,7 +231,7 @@ class DCRgraph extends React.Component {
 
     this.setState({
       BCQuery: !this.state.BCQuery
-    },() => {
+    }, () => {
       localStorage.setItem('BCQuery', JSON.stringify(this.state.BCQuery))
     });
   }
@@ -236,7 +239,7 @@ class DCRgraph extends React.Component {
   reinitBCQuery = () => {
     this.setState({
       BCQuery: false
-    },() => {
+    }, () => {
       localStorage.setItem('BCQuery', JSON.stringify(false))
     });
 
@@ -253,7 +256,7 @@ class DCRgraph extends React.Component {
     switch (lastChar) {
       case 's':
         activities = this.state.activityNames["send"];
-        break;const { create } = require('ipfs-http-client')
+        break; const { create } = require('ipfs-http-client')
 
       case 'r':
         activities = this.state.activityNames["receive"];
@@ -406,7 +409,7 @@ class DCRgraph extends React.Component {
     try {
       e.preventDefault() // Stop form submit
       this.fileUpload(this.state.file).then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
       })
     }
     catch (err) {
@@ -414,16 +417,17 @@ class DCRgraph extends React.Component {
       this.reinitBCQuery();
     }
 
-    try{
+    try {
+      alert('confirm projection');
       var acc = this.state.web3.currentProvider.selectedAddress;
       await contract.methods.confirmProjection(this.state.wkID, acc).send({ from: accounts[0] });
       this.refreshBCQuery();
 
     }
-    catch(err){
+    catch (err) {
       localStorage.clear();
       this.reinitBCQuery();
-  
+
     }
 
   }
@@ -436,29 +440,61 @@ class DCRgraph extends React.Component {
     this.setState({ file: e.target.files[0] })
   }
 
+  async getIPFSOutput(hash){
+    return ipfs.cat(hash);
+  }
   /**
    * upload filename and process it into the backend to generate projections.
    * @param file dcr textual representation (see examples in the DCRinput folder).
    */
-  fileUpload(file) {
+
+  async generatePrivateView(formData){
     const url = `http://localhost:5000/localProj`;
-
-    this.setState({ processID: this.props.processName });
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('processID', this.props.processName);
-    formData.append('roleID', this.props.id);
-    formData.append('roleNum', this.props.projectionID);
 
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
+        //'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     };
 
     return axios.post(url, formData, config);
+
+  } 
+
+
+  async fileUpload(file) {
+
+    alert('fetch public projection');
+    var acc = this.state.web3.currentProvider.selectedAddress;
+    await this.state.contract.methods.fetchPublicView(this.state.wkID, acc).send({ from: this.state.accounts[0] }); 
+    
+    await this.state.contract.methods.fetchPublicView(this.state.wkID, acc).call({ from: this.state.accounts[0] }).then((result) => {
+      
+      this.getIPFSOutput(result).then(output => {
+
+        var JSONpubView = JSON.parse(output);
+        console.log('retrieved data:', JSONpubView);
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('processID', this.props.processName);
+        formData.append('roleID', this.props.id);
+        formData.append('roleNum', this.props.projectionID);
+
+        formData.append('JSONPubView', JSON.stringify(JSONpubView));
+        
+        this.generatePrivateView(formData);
+      })
+     
+      this.setState({ 
+        ipfsHash: result,
+        processID: this.props.processName
+       });
+    }
+    );
+
   }
 
   /**
@@ -518,24 +554,24 @@ class DCRgraph extends React.Component {
           <h2>Process {this.props.processName}</h2>
           <h3>Private Projection for the role {this.props.id}</h3>
 
-          {this.state.web3 === null ? <div>Loading web3...</div> :    <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 0)) && (this.state.projType == 'p_to_g') ? {} : { display: 'none' }}>
+          {this.state.web3 === null ? <div>Loading web3...</div> : <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 0)) && (this.state.projType == 'p_to_g') ? {} : { display: 'none' }}>
             <form onSubmit={this.onFormSubmit}>
               <input type="file" onChange={this.onChange} />
               <Button className="btn btn-primary my-2 my-sm-0" type="submit">Upload and project my local projection</Button>
             </form>
-            {this.state.BCQuery?     <Button variant="primary" disabled>
-                                <Spinner
-                                  as="span"
-                                  animation="border"
-                                  size="sm"
-                                  role="status"
-                                  aria-hidden="true"
-                                />
-                                <span className="sr-only">Loading...</span>
-                              </Button>
-                            : 
-                            <div></div>    
-    }
+            {this.state.BCQuery ? <Button variant="primary" disabled>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              <span className="sr-only">Loading...</span>
+            </Button>
+              :
+              <div></div>
+            }
 
           </div>
           }
@@ -545,13 +581,13 @@ class DCRgraph extends React.Component {
           </div>
 
           <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 1) && (this.state.approvalOutcome === 0)) ? {} : { display: 'none' }}>
-              <p>Successful user projection. Waiting for other participants submissions.</p>          
-              <div style={{'marginTop':'60vh'}}>
-                <SolarSystemLoading  color={'#ff7900'}/>            
-              </div>
+            <p>Successful user projection. Waiting for other participants submissions.</p>
+            <div style={{ 'marginTop': '60vh' }}>
+              <SolarSystemLoading color={'#ff7900'} />
+            </div>
           </div>
 
-          <div style={( ((this.state.web3 !== null)&&(this.state.owner === this.state.addressProj)) && (((this.state.hasApproved === 1) && (this.state.approvalOutcome === 1)) || (this.state.projType === "g_to_p") ))? {} : { display: 'none' }}>
+          <div style={(((this.state.web3 !== null) && (this.state.owner === this.state.addressProj)) && (((this.state.hasApproved === 1) && (this.state.approvalOutcome === 1)) || (this.state.projType === "g_to_p"))) ? {} : { display: 'none' }}>
             <div style={(this.state.owner === this.state.addressProj) ? {} : { display: 'none' }}>
               <div>
                 <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
