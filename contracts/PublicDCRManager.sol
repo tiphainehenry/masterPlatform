@@ -348,7 +348,7 @@ contract PublicDCRManager {
         }
     }
 
-    function createWorkflow(
+    function uploadPublicView(
         // packed state variables
         uint256[][] memory markingStates, // included, executed, pending
 
