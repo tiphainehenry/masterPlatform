@@ -22,6 +22,7 @@ contract AdminRoleManager {
             role[1] = Roles[msg.sender].isAdmin ? "true" : "false";
         } else {
             role[0] = "Not registered";
+            role[1] = toAsciiString(msg.sender);
         }
         return role;
     }
