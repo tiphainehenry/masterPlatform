@@ -52,22 +52,13 @@ class Authentification extends React.Component {
             this.setState({ instance: instance })
             this.setState({ web3, accounts, contract: instance });
             const tmp = await instance.methods.imRole().call({from: this.state.accounts[0]});
-            const tmp1 = await instance.methods.getRoles().call();
             this.props.status(tmp)
         } catch (error) {
-            //alert(
-            //  `Failed to load web3, accounts, or contract. Check console for details.`,
-            //);
             console.error(error);
         }
     }
     render() {
         return (null)
-    //     if ({toogle} && this.state.auth.lenght() !== 2) {
-    //         return(<div>LOL</div>)
-    //     } else {
-    //         return( <div>{this.state.auth[0]} ADMIN({this.state.auth[1]}</div>)
-    //     }
     }
 }
 

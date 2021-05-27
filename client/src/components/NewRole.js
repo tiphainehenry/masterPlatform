@@ -20,11 +20,13 @@ class NewRole extends React.Component {
         super(props);
         this.state = {
             isNew: true,
+            isAdmin: true,
             address: "",
             name: "",
             selectValue: "",
             roles: [],
             addresses: [],
+            admins: [],
         };
 
     }
@@ -43,15 +45,15 @@ class NewRole extends React.Component {
             this.setState({ name: e.target.value })
         else if (e.target.name === "selector") {
             this.setState({ isNew: (e.target.value === "") })
-            this.setState({ selectValue: e.target.value })
+            this.setState({ selectValue: e.target.value})
+        } else if (e.target.name === "isAdmin") {
+            this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
         }
-
     }
     /**
      * Connect to Smart contract
      */
     async connectsToBC() {
-
         try {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
@@ -78,11 +80,14 @@ class NewRole extends React.Component {
         const roles = await this.state.instance.methods.getRoles().call()
         var tmpRoles = []
         var tmpAddress = []
+        var tmpAdmin = []
         roles.forEach(line => {
-            tmpRoles.push(line.split('///')[0])
-            tmpAddress.push(line.split('///')[1])
+            const val = line.split('///')
+            tmpRoles.push(val[0])
+            tmpAddress.push(val[1])
+            tmpAdmin.push(val[2] === "false" ? true : false)
         });
-        this.setState({ roles: tmpRoles, addresses: tmpAddress })
+        this.setState({ roles: tmpRoles, addresses: tmpAddress, admins: tmpAdmin })
     }
     /**
      * Create a new Role if Isnew or update an already existing Role
@@ -94,7 +99,7 @@ class NewRole extends React.Component {
         if (this.state.isNew) {
             const address = '0xB075d6DA74408C291c86c0e651dd10e962efc82D'
             try {
-                const res = await this.state.instance.methods.newRole(this.state.address, this.state.name).send({ from: this.state.accounts[0] })
+                const res = await this.state.instance.methods.newRole(this.state.address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
             }
             catch {
                 alert('Unable to create this role')
@@ -102,13 +107,13 @@ class NewRole extends React.Component {
         }
         else {
             try {
-
                 const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
-                var res = await this.state.instance.methods.updateRole(address, this.state.name).send({ from: this.state.accounts[0] })
+                var res = await this.state.instance.methods.updateRole(address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
             } catch {
                 alert('Unable to update this role')
             }
         }
+        window.location.reload(false)
         this.getRoles()
     }
     render() {
@@ -118,6 +123,11 @@ class NewRole extends React.Component {
                 <label className='col-md-2'>Address : </label>
                 <input type="input" name="address" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)}></input>
             </div>)
+            address.push(
+                <div className='row'>
+                    <label className='col-md-2'>Admin: </label>
+                    <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.isAdmin}></input>
+                </div>)
             address.push(<div>
                 <Button onClick={() => this.manageRole()} class="btn btn-primary my-2 my-sm-0">Create</Button>
             </div>
@@ -126,6 +136,11 @@ class NewRole extends React.Component {
             address.push(<div className='row'>
                 <label className='col-md-12'>Adress : 0x{this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]}</label>
             </div>)
+            address.push(
+                <div className='row'>
+                    <label className='col-md-2'>Admin: </label>
+                    <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.admins[this.state.roles.indexOf(this.state.selectValue)]} defaultChecked={this.state.admins[this.state.roles.indexOf(this.state.selectValue)]}></input>
+                </div>)
             address.push(<div>
                 <Button onClick={() => this.manageRole()} class="btn btn-primary my-2 my-sm-0">Update</Button>
             </div>)
@@ -148,12 +163,14 @@ class NewRole extends React.Component {
                                         <option value="">Create a new role</option>
                                         {Answer}
                                     </select>
-                                    <br />
-                                    <br />
-                                    <div className='row'>
-                                        <label className='col-md-2'>Name : </label>
+                                    <div style={{ marginTop: "1vh" }} className='row'>
+                                        <label className='col-md-2'>Name: </label>
                                         <input type="input" onPaste={e => this.onChange(e)} name="name" onChange={e => this.onChange(e)}></input>
                                     </div>
+                                    {/* <div className='row'>
+                                        <label className='col-md-2'>Admin: </label>
+                                        <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.isAdmin}></input>
+                                    </div> */}
                                     <br />
                                     {address}
                                     <br />

@@ -39,7 +39,13 @@ contract AdminRoleManager {
         string[] memory listofRoles = new string[](roleList.length);
         for (uint256 i = 0; i < roleList.length; i++) {
             listofRoles[i] = string(
-                abi.encodePacked(Roles[roleList[i]].name, "///", toAsciiString(roleList[i]))
+                abi.encodePacked(
+                    Roles[roleList[i]].name,
+                    "///",
+                    toAsciiString(roleList[i]),
+                    "///",
+                    (Roles[roleList[i]].isAdmin ? "true" :"false")
+                )
             );
         }
         return listofRoles;
@@ -62,23 +68,26 @@ contract AdminRoleManager {
         else return bytes1(uint8(b) + 0x57);
     }
 
-    function newRole(address RoleAddress, string memory name)
-        public
-        returns (string memory rowNumber)
-    {
+    function newRole(
+        address RoleAddress,
+        string memory name,
+        bool isAdmin
+    ) public returns (string memory rowNumber) {
         if (isRole(RoleAddress)) revert();
-        Role memory tempStruct = Role(name, true, false);
+        Role memory tempStruct = Role(name, true, isAdmin);
         Roles[RoleAddress] = tempStruct;
         roleList.push(RoleAddress);
         return Roles[RoleAddress].name;
     }
 
-    function updateRole(address RoleAddress, string memory name)
-        public
-        returns (bool success)
-    {
+    function updateRole(
+        address RoleAddress,
+        string memory name,
+        bool Admin
+    ) public returns (bool success) {
         if (!isRole(RoleAddress)) revert();
         Roles[RoleAddress].name = name;
+        Roles[RoleAddress].isAdmin = Admin;
         return true;
     }
 }
