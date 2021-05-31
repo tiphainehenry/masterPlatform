@@ -113,7 +113,7 @@ class NewRole extends React.Component {
                 alert('Unable to update this role')
             }
         }
-        window.location.reload(false)
+        window.location.reload()
         this.getRoles()
     }
     render() {
