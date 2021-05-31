@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
-import DCRgraph from './DCRgraph';
+import DCRgraphL from './DCRgraphL';
+import DCRgraphG from './DCRgraphG';
 import { Row, Col, Container } from 'react-bootstrap';
 
 var ProcessDB = require('../projections/DCR_Projections.json')
@@ -48,33 +49,48 @@ class ViewRi extends React.Component {
       'data': ProcessData[projectionID]['data'],
       'execLogs': ProcessData[projectionID]['exec'],
       'id': ProcessData['TextExtraction'][projectionID]['role'],
-      'projectionsExist': true
+      'projectionsExist': true,
+      'projType': ProcessData['projType']
     });
   }
 
 
 
   render() {
-    //console.log(this.state)
-    // this.state.data.unshift({group:"nodes",classes:"external choreography",data:{id:"c1s", name:"toto"}})
-    // this.state.data[1].data["parent"] = "c1s"
-    // this.state.data[2].data["parent"] = "c1s"
+
     return <div key={this.state.processID}>
       <Header />
       <Container fluid>
         <Row>
           <Col>
-            {this.state.projectionsExist ?
-              <DCRgraph
+            {(this.state.projectionsExist && this.state.projType == 'p_to_g') ?
+              <DCRgraphL
                 id={this.state.id}
                 data={this.state.data}
                 execLogs={this.state.execLogs}
                 processID={this.state.processID}
                 processName={this.state.processName}
                 projectionID={this.state.projectionID}
-              /> :
-              <div className="bg-green pt-5 pb-3">No projection yet, please go to the process models portal</div>
+              /> : <div></div>
             }
+
+            {(this.state.projectionsExist && this.state.projType == 'g_to_p') ?
+              <DCRgraphG
+                id={this.state.id}
+                data={this.state.data}
+                execLogs={this.state.execLogs}
+                processID={this.state.processID}
+                processName={this.state.processName}
+                projectionID={this.state.projectionID}
+              /> : <div></div>
+            }
+
+            {(!this.state.projectionsExist) ?
+
+              <div className="bg-green pt-5 pb-3">No projection yet, please go to the process models portal</div>
+              : <div></div>
+            }
+
 
           </Col>
         </Row>

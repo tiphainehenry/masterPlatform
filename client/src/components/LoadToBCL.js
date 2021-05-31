@@ -15,7 +15,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 /**
  * Component uploading a new public instance into the smart contract graph manager
  */
-class LoadToBC extends React.Component {
+class LoadToBCL extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,8 @@ class LoadToBC extends React.Component {
       excludesTo: '',
       responsesTo: '',
       conditionsFrom: '',
-      milestonesFrom: ''
+      milestonesFrom: '',
+      ethAddress:''
     };
     this.handleCreateWkf = this.handleCreateWkf.bind(this);
     this.connectToWeb3 = this.connectToWeb3.bind(this);
@@ -199,9 +200,11 @@ class LoadToBC extends React.Component {
           this.state.activityNames,
           this.state.processName,
           relations 
-        ).send({ from: accounts[0] });
-          
-      }
+        ).send({ from: accounts[0] }
+          , (error, transactionHash) => {
+            console.log(transactionHash);
+            this.setState({ transactionHash, ethAddress:contract.options.address });
+          }); //storehash
 
       //axios.post(`http://localhost:5000/reinit`, 
       //{
@@ -212,6 +215,7 @@ class LoadToBC extends React.Component {
       // window.location.reload(false);
 
     }
+  }
     catch (err) {
       window.alert(err);
 
@@ -287,4 +291,4 @@ class LoadToBC extends React.Component {
   }
 }
 
-export default LoadToBC
+export default LoadToBCL

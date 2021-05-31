@@ -34,7 +34,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 /**
  * Responsive DCR graph display. Event execution requests are available > the public DCR smart contract is called if the node is public. 
  */
-class DCRgraph extends React.Component {
+class DCRgraphL extends React.Component {
   constructor(props) {
     super(props);
 
@@ -642,4 +642,4 @@ class DCRgraph extends React.Component {
   }
 }
 
-export default DCRgraph
+export default DCRgraphL

@@ -5,7 +5,7 @@ import { Table, Button, Form, ListGroup, Row, Col, Container } from 'react-boots
 import '../style/boosted.min.css';
 import Header from './Header';
 import { post } from 'axios';
-import LoadToBC from './LoadToBC';
+import LoadToBCL from './LoadToBCL';
 import SidebarModel from './SidebarModel';
 
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
@@ -207,7 +207,7 @@ class CreateL extends React.Component {
                     </Button>
                   </Form>
                   <hr/>
-                  <LoadToBC ref={this.loadToBC} ipfsHash={this.state.ipfsHash}/>
+                  <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash}/>
 
                 </Container>
                 <hr />
