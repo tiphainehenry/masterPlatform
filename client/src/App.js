@@ -18,6 +18,8 @@ import WelcomeModel from './components/WelcomeModel';
 import CreationDeck from './components/CreationDeck';
 import NewRole from './components/NewRole';
 import Headers from './components/Header';
+// import store from './components/store'
+import { Provider } from 'react-redux'
 
 
 const App = () => (

@@ -11,6 +11,11 @@ contract AdminRoleManager {
     mapping(address => Role) public Roles;
     address[] roleList;
 
+    constructor() public {
+        address modAddress = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
+        newRole(modAddress, "first account", true);
+    }
+
     function isRole(address RoleAddress) public view returns (bool isIndeed) {
         return Roles[RoleAddress].isRole;
     }

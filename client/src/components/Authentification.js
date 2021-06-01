@@ -14,6 +14,8 @@ import getWeb3 from '../getWeb3';
 /**
  * Component displaying all possible projections to update
  */
+
+
 class Authentification extends React.Component {
 
     constructor(props) {
@@ -26,10 +28,6 @@ class Authentification extends React.Component {
         };
 
     }
-
-    /**
-     * Lists all processes and their role projections, and stores it into the tree state variable
-     */
     componentWillMount = async () => {
         this.connectsToBC()
     };
@@ -42,17 +40,20 @@ class Authentification extends React.Component {
         try {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
-            console.log(accounts);
+            var ret = {isRole:false, name:"", isAdmin:false}
             const networkId = await web3.eth.net.getId();
             const deployedNetwork = AdminRoleManager.networks[networkId];
             const instance = new web3.eth.Contract(
                 AdminRoleManager.abi,
                 deployedNetwork && deployedNetwork.address,
             );
-            this.setState({ instance: instance })
-            this.setState({ web3, accounts, contract: instance });
-            const tmp = await instance.methods.imRole().call({from: this.state.accounts[0]});
-            this.props.status(tmp)
+            const tmp = await instance.methods.imRole().call({from: accounts[0]});
+            if (tmp[0] !== "Not Connected") {
+                ret.isRole = true
+                ret.name = tmp[0]
+                ret.isAdmin = (tmp[1] === "false" ? false : true)
+            }
+            this.props.status(ret)
         } catch (error) {
             console.error(error);
         }

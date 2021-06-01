@@ -1,23 +1,25 @@
 import React from 'react';
 import '../style/boosted.min.css';
+import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header';
 import Authentification from './Authentification'
 
 /**
  * Component ...
  */
+
+
 class Homepage extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      auth: [],
+      auth: {},
       registered: false,
       username: '',
       isAdmin: false,
       childState: null,
-      once: true
-
+      once: true,
     }
     this.childElement = React.createRef()
     this.getStatus = this.getStatus.bind(this)
@@ -26,11 +28,10 @@ class Homepage extends React.Component {
   getStatus = auth => this.setState({ auth })
 
   render() {
-
     var content = []
-    if (this.state.auth[0] !== "Not registered") {
+    console.log(this.state.auth)
+    if (this.state.auth.isAdmin) {
       return <div>
-        <Header />
         <Authentification status={this.getStatus} />
         <div className="bg-green pt-5 pb-3">
           <div className='container'>
@@ -38,6 +39,8 @@ class Homepage extends React.Component {
               <div className="container">
                 <h1>DCR projecion tool</h1>
                 <p className="lead text-muted">Welcome to the experimental platform.</p>
+                <p className="lead text-muted">You are connected as {this.state.auth.name} Admin = {this.state.auth.isAdmin}</p>
+                <p className="lead text-muted">Admin : {this.state.auth.isAdmin ? "true" : "false"}</p>
               </div>
               <br />
               <br />
@@ -72,6 +75,7 @@ class Homepage extends React.Component {
     } else {
       return (
         <div className="bg-green pt-5 pb-3">
+        <Authentification status={this.getStatus} />
           <div className='container'>
             <section className="jumbotron text-center">
               <div className="container">
