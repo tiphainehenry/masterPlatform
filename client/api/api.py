@@ -32,6 +32,18 @@ app = Flask(__name__, static_folder='../build', static_url_path='/')
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 api = Api(app)
 
+projDBPath='../../client/src/projections/DCR_Projections.json'
+
+
+def loadJSONFile(path):
+    with open(path) as json_file:
+        dataDict = json.load(json_file)
+    return dataDict
+
+def dumpJSONFile(path, data):
+    with open(path, 'w') as outfile:
+        json.dump(data, outfile, indent=2)
+
 
 def getId(processID, role):
     """
@@ -67,69 +79,45 @@ def updWithName(dataTxt, pi, projType):
     #print(dataTxt)
     projectGlobal(pi, dataTxt, target)
 
-    with open(dataPath) as json_file:
-        dataDict = json.load(json_file)
+    dataDict = loadJSONFile(dataPath)
     dataDict['externalEvents'] = []
-    with open(dataPath, 'w') as outfile:
-        json.dump(dataDict, outfile)
-    with open(os.path.join(target, 'temp_execPublic.json'), 'w') as outfile:
-        json.dump({"execLogs": []}, outfile, indent=2)
+    dumpJSONFile(dataPath,dataDict)
+    dumpJSONFile(os.path.join(target, 'temp_execPublic.json'),{"execLogs": []})
+
 
     for role in getRoles(pi):
         print('[INFO] Starting projection on role '+role)
         projRole(pi, dataTxt, target, role)
-        with open(os.path.join(target, 'exec'+getId(pi,role)+'.json'), 'w') as outfile:
-            json.dump({"execLogs": []}, outfile, indent=2)
+        dumpJSONFile(os.path.join(target, 'exec'+getId(pi,role)+'.json'),{"execLogs": []})
 
     projectPublic(pi, dataTxt, target)
 
     # merge all
     processData = {'id': pi}
 
-    with open(os.path.join(this_folder, '../src/projections/dcrTexts.json')) as json_file:
-        dataTxt = json.load(json_file)
-    
-    processData['TextExtraction'] = dataTxt
-
-    with open(os.path.join(this_folder, '../src/projections/temp_dataGlobal.json')) as json_file:
-        dataGlob = json.load(json_file)
-    with open(os.path.join(this_folder, '../src/projections/temp_vectGlobal.json')) as json_file:
-        vectGlob = json.load(json_file)
+    processData['TextExtraction'] = loadJSONFile(os.path.join(this_folder, '../src/projections/dcrTexts.json'))
     processData['Global'] = {
-        'data': dataGlob,
-        'vect': vectGlob
+        'data': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_dataGlobal.json')),
+        'vect': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_vectGlobal.json'))
     }
-
-    with open(os.path.join(this_folder, '../src/projections/temp_dataPublic.json')) as json_file:
-        dataPub = json.load(json_file)
-    with open(os.path.join(this_folder, '../src/projections/temp_vectPublic.json')) as json_file:
-        vectPub = json.load(json_file)
-    with open(os.path.join(this_folder, '../src/projections/temp_execPublic.json')) as json_file:
-        execPub = json.load(json_file)
     processData['Public'] = {
-        'data': dataPub,
-        'exec': execPub,
-        'vect': vectPub
+        'data': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_dataPublic.json')),
+        'exec': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_vectPublic.json')),
+        'vect': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_execPublic.json'))
     }
-
     processData['projType']=projType
 
     for role in getRoles(pi):
         roleMapping = getRoleMapping(pi,role)
-        rolePath= os.path.join(this_folder, '../src/projections/temp_data'+roleMapping['id']+'.json')
-        with open(os.path.join(this_folder, '../src/projections/temp_data'+roleMapping['id']+'.json')) as json_file:
-            dataR = json.load(json_file)
-        with open(os.path.join(this_folder, '../src/projections/temp_vect'+roleMapping['id']+'.json')) as json_file:
-            vectR = json.load(json_file)
-        with open(os.path.join(this_folder, '../src/projections/exec'+roleMapping['id']+'.json')) as json_file:
-            execR = json.load(json_file)
+        #rolePath= os.path.join(this_folder, '../src/projections/temp_data'+roleMapping['id']+'.json')
+
         processData[roleMapping['id']] = {
-            'data': dataR,
-            'exec': execR,
-            'vect': vectR,
+            'data': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_data'+roleMapping['id']+'.json')),
+            'exec': loadJSONFile(os.path.join(this_folder, '../src/projections/exec'+roleMapping['id']+'.json')),
+            'vect': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_vect'+roleMapping['id']+'.json')),
             'init':{
-                'data': dataR,
-                'vect': vectR
+                'data': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_data'+roleMapping['id']+'.json')),
+                'vect': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_vect'+roleMapping['id']+'.json'))
             }
         }
 
@@ -137,17 +125,10 @@ def updWithName(dataTxt, pi, projType):
         os.remove(os.path.join(this_folder, '../src/projections/temp_vect'+roleMapping['id']+'.json'))
         os.remove(os.path.join(this_folder, '../src/projections/exec'+roleMapping['id']+'.json'))
 
-    ## save
-    dataPath=os.path.join(target, 'DCR_Projections.json')
-    with open(dataPath) as json_file:
-        dataJson = json.load(json_file)
-    
-    numProcess = len(dataJson)+1
-    dataJson['p'+str(numProcess)] = processData
-
-    with open(dataPath, 'w') as outfile:
-        json.dump(dataJson, outfile, indent=2)
-
+    ## savethis_folder
+    dataJson = loadJSONFile(projDBPath)    
+    dataJson['p'+str(len(dataJson)+1)] = processData
+    dumpJSONFile(projDBPath,dataJson)
 
     # rm temp files
     os.remove(os.path.join(this_folder, '../src/projections/temp_dataPublic.json'))
@@ -304,15 +285,12 @@ def localProj():
         processID = str(request.form['processID'])
         roleID = str(request.form['roleID'])
         roleNum = str(request.form['roleNum'])
+        publicData = request.form['JSONPubView']
 
-
-        dataPath='../../client/src/projections/DCR_Projections.json'
-        with open(dataPath) as json_file:
-            dataJson = json.load(json_file)
+        dataJson = loadJSONFile(projDBPath)
 
         #Update public projection
         #publicData = dataJson[processID]['TextExtraction']['public']
-        publicData = request.form['JSONPubView']
 
         # step1: enrich private events and relations --> scan all. If not matching: then add relation. 
         localChunks, localRoles = extractChunks(localData)
@@ -359,31 +337,20 @@ def localProj():
         
         projRole_fromLocalRequest(processID, projText, target, roleID, roleNum)
 
-        dataPath=os.path.join(target, 'temp_data'+roleNum+'.json')
-        with open(dataPath) as json_file:
-            dataR = json.load(json_file)
-
-        vectPath=os.path.join(target, 'temp_vect'+roleNum+'.json')
-        with open(vectPath) as json_file:
-            vectR = json.load(json_file)
-
-        dcrPath=os.path.join(target, 'DCR_Projections.json')
-        with open(dcrPath) as json_file:
-            dataJson = json.load(json_file)
-
+        dataJson = loadJSONFile(projDBPath)
         dataJson[processID][roleNum] = {
-            'data': dataR,
+            'data': loadJSONFile(os.path.join(target, 'temp_data'+roleNum+'.json')),
             'exec': dataJson[processID][roleNum]['exec'],
-            'vect': vectR,
+            'vect': loadJSONFile(os.path.join(target, 'temp_vect'+roleNum+'.json')),
             'init':{
-                'data': dataR,
-                'vect': vectR
+                'data': loadJSONFile(os.path.join(target, 'temp_data'+roleNum+'.json')),
+                'vect': loadJSONFile(os.path.join(target, 'temp_vect'+roleNum+'.json'))
             }
         }
 
         dataJson['projType']='p_to_g'
-        with open(dcrPath, 'w') as outfile:
-            json.dump(dataJson, outfile, indent=2)
+
+        dumpJSONFile(projDBPath,dataJson)
 
         os.remove(os.path.join(this_folder, '../src/projections/temp_data'+roleNum+'.json'))
         os.remove(os.path.join(this_folder, '../src/projections/temp_vect'+roleNum['id']+'.json'))
@@ -395,6 +362,24 @@ def localProj():
         return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
 
 
+@app.route('/saveHash', methods=['GET', 'POST'])
+def saveHash():
+    """
+    saves newly generated hash to the projections DB 
+    """ 
+    try:
+        data = request.get_json(silent=True)
+        processID = data['processId']
+        processHash = data['hash']
+
+        dataProj = loadJSONFile(projDBPath)
+        dataProj[processID]['hash']=processHash
+        dumpJSONFile(projDBPath,dataProj)
+
+        return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+
+    except: 
+        return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
 
 @app.route('/inputFile', methods=['GET', 'POST'])
 def inputFileLaunch():
@@ -424,14 +409,11 @@ def delete():
     data = request.get_json(silent=True)
     processID = data['processID']
 
-    projDBPath='../../client/src/projections/DCR_Projections.json'
-    with open(projDBPath) as json_file:
-        dataProj = json.load(json_file)
+    #projDBPath='../../client/src/projections/DCR_Projections.json'
 
+    dataProj = loadJSONFile(projDBPath)
     dataProj.pop(processID, None)
-
-    with open(projDBPath, 'w') as outfile:
-        json.dump(dataProj, outfile, indent=2)
+    dumpJSONFile(projDBPath, dataProj)
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
@@ -442,11 +424,8 @@ def deleteAll():
     deletes all process instances! 
     """ 
 
-    projDBPath='../../client/src/projections/DCR_Projections.json'
-    dataProj = {}
-
-    with open(projDBPath, 'w') as outfile:
-        json.dump(dataProj, outfile, indent=2)
+    #projDBPath='../../client/src/projections/DCR_Projections.json'
+    dumpJSONFile(projDBPath,{})
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
@@ -494,13 +473,10 @@ def privateGraphUpd():
     #pprint.pprint(newRoleProjection)
 
     #store
-    projDBPath='../../client/src/projections/DCR_Projections.json'
-    with open(projDBPath) as json_file:
-        dataProj = json.load(json_file)
-    
+    #projDBPath='../../client/src/projections/DCR_Projections.json'
+    dataProj = loadJSONFile(projDBPath)    
     dataProj[processID][projID]['v_upd'] = newRoleProjection
-    with open(projDBPath, 'w') as outfile:
-        json.dump(dataProj, outfile, indent=2)
+    dumpJSONFile(projDBPath,dataProj)
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
@@ -519,9 +495,8 @@ def switchProj():
     roleMapping = getRoleMapping(processID,projID)
 
     #open db
-    projDBPath='../../client/src/projections/DCR_Projections.json'
-    with open(projDBPath) as json_file:
-        dataProj = json.load(json_file)
+    #projDBPath='../../client/src/projections/DCR_Projections.json'
+    dataProj = loadJSONFile(projDBPath)
     
     #update proj
     #print(dataProj[processID][roleMapping['id']].keys())
@@ -536,9 +511,7 @@ def switchProj():
     
     #clean db and save
     dataProj[processID][roleMapping['id']].pop('v_upd', None)
-    with open(projDBPath, 'w') as outfile:
-        json.dump(dataProj, outfile, indent=2)
-
+    dumpJSONFile(projDBPath,dataProj)
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
