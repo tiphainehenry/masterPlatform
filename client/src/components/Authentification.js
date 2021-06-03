@@ -1,11 +1,4 @@
 import React, { useState } from 'react';
-import Header from './Header';
-import { Card, Button, Row, Col, Form, Container, Nav, ListGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import axios, { get } from 'axios';
-
-import SidebarModel from './SidebarModel';
-
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
 import getWeb3 from '../getWeb3';
 
@@ -22,9 +15,9 @@ class Authentification extends React.Component {
         super(props);
         this.state = {
             auth: [],
-            registered:false,
-            username:'',
-            isAdmin:false
+            registered: false,
+            username: '',
+            isAdmin: false
         };
 
     }
@@ -40,18 +33,24 @@ class Authentification extends React.Component {
         try {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
-            var ret = {isRole:false, name:"", isAdmin:false}
+            var ret = { isRole: false, name: "", isAdmin: false }
             const networkId = await web3.eth.net.getId();
             const deployedNetwork = AdminRoleManager.networks[networkId];
             const instance = new web3.eth.Contract(
                 AdminRoleManager.abi,
                 deployedNetwork && deployedNetwork.address,
             );
-            const tmp = await instance.methods.imRole().call({from: accounts[0]});
-            if (tmp[0] !== "Not Connected") {
+            const tmp = await instance.methods.imRole().call({ from: accounts[0] });
+            console.log(tmp)
+            if (tmp[0] !== "Not registered") {
+                // console.log("in = " + tmp[0])
                 ret.isRole = true
                 ret.name = tmp[0]
                 ret.isAdmin = (tmp[1] === "false" ? false : true)
+            } else {
+                ret.isRole = false
+                ret.name = ""
+                ret.isAdmin = false
             }
             this.props.status(ret)
         } catch (error) {
