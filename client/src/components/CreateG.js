@@ -1,6 +1,7 @@
 import React from 'react';
 import {ListGroup,Form, Button, Row, Col, Container } from 'react-bootstrap';
 
+import axios from 'axios';
 import { post } from 'axios';
 import ipfs from '../ipfs';
 import getWeb3 from "../getWeb3";
@@ -10,7 +11,7 @@ import PublicDCRManager from '../contracts/PublicDCRManager.json';
 
 import '../style/boosted.min.css';
 import Header from './Header';
-import LoadToBCL from './LoadToBCL';
+import LoadToBCL from './LoadToBC';
 import SidebarModel from './SidebarModel';
 
 var ProcessDB = require('../projections/DCR_Projections.json');
@@ -94,17 +95,16 @@ class CreateG extends React.Component {
     ipfs.files.add(Buffer.from(JSON.stringify(input)))
       .then(res => {
       const hash = res[0].hash
-      //console.log('added data hash:', hash)
       this.setState({ ipfsHash: hash });
 
-      //this.state.contract.methods.sendHash(this.state.ipfsHash).send({
-      //  from: this.state.accounts[0]
-      //}, (error, transactionHash) => {
-      //  console.log('onIPFSSubmit error');
-      //  console.log(transactionHash);
-      //  this.setState({ transactionHash });
-      //}); //storehash 
-    
+      axios.post(`http://localhost:5000/saveHash`,
+      {
+        "hash": hash,
+        "processId": this.state.processID,
+      },
+      { "headers": { "Access-Control-Allow-Origin": "*" } }
+    );
+
       return ipfs.files.cat(hash)
     })
     .then(output => {

@@ -5,7 +5,9 @@ import { Table, Button, Form, ListGroup, Row, Col, Container } from 'react-boots
 import '../style/boosted.min.css';
 import Header from './Header';
 import { post } from 'axios';
-import LoadToBCL from './LoadToBCL';
+import axios from 'axios';
+
+import LoadToBCL from './LoadToBC';
 import SidebarModel from './SidebarModel';
 
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
@@ -26,7 +28,7 @@ class CreateL extends React.Component {
       file: null,
       processID: JSON.parse(localStorage.getItem('processID')) || '',
 
-      ipfsHash: null,
+      ipfsHash: JSON.parse(localStorage.getItem('ipfsHash')) || null,
       buffer: '',
       ethAddress: '',
       blockNumber: '',
@@ -93,16 +95,20 @@ class CreateL extends React.Component {
     ipfs.files.add(Buffer.from(JSON.stringify(input)))
       .then(res => {
       const hash = res[0].hash
-      //console.log('added data hash:', hash)
-      this.setState({ ipfsHash: hash });
 
-      //this.state.contract.methods.sendHash(this.state.ipfsHash).send({
-      //  from: this.state.accounts[0]
-      //}, (error, transactionHash) => {
-      //  console.log('onIPFSSubmit error');
-      //  console.log(transactionHash);
-      //  this.setState({ transactionHash });
-      //}); //storehash 
+      this.setState({
+        ipfsHash: hash
+      },() => {
+        localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
+      });
+  
+      axios.post(`http://localhost:5000/saveHash`,
+      {
+        "hash": hash,
+        "processId": this.state.processID,
+      },
+      { "headers": { "Access-Control-Allow-Origin": "*" } }
+    );
     
       return ipfs.files.cat(hash)
     })
@@ -207,7 +213,7 @@ class CreateL extends React.Component {
                     </Button>
                   </Form>
                   <hr/>
-                  <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash}/>
+                  <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID}/>
 
                 </Container>
                 <hr />

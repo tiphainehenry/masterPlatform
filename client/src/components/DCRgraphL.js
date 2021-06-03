@@ -63,6 +63,7 @@ class DCRgraphL extends React.Component {
       dataHashes: '',
       activityData: '',
       wkID: '',
+      pHash : ProcessDB[this.props.processName]['hash'] || '',
       dataValues: [],
       altVersionExists: false,
       file: null,
@@ -128,21 +129,20 @@ class DCRgraphL extends React.Component {
       );
 
       var wkID = this.props.processName.replace('p', '') - 1;
-      const inclVector = await instance.methods.getIncluded(wkID).call();
-      const execVector = await instance.methods.getExecuted(wkID).call();
-      const pendVector = await instance.methods.getPending(wkID).call();
-      const hashesVector = await instance.methods.getHashes(wkID).call();
+      var pHash = ProcessDB[this.props.processName]['hash'];
+      
+      const inclVector = await instance.methods.getIncluded(pHash).call();
+      const execVector = await instance.methods.getExecuted(pHash).call();
+      const pendVector = await instance.methods.getPending(pHash).call();
+      const hashesVector = await instance.methods.getHashes(pHash).call();
 
       var acc = web3.currentProvider.selectedAddress;
-      const hasApproved = await instance.methods.hasApproved(wkID, acc).call();
-      //console.log('hasApproved',hasApproved);
-      //console.log('wkID',wkID);
+      const hasApproved = await instance.methods.hasApproved(pHash, acc).call();
 
-      //console.log(acc);
-      const approvalList = await instance.methods.getApprovalsOutcome(wkID).call();
+      const approvalList = await instance.methods.getApprovalsOutcome(pHash).call();
       const approvalOutcome = approvalList.reduce((a, b) => parseInt(a) * parseInt(b), 1)
 
-      const approvalAddresses = await instance.methods.getAddresses(wkID).call();
+      const approvalAddresses = await instance.methods.getAddresses(pHash).call();
 
       this.setState({
         web3, accounts, contract: instance,
@@ -157,8 +157,8 @@ class DCRgraphL extends React.Component {
         approvalList: approvalList,
         approvalOutcome: approvalOutcome,
         approvalAddresses: approvalAddresses,
-        wkID: wkID
-
+        wkID: wkID,
+        pHash:pHash
       })
       this.cy.fit();
 
@@ -286,10 +286,10 @@ class DCRgraphL extends React.Component {
     try {
       //var hashData = this.state.web3.utils.fromAscii(this.state.activityData);
       //await contract.methods.checkCliquedIndex(this.state.indexClicked, hashData).send({ from: accounts[0] });
-      await contract.methods.checkCliquedIndex(this.state.wkID, this.state.indexClicked).send({ from: accounts[0] });
+      await contract.methods.checkCliquedIndex(this.state.pHash, this.state.indexClicked).send({ from: accounts[0] });
 
       // Get the value from the contract.
-      const output = await contract.methods.getCanExecuteCheck(this.state.wkID, this.state.indexClicked).call();
+      const output = await contract.methods.getCanExecuteCheck(this.state.pHash, this.state.indexClicked).call();
       switch (output) {
         case '1':
           window.alert('Task not included');
@@ -304,7 +304,7 @@ class DCRgraphL extends React.Component {
           this.setState({ bcRes: 'BC exec - rejected - milestonesNotFulfilled' });
           break;
         case '4':
-          const rightAddress = await contract.methods.getRoleAddresses(this.state.wkID, this.state.indexClicked).call();
+          const rightAddress = await contract.methods.getRoleAddresses(this.state.pHash, this.state.indexClicked).call();
           window.alert('Authentication issue - wrong user tried to execute task.\nExpected ' + rightAddress + '...');
           this.setState({ bcRes: 'BC exec - rejected - authentication error' });
           break;
@@ -420,7 +420,7 @@ class DCRgraphL extends React.Component {
     try {
       alert('confirm projection');
       var acc = this.state.web3.currentProvider.selectedAddress;
-      await contract.methods.confirmProjection(this.state.wkID, acc).send({ from: accounts[0] });
+      await contract.methods.confirmProjection(this.state.pHash, acc).send({ from: accounts[0] });
       this.refreshBCQuery();
 
     }
@@ -468,9 +468,9 @@ class DCRgraphL extends React.Component {
 
     alert('fetch public projection');
     var acc = this.state.web3.currentProvider.selectedAddress;
-    await this.state.contract.methods.fetchPublicView(this.state.wkID, acc).send({ from: this.state.accounts[0] }); 
+    await this.state.contract.methods.fetchPublicView(this.state.pHash, acc).send({ from: this.state.accounts[0] }); 
     
-    await this.state.contract.methods.fetchPublicView(this.state.wkID, acc).call({ from: this.state.accounts[0] }).then((result) => {
+    await this.state.contract.methods.fetchPublicView(this.state.pHash, acc).call({ from: this.state.accounts[0] }).then((result) => {
       
       this.getIPFSOutput(result).then(output => {
 

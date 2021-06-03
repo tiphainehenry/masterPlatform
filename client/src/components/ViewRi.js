@@ -50,11 +50,10 @@ class ViewRi extends React.Component {
       'execLogs': ProcessData[projectionID]['exec'],
       'id': ProcessData['TextExtraction'][projectionID]['role'],
       'projectionsExist': true,
-      'projType': ProcessData['projType']
+      'projType': ProcessData['projType'],
+      'projectionHash':ProcessData['projHash']
     });
   }
-
-
 
   render() {
 
@@ -71,6 +70,7 @@ class ViewRi extends React.Component {
                 processID={this.state.processID}
                 processName={this.state.processName}
                 projectionID={this.state.projectionID}
+                projectionHash={this.state.projectionHash}
               /> : <div></div>
             }
 
@@ -82,6 +82,7 @@ class ViewRi extends React.Component {
                 processID={this.state.processID}
                 processName={this.state.processName}
                 projectionID={this.state.projectionID}
+                projectionHash={this.state.projectionHash}
               /> : <div></div>
             }
 

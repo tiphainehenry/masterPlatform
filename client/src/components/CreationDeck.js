@@ -10,7 +10,7 @@ import Header from './Header';
 
 import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
 import SidebarModel from './SidebarModel';
-import LoadToBCG from './LoadToBCG';
+import LoadToBC from './LoadToBC';
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -418,7 +418,7 @@ class CreationDeck extends React.Component {
         <Header />
         <Container fluid >
           <Row>
-            <LoadToBCG ref={this.loadToBC}></LoadToBCG>
+            <LoadToBC ref={this.loadToBC}> processID= {this.state.processID}</LoadToBC>
           </Row>
           <Row >
             <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>

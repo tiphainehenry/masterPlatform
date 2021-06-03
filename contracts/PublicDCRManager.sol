@@ -5,19 +5,18 @@ pragma experimental ABIEncoderV2;
 contract PublicDCRManager {
     // event declaration
     event LogWorkflowCreation(
-        uint256 indexed workflowId,
-        string indexed workflowName,
+        string indexed workflowHash,
         address indexed creator
     );
 
     event LogExecution(
-        uint256 indexed workflowId,
+        string indexed workflowHash,
         uint256 indexed activityId,
         address indexed executor
     );
 
     event LogWorkflowProjection(
-        uint256 indexed workflowId,
+        string indexed workflowHash,
         address indexed creator
     );
 
@@ -58,25 +57,31 @@ contract PublicDCRManager {
         uint256 status; //0=no, 1=yes
     }
     
+    string[] registeredViewHashes;
 
-    Workflow[] workflows;
-    
+    mapping(string => Workflow) workflows;
+
     ///////////////// Misc ////////////////////////
 
-    function sendHash(uint256 workflowId, string memory x) public {
-        workflows[workflowId].ipfsViewHash = x;
+    function getAllWKHashes() public view returns (string[] memory){
+        return registeredViewHashes;
     }
 
-    function getHash(uint256 workflowId) public view returns (string memory x) {
-        return workflows[workflowId].ipfsViewHash;
+
+    function sendHash(string memory _hash, string memory x) public {
+        workflows[_hash].ipfsViewHash = x;
+    }
+
+    function getHash(string memory _hash) public view returns (string memory x) {
+        return workflows[_hash].ipfsViewHash;
     }
 
     /** @dev Getter for workflow.
-      * @param workflowId index of the workflow (eg 0 for the first workflow).
+      * @param _hash index of the workflow (eg 0 for the first workflow).
       * @param myAddress sender adddress (must be registered to fetch the workflow).
       * @return workflow, update didFetch variable to one.
       */
-    function fetchPublicView(uint256 workflowId, address myAddress)
+    function fetchPublicView(string memory _hash, address myAddress)
         public
         payable
         returns (string memory)
@@ -87,129 +92,129 @@ contract PublicDCRManager {
         // update the didFetch variable
         for (
             uint256 id = 0;
-            id < workflows[workflowId].approvalAddresses.length;
+            id < workflows[_hash].approvalAddresses.length;
             id++
         ) {
-            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].didFetch[id] != 1){
-                workflows[workflowId].didFetch[id] = 1;
+            if((myAddress == workflows[_hash].approvalAddresses[id]) && workflows[_hash].didFetch[id] != 1){
+                workflows[_hash].didFetch[id] = 1;
                 }
         }
         
-        return workflows[workflowId].ipfsViewHash;
+        return workflows[_hash].ipfsViewHash;
     }
 
      
     /** @dev Getter for workflow name.
-      * @param workflowId index of the workflow (eg 0 for the first workflow).
+      * @param _hash index of the workflow (eg 0 for the first workflow).
       * @return workflow name.
       */
 
-    function getWorkflowName(uint256 workflowId)
+    function getWorkflowName(string memory _hash)
         public
         view
         returns (string memory)
     {
-        return workflows[workflowId].name;
+        return workflows[_hash].name;
     }
 
     /** @dev Getter for workflow execution status.
-      * @param workflowId index of the workflow (eg 0 for the first workflow).
+      * @param _hash index of the workflow (eg 0 for the first workflow).
       * @return execution status of the task: 0=ok, 1= 
       */
-    function getCanExecuteCheck(uint256 workflowId, uint256 activityId)
+    function getCanExecuteCheck(string memory _hash, uint256 activityId)
         public
         view
         returns (uint32)
     {
-        return workflows[workflowId].execStatus.canExecuteCheck;
+        return workflows[_hash].execStatus.canExecuteCheck;
     }
 
-    function getStatus(uint256 workflowId, uint256 activityId)
+    function getStatus(string memory _hash, uint256 activityId)
         public
         view
         returns (uint256)
     {
-        return workflows[workflowId].execStatus.status;
+        return workflows[_hash].execStatus.status;
     }
 
-    function getWkfLength(uint256 workflowId) public view returns (uint256) {
-        return workflows[workflowId].relations[0].length;
+    function getWkfLength(string memory _hash) public view returns (uint256) {
+        return workflows[_hash].relations[0].length;
     }
 
-    function getIncluded(uint256 workflowId)
+    function getIncluded(string memory _hash)
         public
         view
         returns (uint256[] memory)
     {
-        return workflows[workflowId].markings.included;
+        return workflows[_hash].markings.included;
     }
 
-    function getExecuted(uint256 workflowId)
+    function getExecuted(string memory _hash)
         public
         view
         returns (uint256[] memory)
     {
-        return workflows[workflowId].markings.executed;
+        return workflows[_hash].markings.executed;
     }
 
-    function getPending(uint256 workflowId)
+    function getPending(string memory _hash)
         public
         view
         returns (uint256[] memory)
     {
-        return workflows[workflowId].markings.pending;
+        return workflows[_hash].markings.pending;
     }
 
-    function getConditionsFrom(uint256 workflowId)
+    function getConditionsFrom(string memory _hash)
         public
         view
         returns (uint256[][] memory)
     {
-        return workflows[workflowId].relations[3];
+        return workflows[_hash].relations[3];
     }
 
-    function getHashes(uint256 workflowId)
+    function getHashes(string memory _hash)
         public
         view
         returns (bytes[] memory)
     {
-        return workflows[workflowId].ipfsActivityHashes;
+        return workflows[_hash].ipfsActivityHashes;
     }
 
-    function getActivityName(uint256 workflowId, uint256 activityId)
+    function getActivityName(string memory _hash, uint256 activityId)
         public
         view
         returns (string memory)
     {
-        return workflows[workflowId].activityNames[activityId];
+        return workflows[_hash].activityNames[activityId];
     }
 
-    function getRoleAddresses(uint256 workflowId, uint256 activityId)
+    function getRoleAddresses(string memory _hash, uint256 activityId)
         public
         view
         returns (address)
     {
-        return workflows[workflowId].roleAddresses[activityId];
+        return workflows[_hash].roleAddresses[activityId];
     }
 
-    function getAddresses(uint256 workflowId)
+    function getAddresses(string memory _hash)
         public
         view
         returns (address[] memory)
     {
-        return workflows[workflowId].approvalAddresses;
+        return workflows[_hash].approvalAddresses;
     }
 
 
-    function getApprovalsOutcome(uint256 workflowId)
+    function getApprovalsOutcome(string memory _hash)
         public
         view
         returns (uint[] memory)
     {
-        return (workflows[workflowId].approvalOutcomes);
+        return (workflows[_hash].approvalOutcomes);
     }
 
-    function hasApproved(uint256 workflowId, address myAddress)
+    function hasApproved(string memory _hash, address myAddress)
         public
         view
         returns (uint)
@@ -217,10 +222,10 @@ contract PublicDCRManager {
         //uint res = 0;
         for (
             uint256 id = 0;
-            id < workflows[workflowId].approvalAddresses.length;
+            id < workflows[_hash].approvalAddresses.length;
             id++
         ) {
-            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].approvalOutcomes[id] == 1){
+            if((myAddress == workflows[_hash].approvalAddresses[id]) && workflows[_hash].approvalOutcomes[id] == 1){
                 return 1;
             }
         }
@@ -229,36 +234,36 @@ contract PublicDCRManager {
 
     ///////////////// Utils /////////////////////////
 
-    function canExecute(uint256 workflowId, uint256 activityId, address msgSender)
+    function canExecute(string memory _hash, uint256 activityId, address msgSender)
         public
         returns (bool)
     {
         // check if msg.sender address is correct
-        if (msgSender != workflows[workflowId].roleAddresses[activityId]) {
-            workflows[workflowId].execStatus.canExecuteCheck = 4;
+        if (msgSender != workflows[_hash].roleAddresses[activityId]) {
+            workflows[_hash].execStatus.canExecuteCheck = 4;
             return false;
         }
         
         // activity must be included
-        if (workflows[workflowId].markings.included[activityId] == 0) {
-            workflows[workflowId].execStatus.canExecuteCheck = 1;
+        if (workflows[_hash].markings.included[activityId] == 0) {
+            workflows[_hash].execStatus.canExecuteCheck = 1;
             return false;
         }
 
         // all conditions executed
         for (
             uint256 id = 0;
-            id < workflows[workflowId].relations[3].length;
+            id < workflows[_hash].relations[3].length;
             id++
         ) {
             uint256[] memory conditionsRow =
-                workflows[workflowId].relations[3][id];
+                workflows[_hash].relations[3][id];
             if (conditionsRow[activityId] == 1) {
                 if (
-                    (workflows[workflowId].markings.executed[id] == 0) &&
-                    (workflows[workflowId].markings.included[id] == 1)
+                    (workflows[_hash].markings.executed[id] == 0) &&
+                    (workflows[_hash].markings.included[id] == 1)
                 ) {
-                    workflows[workflowId].execStatus.canExecuteCheck = 2;
+                    workflows[_hash].execStatus.canExecuteCheck = 2;
                     return false;
                 }
             }
@@ -267,52 +272,52 @@ contract PublicDCRManager {
         // no milestones pending
         for (
             uint256 id = 0;
-            id < workflows[workflowId].relations[4].length; // milestonesFrom
+            id < workflows[_hash].relations[4].length; // milestonesFrom
             id++
         ) {
             uint256[] memory milestonesRow =
-                workflows[workflowId].relations[4][id];
+                workflows[_hash].relations[4][id];
             if (milestonesRow[activityId] == 1) {
                 if (
-                    (workflows[workflowId].markings.pending[id] == 1) &&
-                    (workflows[workflowId].markings.included[id] == 1)
+                    (workflows[_hash].markings.pending[id] == 1) &&
+                    (workflows[_hash].markings.included[id] == 1)
                 ) {
-                    workflows[workflowId].execStatus.canExecuteCheck = 3;
+                    workflows[_hash].execStatus.canExecuteCheck = 3;
                     return false;
                 }
             }
         }
 
-        workflows[workflowId].execStatus.canExecuteCheck = 0;
+        workflows[_hash].execStatus.canExecuteCheck = 0;
         return true;
     }
 
     ///////////////// Main functions /////////////////////////
-    function checkCliquedIndex(uint256 workflowId, uint256 activityId)
+    function checkCliquedIndex(string memory _hash, uint256 activityId)
         public
     //        bytes memory ipfsHash
     {
-        if (!canExecute(workflowId, activityId, msg.sender)) {
-            workflows[workflowId].execStatus.status = 1;
+        if (!canExecute(_hash, activityId, msg.sender)) {
+            workflows[_hash].execStatus.status = 1;
             //revert();
         } else {
             // executed activity
-            workflows[workflowId].markings.executed[activityId] = 1;
-            workflows[workflowId].markings.pending[activityId] = 0;
+            workflows[_hash].markings.executed[activityId] = 1;
+            workflows[_hash].markings.pending[activityId] = 0;
             //            workflows[workflowId].ipfsActivityHashes[activityId] = ipfsHash;
 
             uint256[] memory exclude_vect_check =
-                workflows[workflowId].relations[1][activityId]; // excludes
+                workflows[_hash].relations[1][activityId]; // excludes
             uint256[] memory response_vect_check =
-                workflows[workflowId].relations[2][activityId]; // responsesTo
+                workflows[_hash].relations[2][activityId]; // responsesTo
 
             // add include relations
             uint256[] memory include_vect_check =
-                workflows[workflowId].relations[0][activityId]; // includes
+                workflows[_hash].relations[0][activityId]; // includes
 
             // update with condition relations ok
             uint256[] memory conditionsTo =
-                workflows[workflowId].relations[3][activityId]; //extract row condition
+                workflows[_hash].relations[3][activityId]; //extract row condition
             for (uint256 id = 0; id < conditionsTo.length; id++) {
                 if (conditionsTo[id] == 1) {
                     include_vect_check[id] = 1;
@@ -321,7 +326,7 @@ contract PublicDCRManager {
 
             for (
                 uint256 id = 0;
-                id < workflows[workflowId].relations[1].length; // excludesTo
+                id < workflows[_hash].relations[1].length; // excludesTo
                 id++
             ) {
                 // exclude and include relations pass
@@ -331,20 +336,20 @@ contract PublicDCRManager {
                     (exclude_vect_check[id] != 1) &&
                     (include_vect_check[id] == 1)
                 ) {
-                    workflows[workflowId].markings.included[id] = 1;
+                    workflows[_hash].markings.included[id] = 1;
                 }
 
                 // response relations pass
                 // pending = (pending | responsesTo[activityId]);
                 if (response_vect_check[id] == 1) {
-                    workflows[workflowId].markings.pending[id] = 1;
-                    workflows[workflowId].markings.included[id] = 1;
+                    workflows[_hash].markings.pending[id] = 1;
+                    workflows[_hash].markings.included[id] = 1;
                 }
             }
 
-            emit LogExecution(workflowId, activityId, msg.sender);
+            emit LogExecution(_hash, activityId, msg.sender);
 
-            workflows[workflowId].execStatus.status = 1;
+            workflows[_hash].execStatus.status = 1;
         }
     }
 
@@ -382,37 +387,40 @@ contract PublicDCRManager {
                 new uint[](_approvalAddresses.length),
                 execStatus
             );
-        workflows.push(wf);
+        workflows[_ipfsViewHash]=wf;
 
-        emit LogWorkflowCreation(workflows.length - 1, wf.name, msg.sender);
+        registeredViewHashes.push(_ipfsViewHash);
+
+
+        emit LogWorkflowCreation(wf.ipfsViewHash, msg.sender);
     }
 
     /** @dev post private projection approval function.
-      * @param workflowId index of the workflow (eg 0 for the first workflow).
+      * @param _hash index of the workflow (eg 0 for the first workflow).
       * @param myAddress address of the sender (necessary for web3js dev).
       * @return list of approval outcomes.
       */
-    function confirmProjection(uint256 workflowId, address myAddress) public payable returns (uint[] memory){
+    function confirmProjection(string memory _hash, address myAddress) public payable returns (uint[] memory){
         // get id of approvalList.addresses corresponding to msgSender. If (approval[id]==0): set to one;
         
         require(myAddress==msg.sender, "Must be role owner.");
 
         for (
             uint256 id = 0;
-            id < workflows[workflowId].approvalAddresses.length;
+            id < workflows[_hash].approvalAddresses.length;
             id++
         ) {
-            if((myAddress == workflows[workflowId].approvalAddresses[id]) && workflows[workflowId].didFetch[id] == 1){ // must have fetched public view
-                if(workflows[workflowId].approvalOutcomes[id] != 1){ // must not have approved before
-                    workflows[workflowId].approvalOutcomes[id] = 1;
-                    emit LogWorkflowProjection(workflowId, myAddress);
-                    return workflows[workflowId].approvalOutcomes;
+            if((myAddress == workflows[_hash].approvalAddresses[id]) && workflows[_hash].didFetch[id] == 1){ // must have fetched public view
+                if(workflows[_hash].approvalOutcomes[id] != 1){ // must not have approved before
+                    workflows[_hash].approvalOutcomes[id] = 1;
+                    emit LogWorkflowProjection(_hash, myAddress);
+                    return workflows[_hash].approvalOutcomes;
                 }
             }
 
         }
         
-        return workflows[workflowId].approvalOutcomes;
+        return workflows[_hash].approvalOutcomes;
         
     }  
 

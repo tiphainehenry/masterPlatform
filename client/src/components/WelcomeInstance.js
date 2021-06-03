@@ -10,6 +10,9 @@ import { Table } from 'react-bootstrap';
 import '../style/boosted.min.css';
 import axios from 'axios';
 
+import getWeb3 from "../getWeb3";
+import PublicDCRManager from '../contracts/PublicDCRManager.json';
+
 import '../style/Dashboard.css'
 
 var ProcessDB = require('../projections/DCR_Projections.json');
@@ -53,63 +56,101 @@ class WelcomeInstance extends React.Component {
 
       numProcesses: 0,
 
+      web3: null,
+      accounts: null,
+      contract: null,
+
       source: { ID: '', type: '' },
-      target: { ID: '', type: '' }
+      target: { ID: '', type: '' },
+      
+      SCHashes:[]
     };
     this.delete = this.delete.bind(this);
+    this.connectToWeb3 = this.connectToWeb3.bind(this);
 
+  }
+
+  componentWillMount() {
+
+    this.connectToWeb3();
 
   }
 
   /**
-   * Lists all processes and their role projections, and stores it into the tree state variable
+   * Lists all processes that live in the SC (based on hash computations) and their role projections, and stores it into the tree state variable
    */
-  componentDidMount() {
+  async connectToWeb3() {
+
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = PublicDCRManager.networks[networkId];
+      const instance = new web3.eth.Contract(
+        PublicDCRManager.abi,
+        deployedNetwork && deployedNetwork.address,
+      );
+
+      this.setState({ web3, accounts, contract: instance });
+
+      const SCHashes = await instance.methods.getAllWKHashes().call();
+    
 
     var numProcess = Object.keys(ProcessDB).length;
 
     var tree = [];
 
     for (var j = 0; j <= numProcess; j++) {
-
-      try {
-        var dcrText = ProcessDB[Object.keys(ProcessDB)[j]]['TextExtraction']
-        var name = ProcessDB[Object.keys(ProcessDB)[j]]['id']
-        var type = ProcessDB[Object.keys(ProcessDB)[j]]['projType']
-        var roleLength = dcrText['roleMapping'].length;
-
-        var i;
-        var roles = [];
-        for (i = 1; i <= roleLength; i++) {
-          var role = [];
-          var r = 'r' + i;
-          role.push(r);
-          role.push(dcrText[r]['role'])
-          roles.push(role)
+        var hash = ProcessDB[Object.keys(ProcessDB)[j]]['hash'];
+        if(SCHashes.includes(hash)){
+          var dcrText = ProcessDB[Object.keys(ProcessDB)[j]]['TextExtraction']
+          var name = ProcessDB[Object.keys(ProcessDB)[j]]['id']
+          var type = ProcessDB[Object.keys(ProcessDB)[j]]['projType']
+          var roleLength = dcrText['roleMapping'].length;
+  
+          var i;
+          var roles = [];
+          for (i = 1; i <= roleLength; i++) {
+            var role = [];
+            var r = 'r' + i;
+            role.push(r);
+            role.push(dcrText[r]['role'])
+            roles.push(role)
+          }
+          this.setState({
+            roleLength: roleLength,
+            roles: roles
+          });
+  
+          var process = [];
+          process.push(name);
+          process.push(roles);
+          process.push(type);
+          process.push(hash);
+  
+          tree.push(process);
+  
         }
-        this.setState({
-          roleLength: roleLength,
-          roles: roles
+        else{
+          console.log('Process not displayed (because not tracked in the BC)')
+        }
+
+        tree.sort();
+        this.setState({ 
+          'tree': tree, 
+          'numProcesses': numProcess,
+          wkState: 'Create Global Workflow OnChain.' ,
+          SCHashes: SCHashes         
         });
-
-        var process = [];
-        process.push(name);
-        process.push(roles);
-        process.push(type);
-
-        tree.push(process);
-
-      }
-      catch {
+    
       }
 
-    }
-
-    tree.sort();
-
-    this.setState({ 'tree': tree, 'numProcesses': numProcess });
-
+    } catch (error) {
+      console.error(error);
+    };
   }
+
 
   /**
    * Deletes a process instance via an API call to the delete route.
@@ -203,17 +244,18 @@ class WelcomeInstance extends React.Component {
 
                 <div className="bg-green">
                   <Nav>
-                  <TableScrollbar rows={8}>
-                    <Table>
+                    <TableScrollbar rows={8}>
+                      <Table>
 
-                      <tbody>
-                        {this.state.tree.map((process, i) => {
-                          return <Nav key={i} title={process[0]} >
-                            <tr>
-                              <td className="align-middle">{process[0]}</td>
-                              <td className="align-middle">{process[2]}</td>
-                              
-                                {process[1].map((item,i) =>
+                        <tbody>
+                          {this.state.tree.map((process, i) => {
+                            return <Nav key={i} title={process[0]} >
+                              <tr>
+                                <td className="align-middle">{process[0]}</td>
+                                <td className="align-middle">Public view hash: {process[3]}</td>
+                                <td className="align-middle">Type: {process[2]}</td>
+
+                                {process[1].map((item, i) =>
                                   <td key={i} className="align-middle" >
                                     <Nav.Link as={Link}
                                       to={{
@@ -225,33 +267,33 @@ class WelcomeInstance extends React.Component {
                                   </td>
 
                                 )}
-                              
-                              <td className="align-middle">
-                                <Nav.Link as={Link}
-                                  to={{
-                                    pathname: './publicInstance',
-                                    state: {
-                                      currentProcess: process[0].split(' '),
-                                      currentInstance: 'Public'
-                                    }
-                                  }}
-                                >
-                                  Public Projection [BC]
+
+                                <td className="align-middle">
+                                  <Nav.Link as={Link}
+                                    to={{
+                                      pathname: './publicInstance',
+                                      state: {
+                                        currentProcess: process[0].split(' '),
+                                        currentInstance: 'Public'
+                                      }
+                                    }}
+                                  >
+                                    Public Projection [BC]
                                  </Nav.Link>
-                              </td>
-                              <td className="align-middle">
-                                <Link type="button" className="btn btn-sm btn-danger" value={process[0]} to={'./welcomeinstance'} onClick={() => this.delete(process[0])}>Delete</Link>
-                              </td>
+                                </td>
+                                <td className="align-middle">
+                                  <Link type="button" className="btn btn-sm btn-danger" value={process[0]} to={'./welcomeinstance'} onClick={() => this.delete(process[0])}>Delete</Link>
+                                </td>
 
-                            </tr>
+                              </tr>
 
-                          </Nav>
-                        }
-                        )
-                        }
-                      </tbody>
+                            </Nav>
+                          }
+                          )
+                          }
+                        </tbody>
 
-                    </Table>
+                      </Table>
                     </TableScrollbar>
                   </Nav>
 

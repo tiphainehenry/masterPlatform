@@ -40,7 +40,7 @@ class LoadToBCL extends React.Component {
     this.handleCreateWkf = this.handleCreateWkf.bind(this);
     this.connectToWeb3 = this.connectToWeb3.bind(this);
     this.getWKCreationReceipt = this.getWKCreationReceipt.bind(this);
-
+    this.fetchWKData = this.fetchWKData.bind(this);
   }
 
   /**
@@ -59,45 +59,25 @@ class LoadToBCL extends React.Component {
 
     try{
       if (lenDataDB > 0) {
-
         // connect list of activities to corresponding role first, and then to the right role address
-        var activities = ProcessDB[Object.keys(ProcessDB)[1]]['TextExtraction']['public']['privateEvents']
-  
-        
-        var orderedPk = []
-        var orderedNames= ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['activityNames']['default'];
-        for (let i in orderedNames){
-          console.log(orderedNames[i]);
-          var matchingPk = ''
-          Object.keys(activities).forEach(k => {
-            if(activities[k].eventName === orderedNames[i]){
-              //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
-              matchingPk = activities[k].address;
-            }
-          });
-          if(matchingPk !== ''){
-            orderedPk.push(matchingPk);
-          }
-  
-        }
-        let approvalList = [...new Set(orderedPk)];
+        var wkData = this.fetchWKData(Object.keys(ProcessDB)[1]);
         this.setState({
-          data: ProcessDB[Object.keys(ProcessDB)[1]]['Global']['data'],
-          processName: Object.keys(ProcessDB)[1],
           lenDataDB: lenDataDB,
-  
-          activityNames: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['activityNames']['default'],
-          includedStates: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullMarkings']['included'],
-          executedStates: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullMarkings']['executed'],
-          pendingStates: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullMarkings']['pending'],
-          includesTo: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['include'],
-          excludesTo: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['exclude'],
-          responsesTo: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['response'],
-          conditionsFrom: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['condition'],
-          milestonesFrom: ProcessDB[Object.keys(ProcessDB)[1]]['Public']['vect']['fullRelations']['milestone'],
-          addresses: orderedPk,
-          approvalList: approvalList
-        })
+          data: wkData[0],
+          processName: wkData[1],
+    
+          activityNames: wkData[2],
+          includedStates: wkData[3],
+          executedStates: wkData[4],
+          pendingStates: wkData[5],
+          includesTo: wkData[6],
+          excludesTo: wkData[7],
+          responsesTo: wkData[8],
+          conditionsFrom: wkData[9],
+          milestonesFrom: wkData[10],
+          addresses: wkData[11],
+          approvalList: wkData[12]
+        });    
       }
   
     }
@@ -126,7 +106,7 @@ class LoadToBCL extends React.Component {
       this.setState({ web3, accounts, contract: instance });
 
       // Checking if contract already populated
-      this.setState({ wkState: '2./ Uploaded' })
+      //this.setState({ wkState: '2./ Uploaded' })
 
     } catch (error) {
       alert(
@@ -138,7 +118,45 @@ class LoadToBCL extends React.Component {
     };
   }
 
+  fetchWKData(pid){
+    
+    var activities = ProcessDB[pid]['TextExtraction']['public']['privateEvents'];
+    
+    var orderedPk = []
+    var orderedNames= ProcessDB[pid]['Public']['vect']['activityNames']['default'];
+    for (let i in orderedNames){
+      var matchingPk = ''
+      Object.keys(activities).forEach(k => {
+        if(activities[k].eventName === orderedNames[i]){
+          //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
+          matchingPk = activities[k].address;
+        }
+      });
+      if(matchingPk !== ''){
+        orderedPk.push(matchingPk);
+      }
+    }
+    let approvalList = [...new Set(orderedPk)];
+    console.log(ProcessDB[pid]['Public']['vect']['fullMarkings']['included'].length);
 
+    var PubVec = ProcessDB[pid]['Public']['vect'];
+    return [ProcessDB[pid]['Global']['data'],
+            pid,
+            PubVec['activityNames']['default'],
+            PubVec['fullMarkings']['included'],
+            PubVec['fullMarkings']['executed'],
+            PubVec['fullMarkings']['pending'],
+            PubVec['fullRelations']['include'],
+            PubVec['fullRelations']['exclude'],
+            PubVec['fullRelations']['response'],
+            PubVec['fullRelations']['condition'],
+            PubVec['fullRelations']['milestone'],
+            orderedPk,
+            approvalList
+  ]
+
+
+  }
   /**
    * Get workflow creation receipt.
    */
@@ -179,26 +197,61 @@ class LoadToBCL extends React.Component {
 
 
     try {
+        // connect list of activities to corresponding role first, and then to the right role address
+        var wkData = this.fetchWKData(this.props.processID);
 
-      if(this.state.includedStates.length === 0){
+        var data =  wkData[0];
+        var processName= wkData[1];
+    
+        var activityNames= wkData[2];
+        var includedStates= wkData[3];
+        var executedStates= wkData[4];
+        var pendingStates= wkData[5];
+        var includesTo= wkData[6];
+        var excludesTo= wkData[7];
+        var responsesTo= wkData[8];
+        var conditionsFrom= wkData[9];
+        var milestonesFrom= wkData[10];
+        var addresses= wkData[11];
+        var approvalList= wkData[12];
+
+        this.setState({
+          data,
+          processName,
+    
+          activityNames,
+          includedStates,
+          executedStates,
+          pendingStates,
+          includesTo,
+          excludesTo,
+          responsesTo,
+          conditionsFrom,
+          milestonesFrom,
+          addresses,
+          approvalList
+        });
+
+
+
+      if(includedStates.length === 0){
         alert("oops -didnt have time to update freshly updated db [to be implemented]");  
       }
       else{
-        var relations = [this.state.includesTo,
-          this.state.excludesTo,
-          this.state.responsesTo,
-          this.state.conditionsFrom,
-          this.state.milestonesFrom]
-        console.log(relations);
+        var relations = [includesTo,
+          excludesTo,
+          responsesTo,
+          conditionsFrom,
+          milestonesFrom]
 
         await contract.methods.uploadPublicView(
-          [this.state.includedStates,this.state.executedStates,this.state.pendingStates], //marking
+          [includedStates,executedStates,pendingStates], //marking
   
           this.props.ipfsHash,
-          this.state.addresses,
-          this.state.approvalList,
-          this.state.activityNames,
-          this.state.processName,
+          addresses,
+          approvalList,
+          activityNames,
+          processName,
           relations 
         ).send({ from: accounts[0] }
           , (error, transactionHash) => {

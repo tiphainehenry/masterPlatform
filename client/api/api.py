@@ -102,8 +102,8 @@ def updWithName(dataTxt, pi, projType):
     }
     processData['Public'] = {
         'data': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_dataPublic.json')),
-        'exec': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_vectPublic.json')),
-        'vect': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_execPublic.json'))
+        'exec': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_execPublic.json')),
+        'vect': loadJSONFile(os.path.join(this_folder, '../src/projections/temp_vectPublic.json'))
     }
     processData['projType']=projType
 
