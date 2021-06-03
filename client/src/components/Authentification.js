@@ -41,9 +41,7 @@ class Authentification extends React.Component {
                 deployedNetwork && deployedNetwork.address,
             );
             const tmp = await instance.methods.imRole().call({ from: accounts[0] });
-            console.log(tmp)
             if (tmp[0] !== "Not registered") {
-                // console.log("in = " + tmp[0])
                 ret.isRole = true
                 ret.name = tmp[0]
                 ret.isAdmin = (tmp[1] === "false" ? false : true)
@@ -52,6 +50,7 @@ class Authentification extends React.Component {
                 ret.name = ""
                 ret.isAdmin = false
             }
+            console.log(ret);
             this.props.status(ret)
         } catch (error) {
             console.error(error);

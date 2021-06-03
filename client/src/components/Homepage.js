@@ -28,10 +28,8 @@ class Homepage extends React.Component {
   getStatus = auth => this.setState({ auth })
 
   render() {
-    var content = []
-    console.log(this.state.auth)
-    console.log(this.state.auth.isRole);
     return (<div>
+      <Header/>
       <Authentification status={this.getStatus} />
       {this.state.auth.isRole ?
         <div>
