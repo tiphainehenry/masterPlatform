@@ -99,16 +99,16 @@ class Edit extends React.Component {
 
     return <>
       <div>
+        
         <Header />
-        <Container fluid >
-          <Row >
-            <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <SidebarModel />
-            </Col>
-            <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <div className="bg-green pt-5 pb-3">
+        <Row>
+                <SidebarModel />
 
-                <div className='container'>
+                <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+                        <Container flex>
+
+                            <div className='container'>
                   <h2>Edit Graph</h2>
 
                   <div className="well">Choose the process projection to edit:</div>
@@ -154,16 +154,16 @@ class Edit extends React.Component {
 
 
                     </Nav>
+                    </div>
 
                   </div>
-
+                      </Container>
+                    </div>
                 </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </>
+
+            </Row>
+        </div>    
+        </>
 
   }
 }

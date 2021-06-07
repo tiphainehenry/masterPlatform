@@ -35,7 +35,7 @@ class Header extends React.Component {
     }
     return <div>
       <Authentification status={this.getStatus} />
-      <Navbar style={{ 'position': 'fixed', 'width': '100%' }} collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top" className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <Navbar style={{ 'position': 'fixed', 'width': '100%' }} collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top" className="navbar navbar-expand-md navbar-dark bg-dark fixed-top flex-md-nowrap">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

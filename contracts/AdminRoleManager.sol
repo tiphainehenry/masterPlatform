@@ -12,8 +12,14 @@ contract AdminRoleManager {
     address[] roleList;
 
     constructor() public {
-        address modAddress = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
-        newRole(modAddress, "first account", true);
+
+	address modAddress1 = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
+	newRole(modAddress1, "first account", true);
+
+	address modAddress2 = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
+	newRole(modAddress2, "first account", true);
+
+
     }
 
     function isRole(address RoleAddress) public view returns (bool isIndeed) {

@@ -3,6 +3,7 @@ import '../style/boosted.min.css';
 import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header';
 import Authentification from './Authentification'
+import { Container, Card, CardDeck } from 'react-bootstrap';
 
 /**
  * Component ...
@@ -33,7 +34,6 @@ class Homepage extends React.Component {
       <Authentification status={this.getStatus} />
       {this.state.auth.isRole ?
         <div>
-          <div className="bg-green pt-5 pb-3">
             <div className='container'>
               <section className="jumbotron text-center">
                 <div className="container">
@@ -45,34 +45,27 @@ class Homepage extends React.Component {
                 </div>
                 <br />
                 <br />
-                <div className="container">
-                  <div className="row justify-content-center">
-                    <div className="col-4">
-                      <div className="card" style={{ width: 18 + 'rem' }}>
+                <CardDeck className="row justify-content-center">
+                <Card className="homepage-card">
                         <img className="card-img-top" src="API-S_RGB-5.png" alt="Card cap"></img>
                         <div className="card-body">
                           <h5 className="card-title">Monitor deployed instances</h5>
                           <p className="card-text">access all the inter-organizational process instances currently running, and execute role activities on the dedicated projections.</p>
                           <a href="/welcomeinstance" className="btn btn-secondary my-2">Go to my instances</a>
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-4">
-                      <div className="card" style={{ width: 18 + 'rem' }}>
+                      </Card>
+                      <Card className="homepage-card">
                         <img className="card-img-top" src="API-S2_RGB-5.png" alt="Card cap"></img>
                         <div className="card-body">
                           <h5 className="card-title">Create new models</h5>
                           <p className="card-text">access the template libraries, or create a new inter-organizational process model from scratch, and deploy it.</p>
                           <a href="/welcomemodel" className="btn btn-secondary my-2">Go to my process models</a>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                      </Card>
+                </CardDeck>
               </section>
             </div>
           </div>
-        </div>
         :
         <div className="bg-green pt-5 pb-3">
           <div className='container'>

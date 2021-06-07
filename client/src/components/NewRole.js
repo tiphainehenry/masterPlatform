@@ -45,7 +45,7 @@ class NewRole extends React.Component {
             this.setState({ name: e.target.value })
         else if (e.target.name === "selector") {
             this.setState({ isNew: (e.target.value === "") })
-            this.setState({ selectValue: e.target.value})
+            this.setState({ selectValue: e.target.value })
         } else if (e.target.name === "isAdmin") {
             this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
         }
@@ -118,72 +118,110 @@ class NewRole extends React.Component {
     }
     render() {
         const address = []
+        const currAddress = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+
         if (this.state.isNew) {
-            address.push(<div className='row'>
-                <label className='col-md-2'>Address : </label>
-                <input type="input" name="address" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)}></input>
-            </div>)
             address.push(
-                <div className='row'>
-                    <label className='col-md-2'>Admin: </label>
-                    <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.isAdmin}></input>
-                </div>)
-            address.push(<div>
-                <Button onClick={() => this.manageRole()} class="btn btn-primary my-2 my-sm-0">Create</Button>
-            </div>
-            )
+<>
+<div class="form-group col-12 col-lg-6">
+                        <label for="phone" class="is-required">Address</label>
+                        <input type="input" name="address" class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true"  ></input>
+                    </div>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <label class="is-required" for="role">New role name</label>
+                        <input type="input" class="form-control required" onPaste={e => this.onChange(e)} name="name" onChange={e => this.onChange(e)}></input>
+                    </div>
+
+                    <div class="form-group col-12">
+                        <div class="custom-control custom-checkbox custom-checkbox-role">
+                            <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.isAdmin} class="custom-control-input" autocomplete="off" />
+                            <label class="custom-control-label custom-label-role" for="pro-check">Admin</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 ">
+                        <button onClick={() => this.manageRole()} class="btn btn-primary">Create</button>
+                    </div>
+                </>)
+
         } else {
-            address.push(<div className='row'>
-                <label className='col-md-12'>Adress : 0x{this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]}</label>
-            </div>)
             address.push(
-                <div className='row'>
-                    <label className='col-md-2'>Admin: </label>
-                    <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.admins[this.state.roles.indexOf(this.state.selectValue)]} defaultChecked={this.state.admins[this.state.roles.indexOf(this.state.selectValue)]}></input>
-                </div>)
-            address.push(<div>
-                <Button onClick={() => this.manageRole()} class="btn btn-primary my-2 my-sm-0">Update</Button>
-            </div>)
+                <>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <label class="is-required">Address</label>
+                        <input type="input" value={currAddress} disabled class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true" name="address" ></input>
+                    </div>
+                    <div class="form-group col-12 col-lg-6">
+                        <label class="is-required" for="role">New subrole name</label>
+                        <input type="input" class="form-control required" onPaste={e => this.onChange(e)} name="name" onChange={e => this.onChange(e)}></input>
+                    </div>
+
+                    <div class="form-group col-12 ">
+                        <div class="custom-control custom-checkbox custom-checkbox-role">
+                            <input type="checkbox" class="custom-control-input" id="pro-check" autocomplete="off" name="isAdmin" onInput={e => this.onChange(e)} value={this.state.admins[this.state.roles.indexOf(this.state.selectValue)]} defaultChecked={this.state.admins[this.state.roles.indexOf(this.state.selectValue)]} />
+                            <label class="custom-control-label custom-label-role" for="pro-check">Admin</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-12 ">
+                        <button type="submit" onClick={() => this.manageRole()} class="btn btn-primary">Update</button>
+                    </div>
+                </>)
         }
         var Answer = this.state.roles.map((x, y) => <option key={y}>{x}</option>)
-        return <>
-            <div>
-                <Header />
-                <Container fluid >
-                    <Row >
-                        <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
-                            <SidebarModel />
-                        </Col>
-                        <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-                            <div className='bg-green pt-5 pb-3'>
-                                <div className='container'>
-                                    <h2>Roles management</h2>
-                                    <h5>Select a role</h5>
-                                    <select name='selector' onChange={e => this.onChange(e)} style={{ 'width': '40%', 'marginLeft': '25%' }}>
-                                        <option value="">Create a new role</option>
-                                        {Answer}
-                                    </select>
-                                    <div style={{ marginTop: "1vh" }} className='row'>
-                                        <label className='col-md-2'>Name: </label>
-                                        <input type="input" onPaste={e => this.onChange(e)} name="name" onChange={e => this.onChange(e)}></input>
+
+
+        return <div >
+            <Header />
+            <Row>
+                <SidebarModel />
+
+                <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+                        <Container flex>
+
+                            <div className='container'>
+                                <h2>Roles management</h2>
+                                <ul class="nav nav-tabs">
+                                </ul>
+                                <div class="tab-content" >
+                                    <div class="tab-pane active" id="users">
+                                        <form id="search-users" name="searchUsers" method="post" action="/">
+                                            <div class="row">
+                                                <div class="form-group col-12 col-lg-6">
+                                                    <label class="is-required" for="role">Select an account</label>
+                                                    <select class="custom-select" name="selector" onChange={e => this.onChange(e)}>
+                                                        <option value="">Create new account</option>
+                                                        {Answer}
+                                                    </select>
+                                                </div>
+
+                                                {address}
+
+                                            </div>
+                                        </form>
                                     </div>
+                                </div>
+                                <Form>
+
+
                                     {/* <div className='row'>
-                                        <label className='col-md-2'>Admin: </label>
-                                        <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.isAdmin}></input>
-                                    </div> */}
-                                    <br />
-                                    {address}
-                                    <br />
-                                    <br />
+    <label className='col-md-2'>Admin: </label>
+    <input type='checkbox' name="isAdmin" onInput={e => this.onChange(e)} value={this.state.isAdmin}></input>
+    </div> */}
+
                                     {/* <Button onClick={() => this.btnfct()} class="btn btn-primary my-2 my-sm-0">GET roles</Button> */}
 
-                                </div>
+                                </Form>
+
                             </div>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        </>
+                        </Container>
+                    </div>
+                </div>
+
+            </Row>
+        </div>
     }
 }
 

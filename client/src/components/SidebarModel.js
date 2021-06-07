@@ -6,6 +6,8 @@ import { withRouter } from "react-router";
 import '../style/boosted.min.css';
 import Authentification from './Authentification';
 
+import { Users, FilePlus, Edit } from 'react-feather';
+
 
 /**
  * Component to access graph edition / creation functionalities. 
@@ -24,21 +26,75 @@ class SidebarModel extends React.Component {
 
     render() {
         if (this.state.auth.isAdmin) {
-            var button = <Nav.Link href="/newrole">Manage roles</Nav.Link>
+            var button = <div>                  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                Role management
+        </h6>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/newrole">
+                            <span> <Users /> Manage roles</span>
+
+
+                        </a>
+                    </li>
+                </ul></div>
         }
         return <div>
-            <Authentification status={this.getStatus}/>
-            <div className="sidebar">
-                <Nav className="col-md-12 d-none d-md-block sidebar"
-                    activeKey="/home"
-                >
-                    <Nav.Link style={{paddingTop:"5vh"}} href="/createG">Import a Projection - Global to Local</Nav.Link>
-                    <Nav.Link href="/createL">Import a Projection - Local to Global</Nav.Link>
-                    <Nav.Link href="/new">Create a new projection</Nav.Link>
-                    <Nav.Link href="/edit">Edit a projection</Nav.Link>
+
+            <Authentification status={this.getStatus} />
+
+            <nav id="sidebarMenu" role="navigation" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+
                     {button}
-                </Nav>
-            </div>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        Graph creation
+                    </h6>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/new">
+
+
+                                <span><FilePlus /> Create (Global or public)</span>
+
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/createG">
+                                <span><FilePlus /> Import (Global)
+                        </span>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/createL">
+                                <span><FilePlus /> Import (Public)</span>
+
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        Graph edition
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+
+
+                            <a class="nav-link" href="/edit">
+                                <span><Edit /></span>      Edit a projection
+                            </a>
+                        </li>
+                    </ul>
+
+
+
+                </div>
+            </nav>
+
         </div>
 
     }

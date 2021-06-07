@@ -87,6 +87,7 @@ class CreationDeck extends React.Component {
       },
 
       newActivityCnt: 0,
+      src: 'creation-deck',
 
       source: { ID: '', type: '' },
       target: { ID: '', type: '' }
@@ -519,17 +520,16 @@ class CreationDeck extends React.Component {
     return <>
       <div>
         <Header />
-        <Container fluid >
-          <Row>
-            <LoadToBC ref={this.loadToBC}> processID= {this.state.processID}</LoadToBC>
-          </Row>
-          <Row >
-            <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <SidebarModel />
-            </Col>
-            <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <div class="bg-green pt-5 pb-3">
+        <LoadToBC ref={this.loadToBC} processID={this.state.processID} src={this.state.src}></LoadToBC>
 
+        <Row>
+              <SidebarModel />
+
+              <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+
+              <Container>
+            
                 <div class='container'>
                   <h2>Creating [process {this.state.processID}]</h2>
 
@@ -622,10 +622,12 @@ class CreationDeck extends React.Component {
                   <Button onClick={this.privateGraphUpd}>Instantiate</Button>
                   <Button onClick={this.saveToLibrary}>save</Button>
                 </div>
+                </Container>
               </div>
-            </Col>
-          </Row>
-        </Container>
+              </div>
+
+        </Row>
+
       </div>
     </>
 

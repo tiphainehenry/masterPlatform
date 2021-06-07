@@ -288,6 +288,7 @@ class LoadToBCL extends React.Component {
       <Button onClick= {this.handleCreateWkf}>{this.state.wkState}</Button>
      <br/>
      <br/>
+     {this.props.src === 'creation-deck'? <></>:<>
                   <Button onClick={this.getWKCreationReceipt}> Get Transaction Receipt </Button>
 
                   <Table bordered responsive>
@@ -323,7 +324,7 @@ class LoadToBCL extends React.Component {
                         <td>{this.state.gasUsed}</td>
                       </tr>
                     </tbody>
-                  </Table>
+                  </Table></>}
 
 
       </div>)
