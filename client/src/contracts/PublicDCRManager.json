@@ -27511,10 +27511,80 @@
       "links": {},
       "address": "0x7D850BC241C9627f23efa26136D6E06d3755798D",
       "transactionHash": "0xb6bbdf449124e30ccf4b0e113ba82a9eb1830177f1fc7e4d484eb6efb85c5691"
+    },
+    "1623092375517": {
+      "events": {
+        "0xdcc419af849b47f6b77090192f4d45ebaef7057509a466bbbce51f396b898c03": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "string",
+              "name": "workflowHash",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "activityId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
+            }
+          ],
+          "name": "LogExecution",
+          "type": "event"
+        },
+        "0xc42dc8c6712875975b09ece703779e4ed83179500da5c8776b1eab681e04c7fa": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "string",
+              "name": "workflowHash",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            }
+          ],
+          "name": "LogWorkflowCreation",
+          "type": "event"
+        },
+        "0xef93748ef353323feced9a53b1f9433297bf50235a9d5aa97783d3f30d4682e4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "string",
+              "name": "workflowHash",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            }
+          ],
+          "name": "LogWorkflowProjection",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x7D850BC241C9627f23efa26136D6E06d3755798D",
+      "transactionHash": "0xb6bbdf449124e30ccf4b0e113ba82a9eb1830177f1fc7e4d484eb6efb85c5691"
     }
   },
   "schemaVersion": "3.2.4",
-  "updatedAt": "2021-06-07T09:52:39.978Z",
+  "updatedAt": "2021-06-07T19:01:32.934Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {

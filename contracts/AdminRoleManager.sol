@@ -14,10 +14,10 @@ contract AdminRoleManager {
     constructor() public {
 
 	address modAddress1 = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
-	newRole(modAddress1, "first account", true);
+	newRole(modAddress1, "firstAccount", true);
 
 	address modAddress2 = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
-	newRole(modAddress2, "first account", true);
+	newRole(modAddress2, "secAccount", true);
 
 
     }

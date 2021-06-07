@@ -14,6 +14,8 @@ import getWeb3 from "../getWeb3";
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
 
 import '../style/Dashboard.css'
+import { Users, Play, Edit } from 'react-feather';
+
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
@@ -240,7 +242,7 @@ class WelcomeInstance extends React.Component {
                   </div>
                 </div>
 
-                <div className="well">Choose the process projection instance to manage:</div>
+                <h5>Choose the process projection instance to manage:</h5>
 
                 <div className="bg-green">
                   <Nav>
@@ -252,18 +254,40 @@ class WelcomeInstance extends React.Component {
                             return <Nav key={i} title={process[0]} >
                               <tr>
                                 <td className="align-middle">{process[0]}</td>
-                                <td className="align-middle">Public view hash: {process[3]}</td>
+                                {/*<td className="align-middle">Public view hash: {process[3]}</td>*/}
                                 <td className="align-middle">Type: {process[2]}</td>
 
                                 {process[1].map((item, i) =>
-                                  <td key={i} className="align-middle" >
-                                    <Nav.Link as={Link}
+                                  <td key={i} className="align-middle td-test">
+
+                                  <div class="row">
+                                      <div class="col-sm-8 align-middle">
+                                      <h6 className="align-middle">Projection on {item[1]}</h6> 
+                                        <div class="row">
+                                          <div class="col-sm-12 other">
+                                        
+                                          <Nav.Link as={Link}
                                       to={{
                                         pathname: './tenantInstance/' + process[0] + '/' + item[0]
                                       }}
-                                    >
-                                      {item[1]} Projection
+                                    >  <Button variant="outline-success">
+                                      <Play/>                                      </Button>
                                       </Nav.Link>
+
+                                          </div>
+                                          <div class="col-sm-8 other2">
+                                          
+                                          <Nav.Link as={Link}
+                                      to={{
+                                        pathname: './editing/' + process[0] + '/' + item[0]
+                                      }}
+                                      ><Button variant="outline-warning">
+                                      <Edit/></Button>
+                                      </Nav.Link>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      </div>
                                   </td>
 
                                 )}

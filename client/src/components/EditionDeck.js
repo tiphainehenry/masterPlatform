@@ -42,10 +42,10 @@ class EditionDeck extends React.Component {
    */
   constructor(props) {
     super(props);
+
     this.state = {
       data: ProcessDB[Object.keys(ProcessDB)[0]]['Global'],
       processID: Object.keys(ProcessDB)[0],
-      processName: this.props.location.state['currentProcess'][1],
       projectionID: 'Global',
 
       elemClicked: {
@@ -138,22 +138,29 @@ class EditionDeck extends React.Component {
    * Instanciates component with the right process and projection view.
    */
   componentWillMount() {
+    var processID = this.props.match.params.pid;
+    var projectionID = this.props.match.params.rid;
 
-    console.log(this.props.location);
-    if (typeof (this.props.location.state) !== 'undefined') {
-      if (typeof (this.props.location.state['currentProcess'][1]) !== 'undefined') {
-        var processID = this.props.location.state['currentProcess'][1];
-        var projectionID = this.props.location.state['currentInstance'];
+    this.setState({
+      'processID': processID,
+      'projectionID': projectionID,
+      'data': ProcessDB[processID][projectionID]['init']['data']
+    });
 
-        this.setState({
-          'processID': processID,
-          'processName': this.props.location.state['currentProcess'][1],
-          'projectionID': projectionID,
-          'data': ProcessDB[processID][projectionID]['init']['data']
-        });
-      }
+    //console.log(this.props.location);
+    //if (typeof (this.props.location.state) !== 'undefined') {
+    //  if (typeof (this.props.location.state['currentProcess'][1]) !== 'undefined') {
+    //    var processID = this.props.location.state['currentProcess'][1];
+    //    var projectionID = this.props.location.state['currentInstance'];
+
+    //    this.setState({
+    //      'processID': processID,
+    //      'processName': this.props.location.state['currentProcess'][1],
+    //      'projectionID': projectionID,
+    //      'data': ProcessDB[processID][projectionID]['init']['data']
+    //    });
+    //  }
     }
-  };
 
   //////////  LISTENERS /////////////////
 
@@ -319,16 +326,14 @@ class EditionDeck extends React.Component {
     console.log(this.state);
     return <>
       <div>
-        <Header />
-        <Container fluid >
-          <Row >
-            <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <SidebarModel />
-            </Col>
-            <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <div class="bg-green pt-5 pb-3">
+      <Header />
+        <Row>
 
-                <div class='container'>
+                <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+                        <Container flex>
+
+                            <div className='container'>
                   <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
 
                   <div className="well">Right click on the graph to see the menu</div>
@@ -416,11 +421,12 @@ class EditionDeck extends React.Component {
                   <Button onClick={this.saveGraph}>save new version</Button>
 
                 </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+                      </Container>
+                    </div>
+                </div>
+
+            </Row>
+        </div>    
     </>
 
   }
