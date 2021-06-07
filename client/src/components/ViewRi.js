@@ -1,12 +1,8 @@
 import React from 'react';
 import Header from './Header';
-import DCRgraph from './DCRgraph';
-import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import Sidebar from './SidebarInstance';
-import { useLocation } from 'react-router-dom';
-
-import equal from 'fast-deep-equal';
-import { useParams } from "react-router";
+import DCRgraphL from './DCRgraphL';
+import DCRgraphG from './DCRgraphG';
+import { Row, Col, Container } from 'react-bootstrap';
 
 var ProcessDB = require('../projections/DCR_Projections.json')
 
@@ -53,29 +49,49 @@ class ViewRi extends React.Component {
       'data': ProcessData[projectionID]['data'],
       'execLogs': ProcessData[projectionID]['exec'],
       'id': ProcessData['TextExtraction'][projectionID]['role'],
-      'projectionsExist': true
+      'projectionsExist': true,
+      'projType': ProcessData['projType'],
+      'projectionHash':ProcessData['projHash']
     });
   }
 
-
-
   render() {
+
     return <div key={this.state.processID}>
       <Header />
-      <Container fluid >
+      <Container fluid>
         <Row>
           <Col>
-            {this.state.projectionsExist ?
-              <DCRgraph
+            {(this.state.projectionsExist && this.state.projType == 'p_to_g') ?
+              <DCRgraphL
                 id={this.state.id}
                 data={this.state.data}
                 execLogs={this.state.execLogs}
                 processID={this.state.processID}
                 processName={this.state.processName}
                 projectionID={this.state.projectionID}
-              /> :
-              <div class="bg-green pt-5 pb-3">No projection yet, please go to the process models portal</div>
+                projectionHash={this.state.projectionHash}
+              /> : <div></div>
             }
+
+            {(this.state.projectionsExist && this.state.projType == 'g_to_p') ?
+              <DCRgraphG
+                id={this.state.id}
+                data={this.state.data}
+                execLogs={this.state.execLogs}
+                processID={this.state.processID}
+                processName={this.state.processName}
+                projectionID={this.state.projectionID}
+                projectionHash={this.state.projectionHash}
+              /> : <div></div>
+            }
+
+            {(!this.state.projectionsExist) ?
+
+              <div className="bg-green pt-5 pb-3">No projection yet, please go to the process models portal</div>
+              : <div></div>
+            }
+
 
           </Col>
         </Row>

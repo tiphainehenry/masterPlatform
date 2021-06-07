@@ -6,10 +6,11 @@ const activityUpdHelpers = {
     */
     handleActivityName: function (e) {
         e.preventDefault();
+        const noSpaceValue = e.target.value.replace(' ', '')
         this.setState({
             elemClicked: {
                 id: this.state.elemClicked.id,
-                activityName: e.target.value,
+                activityName: noSpaceValue,
                 classes: this.state.elemClicked.classes,
                 type: this.state.elemClicked.type
             },

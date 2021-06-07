@@ -3,11 +3,11 @@ import React from "react";
 import { Nav } from "react-bootstrap";
 import { withRouter } from "react-router";
 
-import { Navbar, NavDropdown } from 'react-bootstrap';
-import { NavLink } from "react-router-dom"
 import '../style/boosted.min.css';
+import Authentification from './Authentification';
 
-var ProcessDB = require('../projections/DCR_Projections.json');
+import { Users, FilePlus, Edit } from 'react-feather';
+
 
 /**
  * Component to access graph edition / creation functionalities. 
@@ -15,24 +15,84 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 class SidebarModel extends React.Component {
 
     constructor(props) {
-        super(props);
+        super(props)
+        this.state = {
+            auth: {},
+        }
+        this.childElement = React.createRef()
+        this.getStatus = this.getStatus.bind(this)
     }
+    getStatus = auth => this.setState({ auth })
 
     render() {
+        if (this.state.auth.isAdmin) {
+            var button = <div>                  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                Role management
+        </h6>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/newrole">
+                            <span> <Users /> Manage roles</span>
 
+
+                        </a>
+                    </li>
+                </ul></div>
+        }
         return <div>
 
-            <div class="sidebar">
-                <Nav className="col-md-12 d-none d-md-block sidebar"
-                    activeKey="/home"
+            <Authentification status={this.getStatus} />
 
-                //onSelect={selectedKey => alert(`selected ${selectedKey}`)}
-                >
-                    <Nav.Link href="/create">Import a Projection</Nav.Link>
-                    <Nav.Link href="/edit">Edit a projection</Nav.Link>
+            <nav id="sidebarMenu" role="navigation" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky pt-3">
 
-                </Nav>
-            </div>
+                    {button}
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        Graph creation
+                    </h6>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/new">
+
+
+                                <span><Edit /> Create (Global or public)</span>
+
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/createG">
+                                <span><FilePlus /> Import Global Model
+                        </span>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/createL">
+                                <span><FilePlus /> Import Public Model</span>
+
+                            </a>
+                        </li>
+                    </ul>
+                    {/*
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        Graph edition
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/edit">
+                                <span><Edit /></span>      Edit a projection
+                            </a>
+                        </li>
+                    </ul>
+                    */}
+
+
+                </div>
+            </nav>
+
         </div>
 
     }

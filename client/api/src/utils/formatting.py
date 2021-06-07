@@ -108,7 +108,6 @@ def removeGroups(data):
             events = line.split('{')[1].split('}')[0].split(' ')
             groupElems.append({'gName': gName,
                                'events': events})
-
     # for each elem, scan relations and replace adequatly
 
     # extract relations:
@@ -161,7 +160,6 @@ def removeGroups(data):
             events.append(line.strip())
 
     newData = events + updatev2
-
     return newData
 
 
@@ -214,7 +212,6 @@ def getRoleList(e):
     :returns: list of tenants involved in the list of relations
     """
 
-    # remove comments
     events = []
     for elem in e:
         if((elem[0] != '#') and (getRole(elem) not in events)):
@@ -278,22 +275,41 @@ def getType(relation):
     return relType
 
 
-def generateDictEvent(events):
+def generateDictEvent(events, addresses):
     """
     generates dictionnary of events out of a list of textual descriptions
 
     :param events: list of events to analyze
     :returns: dictionnary of events with keys {id, event}
     """
-
     dictList = []
     ind = 0
     for elem in events:
         if ((elem[0].strip() != '#') and ('Declaration' not in elem)):
+            roleName =''
+            eventName=''
+            eventName = elem.split('[')[0].strip()
+            if('role=' in elem):
+                roleName=elem.split('role=')[1].replace(']','').strip()
+            elif('src=' in elem):
+                roleName=elem.split('src=')[1].split(' ')[0].strip()
+            elif(('!(' in elem) or ('?(' in elem)):
+                roleName=elem.split(', ')[1].split('-&')[0].strip()
+            else:
+                print('[ERROR] Wrong elem definition. Got '+elem)
+            
+            for pk_data in addresses:
+                if(pk_data['role']==roleName):
+                    pk = pk_data['pk'].strip()
+
             dictList.append({
                 'id': ind,
-                'event': elem
+                'event': elem, 
+                'eventName':eventName,
+                'role': roleName,
+                'address': pk
             })
+
             ind = ind+1
 
     return dictList

@@ -42,12 +42,11 @@ def getId(role):
 
 
 def upd(data):
-    target='./client/src/projections/'
-    dataPath='./client/src/projections/dcrTexts.json'
+    target='../../client/src/projections/'
+    dataPath='../../client/src/projections/dcrTexts.json'
 
     _data = removeGroups(data)
-
-    projectGlobal(_data, target)
+    projectGlobal(data, target)
 
     with open(dataPath) as json_file:
         dataDict = json.load(json_file)
@@ -59,11 +58,11 @@ def upd(data):
 
     for role in getRoles():
         print('[INFO] Starting projection on role '+role)
-        projRole(_data, target, role)
+        projRole(data, target, role)
         with open(os.path.join(target,'exec'+getId(role)+'.json'), 'w') as outfile:
             json.dump({"execLogs":[]}, outfile, indent=2)
 
-    projectPublic(_data, target)
+    projectPublic(data, target)
 
 @app.route('/')
 def index():
@@ -84,7 +83,7 @@ def processData():
 
         role_id=getId(role)
 
-        pExec = glob.glob('./client/src/projections/exec'+role_id+'*')[0]
+        pExec = glob.glob('../../client/src/projections/exec'+role_id+'*')[0]
         execLogg(pExec, activity_name_details, status, start_timestamp,data)
     
     return status, 200, {'Access-Control-Allow-Origin': '*'}
@@ -104,16 +103,16 @@ def processBCData():
         role = data['projId']
         role_id = getId(role)
 
-        pExec = glob.glob('./client/src/projections/exec'+role_id+'*')[0]
+        pExec = glob.glob('../../client/src/projections/exec'+role_id+'*')[0]
         execLogg(pExec, activity_name_details, status, start_timestamp)
    
     else:
-        # roleProjs=glob.glob('./client/src/projections/data*')
+        # roleProjs=glob.glob('../../client/src/projections/data*')
         roleProjections=[]
 
         for role in getRoles():
             roleMapping=getRoleMapping(role)
-            roleProjections.append('./client/src/projections/data'+roleMapping['id']+'.json')
+            roleProjections.append('../../client/src/projections/data'+roleMapping['id']+'.json')
 
         for rolepath in roleProjections:
             with open(rolepath) as json_file:
@@ -147,7 +146,7 @@ def processBCData():
 
 @app.route('/reinit', methods=['POST', 'GET'])
 def reinitialise():
-    dataPath='./client/src/projections/dcrTexts.json'
+    dataPath='../../client/src/projections/dcrTexts.json'
     with open(dataPath) as json_file:
         dataDict = json.load(json_file)
     dataGlobDict = dataDict['global']
@@ -168,7 +167,8 @@ def reinitialise():
 def inputFileLaunch():
     file = request.files['file']
     data = file.readlines()
-
+    print("-----------------------------------------------------------")
+    #print(data)
     upd(data)
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}

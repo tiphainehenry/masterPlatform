@@ -53,7 +53,7 @@ def retrieveMarkingOnName(markings, activity_name):
     """
 
     for elem in markings:
-        print(elem['id'])
+       #print(elem['id'])
 
         if elem['id'] == activity_name:
             return elem
@@ -67,31 +67,33 @@ def initializeGraph(filename):
     :param filename: filename to analyze
 
     """
-
     with open(filename) as json_data:
         data = json.load(json_data)
 
     markings = data['markings']
 
     dataFilename = filename.replace('vect', 'data')
-    with open(dataFilename) as json_data:
-        dataProj = json.load(json_data)
 
-    updProj = []
-    for elem in dataProj:
-        if elem['group'] == 'nodes':
-            # filter out external events
-            if (('classes' not in elem.keys()) or ('external' not in elem['classes'])):
-                elemMarking = retrieveMarkingOnId(markings, elem)
+    try:
+        with open(dataFilename) as json_data:
+            dataProj = json.load(json_data)
+        updProj = []
+        for elem in dataProj:
+            if elem['group'] == 'nodes':
+                # filter out external events
+                if (('classes' not in elem.keys()) or ('type_projChoreo' in elem['classes']) or ('external' not in elem['classes'])):
+                    elemMarking = retrieveMarkingOnId(markings, elem)
+                    if(len(elemMarking) != 0):
+                        if (elemMarking['include'] == 1):
+                            elem['classes'] = elem['classes']+ ' included executable'
 
-                if(len(elemMarking) != 0):
-                    if (elemMarking['include'] == 1):
-                        elem.update({'classes': 'included executable'})
+            updProj.append(elem)
 
-        updProj.append(elem)
+        with open(os.path.join(dataFilename), 'w') as outfile:
+            json.dump(updProj, outfile, indent=2)
 
-    with open(os.path.join(dataFilename), 'w') as outfile:
-        json.dump(updProj, outfile, indent=2)
+    except: 
+        pass #global vec: no need to generate it here
 
 
 def retrieveActivityRelations(relations, activity_id, dataProj):
@@ -110,7 +112,7 @@ def retrieveActivityRelations(relations, activity_id, dataProj):
         :Json[] toExclude: list of exclude constraints stemming out of activity_id with keys {'vectid','projid'}
         :Json[] toRespond: list of response constraints stemming out of activity_id conditions with keys {'vectid','projid'}
     """
-    print(relations)
+   #print(relations)
     conditions = relations['condition']
     milestones = relations['milestone']
     responses = relations['response']
@@ -130,7 +132,7 @@ def retrieveActivityRelations(relations, activity_id, dataProj):
     fromCondition = []
     cnt = 0
     for conditionFrom in conditions:
-        print(conditionFrom)
+       #print(conditionFrom)
         if conditionFrom[activity_id] == 1:
             fromCondition.append({
                 'vectid': cnt,
@@ -174,18 +176,18 @@ def retrieveActivityRelations(relations, activity_id, dataProj):
         cnt = cnt + 1
 
     """
-    print('From Conditions:')
-    print(fromCondition)
-    print('To Conditions:')
-    print(toCondition)
-    print('Milestones:')
-    print(fromMilestone)
-    print('Include:')
-    print(toInclude)
-    print('Exclude:')
-    print(toExclude)
-    print('Responses:')
-    print(toRespond)
+   #print('From Conditions:')
+   #print(fromCondition)
+   #print('To Conditions:')
+   #print(toCondition)
+   #print('Milestones:')
+   #print(fromMilestone)
+   #print('Include:')
+   #print(toInclude)
+   #print('Exclude:')
+   #print(toExclude)
+   #print('Responses:')
+   #print(toRespond)
     """
     return toCondition, fromCondition, fromMilestone, toInclude, toExclude, toRespond
 
@@ -266,8 +268,9 @@ def updCytoData(dataProj, markings):
             if ('classes' in elem.keys()) and ('external' in elem['classes']):
                 pass
             else:
-                classes = []
-
+                classes= []
+                if ('classes' in elem.keys()) and ('type_projChoreo' in elem['classes']):
+                    classes.append('type_projChoreo ')
                 if retrieveMarkingOnId(markings, elem)['include'] == 1:
                     classes.append('included  executable')
                 if retrieveMarkingOnId(markings, elem)['executed'] == 1:
@@ -275,7 +278,7 @@ def updCytoData(dataProj, markings):
                 if retrieveMarkingOnId(markings, elem)['pending'] == 1:
                     classes.append('pending executable')
                 elem.update({'classes': ' '.join(classes)})
-
+     
     return dataProj
 
 
@@ -301,7 +304,7 @@ def executeNode(execInfo):
 
     roleMapping = getRoleMapping(processID, projId)
 
-    dbPath = './client/src/projections/DCR_Projections.json'
+    dbPath = '../../client/src/projections/DCR_Projections.json'
     with open(dbPath) as json_data:
         DCRdb = json.load(json_data)
 
@@ -376,7 +379,7 @@ def executeApprovedNode(processID, role, activity_name):
 
     """
     # retrieve activity data
-    dbPath = './client/src/projections/DCR_Projections.json'
+    dbPath = '../../client/src/projections/DCR_Projections.json'
     with open(dbPath) as json_data:
         DCRdb = json.load(json_data)
 
@@ -431,7 +434,7 @@ def execLogg(roleID, processID, activity_name, status, start_timestamp, data):
     :returns: updated cytoscape node description
     """
 
-    dbPath = './client/src/projections/DCR_Projections.json'
+    dbPath = '../../client/src/projections/DCR_Projections.json'
     with open(dbPath) as json_data:
         DCRdb = json.load(json_data)
 

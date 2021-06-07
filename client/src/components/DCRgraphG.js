@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup';
-import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
-
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 import axios from 'axios';
 import ExecLogger from './execLogger';
@@ -16,9 +12,13 @@ import getWeb3 from '../getWeb3';
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
 
+import Dagre from 'cytoscape-dagre'
+import Klay from 'cytoscape-klay'
 import COSEBilkent from 'cytoscape-cose-bilkent';
 
 Cytoscape.use(COSEBilkent);
+Cytoscape.use(Dagre)
+Cytoscape.use(Klay)
 
 var node_style = require('../style/nodeStyle.json');
 var edge_style = require('../style/edgeStyle.json');
@@ -30,7 +30,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 /**
  * Responsive DCR graph display. Event execution requests are available > the public DCR smart contract is called if the node is public. 
  */
-class DCRgraph extends React.Component {
+class DCRgraphG extends React.Component {
   constructor(props) {
     super(props);
 
@@ -48,10 +48,14 @@ class DCRgraph extends React.Component {
       contract: null,
 
       bcRes: '',
+      owner: '',
 
       incl: '',
       exec: '',
       pend: '',
+
+      pHash : ProcessDB[this.props.processName]['hash'] || '',
+
       dataHashes: '',
       activityData: '',
       wkID: '',
@@ -73,7 +77,7 @@ class DCRgraph extends React.Component {
     var dict = Object.keys(ProcessDB[this.props.processID][this.props.projectionID]);
 
     Object.entries(dict).forEach(([key, value]) => {
-      console.log(key, value);
+      //console.log(key, value);
       if (value === 'v_upd') {
         this.setState({
           altVersionExists: true
@@ -95,6 +99,7 @@ class DCRgraph extends React.Component {
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
+      this.setState({ owner: accounts[0] });
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
@@ -103,12 +108,14 @@ class DCRgraph extends React.Component {
         PublicDCRManager.abi,
         deployedNetwork && deployedNetwork.address,
       );
-
+        console.log(instance);
       var wkID = this.props.processName.replace('p', '') - 1;
-      const inclVector = await instance.methods.getIncluded(wkID).call();
-      const execVector = await instance.methods.getExecuted(wkID).call();
-      const pendVector = await instance.methods.getPending(wkID).call();
-      const hashesVector = await instance.methods.getHashes(wkID).call();
+      var pHash = ProcessDB[this.props.processName]['hash'];
+      
+      const inclVector = await instance.methods.getIncluded(pHash).call();
+      const execVector = await instance.methods.getExecuted(pHash).call();
+      const pendVector = await instance.methods.getPending(pHash).call();
+      const hashesVector = await instance.methods.getHashes(pHash).call();
 
       this.setState({
         web3, accounts, contract: instance,
@@ -120,14 +127,13 @@ class DCRgraph extends React.Component {
         pend: pendVector,
         dataHashes: hashesVector
       })
-
       this.cy.fit();
 
     } catch (error) {
       // Catch any errors for any of the above operations.
-      //alert(
-      //  `Failed to load web3, accounts, or contract. Check console for details.`,
-      //);
+      alert(
+        `[Load contract issue] Failed to load web3, accounts, or contract. Check console for details.`,
+      );
       console.error(error);
     };
 
@@ -144,7 +150,7 @@ class DCRgraph extends React.Component {
     var dict = Object.keys(ProcessDB[this.props.processID][this.props.projectionID]);
 
     Object.entries(dict).forEach(([key, value]) => {
-      console.log(key, value);
+      //console.log(key, value);
       if (value === 'v_upd') {
         this.setState({
           altVersionExists: true
@@ -152,8 +158,13 @@ class DCRgraph extends React.Component {
       }
     });
 
+    // this.props.data.unshift({group:"nodes",classes:"external choreography",data:{id:"c1s", name:"toto"}})
+    //this.props.data.forEach(e => {
+    //    console.log(e.data)
+    //  })
 
     this.cy.fit();
+
 
     this.setUpListeners();
   };
@@ -200,10 +211,10 @@ class DCRgraph extends React.Component {
     try {
       //var hashData = this.state.web3.utils.fromAscii(this.state.activityData);
       //await contract.methods.checkCliquedIndex(this.state.indexClicked, hashData).send({ from: accounts[0] });
-      await contract.methods.checkCliquedIndex(this.state.wkID, this.state.indexClicked).send({ from: accounts[0] });
+      await contract.methods.checkCliquedIndex(this.state.pHash, this.state.indexClicked).send({ from: accounts[0] });
 
       // Get the value from the contract.
-      const output = await contract.methods.getCanExecuteCheck(this.state.wkID, this.state.indexClicked).call();
+      const output = await contract.methods.getCanExecuteCheck(this.state.pHash, this.state.indexClicked).call();
       switch (output) {
         case '1':
           window.alert('Task not included');
@@ -216,6 +227,11 @@ class DCRgraph extends React.Component {
         case '3':
           window.alert('Milestones not fulfilled');
           this.setState({ bcRes: 'BC exec - rejected - milestonesNotFulfilled' });
+          break;
+        case '4':
+          const rightAddress = await contract.methods.getRoleAddresses(this.state.pHash, this.state.indexClicked).call();
+          window.alert('Authentication issue - wrong user tried to execute task.\nExpected '+rightAddress+'...');
+          this.setState({ bcRes: 'BC exec - rejected - authentication error' });
           break;
         case '0':
           //window.alert('Task executable');
@@ -323,6 +339,7 @@ class DCRgraph extends React.Component {
       }
     });
 
+
     if (hasPending) {
       // If ongoing graph execution, revert. 
       console.log('not possible yet: we spotted a pending event --> the instance is under execution!');
@@ -344,7 +361,7 @@ class DCRgraph extends React.Component {
           this.setState({
             altVersionExists: false
           });
-  
+
         },
         (error) => {
           console.log(error);
@@ -361,12 +378,10 @@ class DCRgraph extends React.Component {
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
 
-
     return <div>
+      <div className="bg-green pt-5 pb-3">
 
-      <div class="bg-green pt-5 pb-3">
-
-        <div class='container'>
+        <div className='container'>
           <h2>Process {this.props.processName}</h2>
           <h3>Private Projection for the role {this.props.id}</h3>
           <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
@@ -379,7 +394,9 @@ class DCRgraph extends React.Component {
 
           <Card style={{ height: '90%', 'marginTop': '3vh' }}>
             <Card.Header as="p" style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
-              {this.props.id}</Card.Header>
+              {this.props.id} Projection
+              <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
+            </Card.Header>
             <Card.Body >
               <CytoscapeComponent elements={this.props.data}
                 stylesheet={stylesheet}
@@ -414,4 +431,4 @@ class DCRgraph extends React.Component {
   }
 }
 
-export default DCRgraph
+export default DCRgraphG

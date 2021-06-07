@@ -118,15 +118,35 @@ def generateRelationMatrices(chunks):
     """
 
     #print('[INFO] Generating Relation Matrices')
-
     relations = chunks['linkages']
     events = chunks['events'] + chunks['internalEvents']
+    
+    # get list of events
+    eventsList = getRoleList(events)
 
     if relations == []:
-        return [], [0, 0, 0, 0, 0]
+        nullMatrix = np.zeros((len(eventsList), len(eventsList)))
+        relationMatrices = [
+            {
+                'condition': nullMatrix,
+                'milestone': nullMatrix,
+                'response': nullMatrix,
+                'include':  nullMatrix,
+                'exclude':  nullMatrix
+            }
+        ]
+
+        fullMatrix = []
+        listRelation = nullMatrix.tolist()
+        for elem in listRelation:
+            newLine = []
+            for item in elem:
+                newLine.append(str(item).replace('.0', ''))
+            fullMatrix.append(newLine)
+
+        
+        return relationMatrices, [fullMatrix, fullMatrix, fullMatrix, fullMatrix, fullMatrix]
     else:
-        # get list of events
-        eventsList = getRoleList(events)
 
         rc, rfc = generateRelationMatrix('condition', eventsList, relations)
         rm, rfm = generateRelationMatrix('milestone', eventsList, relations)
@@ -261,8 +281,8 @@ def vectorize(data, filename):
     :param filename: filename to save vectorization
 
     """
-
     chunks, roles = extractChunks(data)
+
 
     relations, fullRelations = generateRelationMatrices(chunks)
 
@@ -286,6 +306,7 @@ def vectorize(data, filename):
             'milestone': fullRelations[4]
         }
     }
+
 
     path = filename+'.json'
     with open(path, 'w') as outfile:
@@ -311,6 +332,7 @@ def vectorizeRole(data, filename):
         'markings': generateInitialMarkings(chunks)
     }
     path = filename+'.json'
+
     with open(path, 'w') as outfile:
         json.dump(bitvectors, outfile, indent=2, cls=NumpyEncoder)
 
@@ -325,7 +347,6 @@ def vectorizeRoleFromCyto(processID, roleID, data):
     :param filename: filename to save vectorizations
     """
 
-    #print(data)
     nodes=[]
     edges=[]
     for elem in data:
@@ -358,10 +379,10 @@ def vectorizeRoleFromCyto(processID, roleID, data):
         rel_matrices[relation_type] = relationMatrix2List
 
     #display relation matrices:
-    for rel in ['condition','response','include','exclude','milestone']:
-        print(rel)
-        for elem in rel_matrices[rel]:
-            print(elem)
+    #for rel in ['condition','response','include','exclude','milestone']:
+       #print(rel)
+    #    for elem in rel_matrices[rel]:
+           #print(elem)
 
     #MARKINGS:
     markings = []

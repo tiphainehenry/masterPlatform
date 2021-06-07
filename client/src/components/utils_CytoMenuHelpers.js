@@ -4,42 +4,40 @@ const cytoMenuHelpers = {
     * handle activity update (name, markings, tenant(s))
     */
     updActivity: function () {
+        console.log(this.state.elemClicked);
+        var id = this.state.elemClicked.id;
+        console.log('updating activity ' + id);
+        /// Marking
+        this.cy.getElementById(this.state.elemClicked.id).removeClass('included');
+        this.cy.getElementById(this.state.elemClicked.id).removeClass('executed');
+        this.cy.getElementById(this.state.elemClicked.id).removeClass('pending');
 
-        if (this.state.elemClicked.classes.has('choreography')) {
-            alert('choreography task - negociation stage to implement')
+        if (this.state.markings.executed === 1) {
+            this.cy.getElementById(this.state.elemClicked.id).addClass('executed');
+        }
+        if (this.state.markings.included === 1) {
+            this.cy.getElementById(this.state.elemClicked.id).addClass('included executable');
+        }
+        if (this.state.markings.pending === 1) {
+            this.cy.getElementById(this.state.elemClicked.id).addClass('pending executable');
+        }
+
+        /// Remove space in name and assign Name
+        const tmp = this.cy.getElementById(this.state.elemClicked.id)
+        console.log(tmp);
+        if (this.state.elemClicked.activityName !== tmp.data('properName')) {
+            console.log("verif");
+            console.log(tmp.data('name').split(' ')[1]);
+            this.setState({ elemeClicked: { activityName: tmp.data('name').split(' ')[1] } })
+        }
+        if (this.state.elemClicked.classes.has("choreography")) {
+            tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
         }
         else {
-            var id = this.state.elemClicked.id;
-
-
-            console.log('updating activity ' + id);
-
-            /// Marking
-
-            this.cy.getElementById(this.state.elemClicked.id).removeClass('included');
-            this.cy.getElementById(this.state.elemClicked.id).removeClass('executed');
-            this.cy.getElementById(this.state.elemClicked.id).removeClass('pending');
-
-            if (this.state.markings.executed === 1) {
-                this.cy.getElementById(this.state.elemClicked.id).addClass('executed');
-            }
-            if (this.state.markings.included === 1) {
-                this.cy.getElementById(this.state.elemClicked.id).addClass('included executable');
-            }
-            if (this.state.markings.pending === 1) {
-                this.cy.getElementById(this.state.elemClicked.id).addClass('pending executable');
-            }
-
-            /// Name
-            if (this.state.elemClicked.classes.has("choreography")) {
-                this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
-            }
-            else {
-
-                this.cy.getElementById(this.state.elemClicked.id).data('name', this.state.elemClicked.activityName);
-            }
-
+            tmp.data('name', this.state.tenantName + ' ' + this.state.elemClicked.activityName);
         }
+        tmp.data('properName', tmp.data('name'));
+
     },
 
     /**
@@ -58,12 +56,12 @@ const cytoMenuHelpers = {
                 else {
 
                     console.log('removing node with id ' + id);
-                    var j = this.cy.getElementById(id);
+                    var jn = this.cy.getElementById(id);
 
                     this.setState({
                         numSelected: this.state.numSelected - 1
                     });
-                    this.cy.remove(j);
+                    this.cy.remove(jn);
 
                 }
 
@@ -71,8 +69,8 @@ const cytoMenuHelpers = {
 
             case 'edges':
                 console.log('removing edge with id ' + id);
-                var j = this.cy.getElementById(id);
-                this.cy.remove(j);
+                var je = this.cy.getElementById(id);
+                this.cy.remove(je);
                 break;
 
             default:
@@ -89,13 +87,14 @@ const cytoMenuHelpers = {
     */
     addLocalActivity: function () {
         console.log('add local activity');
-
         var label = 'NewActivity' + this.state.newActivityCnt;
         this.cy.add({
             group: 'nodes',
             data: {
                 id: label,
-                name: label
+                name: label,
+                nbr: this.state.newActivityCnt,
+                properName: label
             },
             classes: "subgraph"
         });
@@ -110,27 +109,23 @@ const cytoMenuHelpers = {
     */
     addChoreoActivity: function () {
 
-        alert('choreography task - negociation stage to implement');
+        console.log('add choreography activity');
 
-        if (false) {
-            console.log('add choreography activity');
+        var label = 'NewActivity' + this.state.newActivityCnt;
 
-            var label = 'NewActivity' + this.state.newActivityCnt;
+        this.cy.add({
+            group: 'nodes',
+            data: {
+                id: label,
+                name: this.state.choreographyNames.sender + " " + label + " " + this.state.choreographyNames.receiver,
+                nbr: this.state.newActivityCnt
+            },
+            classes: "subgraph choreography"
+        });
 
-            this.cy.add({
-                group: 'nodes',
-                data: {
-                    id: label,
-                    name: this.state.choreographyNames.sender + "\n" + label + "\n" + this.state.choreographyNames.receiver
-                },
-                classes: "subgraph choreography"
-            });
-
-            this.setState({
-                newActivityCnt: this.state.newActivityCnt + 1
-            });
-        }
-
+        this.setState({
+            newActivityCnt: this.state.newActivityCnt + 1
+        });
     },
 
 
@@ -143,9 +138,10 @@ const cytoMenuHelpers = {
     */
     addRelation(type) {
 
-        // CHECK TYPE OF SOURCE AND TARGET: 
-
-        if ((this.state.source.type == 'subgraph') && (this.state.target.type == 'subgraph')) {
+        // CHECK SOURCE AND TARGET AND THEIR TYPE: 
+        if ((this.state.target.ID === '') || (this.state.source.ID === ''))
+            return
+        if ((this.state.source.type === 'subgraph') && (this.state.target.type === 'subgraph')) {
             // TWO SUBGRAPHS: OPERATIONS OK
             console.log('add relation ' + type);
             console.log('source ' + this.state.source.ID + ' ' + this.state.source.type);
@@ -160,14 +156,11 @@ const cytoMenuHelpers = {
                 },
                 classes: type,
             });
-        }
-
-        else {
-            // INSPECT CONDITIONS.
+        } else {   // INSPECT CONDITIONS.
             switch (type) {
                 case 'include':
                 case 'exclude':
-                    if (this.state.target.type == 'subgraph') {
+                    if (this.state.target.type === 'subgraph') {
                         console.log('add relation ' + type);
                         console.log('source ' + this.state.source.ID + ' ' + this.state.source.type);
                         console.log('target ' + this.state.target.ID + ' ' + this.state.target.type);

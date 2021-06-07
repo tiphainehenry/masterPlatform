@@ -1,82 +1,83 @@
 [
+  {
+    "selector": "node",
+    "style": {
+      "shape": "rectangle",
+      "height": "120",
+      "width": "240",
+      "backgroundColor": "#ccc",
+      "border-style": "dashed",
+      "border-width": 3,
+      "border-color": "#343a40",
+      "color": "#343a40",
+      "fontSize": "20",
+      "text-halign": "center",
+      "text-valign": "center",
+      "text-wrap": "wrap",
+      "text-max-width": 60, 
+      "line-height": 2,
+      "label": "data(name)"
+    }
+  },
+  {
+    "selector": "node[type='sender'], node[type='receiver']",
+    "style": {
+      "height": 15
+    }
+  },
     {
-      "selector": "node",
+      "selector": "node.executable",
       "style": {
-        "shape": "rectangle",
-        "height": "120",
-        "width": "240",
-        "backgroundColor": "#ccc",
-        "border-style": "dashed",
-        "border-width": 3,
-        "border-color": "#343a40",
-        "color": "#343a40",
-        "fontSize": "20",
-        "text-halign": "center",
-        "text-valign": "center",
-        "text-wrap": "wrap",
-        "text-max-width": 60, 
-        "line-height": 2,
-        "label": "data(name)"
+        "border-color": "#454545",
+        "color": "#454545",
+        "backgroundColor":"white"
       }
     },
     {
-      "selector": "node[type='sender'], node[type='receiver']",
+      "selector": "node.included",
       "style": {
-        "height": 15
+        "backgroundColor":"white",
+        "border-style": "solid"
       }
     },
-      {
-        "selector": "node.executable",
-        "style": {
-          "border-color": "#454545",
-          "color": "#454545",
-          "backgroundColor": "#fafafa"
-        }
-      },
-      {
-        "selector": "node.included",
-        "style": {
-          "border-style": "solid"
-        }
-      },
-      {
-       "selector": "node.executed",
-        "style": {
-          "color": "#29A81A",
-          "backgroundColor":"white"
-        }
-      },
-      {
-        "selector": "node.pending",
-        "style": {
-          "border-color": "#1E90FF"
-        }
-      },
-      {
-        "selector": "node.selected",
-        "style": {
-          "border-width": 10
-        }
-      },
-      {
-          "selector": "node.external",
-          "style": {
-            "backgroundColor": "#343a40",
-            "color":"white"
-            }
-          },
-      {
-        "selector": "node.subgraph",
-        "style": {
-          "backgroundColor": "#ff7900"
-        }
-      },
-      {
-        "selector": "node.choreography",
-        "style": {
-        "border-color": "#1E90FF",
-        "text-outline-color": "yellow",
-        "text-outline-width": 2        }
+    {
+     "selector": "node.executed",
+      "style": {
+        "color": "#29A81A",
+        "backgroundColor":"white"
       }
-    
-  ]
+    },
+    {
+      "selector": "node.pending",
+      "style": {
+        "border-color": "#1E90FF"
+      }
+    },
+    {
+      "selector": "node.selected",
+      "style": {
+        "border-width": 10
+      }
+    },
+    {
+        "selector": "node.external,node.type_projReceiver",
+        "style": {
+          "shape":"octagon",
+          "opacity":0.6,
+          "border-style": "dashed"
+          }
+        },
+        {
+      "selector": "node.subgraph",
+      "style": {
+        "backgroundColor": "#ff7900"
+      }
+    },
+    {
+      "selector": "node.choreography, node.type_projChoreo",
+      "style": {
+        "shape":"octagon"
+}
+    }
+  
+]

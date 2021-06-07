@@ -4,7 +4,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import '../style/App.css';
-import { Button } from 'react-bootstrap';
 
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
 import getWeb3 from '../getWeb3';
@@ -30,7 +29,7 @@ class ExecLogger extends React.Component {
     // check if BC node
 
     if(ev.status.includes('public')){
-      const { accounts, contract } = this.state;
+      const { contract } = this.state;
 
       try{
         const hashesVector = await contract.methods.getHashes().call();
@@ -39,7 +38,7 @@ class ExecLogger extends React.Component {
         var taskTriggered = ev.task;
     
         // retrieve data hash with activity id       
-        if(taskTriggered.charAt(0) =='e'){
+        if(taskTriggered.charAt(0) ==='e'){
           var lastChar = taskTriggered.charAt(taskTriggered.length-1);
   
           console.log(lastChar)
@@ -63,7 +62,7 @@ class ExecLogger extends React.Component {
         var activityId= activities.findIndex(isElem);
 
         // check hashes
-        if(hashesVector[activityId]==this.state.web3.utils.fromAscii(dataToCheck)){
+        if(hashesVector[activityId]===this.state.web3.utils.fromAscii(dataToCheck)){
           window.alert('success, data has been authenticated.');
         }
         else{
@@ -118,10 +117,11 @@ class ExecLogger extends React.Component {
               <Card id="exec" style={{height:'70%','marginTop':'3vh'}}>
               <Card.Header as="p" style= {{color:'white', 'backgroundColor': '#32a86f', 'borderBottom':'white'}}>
                   Execution logs</Card.Header>
-                <Card.Body style={{height:'20%'}}>
+                <Card.Body style={{height:'20%', 'overflowY': 'scroll', height: '20vh'}}>
                   <div className="card-text" >
+                    
                     {this.props.execLogs.execLogs.map(item=> 
-                    <div>
+                    <div key={'div'+item.id}>
                       <Row  key={item.id} style= {{'fontSize': '10pt', 'fontWeight': 200}} xs={1} md={5} >
                         <Col sm>Start:{item.timestamp_startTask}</Col>
                         <Col sm>End:{item.timestamp_endTask}</Col>
@@ -139,7 +139,7 @@ class ExecLogger extends React.Component {
                       }}/>
             </div>
 
-                    )}
+                    ).reverse()}
                   </div>
                 </Card.Body>
               </Card>

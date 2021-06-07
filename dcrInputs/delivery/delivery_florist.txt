@@ -1,3 +1,7 @@
+pk[role=Driver] = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB
+pk[role=Florist] = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819
+pk[role=Customer] = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5
+
 ## declare events
 
 # Choreography exchanges
@@ -13,19 +17,16 @@ e7[PayDriver src=Florist tgt=Driver]
 "PrepareCommand"  [role=Florist]
 "CallShipper"  [role=Florist]
 "SettleCommand"  [role=Florist]
-"ReturnTruck" [role=Driver]  
-
-## group events
-Group "Decide" {e3 e4}
-Group "ProcessToDelivery" {e5 e6}
-Group "SettleOrder" {ReturnTruck e7 SettleCommand}
 
 ## link events
 e1 --<> e2
 e1 *--> e2
 
-e2 *--> Decide
-e2 --<> Decide
+e2 *--> e3
+e2 --<> e3
+
+e2 *--> e4
+e2 --<> e4
 
 e3 -->+ e5
 e3 *--> e5
@@ -38,22 +39,24 @@ PrepareCommand *--> CallShipper
 CallShipper -->* e1
 CallShipper *--> e1
 
-ReturnTruck -->* e7
-ReturnTruck *--> e7
-
 e7 -->* SettleCommand  
 e7 *--> SettleCommand
 
-e4 *--> SettleOrder 
-ProcessToDelivery *--> SettleOrder 
+e4 *--> e7 
+e5 *--> e7 
+e6 *--> e7 
+
+e4 *--> SettleCommand 
+e5 *--> SettleCommand 
+e6 *--> SettleCommand 
 
 ## exclude events
-Decide -->% Decide
-e4 -->% ProcessToDelivery
+e3 -->% e3
+e4 -->% e4
 
-#monoevents - not displayed due to cytoscape layout constraints
-#e5 -->% e5
-#e6 -->% e6
-#ReturnTruck -->% ReturnTruck
-#e14 -->% e14
-#SettleCommand  -->% SettleCommand
+e4 -->% e5
+e4 -->% e6
+
+e5 -->% e5
+e6 -->% e6
+SettleCommand  -->% SettleCommand

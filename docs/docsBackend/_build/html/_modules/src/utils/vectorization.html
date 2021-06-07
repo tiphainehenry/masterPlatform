@@ -43,9 +43,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="k">import</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">NumpyEncoder</span><span class="p">,</span> <span class="n">getRoleList</span>
-<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="k">import</span> <span class="n">extractChunks</span><span class="p">,</span> <span class="n">extractRoleChunks</span>
-<span class="kn">from</span> <span class="nn">src.utils.graphManager</span> <span class="k">import</span> <span class="n">initializeGraph</span>
+<span class="kn">from</span> <span class="nn">src.utils.formatting</span> <span class="kn">import</span> <span class="n">getFileName</span><span class="p">,</span> <span class="n">NumpyEncoder</span><span class="p">,</span> <span class="n">getRoleList</span>
+<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="kn">import</span> <span class="n">extractChunks</span><span class="p">,</span> <span class="n">extractRoleChunks</span>
+<span class="kn">from</span> <span class="nn">src.utils.graphManager</span> <span class="kn">import</span> <span class="n">initializeGraph</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -64,6 +64,7 @@
 <span class="sd">    :addFullMarkings(markings): computes activity name variants, and list of markings of the projection</span>
 <span class="sd">    :vectorize(data, filename): vectorizes the textual description of the global dcr graph (markings and relation matrices)</span>
 <span class="sd">    :vectorizeRole(data, filename):vectorizes the textual description of the projected dcr graphs (markings and relation matrices)</span>
+<span class="sd">    :vectorizeRoleFromCyto(data, filename): vectorizes the cytoscape representation of the projected dcr graph</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -183,7 +184,7 @@
 
 
 <div class="viewcode-block" id="generateInitialMarking"><a class="viewcode-back" href="../../../Utils.html#src.utils.vectorization.generateInitialMarking">[docs]</a><span class="k">def</span> <span class="nf">generateInitialMarking</span><span class="p">(</span><span class="n">eventsList</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">relations</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;     generates initial markings of a projection</span>
+    <span class="sd">&quot;&quot;&quot;     generates initial markings of a projection. Executed and pending markings are set to zero.</span>
 
 <span class="sd">    :param eventsList: list of event ids</span>
 <span class="sd">    :param events: list of projection events</span>
@@ -191,9 +192,8 @@
 <span class="sd">    :returns: list of event markings where each marking is a dict with keys {id, include, executed, pending}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#m_Matrix = np.zeros(len(eventsList))</span>
     <span class="n">m2</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1"># get list of events without from activities</span>
+    <span class="c1"># Get all included elems ==&gt; get list of events without from activities</span>
 
     <span class="c1"># step1: extract to events</span>
     <span class="n">to_events</span> <span class="o">=</span> <span class="p">[]</span>
@@ -344,13 +344,88 @@
     <span class="n">bitvectors</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;relations&#39;</span><span class="p">:</span> <span class="n">rel</span><span class="p">,</span>
         <span class="s1">&#39;markings&#39;</span><span class="p">:</span> <span class="n">generateInitialMarkings</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
-
     <span class="p">}</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">filename</span><span class="o">+</span><span class="s1">&#39;.json&#39;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">bitvectors</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">NumpyEncoder</span><span class="p">)</span>
 
     <span class="n">initializeGraph</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="vectorizeRoleFromCyto"><a class="viewcode-back" href="../../../Utils.html#src.utils.vectorization.vectorizeRoleFromCyto">[docs]</a><span class="k">def</span> <span class="nf">vectorizeRoleFromCyto</span><span class="p">(</span><span class="n">processID</span><span class="p">,</span> <span class="n">roleID</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vectorizes the cytoscape representation of the projected dcr graph.</span>
+<span class="sd">    First: generates all relation matrices, and then the markings.</span>
+<span class="sd">    :param data: cytoscape description of the role dcr graphs</span>
+<span class="sd">    :param filename: filename to save vectorizations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#print(data)</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">edges</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;nodes&#39;</span><span class="p">):</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="n">eventsList</span> <span class="o">=</span> <span class="p">[</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">]</span>
+
+    <span class="c1">#RELATION MATRICES</span>
+    <span class="n">rel_matrices</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">rel_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;condition&#39;</span><span class="p">,</span><span class="s1">&#39;response&#39;</span><span class="p">,</span><span class="s1">&#39;include&#39;</span><span class="p">,</span><span class="s1">&#39;exclude&#39;</span><span class="p">,</span><span class="s1">&#39;milestone&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">relation_type</span> <span class="ow">in</span> <span class="n">rel_types</span><span class="p">:</span>
+        <span class="n">relationMatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)))</span>
+
+        <span class="c1"># filter set of relations with relation type</span>
+        <span class="n">relationList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">relation_type</span> <span class="ow">in</span> <span class="n">relation</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">]):</span>
+                <span class="n">relationList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span>    
+        <span class="c1"># update matrix</span>
+        <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">relationList</span><span class="p">:</span>
+            <span class="n">relationMatrix</span><span class="p">[</span><span class="n">eventsList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
+                <span class="n">relation</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;source&#39;</span><span class="p">])][</span><span class="n">eventsList</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">relation</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;target&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># convert np array to list</span>
+        <span class="n">relationMatrix2List</span> <span class="o">=</span> <span class="n">relationMatrix</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># update list of matrices</span>
+        <span class="n">rel_matrices</span><span class="p">[</span><span class="n">relation_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">relationMatrix2List</span>
+
+    <span class="c1">#display relation matrices:</span>
+    <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;condition&#39;</span><span class="p">,</span><span class="s1">&#39;response&#39;</span><span class="p">,</span><span class="s1">&#39;include&#39;</span><span class="p">,</span><span class="s1">&#39;exclude&#39;</span><span class="p">,</span><span class="s1">&#39;milestone&#39;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">rel_matrices</span><span class="p">[</span><span class="n">rel</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="c1">#MARKINGS:</span>
+    <span class="n">markings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># get list of events without from activities ==&gt; get all included events</span>
+
+    <span class="c1"># step1: extract to events</span>
+    <span class="n">to_events</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="n">elem</span> <span class="o">=</span> <span class="n">relation</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;target&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_events</span><span class="p">:</span>
+            <span class="n">to_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="c1"># step2: filter on events without to elem</span>
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">eventsList</span><span class="p">:</span>
+        <span class="n">include</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_events</span><span class="p">:</span>
+            <span class="n">include</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">markings</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">,</span> <span class="s1">&#39;include&#39;</span><span class="p">:</span> <span class="n">include</span><span class="p">,</span>
+                   <span class="s1">&#39;executed&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+
+    <span class="n">bitvectors</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;relations&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">rel_matrices</span><span class="p">],</span>
+        <span class="s1">&#39;markings&#39;</span><span class="p">:</span> <span class="n">markings</span><span class="p">,</span>
+        <span class="s1">&#39;activityNames&#39;</span><span class="p">:{</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span><span class="n">eventsList</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+        
+    <span class="k">return</span> <span class="n">bitvectors</span></div>
 </pre></div>
 
           </div>

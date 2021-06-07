@@ -167,8 +167,8 @@ def generatePublicProjection(chunks, filename):
         events + projGrouping + linkages
 
     # generate dict
-    privateEvents = generateDictEvent(public_events)
-    externalEvents = generateDictEvent(externalEvents)
+    privateEvents = generateDictEvent(public_events, chunks['addresses'])
+    externalEvents = generateDictEvent(externalEvents, chunks['addresses'])
     relations = generateDictRelation(linkages)
 
     with open(filename) as json_file:
@@ -191,7 +191,7 @@ def projectPublic(processID, data, target):
 
     :param processID: the ID of the current process. eg: "p1"
     :param data: json description of the global dcr
-    :param target: the path where the projection will be saved. eg: './client/src/projections/'
+    :param target: the path where the projection will be saved. eg: '../../client/src/projections/'
     """
 
     print('[INFO] Starting Public Projection')

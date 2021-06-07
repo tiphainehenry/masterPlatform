@@ -1,13 +1,9 @@
 import React from 'react';
-import CardGroup from 'react-bootstrap/CardGroup';
-import RoleDescription from './roleDescription';
 
 import Header from './Header';
 import ExecLogger from './execLogger';
 import PublicMarkings from './PublicMarkings';
-import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import Sidebar from './SidebarInstance';
-
+import { Card, Row, Col, Container } from 'react-bootstrap';
 
 import equal from 'fast-deep-equal'
 
@@ -17,6 +13,9 @@ import getWeb3 from '../getWeb3';
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
 import COSEBilkent from 'cytoscape-cose-bilkent';
+import panzoom from 'cytoscape-panzoom';
+
+panzoom(Cytoscape);
 Cytoscape.use(COSEBilkent);
 
 var node_style = require('../style/nodeStyle.json');
@@ -35,7 +34,6 @@ class ViewPublic extends React.Component {
     this.state = {
       projType: 'Public Projection',
 
-      processData: '',
       activityNames: [],
       execLogs: '',
 
@@ -74,7 +72,6 @@ class ViewPublic extends React.Component {
    * if a view update occurs, updates all state variables (new processID, projectionID, execLogs, and activity names)
    */
   componentDidUpdate(prevProps) {
-
     // update processID
     if (!equal(this.props.location.state['currentProcess'][0], prevProps.location.state['currentProcess'][0]) ||
       !equal(this.props.location.state['currentInstance'], prevProps.location.state['currentInstance'])
@@ -119,7 +116,7 @@ class ViewPublic extends React.Component {
         });
       }
     }
-    var processID = this.props.location.state['currentProcess'][1];
+    processID = this.props.location.state['currentProcess'][1];
     var ProcessDataPublic = ProcessDB[processID][this.state.projectionID];
     console.log(ProcessDataPublic);
 
@@ -130,6 +127,7 @@ class ViewPublic extends React.Component {
     })
 
     this.loadContract();
+
 
   }
 
@@ -188,7 +186,17 @@ class ViewPublic extends React.Component {
    */
   componentDidMount = async () => {
     this.cy.fit();
-
+    this.cy.panzoom()
+    this.cy.nodes().forEach(node => {
+      const classes = node._private.classes
+      if (classes.has("choreography") || classes.has("external"))
+        if (classes.has("executed"))
+          node.addClass("choreoExecuted")
+        else if (classes.has("pending"))
+          node.addClass("choreoPending")
+        else if (classes.has("executable"))
+          node.addClass("choreoExecutable")
+    })
   };
 
   render() {
@@ -217,7 +225,8 @@ class ViewPublic extends React.Component {
                       stylesheet={stylesheet}
                       layout={layout}
                       style={style}
-                      cy={(cy) => { this.cy = cy }}
+                      cy={(cy) => {this.cy = cy}}
+                      wheelSensitivity={0.3}
                       boxSelectionEnabled={false}
                     />
                   </Card.Body>

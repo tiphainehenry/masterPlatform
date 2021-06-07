@@ -36,8 +36,8 @@
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="k">import</span> <span class="n">getRoleMapping</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">src.utils.chunking</span> <span class="kn">import</span> <span class="n">getRoleMapping</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set of functions to manage dcr graph execution </span>
@@ -145,7 +145,7 @@
 <span class="sd">        :Json[] toExclude: list of exclude constraints stemming out of activity_id with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
 <span class="sd">        :Json[] toRespond: list of response constraints stemming out of activity_id conditions with keys {&#39;vectid&#39;,&#39;projid&#39;}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="nb">print</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
     <span class="n">conditions</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;condition&#39;</span><span class="p">]</span>
     <span class="n">milestones</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;milestone&#39;</span><span class="p">]</span>
     <span class="n">responses</span> <span class="o">=</span> <span class="n">relations</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span>
@@ -345,9 +345,9 @@
 
     <span class="c1"># check if not external event</span>
     <span class="n">activity_id</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">while</span><span class="p">(</span><span class="n">dataProj</span><span class="p">[</span><span class="n">activity_id</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">activity_name</span><span class="p">):</span>
-        <span class="n">activity_id</span> <span class="o">=</span> <span class="n">activity_id</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">dataProj</span><span class="p">:</span>
+        <span class="k">if</span><span class="p">((</span><span class="n">dataProj</span><span class="p">[</span><span class="n">activity_id</span><span class="p">][</span><span class="s1">&#39;group&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;nodes&#39;</span><span class="p">)</span><span class="o">&amp;</span> <span class="p">(</span><span class="n">dataProj</span><span class="p">[</span><span class="n">activity_id</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">activity_name</span><span class="p">)):</span>
+            <span class="n">activity_id</span> <span class="o">=</span> <span class="n">activity_id</span><span class="o">+</span><span class="mi">1</span>
     <span class="k">if</span> <span class="s1">&#39;external&#39;</span> <span class="ow">in</span> <span class="n">dataProj</span><span class="p">[</span><span class="n">activity_id</span><span class="p">][</span><span class="s1">&#39;classes&#39;</span><span class="p">]:</span>
         <span class="k">return</span> <span class="s1">&#39;rejected - external event&#39;</span>
 

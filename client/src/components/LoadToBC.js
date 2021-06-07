@@ -1,8 +1,9 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import CytoscapeComponent from 'react-cytoscapejs';
 import PublicDCRManager from "../contracts/PublicDCRManager.json";
 import getWeb3 from "../getWeb3";
+
+import { Button, Table } from 'react-bootstrap';
 
 var node_style = require('../style/nodeStyle.json')
 var edge_style = require('../style/edgeStyle.json')
@@ -14,7 +15,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 /**
  * Component uploading a new public instance into the smart contract graph manager
  */
-class LoadToBC extends React.Component {
+class LoadToBCL extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +26,7 @@ class LoadToBC extends React.Component {
       lenDataDB: 0,
       wkState: '... waiting for Smart Contract instanciation ...',
 
-
+      addresses:[],
       includedStates: '',
       executedStates: '',
       pendingStates: '',
@@ -33,9 +34,13 @@ class LoadToBC extends React.Component {
       excludesTo: '',
       responsesTo: '',
       conditionsFrom: '',
-      milestonesFrom: ''
+      milestonesFrom: '',
+      ethAddress:''
     };
     this.handleCreateWkf = this.handleCreateWkf.bind(this);
+    this.connectToWeb3 = this.connectToWeb3.bind(this);
+    this.getWKCreationReceipt = this.getWKCreationReceipt.bind(this);
+    this.fetchWKData = this.fetchWKData.bind(this);
   }
 
   /**
@@ -51,25 +56,34 @@ class LoadToBC extends React.Component {
   componentWillMount() {
 
     var lenDataDB = Object.keys(ProcessDB).length;
-    if (lenDataDB > 0) {
-      this.setState({
-        data: ProcessDB[Object.keys(ProcessDB)[0]]['Global']['data'],
-        processName: Object.keys(ProcessDB)[0],
-        lenDataDB: lenDataDB,
 
-        activityNames: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['activityNames']['default'],
-        includedStates: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullMarkings']['included'],
-        executedStates: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullMarkings']['executed'],
-        pendingStates: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullMarkings']['pending'],
-        includesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['include'],
-        excludesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['exclude'],
-        responsesTo: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['response'],
-        conditionsFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['condition'],
-        milestonesFrom: ProcessDB[Object.keys(ProcessDB)[0]]['Public']['vect']['fullRelations']['milestone']
-
-      })
+    try{
+      if (lenDataDB > 0) {
+        // connect list of activities to corresponding role first, and then to the right role address
+        var wkData = this.fetchWKData(Object.keys(ProcessDB)[1]);
+        this.setState({
+          lenDataDB: lenDataDB,
+          data: wkData[0],
+          processName: wkData[1],
+    
+          activityNames: wkData[2],
+          includedStates: wkData[3],
+          executedStates: wkData[4],
+          pendingStates: wkData[5],
+          includesTo: wkData[6],
+          excludesTo: wkData[7],
+          responsesTo: wkData[8],
+          conditionsFrom: wkData[9],
+          milestonesFrom: wkData[10],
+          addresses: wkData[11],
+          approvalList: wkData[12]
+        });    
+      }
+  
     }
-
+    catch{
+      console.log('initialization of the db')
+    }
     this.connectToWeb3()
 
   }
@@ -91,11 +105,8 @@ class LoadToBC extends React.Component {
 
       this.setState({ web3, accounts, contract: instance });
 
-      console.log('ok');
-
       // Checking if contract already populated
-      const { contract } = this.state;
-      this.setState({ wkState: 'Create Global Workflow OnChain.' })
+      //this.setState({ wkState: '2./ Uploaded' })
 
     } catch (error) {
       alert(
@@ -107,30 +118,146 @@ class LoadToBC extends React.Component {
     };
   }
 
+  fetchWKData(pid){
+    
+    var activities = ProcessDB[pid]['TextExtraction']['public']['privateEvents'];
+    
+    var orderedPk = []
+    var orderedNames= ProcessDB[pid]['Public']['vect']['activityNames']['default'];
+    for (let i in orderedNames){
+      var matchingPk = ''
+      Object.keys(activities).forEach(k => {
+        if(activities[k].eventName === orderedNames[i]){
+          //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
+          matchingPk = activities[k].address;
+        }
+      });
+      if(matchingPk !== ''){
+        orderedPk.push(matchingPk);
+      }
+    }
+    let approvalList = [...new Set(orderedPk)];
+    console.log(ProcessDB[pid]['Public']['vect']['fullMarkings']['included'].length);
+
+    var PubVec = ProcessDB[pid]['Public']['vect'];
+    return [ProcessDB[pid]['Global']['data'],
+            pid,
+            PubVec['activityNames']['default'],
+            PubVec['fullMarkings']['included'],
+            PubVec['fullMarkings']['executed'],
+            PubVec['fullMarkings']['pending'],
+            PubVec['fullRelations']['include'],
+            PubVec['fullRelations']['exclude'],
+            PubVec['fullRelations']['response'],
+            PubVec['fullRelations']['condition'],
+            PubVec['fullRelations']['milestone'],
+            orderedPk,
+            approvalList
+  ]
+
+
+  }
+  /**
+   * Get workflow creation receipt.
+   */
+
+  getWKCreationReceipt = async () => {
+
+    try {
+      this.setState({ blockNumber: "waiting.." });
+      this.setState({ gasUsed: "waiting..." });
+
+      // get Transaction Receipt in console on click
+      // See: https://web3js.readthedocs.io/en/1.0/web3-eth.html#gettransactionreceipt
+      await this.state.web3.eth.getTransactionReceipt(this.state.transactionHash, (err, txReceipt) => {
+        console.log(err, txReceipt);
+        this.setState({ txReceipt });
+        console.log('tx receip null');
+      }); //await for getTransactionReceipt
+
+      await this.setState({ blockNumber: this.state.txReceipt.blockNumber });
+      await this.setState({ gasUsed: this.state.txReceipt.gasUsed });
+    } //try
+    catch (error) {
+      console.log('getWKCreationReceipt error');
+
+      console.log(error);
+    } //catch
+  } //getWKCreationReceipt
+
+
+
   /**
    * launches a transaction to the smart contract workflow manager to create a new workflow.
    */
   handleCreateWkf = async () => {
-    alert('Creating Workflow onChain');
+    alert('Save public view onchain');
 
     const { accounts, contract } = this.state;
 
+
     try {
+        // connect list of activities to corresponding role first, and then to the right role address
+        var wkData = this.fetchWKData(this.props.processID);
 
-      await contract.methods.createWorkflow(
-        this.state.includedStates,
-        this.state.executedStates,
-        this.state.pendingStates,
+        var data =  wkData[0];
+        var processName= wkData[1];
+    
+        var activityNames= wkData[2];
+        var includedStates= wkData[3];
+        var executedStates= wkData[4];
+        var pendingStates= wkData[5];
+        var includesTo= wkData[6];
+        var excludesTo= wkData[7];
+        var responsesTo= wkData[8];
+        var conditionsFrom= wkData[9];
+        var milestonesFrom= wkData[10];
+        var addresses= wkData[11];
+        var approvalList= wkData[12];
 
-        this.state.activityNames,
-        this.state.processName,
+        this.setState({
+          data,
+          processName,
+    
+          activityNames,
+          includedStates,
+          executedStates,
+          pendingStates,
+          includesTo,
+          excludesTo,
+          responsesTo,
+          conditionsFrom,
+          milestonesFrom,
+          addresses,
+          approvalList
+        });
 
-        this.state.includesTo,
-        this.state.excludesTo,
-        this.state.responsesTo,
-        this.state.conditionsFrom,
-        this.state.milestonesFrom
-      ).send({ from: accounts[0] });
+
+
+      if(includedStates.length === 0){
+        alert("oops -didnt have time to update freshly updated db [to be implemented]");  
+      }
+      else{
+        var relations = [includesTo,
+          excludesTo,
+          responsesTo,
+          conditionsFrom,
+          milestonesFrom]
+
+        await contract.methods.uploadPublicView(
+          [includedStates,executedStates,pendingStates], //marking
+  
+          this.props.ipfsHash,
+          addresses,
+          approvalList,
+          activityNames,
+          processName,
+          relations 
+        ).send({ from: accounts[0] }
+          , (error, transactionHash) => {
+            console.log(transactionHash);
+            this.setState({ transactionHash, ethAddress:contract.options.address });
+          }); //storehash
 
       //axios.post(`http://localhost:5000/reinit`, 
       //{
@@ -141,10 +268,13 @@ class LoadToBC extends React.Component {
       // window.location.reload(false);
 
     }
+  }
     catch (err) {
       window.alert(err);
-      this.setState({ wkState: 'Create Global Workflow OnChain' });
+
+      this.setState({ wkState: '2/. Save public view onchain' });
     }
+
 
   }
 
@@ -153,15 +283,52 @@ class LoadToBC extends React.Component {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style)
+    if (window.location.href.indexOf("creation"))
+      return (<div>
+      <Button onClick= {this.handleCreateWkf}>{this.state.wkState}</Button>
+     <br/>
+     <br/>
+     {this.props.src === 'creation-deck'? <></>:<>
+                  <Button onClick={this.getWKCreationReceipt}> Get Transaction Receipt </Button>
 
+                  <Table bordered responsive>
+                    <thead>
+                      <tr>
+                        <th>Tx Receipt Category</th>
+                        <th>Values</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>IPFS Hash # stored on Eth Contract</td>
+                        <td>{this.props.ipfsHash}</td>
+                      </tr>
+                      <tr>
+                        <td>Ethereum Contract Address</td>
+                        <td>{this.state.ethAddress}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Tx Hash # </td>
+                        <td>{this.state.transactionHash}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Block Number # </td>
+                        <td>{this.state.blockNumber}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Gas Used</td>
+                        <td>{this.state.gasUsed}</td>
+                      </tr>
+                    </tbody>
+                  </Table></>}
+
+
+      </div>)
     return <div>
-      <h5>Step 2</h5>
-      <p>Instanciate the public chunk of the workflow onchain by clicking on the button below. </p>
-      <p>Make sure you have Metamask installed on your favorite browser. The smart contract is deployed on the Ropsten network.</p>
-
-      <Button class="btn btn-primary my-2 my-sm-0" onClick={this.handleCreateWkf}>{this.state.wkState}</Button>
-
-
       {this.state.lenDataDB > 0 ?
         <CytoscapeComponent elements={this.state.data}
           stylesheet={stylesheet}
@@ -178,4 +345,4 @@ class LoadToBC extends React.Component {
   }
 }
 
-export default LoadToBC
+export default LoadToBCL

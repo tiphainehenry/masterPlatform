@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Header from './Header';
 
-import { Card, Button, Row, Col, Form, Container, Nav, ListGroup } from 'react-bootstrap';
+import { Row, Col, Container, Nav, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import SidebarModel from './SidebarModel';
@@ -99,32 +99,31 @@ class Edit extends React.Component {
 
     return <>
       <div>
+        
         <Header />
-        <Container fluid >
-          <Row >
-            <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <SidebarModel />
-            </Col>
-            <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <div class="bg-green pt-5 pb-3">
+        <Row>
+                <SidebarModel />
 
-                <div class='container'>
+                <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+                        <Container flex>
+
+                            <div className='container'>
                   <h2>Edit Graph</h2>
 
                   <div className="well">Choose the process projection to edit:</div>
 
-                  <div class="bg-green">
+                  <div className="bg-green">
                     <Nav >
                       {this.state.tree.map((process, i) => {
-                        return <Nav key={i} title={process[0]} class='sidebarLink'>
+                        console.log(process);
+                        return <Nav key={i} title={process[0]} className='sidebarLink'>
                           <div style={{ 'padding-right': '10%', 'width': '20vw' }}>
                             <ListGroup>
-                              <ListGroup.Item class='processHeader'>
+                              <ListGroup.Item className='processHeader'>
                                 {process[0]}
                               </ListGroup.Item>
-
                               <ListGroup.Item>
-
                                 {process[1].map(item =>
                                   <ul>
                                     <Nav.Item >
@@ -155,16 +154,16 @@ class Edit extends React.Component {
 
 
                     </Nav>
+                    </div>
 
                   </div>
-
+                      </Container>
+                    </div>
                 </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </>
+
+            </Row>
+        </div>    
+        </>
 
   }
 }

@@ -1,6 +1,7 @@
 from src.utils.formatting import cleanName, getFileName, groupItems, getRoleTenant, getSender, getReceiver, getRole, getArrowLink, getChoreographyDetails, getType, getRoleList,generateDictEvent,generateDictRelation
 import numpy as np
 import json
+import os
 
 
 """
@@ -136,33 +137,37 @@ def extractChunks(data):
     :returns: dict description of the dcr text. Dict keys: {events,internalEvents,linkages}
     
     """
-
+    #print("2.3/ chunk's data")
     events, internalEvents = [], []
     groupings, linkages = [], []
-    roles = []
-    #misc = []
+    roles, addresses = [], []
 
     for line in data:
         if (line[0] !=  '#'):
-            if ('src' in line) and ('tgt' in line):
-                lineclean = line.replace('= ', '=').replace(' =', '=').replace(' = ', '=')
-                events.append(lineclean)
-                for elem in line.split(' '):
-                    if ('src' in elem) or ('tgt' in elem):
-                        elemclean = elem.strip().replace('tgt=', '').replace('src=', '').replace(']', '')
-                        if elemclean != '' and (elemclean not in roles):
-                            roles.append(elemclean)
-            elif ('-' in line) and ('>' in line):
-                linkages.append(line.strip())
-            elif ('role=' in line):
-                nameChunk = line.split()
-                role = nameChunk.pop()
-                name=''.join(nameChunk).replace('"', '')
-                cleanedInternalEvent = name+' '+ role
-                internalEvents.append(cleanedInternalEvent)
+            if(line[0:8] == 'pk[role='):
+                pk_val = line.split('role=')[1].replace(']','').replace(' ','').replace('\n','').split('=')
+                add = {'role':pk_val[0],'pk':pk_val[1]}
+                addresses.append(add)
             else:
-                pass
-                #misc.append(line)
+                if ('src' in line) and ('tgt' in line):
+                    lineclean = line.replace('= ', '=').replace(' =', '=').replace(' = ', '=')
+                    events.append(lineclean)
+                    for elem in line.split(' '):
+                        if ('src' in elem) or ('tgt' in elem):
+                            elemclean = elem.strip().replace('tgt=', '').replace('src=', '').replace(']', '')
+                            if elemclean != '' and (elemclean not in roles):
+                                roles.append(elemclean)
+                elif ('-' in line) and ('>' in line):
+                    linkages.append(line.strip())
+                elif ('role=' in line):
+                    nameChunk = line.split()
+                    role = nameChunk.pop()
+                    name=''.join(nameChunk).replace('"', '')
+                    cleanedInternalEvent = name+' '+ role
+                    internalEvents.append(cleanedInternalEvent)
+                else:
+                    pass
+                    #misc.append(line)
             
             for i in range(0, len(linkages)):
                 if (linkages[i][0] == '#'):
@@ -174,6 +179,7 @@ def extractChunks(data):
         'events':events,
         'internalEvents':internalEvents,
         'linkages':linkages,
+        'addresses':addresses
     }
 
     return chunks, roles
@@ -193,7 +199,7 @@ def extractRoleChunks(data):
     linkages = []
 
     for line in data:
-        if (line[0] != '#'): 
+        if ((line[0] != '#') & (line[0:8] != 'pk[role=')):
             if 'role=' in line:
                 internalEvents.append(line)
             elif ('src=' in line) or ('tgt=' in line) or ('?(' in line) or ('!(' in line):
@@ -230,7 +236,7 @@ def getLinkages(projRefs, linkages):
                 lineUpd=line.strip().split(' ')
                 i=0
                 for elem in lineUpd:
-                    if (testRef == elem) and elem[0] != '#':
+                    if ((testRef == elem) and (elem[0] != '#') and (line[0:8] != 'pk[role=')):
                         lineUpd[i]=ref
                     i = i+1   
                 linkages[count] = ' '.join(lineUpd)
@@ -246,14 +252,17 @@ def getRoles(pi):
     :returns: the list of roles of the projection (eg: ["r1","r2","r3"]).
     """
 
+    this_folder = os.path.dirname(os.path.abspath(__file__))
     try:
-        dbPath='./client/src/projections/DCR_Projections.json'
+        dbPath='../../client/src/projections/DCR_Projections.json'
+        #dbPath = os.path.join(this_folder, '..\..\..\src\projections\DCR_Projections.json')
         with open(dbPath) as json_file:
             db = json.load(json_file)
 
         dcrs = db[pi]['TextExtraction']
     except:
-        dbPath='./client/src/projections/dcrTexts.json'
+        dbPath='../../client/src/projections/dcrTexts.json'
+        # dbPath = os.path.join(this_folder, '..\..\..\src\projections\dcrTexts.json')
         with open(dbPath) as json_file:
             dcrs = json.load(json_file)
 
@@ -272,20 +281,23 @@ def getRoleMapping(pi,role):
     :param role: role name (eg "Driver")
     :returns: the role id.
     """
-
+    this_folder = os.path.dirname(os.path.abspath(__file__))
     try:
-        dbPath='./client/src/projections/DCR_Projections.json'
+        dbPath='../../client/src/projections/DCR_Projections.json'
+        # dbPath = os.path.join(this_folder, '..\..\..\src\projections\DCR_Projections.json')
         with open(dbPath) as json_file:
             db = json.load(json_file)
 
         dcrs = db[pi]['TextExtraction']
     except:
-        dbPath='./client/src/projections/dcrTexts.json'
+        dbPath='../../client/src/projections/dcrTexts.json'
+        # dbPath = os.path.join(this_folder, '..\..\..\src\projections\dcr_Texts.json')
+
         with open(dbPath) as json_file:
             dcrs = json.load(json_file)
 
     for elem in dcrs['roleMapping']:
-        print(elem)
+        #print(elem)
         if (elem['role']==role):
             return elem
     
