@@ -138,11 +138,9 @@ def extractChunks(data):
     
     """
     #print("2.3/ chunk's data")
-    #print(data)
     events, internalEvents = [], []
     groupings, linkages = [], []
     roles, addresses = [], []
-    #misc = []
 
     for line in data:
         if (line[0] !=  '#'):
@@ -152,8 +150,6 @@ def extractChunks(data):
                 addresses.append(add)
             else:
                 if ('src' in line) and ('tgt' in line):
-                    #print("FOUND A CHOREO")
-                    #print(line)
                     lineclean = line.replace('= ', '=').replace(' =', '=').replace(' = ', '=')
                     events.append(lineclean)
                     for elem in line.split(' '):

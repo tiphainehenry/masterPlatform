@@ -1,0 +1,16 @@
+pk[role=Admin] = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB
+pk[role=Responsible] = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819
+pk[role=Finance] = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5
+
+# Choreography exchanges
+e3[ApproveInvoice src=Responsible tgt=Finance]
+e4[ConfirmPayment src=Finance tgt=Admin]
+
+# Internal processes
+"PayInvoice" [role=Finance]
+
+## link events
+
+e3 -->* PayInvoice
+PayInvoice -->* e4
+

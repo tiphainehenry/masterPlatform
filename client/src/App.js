@@ -12,7 +12,9 @@ import ViewPublic from './components/ViewPublic';
 import ViewRi from './components/ViewRi';
 import Edit from './components/Edit';
 import EditionDeck from './components/EditionDeck';
-import Create from './components/Create';
+import CreateG from './components/CreateG';
+import CreateL from './components/CreateL';
+
 import WelcomeInstance from './components/WelcomeInstance';
 import WelcomeModel from './components/WelcomeModel';
 import CreationDeck from './components/CreationDeck';
@@ -31,7 +33,9 @@ const App = () => (
       <Route exact path="/welcomemodel" component={WelcomeModel} />
       <Route exact path="/edit" component={Edit} />
       <Route exact path="/editing" component={EditionDeck} />
-      <Route exact path="/create" component={Create} />
+      <Route exact path="/createG" component={CreateG} />
+      <Route exact path="/createL" component={CreateL} />
+
       <Route exact path="/new" component={NewInstance} />
       <Route exact path="/creation" component={CreationDeck} />
       <Route exact path="/newrole" component={NewRole} />

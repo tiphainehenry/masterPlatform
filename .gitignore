@@ -1,2 +1,9 @@
 node_modules
-/client/api/*.pyc
+client/api/src/*.pyc
+*.pyc
+client/api/src/utils/*.pyc
+package-lock.json
+client/src/contracts
+#*.json
+client/src/projections/DCR_Projections.json
+client/src/contracts/*.json

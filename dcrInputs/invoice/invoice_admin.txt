@@ -1,9 +1,10 @@
-## declare events
+pk[role=Admin] = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB
+pk[role=Responsible] = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819
+pk[role=Finance] = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5
 
 # Choreography exchanges
 e1[IssueInvoice src=Admin tgt=Responsible]
 e2[ResendInvoice src=Responsible tgt=Admin]
-e3[ApproveInvoice src=Responsible tgt=Finance]
 e4[ConfirmPayment src=Finance tgt=Admin]
 
 # Internal processes
@@ -11,8 +12,6 @@ e4[ConfirmPayment src=Finance tgt=Admin]
 "ScanInvoice" [role=Admin]
 "CreateInvoice" [role=Admin]
 "FixInvoice" [role=Admin]
-"CheckInvoice" [role=Responsible]
-"PayInvoice" [role=Finance]
 
 ## link events
 ReceiveInvoice -->* ScanInvoice
@@ -26,17 +25,8 @@ CreateInvoice *--> e1
 FixInvoice -->+ e1
 FixInvoice *--> e1
 
-e1 -->* CheckInvoice
-
-CheckInvoice -->* e2
-CheckInvoice *--> e2
 
 e2 -->* FixInvoice
 
-CheckInvoice -->* e3
-CheckInvoice *--> e3
 
-e3 -->* PayInvoice
-
-PayInvoice -->* e4
 

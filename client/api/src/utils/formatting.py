@@ -212,9 +212,6 @@ def getRoleList(e):
     :returns: list of tenants involved in the list of relations
     """
 
-    # remove comments
-    #print("rolelist")
-    #print(e)
     events = []
     for elem in e:
         if((elem[0] != '#') and (getRole(elem) not in events)):
@@ -285,7 +282,6 @@ def generateDictEvent(events, addresses):
     :param events: list of events to analyze
     :returns: dictionnary of events with keys {id, event}
     """
-
     dictList = []
     ind = 0
     for elem in events:
@@ -300,8 +296,7 @@ def generateDictEvent(events, addresses):
             elif(('!(' in elem) or ('?(' in elem)):
                 roleName=elem.split(', ')[1].split('-&')[0].strip()
             else:
-                print(elem)
-                print('oops - wrong elem definition')
+                print('[ERROR] Wrong elem definition. Got '+elem)
             
             for pk_data in addresses:
                 if(pk_data['role']==roleName):

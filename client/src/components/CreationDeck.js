@@ -521,7 +521,7 @@ class CreationDeck extends React.Component {
         <Header />
         <Container fluid >
           <Row>
-            <LoadToBC ref={this.loadToBC}></LoadToBC>
+            <LoadToBC ref={this.loadToBC}> processID= {this.state.processID}</LoadToBC>
           </Row>
           <Row >
             <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>

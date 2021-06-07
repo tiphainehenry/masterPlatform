@@ -1,3 +1,0 @@
-e1[Master src=SRC trg=TRG]
-e2[Masteraze src=SRC trg=TRG]
-e2 -->* e1

@@ -30,7 +30,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 /**
  * Responsive DCR graph display. Event execution requests are available > the public DCR smart contract is called if the node is public. 
  */
-class DCRgraph extends React.Component {
+class DCRgraphG extends React.Component {
   constructor(props) {
     super(props);
 
@@ -53,6 +53,9 @@ class DCRgraph extends React.Component {
       incl: '',
       exec: '',
       pend: '',
+
+      pHash : ProcessDB[this.props.processName]['hash'] || '',
+
       dataHashes: '',
       activityData: '',
       wkID: '',
@@ -107,10 +110,12 @@ class DCRgraph extends React.Component {
       );
         console.log(instance);
       var wkID = this.props.processName.replace('p', '') - 1;
-      const inclVector = await instance.methods.getIncluded(wkID).call();
-      const execVector = await instance.methods.getExecuted(wkID).call();
-      const pendVector = await instance.methods.getPending(wkID).call();
-      const hashesVector = await instance.methods.getHashes(wkID).call();
+      var pHash = ProcessDB[this.props.processName]['hash'];
+      
+      const inclVector = await instance.methods.getIncluded(pHash).call();
+      const execVector = await instance.methods.getExecuted(pHash).call();
+      const pendVector = await instance.methods.getPending(pHash).call();
+      const hashesVector = await instance.methods.getHashes(pHash).call();
 
       this.setState({
         web3, accounts, contract: instance,
@@ -206,10 +211,10 @@ class DCRgraph extends React.Component {
     try {
       //var hashData = this.state.web3.utils.fromAscii(this.state.activityData);
       //await contract.methods.checkCliquedIndex(this.state.indexClicked, hashData).send({ from: accounts[0] });
-      await contract.methods.checkCliquedIndex(this.state.wkID, this.state.indexClicked).send({ from: accounts[0] });
+      await contract.methods.checkCliquedIndex(this.state.pHash, this.state.indexClicked).send({ from: accounts[0] });
 
       // Get the value from the contract.
-      const output = await contract.methods.getCanExecuteCheck(this.state.wkID, this.state.indexClicked).call();
+      const output = await contract.methods.getCanExecuteCheck(this.state.pHash, this.state.indexClicked).call();
       switch (output) {
         case '1':
           window.alert('Task not included');
@@ -224,7 +229,7 @@ class DCRgraph extends React.Component {
           this.setState({ bcRes: 'BC exec - rejected - milestonesNotFulfilled' });
           break;
         case '4':
-          const rightAddress = await contract.methods.getRoleAddresses(this.state.wkID, this.state.indexClicked).call();
+          const rightAddress = await contract.methods.getRoleAddresses(this.state.pHash, this.state.indexClicked).call();
           window.alert('Authentication issue - wrong user tried to execute task.\nExpected '+rightAddress+'...');
           this.setState({ bcRes: 'BC exec - rejected - authentication error' });
           break;
@@ -426,4 +431,4 @@ class DCRgraph extends React.Component {
   }
 }
 
-export default DCRgraph
+export default DCRgraphG
