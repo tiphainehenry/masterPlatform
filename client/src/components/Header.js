@@ -19,7 +19,8 @@ class Header extends React.Component {
       AdminOnly: [
         '/createL',
         '/createG',
-        '/newrole'
+        '/newrole',
+        '/welcomemodel',
       ],
       path: ''
     }
@@ -35,7 +36,6 @@ class Header extends React.Component {
     this.setState({ auth })
     if ((!this.state.auth.isRole && window.location.pathname !== '/') ||
       (!this.state.auth.isAdmin && this.state.AdminOnly.find(elem => elem === this.state.path) !== undefined)) {
-      console.log("lol" + window.location.pathname);
       history.push("/")
     }
   }
@@ -45,6 +45,8 @@ class Header extends React.Component {
     // console.log(this.state.AdminOnly.find(window.location));
     if (this.state.auth.isRole) {
       links.push(<Nav.Link href="/welcomeInstance">My Running Instances</Nav.Link>)
+    }
+    if (this.state.auth.isAdmin) {
       links.push(<Nav.Link href="/welcomemodel">My Process Models </Nav.Link>)
     }
     return <div>
