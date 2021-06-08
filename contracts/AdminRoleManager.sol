@@ -12,7 +12,7 @@ contract AdminRoleManager {
     address[] roleList;
 
     constructor() public {
-        address modAddress = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
+        address modAddress = 0x1D27B15fEbF8dce6fe0Fd5B45A4784C4dD3e11e1;
         newRole(modAddress, "first account", true);
     }
 

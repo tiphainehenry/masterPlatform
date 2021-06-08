@@ -23,8 +23,11 @@ class SidebarModel extends React.Component {
     getStatus = auth => this.setState({ auth })
 
     render() {
+        var importBtn = []
         if (this.state.auth.isAdmin) {
-            var button = <Nav.Link href="/newrole">Manage roles</Nav.Link>
+            const roleBtn = <Nav.Link href="/newrole">Manage roles</Nav.Link>
+            importBtn.push(<Nav.Link style={{paddingTop:"5vh"}} href="/createG">Import a Projection - Global to Local</Nav.Link>)
+            importBtn.push( <Nav.Link href="/createL">Import a Projection - Local to Global</Nav.Link>)
         }
         return <div>
             <Authentification status={this.getStatus}/>
@@ -32,11 +35,12 @@ class SidebarModel extends React.Component {
                 <Nav className="col-md-12 d-none d-md-block sidebar"
                     activeKey="/home"
                 >
-                    <Nav.Link style={{paddingTop:"5vh"}} href="/createG">Import a Projection - Global to Local</Nav.Link>
-                    <Nav.Link href="/createL">Import a Projection - Local to Global</Nav.Link>
+                    {importBtn}
+                    {/* <Nav.Link style={{paddingTop:"5vh"}} href="/createG">Import a Projection - Global to Local</Nav.Link>
+                    <Nav.Link href="/createL">Import a Projection - Local to Global</Nav.Link> */}
                     <Nav.Link href="/new">Create a new projection</Nav.Link>
                     <Nav.Link href="/edit">Edit a projection</Nav.Link>
-                    {button}
+                    {roleBtn}
                 </Nav>
             </div>
         </div>
