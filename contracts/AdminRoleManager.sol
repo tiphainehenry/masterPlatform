@@ -15,6 +15,9 @@ contract AdminRoleManager {
         address modAddress = 0x1D27B15fEbF8dce6fe0Fd5B45A4784C4dD3e11e1;
         newRole(modAddress, "first account", true);
 
+        address peonAddress1 = 0x78F7c9953D321Fb9864Af3B86782759bC32d4968;
+        newRole(peonAddress1, "Peon1", false);
+
         address modAddress1 = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
         newRole(modAddress1, "firstAccount", true);
 
