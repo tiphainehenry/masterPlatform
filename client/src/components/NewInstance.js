@@ -1,11 +1,12 @@
 import React from 'react';
 import Header from './Header';
-import { Card, Row, Col, Container } from 'react-bootstrap';
+import { Card, Row, Col, Container, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios, { get } from 'axios';
 
 import SidebarModel from './SidebarModel';
 
+import { FilePlus, File } from 'react-feather';
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
@@ -20,7 +21,7 @@ class NewInstance extends React.Component {
       numProcess: 0,
       processName: "",
       templates: [],
-      valid:true
+      valid: true
     };
 
   }
@@ -39,9 +40,9 @@ class NewInstance extends React.Component {
     console.log(e.target.value)
     this.setState({ processName: e.target.value })
     if (this.state.templates.includes(e.target.value))
-      this.setState({valid:false})
+      this.setState({ valid: false })
     else
-      this.setState({valid:true})
+      this.setState({ valid: true })
   }
 
   /**
@@ -70,79 +71,91 @@ class NewInstance extends React.Component {
   render() {
     return <>
       <div>
+
         <Header />
-        <Container fluid >
-          <Row >
-            <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <SidebarModel />
-            </Col>
-            <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-              <div className='bg-green pt-5 pb-3'>
+
+        <Row>
+          <SidebarModel />
+
+          <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+
+              <Container fluid >
+
                 <div className='container'>
-                  <h2>Creation of a new Process model</h2>
-                  <h5>Choose the name of your process</h5>
-                  <br />
-                  <input type="input" onChange={e => this.onChange(e)} placeholder={this.state.processName}></input>
-                  { !this.state.valid ? <p style={{'padding':'10px','color':'red'}}>Name of template already taken</p> :null}
-                  <br></br>
-                  { this.state.valid ? <Link class="btn btn-primary my-2 my-sm-0" to={{
+                  <h1>Creation of a new Process model</h1>
+                  <ul class="nav nav-tabs">
+                                </ul>
+                                <div class="tab-content" >
+                                    <div class="tab-pane active" id="users">
+
+                  <form id="search-users" name="searchUsers" method="post" action="/">
+                    <div class="row">
+                      <div class="form-group col-12 ">
+                        <label class="is-required" for="role">Choose the name of your process</label>
+                        <input type="input" onChange={e => this.onChange(e)} placeholder={this.state.processName} class="form-control required"></input>
+                        {!this.state.valid ? <p style={{ 'padding': '10px', 'color': 'red' }}>Name of template already taken</p> : null}
+                      </div>
+                      <div class="form-group col-12 ">
+
+                        {this.state.valid ? <Link class="btn btn-primary my-2 my-sm-0" to={{
                     pathname: './creation',
                     state: {
                       currentProcess: this.state.processName,
                       currentInstance: 'r1'
                     }
-                  }}>New process</Link> :
-                  <Link class="btn btn-primary my-2 my-sm-0" >New process</Link>
+                  }}> create new model <FilePlus /></Link> :
+                    <Link class="btn btn-primary my-2 my-sm-0" >create new model <FilePlus /></Link>
                   }
-                  <br />
-                  <br />
-                  <Card style={{ height: '90%', 'marginTop': '3vh' }}>
-                    <Card.Header as="p" style={{ color: 'white', 'backgroundColor': '#a267c9', 'borderBottom': 'white' }}>
-                      Select an already existing template</Card.Header>
-                    <Card.Body >
-                      <Row style={{ 'fontSize': '10pt', 'fontWeight': 1000 }} xs={1} md={3} >
-                        <Col style={{ 'minWidth': '66%' }} sm>Name</Col>
-                        <Col style={{ 'minWidth': '34%' }} sm>last update</Col>
-                      </Row>
-                      <hr style={{
-                        width: '95%',
-                        color: 'LightGrey',
-                        backgroundColor: 'LightGrey',
-                        height: .1,
-                        borderColor: 'LightGrey'
-                      }} />
+                      </div>
 
-                      {Array.from({ length: this.state.templates.length }, (x, i) =>
-                        <div>
-                          <Row key={i} style={{ 'fontSize': '10pt', 'fontWeight': 200 }} xs={1} md={3} >
-                            <Col style={{ 'minWidth': '66%' }} sm>
-                              <Link  to={{
+                    </div>
+                  </form>
+                  </div>
+                  </div>
+
+                  <br />
+                  <br></br>
+
+                  <br />
+                  <br />
+
+          <Table id="myTable" class="table tablesorter table-responsive">
+            <caption>My templates </caption>
+            <thead class="cf">
+              <tr>
+                <th class="header" scope="col">Name (click to edit)</th>
+                <th class="header" scope="col">Type</th>
+                <th class="header" scope="col">Last Update</th>
+              </tr>
+            </thead>
+            <tbody>
+            {Array.from({ length: this.state.templates.length }, (x, i) =>
+
+<tr>
+<td class="align-middle"><Link to={{
                                 pathname: './creation',
                                 state: {
                                   currentProcess: this.state.templates[i],
                                   currentInstance: 'r1'
                                 }
-                              }}>{this.state.templates[i]} </Link>
-                            </Col>
-                            <Col style={{ 'minWidth': '34%' }} sm>("test")</Col>
-                          </Row>
-                          <hr style={{
-                            width: '95%',
-                            color: 'LightGrey',
-                            backgroundColor: 'LightGrey',
-                            height: .1,
-                            borderColor: 'LightGrey'
-                          }} />
-                        </div>
+                              }}><File/>{this.state.templates[i]} </Link>
+                         </td>
+<td class="align-middle">("test")</td>
+<td class="align-middle">("test")</td>
+
+</tr>
                       )}
 
-                    </Card.Body>
-                  </Card>
+
+            </tbody>
+          </Table>
                 </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+
+              </Container>
+            </div>
+          </div>
+        </Row>
       </div>
     </>
   }

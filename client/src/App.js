@@ -31,8 +31,22 @@ const App = () => (
       <Route exact path="/" component={Homepage} />
       <Route exact path="/welcomeinstance" component={WelcomeInstance} />
       <Route exact path="/welcomemodel" component={WelcomeModel} />
+
+      <Switch>
+          <Route 
+          exact 
+          path="/editing/:pid/:rid" 
+          render={({ 
+              location, 
+              match 
+          }) => (
+              <EditionDeck match={match} />
+          )}           
+          
+         />
+      </Switch>
+
       <Route exact path="/edit" component={Edit} />
-      <Route exact path="/editing" component={EditionDeck} />
       <Route exact path="/createG" component={CreateG} />
       <Route exact path="/createL" component={CreateL} />
 

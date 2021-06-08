@@ -179,13 +179,15 @@ class CreateL extends React.Component {
   render() {
     return <div>
       <Header />
-      <Container fluid >
-        <Row >
-          <Col sm={2} style={{ 'padding-left': 0, 'padding-right': 0 }}>
+
+      <Row>
             <SidebarModel />
-          </Col>
-          <Col style={{ 'padding-left': 0, 'padding-right': 0 }}>
-            <div class="bg-green pt-5 pb-3">
+
+            <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+
+          <Container>
+            
               <div class="container">
                 <h2>My Process Models - Public input and incremental projections.</h2>
                 <h3>Import and project a new process model</h3>
@@ -246,11 +248,11 @@ class CreateL extends React.Component {
 
 
               </div>
-            </div>
-          </Col>
-        </Row>
       </Container>
+      </div>
+            </div>
 
+</Row>
     </div>
 
 
