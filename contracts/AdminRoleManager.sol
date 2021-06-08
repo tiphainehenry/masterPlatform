@@ -12,14 +12,17 @@ contract AdminRoleManager {
     address[] roleList;
 
     constructor() public {
+        address modAddress = 0x1D27B15fEbF8dce6fe0Fd5B45A4784C4dD3e11e1;
+        newRole(modAddress, "first account", true);
 
-	address modAddress1 = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
-	newRole(modAddress1, "firstAccount", true);
+        address peonAddress1 = 0x78F7c9953D321Fb9864Af3B86782759bC32d4968;
+        newRole(peonAddress1, "Peon1", false);
 
-	address modAddress2 = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
-	newRole(modAddress2, "secAccount", true);
+        address modAddress1 = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
+        newRole(modAddress1, "firstAccount", true);
 
-
+        address modAddress2 = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
+        newRole(modAddress2, "secAccount", true);
     }
 
     function isRole(address RoleAddress) public view returns (bool isIndeed) {
@@ -55,7 +58,7 @@ contract AdminRoleManager {
                     "///",
                     toAsciiString(roleList[i]),
                     "///",
-                    (Roles[roleList[i]].isAdmin ? "true" :"false")
+                    (Roles[roleList[i]].isAdmin ? "true" : "false")
                 )
             );
         }

@@ -50,7 +50,7 @@ class Authentification extends React.Component {
                 ret.name = ""
                 ret.isAdmin = false
             }
-            console.log(ret);
+            // console.log(ret);
             this.props.status(ret)
         } catch (error) {
             console.error(error);
