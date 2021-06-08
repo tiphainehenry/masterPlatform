@@ -572,7 +572,7 @@ class CreationDeck extends React.Component {
 
                                 <hr style={{ "size": "5px" }} /><br />
 
-                                <h4>Tenants</h4>
+                                <h4>Assign role</h4>
 
                                 <Form.Label>Private Role</Form.Label>
                                 {/* <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} /> */}

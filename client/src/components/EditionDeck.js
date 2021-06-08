@@ -328,15 +328,18 @@ class EditionDeck extends React.Component {
     console.log(this.state);
     return <>
       <div>
-      <Header />
-        <Row>
+      <Container fluid >
+        <Row >
+          <Col >
+            <div className="bg-green pt-5 pb-3">
 
-        <div className="bg-green pt-5 pb-3">
-        <div className='container'>
+              <div className='container'>
+
+        <div className="align-items-center">
 
                   <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
 
-                  <div className="well">Right click on the graph to see the menu</div>
+                  <p>Right click on the graph to see the menu</p>
 
                   <div>
                     <Row>
@@ -369,7 +372,7 @@ class EditionDeck extends React.Component {
 
                                 <hr style={{ "size": "5px" }} /><br />
 
-                                <h4>Tenants</h4>
+                                <h4>Assign role</h4>
 
                                 <Form.Label>Private Role</Form.Label>
                                 <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} />
@@ -419,15 +422,19 @@ class EditionDeck extends React.Component {
                     </Row>
                   </div>
                   <Button onClick={this.saveGraph}>save new version</Button>
-
-                  <Legend src={this.state.src}/>
+                    </div>
+                    <Legend src={this.state.src}/>
 
                     </div>
 
                     </div>
-            </Row>
 
-        </div>    
+                    </Col>
+        </Row>
+      </Container>
+
+                    </div>
+
     </>
 
   }
