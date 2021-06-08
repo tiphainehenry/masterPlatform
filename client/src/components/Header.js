@@ -16,20 +16,34 @@ class Header extends React.Component {
     super(props)
     this.state = {
       auth: {},
+      AdminOnly: [
+        '/createL',
+        '/createG',
+        '/newrole'
+      ],
+      path: ''
     }
     this.childElement = React.createRef()
     this.getStatus = this.getStatus.bind(this)
   }
+
+  componentDidMount() {
+    const path = window.location.pathname
+    this.setState({ path: path });
+  }
   getStatus = auth => {
     this.setState({ auth })
-    if (!this.state.auth.isRole && window.location.pathname !== '/') {
+    if ((!this.state.auth.isRole && window.location.pathname !== '/') ||
+      (!this.state.auth.isAdmin && this.state.AdminOnly.find(elem => elem === this.state.path) !== undefined)) {
+      console.log("lol" + window.location.pathname);
       history.push("/")
     }
   }
 
   render() {
     let links = []
-    if (this.state.auth.isAdmin) {
+    // console.log(this.state.AdminOnly.find(window.location));
+    if (this.state.auth.isRole) {
       links.push(<Nav.Link href="/welcomeInstance">My Running Instances</Nav.Link>)
       links.push(<Nav.Link href="/welcomemodel">My Process Models </Nav.Link>)
     }

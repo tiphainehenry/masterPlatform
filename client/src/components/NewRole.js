@@ -78,6 +78,7 @@ class NewRole extends React.Component {
      */
     async getRoles() {
         const roles = await this.state.instance.methods.getRoles().call()
+        console.log(roles);
         var tmpRoles = []
         var tmpAddress = []
         var tmpAdmin = []
@@ -85,7 +86,7 @@ class NewRole extends React.Component {
             const val = line.split('///')
             tmpRoles.push(val[0])
             tmpAddress.push(val[1])
-            tmpAdmin.push(val[2] === "false" ? true : false)
+            tmpAdmin.push(val[2] === "true" ? true : false)
         });
         this.setState({ roles: tmpRoles, addresses: tmpAddress, admins: tmpAdmin })
     }
@@ -93,13 +94,11 @@ class NewRole extends React.Component {
      * Create a new Role if Isnew or update an already existing Role
      * For now all addresses are hard coded  
      */
-    //TODO Add the addresses to the SC call 
     async manageRole() {
 
         if (this.state.isNew) {
-            const address = '0xB075d6DA74408C291c86c0e651dd10e962efc82D'
             try {
-                const res = await this.state.instance.methods.newRole(this.state.address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
+                const res = await this.state.instance.methods.newRole(this.state.address, this.state.name, !this.state.isAdmin).send({ from: this.state.accounts[0] })
             }
             catch {
                 alert('Unable to create this role')
@@ -122,8 +121,8 @@ class NewRole extends React.Component {
 
         if (this.state.isNew) {
             address.push(
-<>
-<div class="form-group col-12 col-lg-6">
+                <>
+                    <div class="form-group col-12 col-lg-6">
                         <label for="phone" class="is-required">Address</label>
                         <input type="input" name="address" class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true"  ></input>
                     </div>
