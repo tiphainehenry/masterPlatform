@@ -5,6 +5,8 @@ import '../style/boosted.min.css';
 import Authentification from './Authentification';
 import createBrowserHistory from 'history/createBrowserHistory'
 
+import { User } from 'react-feather';
+
 /**
  * Component ...
  */
@@ -30,8 +32,8 @@ class Header extends React.Component {
   render() {
     let links = []
     if (this.state.auth.isAdmin) {
-      links.push(<Nav.Link href="/welcomeInstance">My Running Instances</Nav.Link>)
-      links.push(<Nav.Link href="/welcomemodel">My Process Models </Nav.Link>)
+      links.push(<Nav.Link href="/welcomeInstance" class="nav-item" style={{ color: "white" }}>My Running Instances</Nav.Link>)
+      links.push(<Nav.Link href="/welcomemodel" class="nav-item" style={{ color: "white" }}>My Process Models </Nav.Link>)
     }
     return <div>
       <Authentification status={this.getStatus} />
@@ -39,22 +41,25 @@ class Header extends React.Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/">Homepage</Nav.Link>
+            <Nav.Link href="/" class="nav-item" style={{ color: "white" }}>Homepage</Nav.Link>
             {links}
           </Nav>
 
           <Nav >
-            {this.state.auth.isRole ? <Nav.Link className='disabled'>Role: {this.state.auth.name}</Nav.Link> : null}
-            <NavDropdown title="Constraints Legend" id="collasible-nav-dropdown">
-              <NavDropdown.Item style={{ "fontSize": '16px' }}>Post-execution</NavDropdown.Item>
-              <NavDropdown.Item style={{ color: "#29A81A", "fontSize": '12px' }}> -- Include</NavDropdown.Item>
-              <NavDropdown.Item style={{ color: "#FF0000", "fontSize": '12px' }}> -- Exclude</NavDropdown.Item>
-              <NavDropdown.Item style={{ color: "#1E90FF", "fontSize": '12px' }}> -- Response</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item style={{ "fontSize": '16px' }}>Pre-execution</NavDropdown.Item>
-              <NavDropdown.Item style={{ color: "#FFA500", "fontSize": '12px' }}> -- Condition</NavDropdown.Item>
-              <NavDropdown.Item style={{ color: "#BC1AF2", "fontSize": '12px' }}> -- Milestone</NavDropdown.Item>
-            </NavDropdown>
+
+            {this.state.auth.isRole ?
+              <NavDropdown title={<>
+                <User />
+                <span>Hello <span class="text-primary">{this.state.auth.name}</span></span></>
+              } id="collasible-nav-dropdown">
+                <NavDropdown.Item style={{ "fontSize": '16px' }}><p>Admin : {this.state.auth.isAdmin ? "true" : "false"}</p>
+                  <p>Role : {this.state.auth.isRole ? "true" : "false"}</p>
+
+                </NavDropdown.Item>
+
+              </NavDropdown>
+
+              : null}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

@@ -7,7 +7,7 @@ import { getMenuStyle } from './utils_ContextMenuHelpers';
 import Header from './Header';
 
 import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import SidebarModel from './SidebarModel';
+import Legend from './Legend';
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -73,7 +73,9 @@ class EditionDeck extends React.Component {
       newActivityCnt: 0,
 
       source: { ID: '', type: '' },
-      target: { ID: '', type: '' }
+      target: { ID: '', type: '' },
+      src: 'edition-deck',
+
     };
 
     /// Activity update functions
@@ -329,11 +331,9 @@ class EditionDeck extends React.Component {
       <Header />
         <Row>
 
-                <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
-                        <Container flex>
+        <div className="bg-green pt-5 pb-3">
+        <div className='container'>
 
-                            <div className='container'>
                   <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
 
                   <div className="well">Right click on the graph to see the menu</div>
@@ -420,12 +420,13 @@ class EditionDeck extends React.Component {
                   </div>
                   <Button onClick={this.saveGraph}>save new version</Button>
 
-                </div>
-                      </Container>
-                    </div>
-                </div>
+                  <Legend src={this.state.src}/>
 
+                    </div>
+
+                    </div>
             </Row>
+
         </div>    
     </>
 

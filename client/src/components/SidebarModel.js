@@ -55,23 +55,13 @@ class SidebarModel extends React.Component {
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="/new">
-
-
-                                <span><Edit /> Create (Global or public)</span>
-
+                                <span><Edit /> Create Model</span>
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/createG">
-                                <span><FilePlus /> Import Global Model
-                        </span>
-
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/createL">
-                                <span><FilePlus /> Import Public Model</span>
+                                <span><FilePlus /> Import Model</span>
 
                             </a>
                         </li>

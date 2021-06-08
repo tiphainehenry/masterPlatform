@@ -12,7 +12,6 @@ import ViewPublic from './components/ViewPublic';
 import ViewRi from './components/ViewRi';
 import Edit from './components/Edit';
 import EditionDeck from './components/EditionDeck';
-import CreateG from './components/CreateG';
 import CreateL from './components/CreateL';
 
 import WelcomeInstance from './components/WelcomeInstance';
@@ -47,7 +46,6 @@ const App = () => (
       </Switch>
 
       <Route exact path="/edit" component={Edit} />
-      <Route exact path="/createG" component={CreateG} />
       <Route exact path="/createL" component={CreateL} />
 
       <Route exact path="/new" component={NewInstance} />
