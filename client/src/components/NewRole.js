@@ -95,26 +95,28 @@ class NewRole extends React.Component {
      * For now all addresses are hard coded  
      */
     async manageRole() {
+        alert(test);
 
-        if (this.state.isNew) {
-            try {
-                const res = await this.state.instance.methods.newRole(this.state.address, this.state.name, !this.state.isAdmin).send({ from: this.state.accounts[0] })
-            }
-            catch {
-                alert('Unable to create this role')
-            }
-        }
-        else {
-            try {
-                const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
-                var res = await this.state.instance.methods.updateRole(address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
-            } catch {
-                alert('Unable to update this role')
-            }
-        }
-        window.location.reload()
-        this.getRoles()
+        //if (this.state.isNew) {
+        //    try {
+        //        const res = await this.state.instance.methods.newRole(this.state.address, this.state.name, !this.state.isAdmin).send({ from: this.state.accounts[0] })
+        //    }
+        //    catch {
+        //        alert('Unable to create this role')
+        //    }
+        //}
+        //else {
+        //    try {
+        //        const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+        //        var res = await this.state.instance.methods.updateRole(address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
+        //    } catch {
+        //        alert('Unable to update this role')
+        //    }
+        //}
+        //window.location.reload()
+        //this.getRoles()
     }
+
     render() {
         const address = []
         const currAddress = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
@@ -139,7 +141,7 @@ class NewRole extends React.Component {
                         </div>
                     </div>
                     <div class="form-group col-12 ">
-                        <button onClick={() => this.manageRole()} class="btn btn-primary">Create</button>
+                        <Button onClick={() => this.manageRole()} class="btn btn-primary">Create</Button>
                     </div>
                 </>)
 
@@ -186,7 +188,7 @@ class NewRole extends React.Component {
                                 </ul>
                                 <div class="tab-content" >
                                     <div class="tab-pane active" id="users">
-                                        <form id="search-users" name="searchUsers" method="post" action="/">
+                                        <form id="search-users" name="searchUsers">
                                             <div class="row">
                                                 <div class="form-group col-12 col-lg-6">
                                                     <label class="is-required" for="role">Select an account</label>
