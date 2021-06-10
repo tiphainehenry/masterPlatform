@@ -27,6 +27,8 @@ class NewRole extends React.Component {
             roles: [],
             addresses: [],
             admins: [],
+            listOfRoles: [],
+            newRole:"",
         };
 
     }
@@ -44,12 +46,18 @@ class NewRole extends React.Component {
         else if (e.target.name === "name")
             this.setState({ name: e.target.value })
         else if (e.target.name === "selector") {
-            this.setState({ isNew: (e.target.value === "") })
             this.setState({ selectValue: e.target.value })
+            this.setState({ isNew: (e.target.value === "") })
+            if (e.target.value !== "") {
+                this.getListRoles('0x' + this.state.addresses[this.state.roles.indexOf(e.target.value)])
+            }
         } else if (e.target.name === "isAdmin") {
             this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
+        } else if (e.target.name === "newRole") {
+            this.setState({newRoleName: e.target.value});
         }
     }
+
     /**
      * Connect to Smart contract
      */
@@ -66,12 +74,34 @@ class NewRole extends React.Component {
             this.setState({ instance: instance })
             this.setState({ web3, accounts, contract: instance });
             this.getRoles()
+            const add = '0x' + '1d27b15febf8dce6fe0fd5b45a4784c4dd3e11e1'
+            const toto = await instance.methods.getElemRoles(add).call()
+            console.log(toto);
         } catch (error) {
             //alert(
             //  `Failed to load web3, accounts, or contract. Check console for details.`,
             //);
             console.error(error);
         }
+    }
+    /**
+     * Get the list of existing roles for an account
+     */
+    async getListRoles(address) {
+        console.log(address);
+        const roles = await this.state.instance.methods.getElemRoles(address).call()
+        console.log(roles);
+        var line = []
+        for (let i = 0; i < roles.length; i++) {
+            line.push(
+                <tr>
+                    <td>{i}</td>
+                    <td>{roles[i]}</td>
+                    <td><button onClick={() => this.DeleteRole(i)} class="btn btn-danger">Delete</button></td>
+                </tr>)
+        }
+        this.setState({ listOfRoles: line });
+        return line
     }
     /**
      * get the list of available roles in the SC then split the name and the address of the role
@@ -90,8 +120,31 @@ class NewRole extends React.Component {
         });
         this.setState({ roles: tmpRoles, addresses: tmpAddress, admins: tmpAdmin })
     }
+
     /**
-     * Create a new Role if Isnew or update an already existing Role
+     * Create a new role for an existing account
+     */
+     async addNewRole() {
+        console.log("test");
+        return false
+        // const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+        // const res = await this.state.instance.methods.AddElemRole(this.state.address, this.state.newRoleName).send({ from: this.state.accounts[0] })
+    }
+
+
+    /**
+     * delete one of the roles 
+     * @param {index of the role to delete} index 
+     */
+    async deleteRole(index) {
+        const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+        console.log("azer");
+        const res = await this.state.instance.methods.RemoveElemRole(add, index).send({ from: this.state.accounts[0] })
+        console.log("tyuiop");
+    }
+
+    /**
+     * Create a new Account if Isnew or update an already existing Role
      * For now all addresses are hard coded  
      */
     async manageRole() {
@@ -146,7 +199,6 @@ class NewRole extends React.Component {
         } else {
             address.push(
                 <>
-
                     <div class="form-group col-12 col-lg-6">
                         <label class="is-required">Address</label>
                         <input type="input" value={currAddress} disabled class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true" name="address" ></input>
@@ -166,11 +218,29 @@ class NewRole extends React.Component {
                     <div class="form-group col-12 ">
                         <button type="submit" onClick={() => this.manageRole()} class="btn btn-primary">Update</button>
                     </div>
+                    <div className='form-group col-12'>
+                        <table className='table' striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Role</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>new</td>
+                                    <td><input type="input" class="form-control " onPaste={e => this.onChange(e)} name="newRole" onChange={e => this.onChange(e)}></input></td>
+                                    <td><button onClick={() => this.addNewRole()} class="btn btn-primary">{"  Add  "}</button></td>
+                                </tr>
+                                {this.state.listOfRoles}
+                            </tbody>
+                        </table>
+                        <button>test</button>
+                    </div>
                 </>)
         }
         var Answer = this.state.roles.map((x, y) => <option key={y}>{x}</option>)
-
-
         return <div >
             <Header />
             <Row>
@@ -195,9 +265,7 @@ class NewRole extends React.Component {
                                                         {Answer}
                                                     </select>
                                                 </div>
-
                                                 {address}
-
                                             </div>
                                         </form>
                                     </div>
