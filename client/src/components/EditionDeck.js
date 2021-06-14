@@ -7,7 +7,7 @@ import { getMenuStyle } from './utils_ContextMenuHelpers';
 import Header from './Header';
 
 import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import SidebarModel from './SidebarModel';
+import Legend from './Legend';
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -73,7 +73,9 @@ class EditionDeck extends React.Component {
       newActivityCnt: 0,
 
       source: { ID: '', type: '' },
-      target: { ID: '', type: '' }
+      target: { ID: '', type: '' },
+      src: 'edition-deck',
+
     };
 
     /// Activity update functions
@@ -326,17 +328,18 @@ class EditionDeck extends React.Component {
     console.log(this.state);
     return <>
       <div>
-      <Header />
-        <Row>
+      <Container fluid >
+        <Row >
+          <Col >
+            <div className="bg-green pt-5 pb-3">
 
-                <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
-                        <Container flex>
+              <div className='container'>
 
-                            <div className='container'>
+        <div className="align-items-center">
+
                   <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
 
-                  <div className="well">Right click on the graph to see the menu</div>
+                  <p>Right click on the graph to see the menu</p>
 
                   <div>
                     <Row>
@@ -369,7 +372,7 @@ class EditionDeck extends React.Component {
 
                                 <hr style={{ "size": "5px" }} /><br />
 
-                                <h4>Tenants</h4>
+                                <h4>Assign role</h4>
 
                                 <Form.Label>Private Role</Form.Label>
                                 <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} />
@@ -419,14 +422,19 @@ class EditionDeck extends React.Component {
                     </Row>
                   </div>
                   <Button onClick={this.saveGraph}>save new version</Button>
-
-                </div>
-                      </Container>
                     </div>
-                </div>
+                    <Legend src={this.state.src}/>
 
-            </Row>
-        </div>    
+                    </div>
+
+                    </div>
+
+                    </Col>
+        </Row>
+      </Container>
+
+                    </div>
+
     </>
 
   }

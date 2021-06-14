@@ -3,17 +3,16 @@ import React from 'react';
 import { Table, Button, Form, ListGroup, Row, Col, Container } from 'react-bootstrap';
 
 import '../style/boosted.min.css';
-import Header from './Header';
-import { post } from 'axios';
-import axios from 'axios';
 
+import Header from './Header';
 import LoadToBCL from './LoadToBC';
 import SidebarModel from './SidebarModel';
 
-import PublicDCRManager from '../contracts/PublicDCRManager.json';
+import axios from 'axios';
 import ipfs from '../ipfs';
-
 import getWeb3 from "../getWeb3";
+
+import PublicDCRManager from '../contracts/PublicDCRManager.json';
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
@@ -39,9 +38,13 @@ class CreateL extends React.Component {
       accounts: null,
       contract: null,
 
+      selectValue: 'p_to_g'
+
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onChangeView = this.onChangeView.bind(this);
+
     this.fileUpload = this.fileUpload.bind(this);
     this.connectToWeb3 = this.connectToWeb3.bind(this);
     this.onIPFSSubmit = this.onIPFSSubmit.bind(this);
@@ -67,7 +70,7 @@ class CreateL extends React.Component {
       this.setState({ web3, accounts, contract: instance });
 
       // Checking if contract already populated
-      this.setState({ wkState: 'Create Global Workflow OnChain.' })
+      this.setState({ wkState: 'Create Workflow OnChain.' })
 
     } catch (error) {
       alert(
@@ -94,27 +97,27 @@ class CreateL extends React.Component {
     var input = ProcessDB[this.state.processID]['TextExtraction']['public'];
     ipfs.files.add(Buffer.from(JSON.stringify(input)))
       .then(res => {
-      const hash = res[0].hash
+        const hash = res[0].hash
 
-      this.setState({
-        ipfsHash: hash
-      },() => {
-        localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
-      });
-  
-      axios.post(`http://localhost:5000/saveHash`,
-      {
-        "hash": hash,
-        "processId": this.state.processID,
-      },
-      { "headers": { "Access-Control-Allow-Origin": "*" } }
-    );
-    
-      return ipfs.files.cat(hash)
-    })
-    .then(output => {
-      console.log('retrieved data:', JSON.parse(output))
-    })
+        this.setState({
+          ipfsHash: hash
+        }, () => {
+          localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
+        });
+
+        axios.post(`http://localhost:5000/saveHash`,
+          {
+            "hash": hash,
+            "processId": this.state.processID,
+          },
+          { "headers": { "Access-Control-Allow-Origin": "*" } }
+        );
+
+        return ipfs.files.cat(hash)
+      })
+      .then(output => {
+        console.log('retrieved data:', JSON.parse(output))
+      })
 
   }; //onIPFSSubmit 
 
@@ -146,7 +149,7 @@ class CreateL extends React.Component {
    * upload filename and process it into the backend to generate projections.
    * @param file dcr textual representation (see examples in the DCRinput folder).
    */
-  fileUpload(e,file) {
+  fileUpload(e, file) {
     e.preventDefault();
 
     const url = `http://localhost:5000/inputFile`;
@@ -156,15 +159,14 @@ class CreateL extends React.Component {
 
     this.setState({
       processID: processID
-    },() => {
+    }, () => {
       localStorage.setItem('processID', JSON.stringify(this.state.processID))
     });
-
 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('processID', processID);
-    formData.append('projType', 'p_to_g');
+    formData.append('projType', this.state.selectValue);
 
     const config = {
       headers: {
@@ -173,51 +175,70 @@ class CreateL extends React.Component {
       }
     };
 
-    return post(url, formData, config)
+    return axios.post(url, formData, config)
   }
+
+  onChangeView(e) {
+    this.setState({ selectValue: e.target.value });
+  }
+
 
   render() {
     return <div>
       <Header />
 
       <Row>
-            <SidebarModel />
+        <SidebarModel />
 
-            <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+        <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
 
-          <Container>
-            
+            <Container>
+
               <div class="container">
-                <h2>My Process Models - Public input and incremental projections.</h2>
+                <h2>My Process Models</h2>
                 <h3>Import and project a new process model</h3>
-                <h5>Step 1 </h5>
 
-                <p>Load a PUBLIC DCR file to be projected (i.e. a process that declares ONLY the public tasks of the participants.) The three input files used for our experiments are accessible in the <a href='https://github.com/tiphainehenry/react-cyto/'>dcrInputs repository</a> of our github.
-                  Then, save public view to IPFS.
-                </p>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <form role="form" id="myForm">
 
-                <Container>
-                  <hr />
-    
-                  <form onSubmit={this.onFormSubmit}>
-                    <input type="file" onChange={this.onChange} />
-                    <button class="btn btn-primary my-2 my-sm-0" type="submit">0./ Bit-vectorize the public view</button>
-                  </form>
+                      <div class="form-group">
+                        <label class="is-required" for="role">Select projection type</label>
+                        <select class="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>
+                          <option value="p_to_g">Public view</option>
+                          <option value="g_to_p">Global view</option>
+                        </select>
+                        <span class="form-text small text-muted" id="helpTextFile">
+                          Public view: declare ONLY the public tasks of the participants.
+                          Global view: declare all tasks (public+private).</span>
 
-                  <hr />
-    
-                  <Form onSubmit={this.onIPFSSubmit}>
-                    <Button
-                      bsStyle="primary"
-                      type="submit">
-                      1./ Store public text extraction to IPFS
-                    </Button>
-                  </Form>
-                  <hr/>
-                  <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID}/>
+                      </div>
 
-                </Container>
+
+                      <div class="custom-file">
+
+                        <form onSubmit={this.onFormSubmit}>
+                          <input type="file" class="custom-file-input" id="exampleInputFile" onChange={this.onChange} aria-describedby="helpTextFile" />
+                          <label class="custom-file-label" for="exampleInputFile">Input file</label>
+                          <span class="form-text small text-muted" id="helpTextFile">The three input files used for our experiments are accessible in the <a href='https://github.com/tiphainehenry/react-cyto/'>dcrInputs repository</a> of our github.</span>
+                        </form>
+                      </div>
+
+                      <div class="form-group my-3">
+                            <button type="submit" class="btn btn-secondary">1. Project</button>
+                          </div>
+
+                      <div class="form-group my-3" onSubmit={this.onIPFSSubmit}>
+                        <button type="submit" class="btn btn-secondary">2. Save public text extraction to IPFS</button>
+                      </div>
+
+                      <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} />
+
+                    </form>
+                  </div>
+                </div>
+
                 <hr />
                 <h5>Step 2</h5>
                 <p>To execute the process, navigate between the different role projections accessible via the 'My running instances' header. </p>
@@ -227,7 +248,6 @@ class CreateL extends React.Component {
                   <ul>(1) Send choreography events are marked with (!)</ul>
                   <ul>(2) Receive choreography events are marked with (?)</ul>
                   <ul>(3) Internal events comprise the event name only.</ul>
-                  <ul>(4) External events (choreography or internal) are filled in black.</ul>
                 </ListGroup>
 
                 <p>
@@ -248,11 +268,11 @@ class CreateL extends React.Component {
 
 
               </div>
-      </Container>
-      </div>
-            </div>
+            </Container>
+          </div>
+        </div>
 
-</Row>
+      </Row>
     </div>
 
 

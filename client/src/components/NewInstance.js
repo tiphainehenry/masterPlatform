@@ -85,33 +85,33 @@ class NewInstance extends React.Component {
                 <div className='container'>
                   <h1>Creation of a new Process model</h1>
                   <ul class="nav nav-tabs">
-                                </ul>
-                                <div class="tab-content" >
-                                    <div class="tab-pane active" id="users">
+                  </ul>
+                  <div class="tab-content" >
+                    <div class="tab-pane active" id="users">
 
-                  <form id="search-users" name="searchUsers" method="post" action="/">
-                    <div class="row">
-                      <div class="form-group col-12 ">
-                        <label class="is-required" for="role">Choose the name of your process</label>
-                        <input type="input" onChange={e => this.onChange(e)} placeholder={this.state.processName} class="form-control required"></input>
-                        {!this.state.valid ? <p style={{ 'padding': '10px', 'color': 'red' }}>Name of template already taken</p> : null}
-                      </div>
-                      <div class="form-group col-12 ">
+                      <form id="search-users" name="searchUsers" method="post" action="/">
+                        <div class="row">
+                          <div class="form-group col-12 ">
+                            <label class="is-required" for="role">Choose the name of your process</label>
+                            <input type="input" onChange={e => this.onChange(e)} placeholder={this.state.processName} class="form-control required"></input>
+                            {!this.state.valid ? <p style={{ 'padding': '10px', 'color': 'red' }}>Name of template already taken</p> : null}
+                          </div>
+                          <div class="form-group col-12 ">
 
-                        {this.state.valid ? <Link class="btn btn-primary my-2 my-sm-0" to={{
-                    pathname: './creation',
-                    state: {
-                      currentProcess: this.state.processName,
-                      currentInstance: 'r1'
-                    }
-                  }}> create new model <FilePlus /></Link> :
-                    <Link class="btn btn-primary my-2 my-sm-0" >create new model <FilePlus /></Link>
-                  }
-                      </div>
+                            {this.state.valid ? <Link class="btn btn-primary my-2 my-sm-0" to={{
+                              pathname: './creation',
+                              state: {
+                                currentProcess: this.state.processName,
+                                currentInstance: 'r1'
+                              }
+                            }}> create new model <FilePlus /></Link> :
+                              <Link class="btn btn-primary my-2 my-sm-0" >create new model <FilePlus /></Link>
+                            }
+                          </div>
 
+                        </div>
+                      </form>
                     </div>
-                  </form>
-                  </div>
                   </div>
 
                   <br />
@@ -120,36 +120,36 @@ class NewInstance extends React.Component {
                   <br />
                   <br />
 
-          <Table id="myTable" class="table tablesorter table-responsive">
-            <caption>My templates </caption>
-            <thead class="cf">
-              <tr>
-                <th class="header" scope="col">Name (click to edit)</th>
-                <th class="header" scope="col">Type</th>
-                <th class="header" scope="col">Last Update</th>
-              </tr>
-            </thead>
-            <tbody>
-            {Array.from({ length: this.state.templates.length }, (x, i) =>
+                  <Table id="myTable" class="table tablesorter table-responsive">
+                    <caption>My templates </caption>
+                    <thead class="cf">
+                      <tr>
+                        <th class="header" scope="col">Name (click to edit)</th>
+                        <th class="header" scope="col">Type</th>
+                        <th class="header" scope="col">Last Update</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.from({ length: this.state.templates.length }, (x, i) =>
 
-<tr>
-<td class="align-middle"><Link to={{
-                                pathname: './creation',
-                                state: {
-                                  currentProcess: this.state.templates[i],
-                                  currentInstance: 'r1'
-                                }
-                              }}><File/>{this.state.templates[i]} </Link>
-                         </td>
-<td class="align-middle">("test")</td>
-<td class="align-middle">("test")</td>
+                        <tr>
+                          <td class="align-middle"><Link to={{
+                            pathname: './creation',
+                            state: {
+                              currentProcess: this.state.templates[i],
+                              currentInstance: 'r1'
+                            }
+                          }}><File />{this.state.templates[i]} </Link>
+                          </td>
+                          <td class="align-middle">("test")</td>
+                          <td class="align-middle">("test")</td>
 
-</tr>
+                        </tr>
                       )}
 
 
-            </tbody>
-          </Table>
+                    </tbody>
+                  </Table>
                 </div>
 
               </Container>

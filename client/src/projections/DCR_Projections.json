@@ -2905,6 +2905,145 @@
             "include": 1, 
             "executed": 0, 
             "id": "e7", 
+            "name": "Nurse\nDontTrustPrep(N)\nPA"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_e5_response", 
+            "target": "e5"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e5", 
+            "id": "e3_e5_response_back", 
+            "target": "e3"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_e5_condition", 
+            "target": "e5"
+          }
+        }
+      ]
+    }, 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e3", 
+            "e1", 
+            "e2", 
+            "e4", 
+            "e5", 
+            "e6", 
+            "e7"
+          ], 
+          "receive": [
+            "e3r", 
+            "e1r", 
+            "e2r", 
+            "e4r", 
+            "e5r", 
+            "e6r", 
+            "e7r"
+          ], 
+          "send": [
+            "e3s", 
+            "e1s", 
+            "e2s", 
+            "e4s", 
+            "e5s", 
+            "e6s", 
+            "e7s"
+          ]
+        }, 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1", 
+            "1", 
+            "1", 
+            "0", 
+            "1", 
+            "1"
+          ], 
+          "executed": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          "pending": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        }, 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e3", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e1", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e2", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e3", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e4", 
+            "pending": 0
+          }, 
+          {
+            "include": 0, 
+            "executed": 0, 
+            "id": "e5", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e6", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e7", 
             "pending": 0
           }
         ], 
@@ -7040,25 +7179,25 @@
               "0", 
               "0", 
               "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
               "1", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
               "0", 
               "0"
             ], 
@@ -7105,25 +7244,25 @@
               "0", 
               "0", 
               "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
               "1", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
               "0", 
               "0"
             ], 
@@ -7170,6 +7309,24 @@
               "0", 
               "0", 
               "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
               "1", 
               "0", 
               "0"
@@ -7209,25 +7366,154 @@
               "0", 
               "0", 
               "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0", 
-              "0"
             ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e1", 
+            "name": "Doctor\nPrescribeMed\nNurse"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e2", 
+            "name": "Nurse\nDontTrustPrescr(N)\nDoctor"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e3", 
+            "name": "CP\nAcceptPrescription\nDoctor"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e4", 
+            "name": "CP\nDontTrustPrescr(CP)\nDoctor"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography", 
+          "data": {
+            "id": "e5", 
+            "name": "PA\nMakePrescription\nCP"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e6", 
+            "name": "CP\nDontTrustPrep(CP)\nPA"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e7", 
+            "name": "Nurse\nDontTrustPrep(N)\nPA"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_e5_response", 
+            "target": "e5"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e5", 
+            "id": "e3_e5_response_back", 
+            "target": "e3"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_e5_condition", 
+            "target": "e5"
+          }
+        }
+      ]
+    }, 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e3", 
+            "e1", 
+            "e2", 
+            "e4", 
+            "e5", 
+            "e6", 
+            "e7"
+          ], 
+          "receive": [
+            "e3r", 
+            "e1r", 
+            "e2r", 
+            "e4r", 
+            "e5r", 
+            "e6r", 
+            "e7r"
+          ], 
+          "send": [
+            "e3s", 
+            "e1s", 
+            "e2s", 
+            "e4s", 
+            "e5s", 
+            "e6s", 
+            "e7s"
+          ]
+        }, 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1", 
+            "1", 
+            "1", 
+            "0", 
+            "1", 
+            "1"
+          ], 
+          "executed": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          "pending": [
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0", 
+            "0"
           ]
         }
       }, 
@@ -17350,6 +17636,53 @@
               "0", 
               "0", 
               "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "1", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0", 
+              "0"
             ], 
             [
               "0", 
@@ -17367,6 +17700,135 @@
               "0", 
               "0"
             ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e1", 
+            "name": "Doctor\nPrescribeMed\nNurse"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e2", 
+            "name": "Nurse\nDontTrustPrescr(N)\nDoctor"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e3", 
+            "name": "CP\nAcceptPrescription\nDoctor"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e4", 
+            "name": "CP\nDontTrustPrescr(CP)\nDoctor"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography", 
+          "data": {
+            "id": "e5", 
+            "name": "PA\nMakePrescription\nCP"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e6", 
+            "name": "CP\nDontTrustPrep(CP)\nPA"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e7", 
+            "name": "Nurse\nDontTrustPrep(N)\nPA"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_e5_response", 
+            "target": "e5"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "response back", 
+          "data": {
+            "source": "e5", 
+            "id": "e3_e5_response_back", 
+            "target": "e3"
+          }
+        }, 
+        {
+          "group": "edges", 
+          "classes": "condition", 
+          "data": {
+            "source": "e3", 
+            "id": "e3_e5_condition", 
+            "target": "e5"
+          }
+        }
+      ]
+    }, 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e3", 
+            "e1", 
+            "e2", 
+            "e4", 
+            "e5", 
+            "e6", 
+            "e7"
+          ], 
+          "receive": [
+            "e3r", 
+            "e1r", 
+            "e2r", 
+            "e4r", 
+            "e5r", 
+            "e6r", 
+            "e7r"
+          ], 
+          "send": [
+            "e3s", 
+            "e1s", 
+            "e2s", 
+            "e4s", 
+            "e5s", 
+            "e6s", 
+            "e7s"
+          ]
+        }, 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1", 
+            "1", 
+            "1", 
+            "0", 
+            "1", 
+            "1"
           ], 
           "milestone": [
             [

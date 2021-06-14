@@ -24,6 +24,7 @@ import Klay from 'cytoscape-klay'
 
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
 import getWeb3 from '../getWeb3';
+import Legend from './Legend';
 
 Cytoscape.use(Dagre)
 Cytoscape.use(Klay)
@@ -90,7 +91,8 @@ class CreationDeck extends React.Component {
       src: 'creation-deck',
 
       source: { ID: '', type: '' },
-      target: { ID: '', type: '' }
+      target: { ID: '', type: '' },
+
     };
 
     /// Activity update functions
@@ -524,11 +526,15 @@ class CreationDeck extends React.Component {
 
         <Row>
               <SidebarModel />
+             
 
               <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+              
+
               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
 
               <Container>
+
             
                 <div class='container'>
                   <h2>Creating [process {this.state.processID}]</h2>
@@ -566,7 +572,7 @@ class CreationDeck extends React.Component {
 
                                 <hr style={{ "size": "5px" }} /><br />
 
-                                <h4>Tenants</h4>
+                                <h4>Assign role</h4>
 
                                 <Form.Label>Private Role</Form.Label>
                                 {/* <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} /> */}
@@ -621,12 +627,16 @@ class CreationDeck extends React.Component {
                   </div>
                   <Button onClick={this.privateGraphUpd}>Instantiate</Button>
                   <Button onClick={this.saveToLibrary}>save</Button>
+
+
+                  <Legend src={this.state.src}/>
+
                 </div>
                 </Container>
               </div>
               </div>
 
-        </Row>
+             </Row>
 
       </div>
     </>

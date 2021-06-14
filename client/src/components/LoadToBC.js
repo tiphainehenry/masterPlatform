@@ -4,6 +4,7 @@ import PublicDCRManager from "../contracts/PublicDCRManager.json";
 import getWeb3 from "../getWeb3";
 
 import { Button, Table } from 'react-bootstrap';
+import { Info } from 'react-feather';
 
 var node_style = require('../style/nodeStyle.json')
 var edge_style = require('../style/edgeStyle.json')
@@ -284,51 +285,63 @@ class LoadToBCL extends React.Component {
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style)
     if (window.location.href.indexOf("creation"))
-      return (<div>
-      <Button onClick= {this.handleCreateWkf}>{this.state.wkState}</Button>
+      return (<>
+
+            <div class="form-group my-3" >
+              <button onClick= {this.handleCreateWkf} class="btn btn-secondary">3. Instantiate view in smart contract</button>
+            </div>
+
      <br/>
      <br/>
      {this.props.src === 'creation-deck'? <></>:<>
-                  <Button onClick={this.getWKCreationReceipt}> Get Transaction Receipt </Button>
+                  <Button onClick={this.getWKCreationReceipt} variant='info'> <span><Info/> <span>Get Transaction Receipt</span> </span></Button>
 
-                  <Table bordered responsive>
-                    <thead>
+
+                  <Table id="myTable" class="table tablesorter table-responsive">
+                    <thead class="cf">
                       <tr>
-                        <th>Tx Receipt Category</th>
-                        <th>Values</th>
+                        <th class="header" scope="col">Tx Receipt Category</th>
+                        <th class="header" scope="col">Values</th>
                       </tr>
                     </thead>
-
                     <tbody>
-                      <tr>
-                        <td>IPFS Hash # stored on Eth Contract</td>
-                        <td>{this.props.ipfsHash}</td>
-                      </tr>
-                      <tr>
-                        <td>Ethereum Contract Address</td>
-                        <td>{this.state.ethAddress}</td>
+
+                        <tr>
+                          <td class="align-middle">IPFS Hash # stored on Eth Contract
+                          </td>
+                          <td class="align-middle">{this.props.ipfsHash}</td>
+
+                        </tr>
+
+                        <tr>
+                          <td class="align-middle">Ethereum Contract Address
+                          </td>
+                          <td class="align-middle">{this.state.ethAddress}</td>
+
+                        </tr>
+
+
+                        <tr>
+                        <td class="align-middle">Tx Hash # </td>
+                        <td class="align-middle">{this.state.transactionHash}</td>
                       </tr>
 
                       <tr>
-                        <td>Tx Hash # </td>
-                        <td>{this.state.transactionHash}</td>
+                        <td class="align-middle">Block Number # </td>
+                        <td class="align-middle">{this.state.blockNumber}</td>
                       </tr>
 
                       <tr>
-                        <td>Block Number # </td>
-                        <td>{this.state.blockNumber}</td>
+                        <td class="align-middle">Gas Used</td>
+                        <td class="align-middle">{this.state.gasUsed}</td>
                       </tr>
 
-                      <tr>
-                        <td>Gas Used</td>
-                        <td>{this.state.gasUsed}</td>
-                      </tr>
+
                     </tbody>
-                  </Table></>}
+                  </Table></>}</>
 
-
-      </div>)
-    return <div>
+      )
+    return <>
       {this.state.lenDataDB > 0 ?
         <CytoscapeComponent elements={this.state.data}
           stylesheet={stylesheet}
@@ -341,7 +354,7 @@ class LoadToBCL extends React.Component {
         <></>
       }
 
-    </div>;
+    </>;
   }
 }
 
