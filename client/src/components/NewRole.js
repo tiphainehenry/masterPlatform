@@ -74,9 +74,6 @@ class NewRole extends React.Component {
             this.setState({ instance: instance })
             this.setState({ web3, accounts, contract: instance });
             this.getRoles()
-            const add = '0x' + '1d27b15febf8dce6fe0fd5b45a4784c4dd3e11e1'
-            const toto = await instance.methods.getElemRoles(add).call()
-            console.log(toto);
         } catch (error) {
             //alert(
             //  `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -97,7 +94,7 @@ class NewRole extends React.Component {
                 <tr>
                     <td>{i}</td>
                     <td>{roles[i]}</td>
-                    <td><button onClick={() => this.DeleteRole(i)} class="btn btn-danger">Delete</button></td>
+                    <td><Button onClick={() => this.deleteRole(i)} class="btn btn-danger">Delete</Button></td>
                 </tr>)
         }
         this.setState({ listOfRoles: line });
@@ -125,10 +122,9 @@ class NewRole extends React.Component {
      * Create a new role for an existing account
      */
      async addNewRole() {
-        console.log("test");
-        return false
-        // const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
-        // const res = await this.state.instance.methods.AddElemRole(this.state.address, this.state.newRoleName).send({ from: this.state.accounts[0] })
+        const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+        console.log(add);
+        const res = await this.state.instance.methods.AddElemRole(add, this.state.newRoleName).send({ from: this.state.accounts[0] })
     }
 
 
@@ -231,12 +227,11 @@ class NewRole extends React.Component {
                                 <tr>
                                     <td>new</td>
                                     <td><input type="input" class="form-control " onPaste={e => this.onChange(e)} name="newRole" onChange={e => this.onChange(e)}></input></td>
-                                    <td><button onClick={() => this.addNewRole()} class="btn btn-primary">{"  Add  "}</button></td>
+                                    <td><Button onClick={() => this.addNewRole()} class="btn btn-primary">{"  Add  "}</Button></td>
                                 </tr>
                                 {this.state.listOfRoles}
                             </tbody>
                         </table>
-                        <button>test</button>
                     </div>
                 </>)
         }
@@ -256,7 +251,7 @@ class NewRole extends React.Component {
                                 </ul>
                                 <div class="tab-content" >
                                     <div class="tab-pane active" id="users">
-                                        <form id="search-users" name="searchUsers" method="post" action="/">
+                                        <form >
                                             <div class="row">
                                                 <div class="form-group col-12 col-lg-6">
                                                     <label class="is-required" for="role">Select an account</label>
