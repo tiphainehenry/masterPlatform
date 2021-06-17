@@ -19,6 +19,13 @@ contract PublicDCRManager {
         string indexed workflowHash,
         address indexed creator
     );
+    
+    
+    event RequestChange(
+        string indexed newWorkflowHash,
+        address indexed endorser
+    );
+
 
     // variable declarations.
 
@@ -102,7 +109,18 @@ contract PublicDCRManager {
         
         return workflows[_hash].ipfsViewHash;
     }
-
+    
+    
+    function requestChange(address[] memory toNotify, string memory _hash) public{
+        for (
+            uint256 id = 0;
+            id < toNotify.length;
+            id++
+        ) {
+            
+            emit RequestChange(_hash,toNotify[id]);
+        }
+    }
      
     /** @dev Getter for workflow name.
       * @param _hash index of the workflow (eg 0 for the first workflow).

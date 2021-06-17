@@ -121,7 +121,10 @@ class LoadToBCL extends React.Component {
 
   fetchWKData(pid){
     
+    Object.keys(ProcessDB).forEach(k => {console.log(k)});
+
     var activities = ProcessDB[pid]['TextExtraction']['public']['privateEvents'];
+
     
     var orderedPk = []
     var orderedNames= ProcessDB[pid]['Public']['vect']['activityNames']['default'];
@@ -199,6 +202,8 @@ class LoadToBCL extends React.Component {
 
     try {
         // connect list of activities to corresponding role first, and then to the right role address
+        
+        alert(this.props.processID);
         var wkData = this.fetchWKData(this.props.processID);
 
         var data =  wkData[0];

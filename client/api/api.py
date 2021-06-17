@@ -445,6 +445,7 @@ def inputFileLaunch():
         file = request.files['file']
         data = file.readlines()
         print("-----------------------------------")
+        print('data',data)
         processID = str(request.form['processID'])
         projType = str(request.form['projType'])
 
