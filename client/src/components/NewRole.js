@@ -95,26 +95,26 @@ class NewRole extends React.Component {
      * For now all addresses are hard coded  
      */
     async manageRole() {
-        alert(test);
+        //alert(test);
 
-        //if (this.state.isNew) {
-        //    try {
-        //        const res = await this.state.instance.methods.newRole(this.state.address, this.state.name, !this.state.isAdmin).send({ from: this.state.accounts[0] })
-        //    }
-        //    catch {
-        //        alert('Unable to create this role')
-        //    }
-        //}
-        //else {
-        //    try {
-        //        const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
-        //        var res = await this.state.instance.methods.updateRole(address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
-        //    } catch {
-        //        alert('Unable to update this role')
-        //    }
-        //}
-        //window.location.reload()
-        //this.getRoles()
+        if (this.state.isNew) {
+            try {
+                const res = await this.state.instance.methods.newRole(this.state.address, this.state.name, !this.state.isAdmin).send({ from: this.state.accounts[0] })
+            }
+            catch {
+                alert('Unable to create this role')
+            }
+        }
+        else {
+            try {
+                const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+                var res = await this.state.instance.methods.updateRole(address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
+            } catch {
+                alert('Unable to update this role')
+            }
+        }
+        window.location.reload()
+        this.getRoles()
     }
 
     render() {
