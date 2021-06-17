@@ -17,14 +17,17 @@ import CytoscapeComponent from 'react-cytoscapejs';
 
 import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
-import axios, { get, post } from 'axios';
+import axios from 'axios';
 import COSEBilkent from 'cytoscape-cose-bilkent';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
 
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
 import getWeb3 from '../getWeb3';
+import ipfs from '../ipfs';
+
 import Legend from './Legend';
+import LoadToBCL from './LoadToBC';
 
 Cytoscape.use(Dagre)
 Cytoscape.use(Klay)
@@ -37,6 +40,8 @@ var edge_style = require('../style/edgeStyle.json');
 var cyto_style = require('../style/cytoStyle.json')['edit'];
 
 var ProcessDB = require('../projections/DCR_Projections.json');
+
+
 /**
  * Template component to edit a projection
  */
@@ -54,7 +59,18 @@ class CreationDeck extends React.Component {
     this.state = {
       iterator: 0,
       data: [],
-      processID: this.props.location.state['currentProcess'],
+      processID: JSON.parse(localStorage.getItem('processID'))||this.props.location.state['currentProcess'],
+      ipfsHash: JSON.parse(localStorage.getItem('ipfsHash')) || null,
+      buffer: '',
+      ethAddress: '',
+      blockNumber: '',
+      transactionHash: '',
+      gasUsed: '',
+      txReceipt: '',
+      web3: null,
+      accounts: null,
+      contract: null,
+
       processName: this.props.location.state['currentProcess'],
       projectionID: 'Global',
       roleMaps:{},
@@ -72,6 +88,8 @@ class CreationDeck extends React.Component {
         type: ''
       },
 
+      roles:[],
+
       numSelected: 0,
 
       tenantName: '',
@@ -86,6 +104,8 @@ class CreationDeck extends React.Component {
         executed: 0,
         pending: 0
       },
+
+      selectValue: 'g_to_p',
 
       newActivityCnt: 0,
       src: 'creation-deck',
@@ -124,7 +144,13 @@ class CreationDeck extends React.Component {
 
     this.fileUpload = this.fileUpload.bind(this);
     this.privateGraphUpd = this.privateGraphUpd.bind(this);
-    this.saveToLibrary = this.saveToLibrary.bind(this)
+    this.saveToLibrary = this.saveToLibrary.bind(this);
+
+    this.createFile = this.createFile.bind(this);
+    this.instantiate= this.instantiate.bind(this);
+
+    this.onIPFSSubmit = this.onIPFSSubmit.bind(this);
+    this.onChangeView = this.onChangeView.bind(this);
   }
 
   /**
@@ -149,26 +175,13 @@ class CreationDeck extends React.Component {
    */
   componentWillMount() {
 
-    var processID = this.state.processID;
-    var projectionID = this.state.projectionID;
     this.getRoles()
 
-    console.log(this.props.location);
-    if (typeof (this.props.location.state) !== 'undefined') {
-      if (typeof (this.props.location.state['currentProcess']) !== 'undefined') {
-        processID = this.props.location.state['currentProcess'];
-        var projectionID = this.props.location.state['currentInstance'];
-
-        this.setState({
-          'processID': this.props.location.state['currentProcess'][1],
-          'processName': this.props.location.state['currentProcess'][1],
-          'projectionID': this.props.location.state['currentInstance'],
-          'data': {}
-        });
-      }
-    }
   };
 
+  onChangeView(e) {
+    this.setState({ selectValue: e.target.value });
+  }
 
   async getRoles() {
 
@@ -181,6 +194,10 @@ class CreationDeck extends React.Component {
         AdminRoleManager.abi,
         deployedNetwork && deployedNetwork.address,
       );
+
+
+      this.setState({ web3, accounts, contract: instance });
+
       var roles = await instance.methods.getRoles().call()
       var tmpRoles = []
       var tmpAddress = []
@@ -196,6 +213,48 @@ class CreationDeck extends React.Component {
       console.error(error);
     }
   }
+  onIPFSSubmit = async (event) => {
+    event.preventDefault();
+
+    alert('Sending from Metamask account: ' + this.state.accounts[0]);
+
+    //obtain contract address from storehash.js
+    const ethAddress = await this.state.contract.options.address;
+    this.setState({ ethAddress });
+
+    //save document to IPFS,return its hash#, and set hash# to state
+    //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add 
+
+    var input = ProcessDB[this.state.processID]['TextExtraction']['public'];
+
+    alert(input);
+    ipfs.files.add(Buffer.from(JSON.stringify(input)))
+      .then(res => {
+        const hash = res[0].hash
+        alert(hash);
+
+        this.setState({
+          ipfsHash: hash
+        }, () => {
+          localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
+        });
+
+        axios.post(`http://localhost:5000/saveHash`,
+          {
+            "hash": hash,
+            "processId": this.state.processID,
+          },
+          { "headers": { "Access-Control-Allow-Origin": "*" } }
+        );
+
+        return ipfs.files.cat(hash)
+      })
+      .then(output => {
+        alert('retrieved data:', JSON.parse(output))
+      })
+
+  }; //onIPFSSubmit 
+
   //////////  LISTENERS /////////////////
 
   /**
@@ -294,17 +353,25 @@ class CreationDeck extends React.Component {
    * Instanciate the process in the BC
    * 
    */
-  fileUpload(file) {
+  fileUpload(e,file) {
+    e.preventDefault();
+
     const url = `http://localhost:5000/inputFile`;
 
     var processNum = Object.keys(ProcessDB).length + 1;
     var processID = 'p' + processNum;
 
-    this.setState({ processID: processID });
+    this.setState({
+      processID: processID
+    }, () => {
+      localStorage.setItem('processID', JSON.stringify(this.state.processID))
+    });
 
     const formData = new FormData();
+
     formData.append('file', file);
     formData.append('processID', processID);
+    formData.append('projType', this.state.selectValue);
 
     const config = {
       headers: {
@@ -313,15 +380,7 @@ class CreationDeck extends React.Component {
       }
     };
 
-    axios.post(`http://localhost:5000/inputFile`, formData, config).then(
-      (response) => {
-        var result = response.data;
-        console.log(result);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    return axios.post(url, formData, config);
   }
   /**
    * Get the template data if it already exist in DB
@@ -379,7 +438,8 @@ class CreationDeck extends React.Component {
    * Private graph update processing > calls the API to update the markings and nodes.
    * 
    */
-  privateGraphUpd() {
+  privateGraphUpd(e) {
+    e.preventDefault();
     if (this.cy.elements().length === 0) {
       window.alert('Graph is empty')
     } else if (window.confirm('Confirm new graph version?')) {
@@ -391,7 +451,7 @@ class CreationDeck extends React.Component {
       this.cy.elements().forEach(function (ele, id) {
         console.log(ele)
         console.log("id = " + id);
-        var newEle = {}
+        var newEle = {};
 
         console.log("then id = " + id);
 
@@ -399,25 +459,25 @@ class CreationDeck extends React.Component {
 
         if (ele['_private']['group'] === "nodes") {
           if (ele['_private']['classes'].has("choreography")) {
-            id++
-            tmp = ele['_private']['data']['name'].split(' ')
-            tmp = tmp.filter(e => e !== "")
-            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])])
-            rolelist.set(tmp[2], this.state.addresses[this.state.roles.indexOf(tmp[2])])
+            id++;
+            tmp = ele['_private']['data']['name'].split(' ');
+            tmp = tmp.filter(e => e !== "");
+            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])]);
+            rolelist.set(tmp[2], this.state.addresses[this.state.roles.indexOf(tmp[2])]);
             newEle = {
               "name": "e" + id + "[" + tmp[1] + " src=" + tmp[0] + " tgt=" + tmp[2] + "]\n"
             }
-            ele['_private']['data']['name'] = "e" + id
+            ele['_private']['data']['name'] = "e" + id;
           } else {
 
-            var tmp = ele['_private']['data']['name'].split(' ')
+            var tmp = ele['_private']['data']['name'].split(' ');
             console.log("ttototootototo");
             console.log(tmp[1]);
             console.log(this.state.roles.indexOf(tmp[0]));
             console.log(this.state.addresses[this.state.roles.indexOf(tmp[0])]);
-            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])])
-            console.log(rolelist)
-            console.log(rolelist.get(tmp[0]))
+            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])]);
+            console.log(rolelist);
+            console.log(rolelist.get(tmp[0]));
         newEle = {
               "name": '"' + tmp[0] + '"' + " [role=" + tmp[1] + "]\n",
             };
@@ -430,7 +490,7 @@ class CreationDeck extends React.Component {
         }
         newData.push(newEle);
       }.bind(this));
-      this.createFile(newData, rolelist)
+      this.createFile(e,newData, rolelist)
     }
     else {
       console.log('save aborted');
@@ -457,31 +517,39 @@ class CreationDeck extends React.Component {
      * Create an input File to send to the API
      * 
      */
-  createFile(data, rolelist) {
+  createFile(e,data, rolelist) {
+    e.preventDefault() // Stop form submit
+
     var arrayEvent = []
     var arrayLink = []
     const it = rolelist.keys()
     for (const key of it) {
-        arrayEvent.push("pk[role=" + key + "] " + rolelist.get(key))
+        arrayEvent.push("pk[role=" + key + "]=0x" + rolelist.get(key)+'\n')
     }
     data.forEach(line => {
       if (line.hasOwnProperty('name'))
-        arrayEvent.push(line['name'])
+        arrayEvent.push(line['name']+'\n')
       else
-        arrayLink.push(line['link'])
+        arrayLink.push(line['link']+'\n')
     })
     const newdata = arrayEvent.concat(arrayLink)
-    const file = new File(newdata, 'creationDeck.txt', { type: "text/plain" })
-    console.log(newdata)
-    this.fileUpload(file)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data === "ok") {
-          this.loadToBC.current.handleCreateWkf()
-          console.log("is ok loadtoBC");
-        }
-      })
-    return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
+    const file = new File(newdata, 'creationDeck.txt', { type: "text/plain" });
+
+    this.fileUpload(e, file).then((response) => {
+      console.log(response.data);
+      if (response.data === "ok") {
+        // save to BC
+        console.log('projection done');
+        //this.loadToBC.current.handleCreateWkf();
+      }
+    })
+
+    //return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
+  }
+
+  async instantiate(){
+    this.loadToBC.current.handleCreateWkf();
+    console.log("is ok loadtoBC");
   }
 
   /**
@@ -539,6 +607,18 @@ class CreationDeck extends React.Component {
                 <div class='container'>
                   <h2>Creating [process {this.state.processID}]</h2>
 
+                  <div class="form-group">
+                        <label class="is-required" for="role">Select projection type</label>
+                        <select class="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>
+                          <option value="g_to_p">Global view</option>
+                          <option value="p_to_g">Public view</option>
+                        </select>
+                        <span class="form-text small text-muted" id="helpTextFile">
+                          Public view: declare ONLY the public tasks of the participants.
+                          Global view: declare all tasks (public+private).</span>
+
+                  </div>
+
                   <div className="well">Right click on the graph to see the menu</div>
 
                   <div>
@@ -573,21 +653,30 @@ class CreationDeck extends React.Component {
                                 <hr style={{ "size": "5px" }} /><br />
 
                                 <h4>Assign role</h4>
-
-                                <Form.Label>Private Role</Form.Label>
-                                {/* <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} /> */}
-                                <select className='row col-md-12' onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} ><option value=''> ---</option>{roles}</select>
+                                <div class="form-group">
+                                  <label class="is-required" for="role">Private role</label>
+                                  <select class="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+                                  <option value=''> ---</option>{roles}
+                                  </select>
+                                </div>
                                 <br />
 
-                                <Form.Label>Choreography Sender </Form.Label>
-                                <select className='row col-md-12' onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender} ><option value=''> ---</option>{roles}</select>
-                                {/* <Form.Control type="address" onChange={this.handleSender} placeholder={'enter sender name'} value={this.state.choreographyNames.sender} /> */}
-                                <br />
+                                <div class="form-group">
+                                  <label class="is-required" for="role">Choreography Sender</label>
+                                  <select class="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
+                                  <option value=''> ---</option>{roles}
+                                  </select>
+                                </div>
+
                                 <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
                                 <br />
-                                <Form.Label>Choreography Receiver</Form.Label>
-                                <select className='row col-md-12' onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver} ><option value=''> ---</option>{roles}</select>
-                                {/* <Form.Control type="address" onChange={this.handleReceiver} placeholder={'enter receiver name'} value={this.state.choreographyNames.receiver} /> */}
+                                <div class="form-group">
+                                  <label class="is-required" for="role">Choreography Receiver</label>
+                                  <select class="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
+                                  <option value=''> ---</option>{roles}
+                                  </select>
+                                </div>
+
 
                                 <hr /><br />
 
@@ -625,7 +714,12 @@ class CreationDeck extends React.Component {
                       </Col>
                     </Row>
                   </div>
-                  <Button onClick={this.privateGraphUpd}>Instantiate</Button>
+                  <Button onClick={this.privateGraphUpd}>1. Generate projection</Button>
+
+                  <Button onClick={this.onIPFSSubmit}>2. Save public text extraction to IPFS</Button>
+
+                  <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} />
+
                   <Button onClick={this.saveToLibrary}>save</Button>
 
 

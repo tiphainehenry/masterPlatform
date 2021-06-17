@@ -3,6 +3,8 @@ import React from 'react';
 import activityUpdHelpers from './utils_ActivityUpdHelpers';
 import cytoMenuHelpers from './utils_CytoMenuHelpers';
 import { getMenuStyle } from './utils_ContextMenuHelpers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import Header from './Header';
 
@@ -16,10 +18,14 @@ import contextMenus from 'cytoscape-context-menus';
 import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
 import axios from 'axios';
+import AdminRoleManager from '../contracts/AdminRoleManager.json';
+import getWeb3 from '../getWeb3';
+import ipfs from '../ipfs';
 
 import COSEBilkent from 'cytoscape-cose-bilkent';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
+
 
 Cytoscape.use(Dagre)
 Cytoscape.use(Klay)
@@ -44,6 +50,8 @@ class EditionDeck extends React.Component {
     super(props);
 
     this.state = {
+      iterator: 0,
+
       data: ProcessDB[Object.keys(ProcessDB)[0]]['Global'],
       processID: Object.keys(ProcessDB)[0],
       projectionID: 'Global',
@@ -75,6 +83,17 @@ class EditionDeck extends React.Component {
       source: { ID: '', type: '' },
       target: { ID: '', type: '' },
       src: 'edition-deck',
+
+      web3: null,
+      accounts: null,
+      contract: null,
+
+      roleMaps:[],
+
+      roles:[],
+
+      hashPublicReq:''
+
 
     };
 
@@ -140,6 +159,9 @@ class EditionDeck extends React.Component {
    * Instanciates component with the right process and projection view.
    */
   componentWillMount() {
+
+    this.getRoles()
+
     var processID = this.props.match.params.pid;
     var projectionID = this.props.match.params.rid;
 
@@ -164,6 +186,53 @@ class EditionDeck extends React.Component {
     //  }
     }
 
+    async getRoles() {
+
+      try {
+        const web3 = await getWeb3();
+        const accounts = await web3.eth.getAccounts();
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork = AdminRoleManager.networks[networkId];
+        const instance = new web3.eth.Contract(
+          AdminRoleManager.abi,
+          deployedNetwork && deployedNetwork.address,
+        );
+  
+  
+        this.setState({ web3, accounts, contract: instance });
+  
+        var roles = await instance.methods.getRoles().call()
+
+        var roleMaps = []
+        var tmpRoles = []
+        var tmpAddress = []
+        roles.forEach(line => {
+          var r = line.split('///')[0];
+          var a = line.split('///')[1];
+          tmpRoles.push(r);
+          tmpAddress.push(a);
+          roleMaps.push({'role':r, 'address':a});
+        });
+        this.setState({ roles: tmpRoles, addresses: tmpAddress, roleMaps:roleMaps })
+      } catch (error) {
+        //alert(
+        //  `Failed to load web3, accounts, or contract. Check console for details.`,
+        //);
+        console.error(error);
+      }
+    }
+
+    switchDest() {
+      const tmp = this.state.choreographyNames.sender
+      this.setState({
+        choreographyNames: {
+          sender: this.state.choreographyNames.receiver,
+          receiver: tmp
+        }
+      })
+    }
+  
+  
   //////////  LISTENERS /////////////////
 
   /**
@@ -259,17 +328,81 @@ class EditionDeck extends React.Component {
    * If one of the subgraph elems is a choreography, then we will need to call the SC for peer concertation. 
    * Otherwise we can update the private projection directly. 
    */
-  saveGraph() {
+  async saveGraph() {
 
     var publicUpd = false;
+    var publicNodes = [];
     this.cy.elements().forEach(function (ele) {
       if (ele['_private']['classes'].has('choreography') && ele['_private']['classes'].has('subgraph')) {
         publicUpd = true;
+        var splElem = ele['_private']['data']['name'].trim().split(' '); 
+        var cleanedEle = []
+        splElem.forEach(function (ele) {
+          if(ele != ""){
+            cleanedEle.push(ele);
+          }
+        })
+
+        publicNodes.push({
+          'name': cleanedEle[1],
+          'src': cleanedEle[0],
+          'tgt': cleanedEle[2]
+      });
       }
     });
 
     if (publicUpd) {
-      alert('choreography task - negociation stage to implement')
+      alert('choreography task - negociation stage to implement');
+
+      console.log(publicNodes);
+
+      var roles = this.state.roleMaps;
+      var addressesToNotify = []
+      publicNodes.forEach(function(node){
+        roles.forEach(function(r){
+          if ((node['src']==r['role'])||(node['tgt']==r['role'])) {
+            addressesToNotify.push(r['address']);
+          }
+        })
+      });
+      
+      // generate cyto data and save to IPFS
+      var newData = [];
+      this.cy.elements().forEach(function (ele) {
+        var newEle = {
+          "data": ele['_private']['data'],
+          "group": ele['_private']['group'],// group can be two types: nodes == activity, or edges == relation
+        };
+
+        var classes = Array.from(ele['_private']['classes']).join(' ');
+        if (classes !== '') {
+          newEle['classes'] = classes;
+        }
+        newData.push(newEle);
+      });
+
+      var hash=this.state.hash;
+      ipfs.files.add(Buffer.from(JSON.stringify(newData)))
+      .then(res => {
+      hash = res[0].hash;
+      this.setState({ hashPublicReq: hash });
+      return ipfs.files.cat(hash)
+    })
+    .then(output => {
+      console.log('retrieved public req data:', JSON.parse(output))
+    })
+
+      // request change
+      //console.log('Addresses to notify:')
+      //console.log(addressesToNotify);
+      this.state.contract.methods.requestChange(addressesToNotify, hash).send({
+          from: this.state.accounts[0]
+        }, (error) => {
+                  console.log(error);
+        }); //storehash 
+
+      // send request to list of addresses with ipfs hash of public nodes and relations. 
+
     }
     else {
       this.privateGraphUpd();
@@ -325,6 +458,10 @@ class EditionDeck extends React.Component {
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
     
+    var roles = []
+    if (this.state.roles)
+      roles = this.state.roles.map((x, y) => <option key={y}>{x}</option>)
+
     console.log(this.state);
     return <>
       <div>
@@ -371,20 +508,30 @@ class EditionDeck extends React.Component {
                                 <Form.Control type="address" onChange={this.handleActivityName} placeholder={'enter activity name'} value={this.state.elemClicked.activityName} />
 
                                 <hr style={{ "size": "5px" }} /><br />
-
                                 <h4>Assign role</h4>
-
-                                <Form.Label>Private Role</Form.Label>
-                                <Form.Control type="address" onChange={this.handleTenant} placeholder={'enter tenant name'} value={this.state.tenantName} />
-
+                                <div class="form-group">
+                                  <label class="is-required" for="role">Private role</label>
+                                  <select class="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+                                  <option value=''> ---</option>{roles}
+                                  </select>
+                                </div>
                                 <br />
 
-                                <Form.Label>Choreography Sender </Form.Label>
-                                <Form.Control type="address" onChange={this.handleSender} placeholder={'enter sender name'} value={this.state.choreographyNames.sender} />
-                                <br />
-                                <Form.Label>Choreography Receiver</Form.Label>
-                                <Form.Control type="address" onChange={this.handleReceiver} placeholder={'enter receiver name'} value={this.state.choreographyNames.receiver} />
+                                <div class="form-group">
+                                  <label class="is-required" for="role">Choreography Sender</label>
+                                  <select class="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
+                                  <option value=''> ---</option>{roles}
+                                  </select>
+                                </div>
 
+                                <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
+                                <br />
+                                <div class="form-group">
+                                  <label class="is-required" for="role">Choreography Receiver</label>
+                                  <select class="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
+                                  <option value=''> ---</option>{roles}
+                                  </select>
+                                </div>
                                 <hr /><br />
 
                                 <h4>Marking</h4>
@@ -426,7 +573,6 @@ class EditionDeck extends React.Component {
                     <Legend src={this.state.src}/>
 
                     </div>
-
                     </div>
 
                     </Col>
