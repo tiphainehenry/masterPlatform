@@ -4,23 +4,26 @@ import activityUpdHelpers from './utils_ActivityUpdHelpers';
 import cytoMenuHelpers from './utils_CytoMenuHelpers';
 import { getMenuStyle } from './utils_ContextMenuHelpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCommentsDollar, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import Header from './Header';
 
 import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
 import Legend from './Legend';
 
-import Cytoscape from 'cytoscape';
-import CytoscapeComponent from 'react-cytoscapejs';
-
-import contextMenus from 'cytoscape-context-menus';
-import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
 import axios from 'axios';
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
+import PublicDCRManager from "../contracts/PublicDCRManager.json";
+
 import getWeb3 from '../getWeb3';
 import ipfs from '../ipfs';
+
+
+import Cytoscape from 'cytoscape';
+import CytoscapeComponent from 'react-cytoscapejs';
+import contextMenus from 'cytoscape-context-menus';
+import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
 import COSEBilkent from 'cytoscape-cose-bilkent';
 import Dagre from 'cytoscape-dagre'
@@ -86,13 +89,15 @@ class EditionDeck extends React.Component {
 
       web3: null,
       accounts: null,
-      contract: null,
+      contractRole: null,
+      contractProcess: null,
 
       roleMaps:[],
 
       roles:[],
 
-      hashPublicReq:''
+      hashPublicReq:'',
+      publicHash:''
 
 
     };
@@ -126,6 +131,7 @@ class EditionDeck extends React.Component {
 
     this.saveGraph = this.saveGraph.bind(this);
     this.privateGraphUpd = this.privateGraphUpd.bind(this);
+    this.requestChange = this.requestChange.bind(this);
 
   }
 
@@ -168,7 +174,8 @@ class EditionDeck extends React.Component {
     this.setState({
       'processID': processID,
       'projectionID': projectionID,
-      'data': ProcessDB[processID][projectionID]['init']['data']
+      'data': ProcessDB[processID][projectionID]['init']['data'],
+      'publicHash':ProcessDB[processID]['hash']
     });
 
     //console.log(this.props.location);
@@ -192,16 +199,24 @@ class EditionDeck extends React.Component {
         const web3 = await getWeb3();
         const accounts = await web3.eth.getAccounts();
         const networkId = await web3.eth.net.getId();
-        const deployedNetwork = AdminRoleManager.networks[networkId];
-        const instance = new web3.eth.Contract(
+        const adminNetwork = AdminRoleManager.networks[networkId];
+        const adminInstance = new web3.eth.Contract(
           AdminRoleManager.abi,
-          deployedNetwork && deployedNetwork.address,
+          adminNetwork && adminNetwork.address,
         );
-  
-  
-        this.setState({ web3, accounts, contract: instance });
-  
-        var roles = await instance.methods.getRoles().call()
+    
+        this.setState({ web3, accounts, contractRole: adminInstance });
+
+        const processNetwork = PublicDCRManager.networks[networkId];
+        const processInstance = new web3.eth.Contract(
+          PublicDCRManager.abi,
+          processNetwork && processNetwork.address,
+        );
+
+        this.setState({ web3, accounts, contractProcess: processInstance });
+
+        
+        var roles = await adminInstance.methods.getRoles().call()
 
         var roleMaps = []
         var tmpRoles = []
@@ -214,6 +229,12 @@ class EditionDeck extends React.Component {
           roleMaps.push({'role':r, 'address':a});
         });
         this.setState({ roles: tmpRoles, addresses: tmpAddress, roleMaps:roleMaps })
+
+        processInstance.events.RequestChange().on('data', (event) => {
+          console.log(event);    
+        })
+        .on('error', console.error);
+
       } catch (error) {
         //alert(
         //  `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -352,7 +373,7 @@ class EditionDeck extends React.Component {
     });
 
     if (publicUpd) {
-      alert('choreography task - negociation stage to implement');
+      alert('choreography task - negotiation launched');
 
       console.log(publicNodes);
 
@@ -374,6 +395,24 @@ class EditionDeck extends React.Component {
           "group": ele['_private']['group'],// group can be two types: nodes == activity, or edges == relation
         };
 
+        console.log(newEle);
+
+        if (newEle.data.name[0]==('!'||'?')){
+          console.log(newEle.data.name);
+
+          var acName=newEle.data.name.split('(')[1].split(',')[0];
+          var sender=newEle.data.name.split(', ')[1].split('>')[0].replace('-','').replace('-','');
+          var receiver=newEle.data.name.split('>')[1].replace('*','').replace(')','').replace(' ','');
+
+          newEle.data = {
+            'id':newEle.data.id.slice(0,-1),
+            'name':sender+'\n'+acName+'\n'+receiver,
+            'nbr':0,
+            'properName':sender+'\n'+acName+'\n'+receiver
+          }
+
+        }
+
         var classes = Array.from(ele['_private']['classes']).join(' ');
         if (classes !== '') {
           newEle['classes'] = classes;
@@ -382,31 +421,38 @@ class EditionDeck extends React.Component {
       });
 
       var hash=this.state.hash;
+
       ipfs.files.add(Buffer.from(JSON.stringify(newData)))
       .then(res => {
       hash = res[0].hash;
       this.setState({ hashPublicReq: hash });
       return ipfs.files.cat(hash)
-    })
+     })
     .then(output => {
-      console.log('retrieved public req data:', JSON.parse(output))
+      console.log('retrieved public req data:', JSON.parse(output));
+
+      this.requestChange(addressesToNotify,this.state.publicHash+"|"+hash);
+  
     })
-
-      // request change
-      //console.log('Addresses to notify:')
-      //console.log(addressesToNotify);
-      this.state.contract.methods.requestChange(addressesToNotify, hash).send({
-          from: this.state.accounts[0]
-        }, (error) => {
-                  console.log(error);
-        }); //storehash 
-
-      // send request to list of addresses with ipfs hash of public nodes and relations. 
 
     }
     else {
       this.privateGraphUpd();
     }
+  }
+
+
+  async requestChange(addressesToNotify,hashes){
+    // request change
+    console.log(hashes);
+    this.state.contractProcess.methods.requestChange(addressesToNotify, hashes).send({
+      from: this.state.accounts[0]
+    }, (error) => {
+              console.log(error);
+    }); //storehash 
+
+  // send request to list of addresses with ipfs hash of public nodes and relations. 
+
   }
 
   /**

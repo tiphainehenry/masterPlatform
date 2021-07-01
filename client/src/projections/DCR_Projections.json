@@ -1,5 +1,6 @@
 {
   "p2": {
+    "hash": "QmV7xxHemup1EJb9Nz6HsoNz6Z9eJRwLWoEYDbEoxguPs2", 
     "r1": {
       "vect": {
         "markings": [
@@ -46,7 +47,7 @@
           "classes": "type_projChoreo included executable", 
           "data": {
             "id": "e1s", 
-            "name": "!(NewActivity0, secAccount-->B)"
+            "name": "!(NewActivity0, secAccount-->Bob)"
           }
         }
       ], 
@@ -96,7 +97,7 @@
             "classes": "type_projChoreo included executable", 
             "data": {
               "id": "e1s", 
-              "name": "!(NewActivity0, secAccount-->B)"
+              "name": "!(NewActivity0, secAccount-->Bob)"
             }
           }
         ]
@@ -151,7 +152,7 @@
           "classes": "type_projChoreo type_projReceiver included executable", 
           "data": {
             "id": "e1r", 
-            "name": "?(NewActivity0, secAccount-->B)"
+            "name": "?(NewActivity0, secAccount-->Bob)"
           }
         }
       ], 
@@ -201,7 +202,7 @@
             "classes": "type_projChoreo type_projReceiver included executable", 
             "data": {
               "id": "e1r", 
-              "name": "?(NewActivity0, secAccount-->B)"
+              "name": "?(NewActivity0, secAccount-->Bob)"
             }
           }
         ]
@@ -218,12 +219,12 @@
         }, 
         {
           "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "B"
+          "role": "Bob"
         }
       ], 
       "r2": {
         "externalEvents": [], 
-        "role": "B", 
+        "role": "Bob", 
         "relations": [], 
         "privateEvents": [
           {
@@ -231,7 +232,7 @@
             "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
             "role": "secAccount", 
             "id": 0, 
-            "event": "e1r[\"?(NewActivity0, secAccount-&gt;B)\"]"
+            "event": "e1r[\"?(NewActivity0, secAccount-&gt;Bob)\"]"
           }
         ]
       }, 
@@ -239,7 +240,7 @@
         "events": [
           {
             "id": 0, 
-            "event": "e1[NewActivity0 src=secAccount tgt=B]"
+            "event": "e1[NewActivity0 src=secAccount tgt=Bob]"
           }
         ], 
         "relations": []
@@ -250,7 +251,7 @@
           "id": "r1"
         }, 
         {
-          "role": "B", 
+          "role": "Bob", 
           "id": "r2"
         }
       ], 
@@ -263,7 +264,7 @@
             "eventName": "e1", 
             "id": 0, 
             "role": "secAccount", 
-            "event": "e1[NewActivity0 src=secAccount tgt=B]\n", 
+            "event": "e1[NewActivity0 src=secAccount tgt=Bob]\n", 
             "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb"
           }
         ]
@@ -275,7 +276,7 @@
         "privateEvents": [
           {
             "eventName": "e1s", 
-            "event": "e1s[\"!(NewActivity0, secAccount-&gt;B)\"]", 
+            "event": "e1s[\"!(NewActivity0, secAccount-&gt;Bob)\"]", 
             "role": "secAccount", 
             "id": 0, 
             "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb"
@@ -378,7 +379,7 @@
           "classes": "choreography type_choreography included executable", 
           "data": {
             "id": "e1", 
-            "name": "secAccount\nNewActivity0\nB"
+            "name": "secAccount\nNewActivity0\nBob"
           }
         }
       ]
@@ -478,7 +479,7 @@
           "classes": "choreography type_choreography included executable", 
           "data": {
             "id": "e1", 
-            "name": "secAccount\nNewActivity0\nB"
+            "name": "secAccount\nNewActivity0\nBob"
           }
         }
       ], 
@@ -488,497 +489,6 @@
     }, 
     "projType": "g_to_p", 
     "id": "p2"
-  }, 
-  "p3": {
-    "hash": "Qma3VqHt19XaXosNqrLUPXcHNgZpEXidBQvogBbo1wzH3q", 
-    "r1": {
-      "vect": {
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1s", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1s", 
-            "name": "!(NewActivity0, A-->secAccount)"
-          }, 
-          "classes": "type_projChoreo included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "e1s", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "data": {
-              "id": "e1s", 
-              "name": "!(NewActivity0, A-->secAccount)"
-            }, 
-            "classes": "type_projChoreo included executable", 
-            "group": "nodes"
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r2": {
-      "vect": {
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1r", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1r", 
-            "name": "?(NewActivity0, A-->secAccount)"
-          }, 
-          "classes": "type_projChoreo type_projReceiver included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "e1r", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "data": {
-              "id": "e1r", 
-              "name": "?(NewActivity0, A-->secAccount)"
-            }, 
-            "classes": "type_projChoreo type_projReceiver included executable", 
-            "group": "nodes"
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "TextExtraction": {
-      "addresses": [
-        {
-          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "A"
-        }, 
-        {
-          "pk": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
-          "role": "secAccount"
-        }
-      ], 
-      "r2": {
-        "externalEvents": [], 
-        "role": "secAccount", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1r", 
-            "id": 0, 
-            "role": "A", 
-            "event": "e1r[\"?(NewActivity0, A-&gt;secAccount)\"]", 
-            "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
-          }
-        ]
-      }, 
-      "global": {
-        "events": [
-          {
-            "id": 0, 
-            "event": "e1[NewActivity0 src=A tgt=secAccount]"
-          }
-        ], 
-        "relations": []
-      }, 
-      "roleMapping": [
-        {
-          "role": "A", 
-          "id": "r1"
-        }, 
-        {
-          "role": "secAccount", 
-          "id": "r2"
-        }
-      ], 
-      "externalEvents": [], 
-      "public": {
-        "externalEvents": [], 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1", 
-            "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-            "role": "A", 
-            "event": "e1[NewActivity0 src=A tgt=secAccount]\n", 
-            "id": 0
-          }
-        ]
-      }, 
-      "r1": {
-        "externalEvents": [], 
-        "role": "A", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1s", 
-            "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-            "role": "A", 
-            "id": 0, 
-            "event": "e1s[\"!(NewActivity0, A-&gt;secAccount)\"]"
-          }
-        ]
-      }
-    }, 
-    "Global": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e1"
-          ], 
-          "receive": [
-            "e1r"
-          ], 
-          "send": [
-            "e1s"
-          ]
-        }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }, 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1", 
-            "name": "A\nNewActivity0\nsecAccount"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }
-      ]
-    }, 
-    "id": "p3", 
-    "projType": "g_to_p", 
-    "Public": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e1"
-          ], 
-          "receive": [
-            "e1r"
-          ], 
-          "send": [
-            "e1s"
-          ]
-        }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }, 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1", 
-            "name": "A\nNewActivity0\nsecAccount"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "exec": {
-        "execLogs": []
-      }
-    }
   }, 
   "p1": {
     "r1": {
@@ -1025,7 +535,7 @@
         {
           "data": {
             "id": "e1s", 
-            "name": "!(NewActivity0, secAccount-->B)"
+            "name": "!(NewActivity0, secAccount-->Bob)"
           }, 
           "classes": "type_projChoreo included executable", 
           "group": "nodes"
@@ -1075,7 +585,7 @@
           {
             "data": {
               "id": "e1s", 
-              "name": "!(NewActivity0, secAccount-->B)"
+              "name": "!(NewActivity0, secAccount-->Bob)"
             }, 
             "classes": "type_projChoreo included executable", 
             "group": "nodes"
@@ -1130,7 +640,7 @@
         {
           "data": {
             "id": "e1r", 
-            "name": "?(NewActivity0, secAccount-->B)"
+            "name": "?(NewActivity0, secAccount-->Bob)"
           }, 
           "classes": "type_projChoreo type_projReceiver included executable", 
           "group": "nodes"
@@ -1180,7 +690,7 @@
           {
             "data": {
               "id": "e1r", 
-              "name": "?(NewActivity0, secAccount-->B)"
+              "name": "?(NewActivity0, secAccount-->Bob)"
             }, 
             "classes": "type_projChoreo type_projReceiver included executable", 
             "group": "nodes"
@@ -1199,17 +709,17 @@
         }, 
         {
           "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "B"
+          "role": "Bob"
         }
       ], 
       "r2": {
         "externalEvents": [], 
-        "role": "B", 
+        "role": "Bob", 
         "relations": [], 
         "privateEvents": [
           {
             "eventName": "e1r", 
-            "event": "e1r[\"?(NewActivity0, secAccount-&gt;B)\"]", 
+            "event": "e1r[\"?(NewActivity0, secAccount-&gt;Bob)\"]", 
             "role": "secAccount", 
             "id": 0, 
             "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb"
@@ -1220,7 +730,7 @@
         "events": [
           {
             "id": 0, 
-            "event": "e1[NewActivity0 src=secAccount tgt=B]"
+            "event": "e1[NewActivity0 src=secAccount tgt=Bob]"
           }
         ], 
         "relations": []
@@ -1231,7 +741,7 @@
           "id": "r1"
         }, 
         {
-          "role": "B", 
+          "role": "Bob", 
           "id": "r2"
         }
       ], 
@@ -1245,7 +755,7 @@
             "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
             "role": "secAccount", 
             "id": 0, 
-            "event": "e1[NewActivity0 src=secAccount tgt=B]\n"
+            "event": "e1[NewActivity0 src=secAccount tgt=Bob]\n"
           }
         ]
       }, 
@@ -1258,7 +768,7 @@
             "eventName": "e1s", 
             "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
             "role": "secAccount", 
-            "event": "e1s[\"!(NewActivity0, secAccount-&gt;B)\"]", 
+            "event": "e1s[\"!(NewActivity0, secAccount-&gt;Bob)\"]", 
             "id": 0
           }
         ]
@@ -1357,14 +867,14 @@
         {
           "data": {
             "id": "e1", 
-            "name": "secAccount\nNewActivity0\nB"
+            "name": "secAccount\nNewActivity0\nBob"
           }, 
           "classes": "choreography type_choreography included executable", 
           "group": "nodes"
         }
       ]
     }, 
-    "id": "p1", 
+    "id": "p16", 
     "projType": "g_to_p", 
     "Public": {
       "vect": {
@@ -1459,989 +969,7 @@
         {
           "data": {
             "id": "e1", 
-            "name": "secAccount\nNewActivity0\nB"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "exec": {
-        "execLogs": []
-      }
-    }
-  }, 
-  "p4": {
-    "hash": "QmZXPX9epXC89qFgeLxhL1YnVH5fyRnwfWhJcpxamrxem2", 
-    "r1": {
-      "vect": {
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1s", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1s", 
-            "name": "!(NewActivity0, secAccount-->A)"
-          }, 
-          "classes": "type_projChoreo included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "e1s", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "data": {
-              "id": "e1s", 
-              "name": "!(NewActivity0, secAccount-->A)"
-            }, 
-            "classes": "type_projChoreo included executable", 
-            "group": "nodes"
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r2": {
-      "vect": {
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1r", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1r", 
-            "name": "?(NewActivity0, secAccount-->A)"
-          }, 
-          "classes": "type_projChoreo type_projReceiver included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "e1r", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "data": {
-              "id": "e1r", 
-              "name": "?(NewActivity0, secAccount-->A)"
-            }, 
-            "classes": "type_projChoreo type_projReceiver included executable", 
-            "group": "nodes"
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "TextExtraction": {
-      "addresses": [
-        {
-          "pk": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
-          "role": "secAccount"
-        }, 
-        {
-          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "A"
-        }
-      ], 
-      "r2": {
-        "externalEvents": [], 
-        "role": "A", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1r", 
-            "event": "e1r[\"?(NewActivity0, secAccount-&gt;A)\"]", 
-            "role": "secAccount", 
-            "id": 0, 
-            "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb"
-          }
-        ]
-      }, 
-      "global": {
-        "events": [
-          {
-            "id": 0, 
-            "event": "e1[NewActivity0 src=secAccount tgt=A]"
-          }
-        ], 
-        "relations": []
-      }, 
-      "roleMapping": [
-        {
-          "role": "secAccount", 
-          "id": "r1"
-        }, 
-        {
-          "role": "A", 
-          "id": "r2"
-        }
-      ], 
-      "externalEvents": [], 
-      "public": {
-        "externalEvents": [], 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1", 
-            "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
-            "role": "secAccount", 
-            "id": 0, 
-            "event": "e1[NewActivity0 src=secAccount tgt=A]\n"
-          }
-        ]
-      }, 
-      "r1": {
-        "externalEvents": [], 
-        "role": "secAccount", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1s", 
-            "address": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
-            "role": "secAccount", 
-            "event": "e1s[\"!(NewActivity0, secAccount-&gt;A)\"]", 
-            "id": 0
-          }
-        ]
-      }
-    }, 
-    "Global": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e1"
-          ], 
-          "receive": [
-            "e1r"
-          ], 
-          "send": [
-            "e1s"
-          ]
-        }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }, 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1", 
-            "name": "secAccount\nNewActivity0\nA"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }
-      ]
-    }, 
-    "id": "p4", 
-    "projType": "g_to_p", 
-    "Public": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e1"
-          ], 
-          "receive": [
-            "e1r"
-          ], 
-          "send": [
-            "e1s"
-          ]
-        }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }, 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1", 
-            "name": "secAccount\nNewActivity0\nA"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "exec": {
-        "execLogs": []
-      }
-    }
-  }, 
-  "p5": {
-    "hash": "Qma3VqHt19XaXosNqrLUPXcHNgZpEXidBQvogBbo1wzH3q", 
-    "r1": {
-      "vect": {
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1s", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1s", 
-            "name": "!(NewActivity0, A-->secAccount)"
-          }, 
-          "classes": "type_projChoreo included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "e1s", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "data": {
-              "id": "e1s", 
-              "name": "!(NewActivity0, A-->secAccount)"
-            }, 
-            "classes": "type_projChoreo included executable", 
-            "group": "nodes"
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r2": {
-      "vect": {
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1r", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1r", 
-            "name": "?(NewActivity0, A-->secAccount)"
-          }, 
-          "classes": "type_projChoreo type_projReceiver included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "e1r", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "data": {
-              "id": "e1r", 
-              "name": "?(NewActivity0, A-->secAccount)"
-            }, 
-            "classes": "type_projChoreo type_projReceiver included executable", 
-            "group": "nodes"
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "TextExtraction": {
-      "addresses": [
-        {
-          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "A"
-        }, 
-        {
-          "pk": "0x89033bc8f73ef5b46ccb013f6f948b00954a06bb", 
-          "role": "secAccount"
-        }
-      ], 
-      "r2": {
-        "externalEvents": [], 
-        "role": "secAccount", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1r", 
-            "id": 0, 
-            "role": "A", 
-            "event": "e1r[\"?(NewActivity0, A-&gt;secAccount)\"]", 
-            "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
-          }
-        ]
-      }, 
-      "global": {
-        "events": [
-          {
-            "id": 0, 
-            "event": "e1[NewActivity0 src=A tgt=secAccount]"
-          }
-        ], 
-        "relations": []
-      }, 
-      "roleMapping": [
-        {
-          "role": "A", 
-          "id": "r1"
-        }, 
-        {
-          "role": "secAccount", 
-          "id": "r2"
-        }
-      ], 
-      "externalEvents": [], 
-      "public": {
-        "externalEvents": [], 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1", 
-            "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-            "role": "A", 
-            "event": "e1[NewActivity0 src=A tgt=secAccount]\n", 
-            "id": 0
-          }
-        ]
-      }, 
-      "r1": {
-        "externalEvents": [], 
-        "role": "A", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e1s", 
-            "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-            "role": "A", 
-            "id": 0, 
-            "event": "e1s[\"!(NewActivity0, A-&gt;secAccount)\"]"
-          }
-        ]
-      }
-    }, 
-    "Global": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e1"
-          ], 
-          "receive": [
-            "e1r"
-          ], 
-          "send": [
-            "e1s"
-          ]
-        }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }, 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1", 
-            "name": "A\nNewActivity0\nsecAccount"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }
-      ]
-    }, 
-    "id": "p5", 
-    "projType": "g_to_p", 
-    "Public": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e1"
-          ], 
-          "receive": [
-            "e1r"
-          ], 
-          "send": [
-            "e1s"
-          ]
-        }, 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }, 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e1", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e1", 
-            "name": "A\nNewActivity0\nsecAccount"
+            "name": "secAccount\nNewActivity0\nBob"
           }, 
           "classes": "choreography type_choreography included executable", 
           "group": "nodes"

@@ -270,7 +270,7 @@ class WelcomeInstance extends React.Component {
                                       to={{
                                         pathname: './tenantInstance/' + process[0] + '/' + item[0]
                                       }}
-                                    >  <Button variant="outline-success">
+                                    >  <Button variant="outline-success" title='run instance'>
                                       <Play/>                                      </Button>
                                       </Nav.Link>
 
@@ -281,7 +281,7 @@ class WelcomeInstance extends React.Component {
                                       to={{
                                         pathname: './editing/' + process[0] + '/' + item[0]
                                       }}
-                                      ><Button variant="outline-warning">
+                                      ><Button variant="outline-warning" title='request change'>
                                       <Edit/></Button>
                                       </Nav.Link>
                                           </div>
