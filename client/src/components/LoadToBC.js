@@ -293,7 +293,7 @@ class LoadToBCL extends React.Component {
       return (<>
 
             <div class="form-group my-3" >
-              <button onClick= {this.handleCreateWkf} class="btn btn-secondary">3. Instantiate view in smart contract</button>
+              <button onClick= {this.handleCreateWkf} class="btn btn-secondary">4. Instantiate view in smart contract</button>
             </div>
 
      <br/>

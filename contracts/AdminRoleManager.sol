@@ -6,6 +6,8 @@ contract AdminRoleManager {
         string name;
         bool isRole;
         bool isAdmin;
+        string[] roles;
+        mapping(string => bool) rolesMap;
     }
 
     mapping(address => Role) public Roles;
@@ -14,6 +16,9 @@ contract AdminRoleManager {
     constructor() public {
         address modAddress = 0x1D27B15fEbF8dce6fe0Fd5B45A4784C4dD3e11e1;
         newRole(modAddress, "first account", true);
+        AddElemRole(modAddress, "Role1");
+        AddElemRole(modAddress, "Role2");
+        AddElemRole(modAddress, "Role3");
 
         address peonAddress1 = 0x78F7c9953D321Fb9864Af3B86782759bC32d4968;
         newRole(peonAddress1, "Peon1", false);
@@ -41,6 +46,66 @@ contract AdminRoleManager {
         return role;
     }
 
+    function importAccount(address[] memory add, string[] memory roles) public {
+        for (uint256 i = 0; i < add.length; i++) {
+            if (!isRole(add[i])) {
+                newRole(
+                    add[i],
+                    string(
+                        abi.encodePacked(
+                            "Account nbr:",
+                            uint2str(roleList.length)
+                        )
+                    ),
+                    false
+                );
+                AddElemRole(add[i], roles[i]);
+            } else {
+                uint256 isRole = 0;
+                for (uint256 j = 0; j < Roles[add[i]].roles.length; j++) {
+                    if (Roles[add[i]].rolesMap[roles[j]] == true) {
+                        isRole++;
+                    }
+                }
+                if (isRole == 0) {
+                    AddElemRole(add[i], roles[i]);
+                }
+            }
+        }
+    }
+
+    function compareStringsbyBytes(string memory s1, string memory s2)
+        public
+        pure
+        returns (bool)
+    {
+        return
+            keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2));
+    }
+
+    function uint2str(uint256 _i)
+        internal
+        pure
+        returns (string memory _uintAsString)
+    {
+        if (_i == 0) {
+            return "0";
+        }
+        uint256 j = _i;
+        uint256 len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint256 k = len - 1;
+        while (_i != 0) {
+            bstr[k--] = byte(uint8(48 + (_i % 10)));
+            _i /= 10;
+        }
+        return string(bstr);
+    }
+
     function getRoleCount() public view returns (uint256 RoleCount) {
         return roleList.length;
     }
@@ -63,6 +128,30 @@ contract AdminRoleManager {
             );
         }
         return listofRoles;
+    }
+
+    function getElemRoles(address add)
+        public
+        view
+        returns (string[] memory list)
+    {
+        if (!isRole(add)) revert();
+        return Roles[add].roles;
+    }
+
+    function AddElemRole(address add, string memory newRole) public {
+        Roles[add].roles.push(newRole);
+        Roles[add].rolesMap[newRole] = true;
+    }
+
+    function RemoveElemRole(address add, uint256 i) public {
+        uint256 lim = Roles[add].roles.length - 1;
+        delete Roles[add].rolesMap[Roles[add].roles[i]];
+        while (i < lim) {
+            Roles[add].roles[i] = Roles[add].roles[i + 1];
+            i++;
+        }
+        Roles[add].roles.length--;
     }
 
     function toAsciiString(address x) internal view returns (string memory) {
@@ -88,7 +177,8 @@ contract AdminRoleManager {
         bool isAdmin
     ) public returns (string memory rowNumber) {
         if (isRole(RoleAddress)) revert();
-        Role memory tempStruct = Role(name, true, isAdmin);
+        string[] memory tmpList = new string[](0);
+        Role memory tempStruct = Role(name, true, isAdmin, tmpList);
         Roles[RoleAddress] = tempStruct;
         roleList.push(RoleAddress);
         return Roles[RoleAddress].name;

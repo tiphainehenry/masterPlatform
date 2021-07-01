@@ -13,6 +13,7 @@ import ipfs from '../ipfs';
 import getWeb3 from "../getWeb3";
 
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
+import AdminRoleManager from '../contracts/AdminRoleManager.json';
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
@@ -37,6 +38,7 @@ class CreateL extends React.Component {
       web3: null,
       accounts: null,
       contract: null,
+      fileReader: null,
 
       selectValue: 'p_to_g'
 
@@ -66,7 +68,12 @@ class CreateL extends React.Component {
         PublicDCRManager.abi,
         deployedNetwork && deployedNetwork.address,
       );
-
+      const adminNetwork = AdminRoleManager.networks[networkId]
+      const instanceRole = new web3.eth.Contract(
+        AdminRoleManager.abi,
+        adminNetwork && adminNetwork.address,
+      );
+      this.setState({ instanceRole: instanceRole, web3: web3, adminAddress: adminNetwork.address });
       this.setState({ web3, accounts, contract: instance });
 
       // Checking if contract already populated
@@ -136,6 +143,39 @@ class CreateL extends React.Component {
       }
     })
   }
+  /** 
+   * verify that all account are registered and their roles are up to date.
+  */
+  async BcAccountCreate() {
+    var roles = []
+    var addresses = []
+    for (let i = 0; i < this.state.fileValue.length; i++) {
+      if (this.state.fileValue[i].indexOf('pk[') === 0) {
+        console.log(this.state.fileValue[i].lastIndexOf("role="));
+        console.log("ttototo");
+        const role = this.state.fileValue[i].substring((this.state.fileValue[i].indexOf("role=") + 5), this.state.fileValue[i].lastIndexOf("]"));
+        const address = this.state.fileValue[i].substring(this.state.fileValue[i].lastIndexOf("0x"), this.state.fileValue[i].length);
+        console.log("Role = " + role);
+        console.log("address = " + address);
+        roles.push(role)
+        addresses.push(address)
+      }
+
+    }
+    console.log(roles);
+    console.log(addresses);
+    const test = this.state.instanceRole.methods.importAccount(addresses, roles).send({ from: this.state.accounts[0] })
+    console.log(test);
+    // this.state.web3.eth.sendTransaction({to:this.state.adminNetwork, from:this.state.accounts[0], data: test})
+  }
+  /**
+   * get the file value 
+   */
+  handleFileRead = (e) => {
+    const content = this.state.fileReader.result;
+    const res = content.split('\n')
+    this.setState({ fileValue: res });
+  };
 
   /**
    * updates filepath on new upload.
@@ -143,6 +183,11 @@ class CreateL extends React.Component {
    */
   onChange(e) {
     this.setState({ file: e.target.files[0] })
+    var fileReader = new FileReader();
+    this.setState({ fileReader: fileReader });
+    fileReader.onloadend = this.handleFileRead;
+    fileReader.readAsText(e.target.files[0]);
+    const res = fileReader.result
   }
 
   /**
@@ -224,13 +269,15 @@ class CreateL extends React.Component {
                           <span class="form-text small text-muted" id="helpTextFile">The three input files used for our experiments are accessible in the <a href='https://github.com/tiphainehenry/react-cyto/'>dcrInputs repository</a> of our github.</span>
                         </form>
                       </div>
-
+                      <div className='my-3'>
+                        <Button className='btn btn-secondary' onClick={() => this.BcAccountCreate()}> 1. Creates roles and accounts</Button>
+                      </div>
                       <div class="form-group my-3">
-                            <button type="submit" class="btn btn-secondary">1. Project</button>
-                          </div>
+                        <button type="submit" class="btn btn-secondary">2. Project</button>
+                      </div>
 
                       <div class="form-group my-3" onSubmit={this.onIPFSSubmit}>
-                        <button type="submit" class="btn btn-secondary">2. Save public text extraction to IPFS</button>
+                        <button type="submit" class="btn btn-secondary">3. Save public text extraction to IPFS</button>
                       </div>
 
                       <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} />
@@ -261,7 +308,7 @@ class CreateL extends React.Component {
                   Concerning the process execution, (i) the local events that do not have any interaction with other private projections
                   are executed off-chain, (ii) choreography events and external events are executed in the Ethereum BC through REST API calls.
                   Each projection holds a marking with both internal and external event states. These are set to one if the event is activated, and null otherwise.
-                        </p>
+                </p>
 
                 <Button href="/welcomeInstance"> Access the instances</Button>
                 <hr />
