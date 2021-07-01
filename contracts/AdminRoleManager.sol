@@ -15,7 +15,7 @@ contract AdminRoleManager {
 
     constructor() public {
         address modAddress = 0x1D27B15fEbF8dce6fe0Fd5B45A4784C4dD3e11e1;
-        newRole(modAddress, "first account", true);
+        newRole(modAddress, "AdminInit", true);
         AddElemRole(modAddress, "Role1");
         AddElemRole(modAddress, "Role2");
         AddElemRole(modAddress, "Role3");
@@ -24,10 +24,10 @@ contract AdminRoleManager {
         newRole(peonAddress1, "Peon1", false);
 
         address modAddress1 = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
-        newRole(modAddress1, "firstAccount", true);
+        newRole(modAddress1, "AdminBlaise", true);
 
         address modAddress2 = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
-        newRole(modAddress2, "secAccount", true);
+        newRole(modAddress2, "Alice", true);
     }
 
     function isRole(address RoleAddress) public view returns (bool isIndeed) {
