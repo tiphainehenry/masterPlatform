@@ -5,7 +5,7 @@ import '../style/boosted.min.css';
 import Authentification from './Authentification';
 import createBrowserHistory from 'history/createBrowserHistory'
 
-import { User } from 'react-feather';
+import { User, Bell,Tool,Radio } from 'react-feather';
 
 /**
  * Component ...
@@ -45,7 +45,7 @@ class Header extends React.Component {
   render() {
     let links = []
     if (this.state.auth.isAdmin) {
-      links.push(<Nav.Link href="/welcomeInstance" class="nav-item" style={{ color: "white" }}>My Running Instances</Nav.Link>)
+      links.push(<Nav.Link href="/welcomeInstance" class="nav-item" style={{ color: "white" }}> My Running Instances</Nav.Link>)
       links.push(<Nav.Link href="/welcomemodel" class="nav-item" style={{ color: "white" }}>My Process Models </Nav.Link>)
     }
     return <div>
@@ -59,6 +59,8 @@ class Header extends React.Component {
           </Nav>
 
           <Nav >
+          <Nav.Link href="/mynotifications" class="nav-item" style={{ color: "white" }}> <Bell />
+ My notifications</Nav.Link>
 
             {this.state.auth.isRole ?
               <NavDropdown title={<>

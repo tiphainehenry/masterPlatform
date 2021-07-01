@@ -59,7 +59,7 @@ class CreationDeck extends React.Component {
     this.state = {
       iterator: 0,
       data: [],
-      processID: JSON.parse(localStorage.getItem('processID'))||this.props.location.state['currentProcess'],
+      processID: this.props.location.state['currentProcess']||JSON.parse(localStorage.getItem('processID')),
       ipfsHash: JSON.parse(localStorage.getItem('ipfsHash')) || null,
       buffer: '',
       ethAddress: '',
@@ -71,7 +71,7 @@ class CreationDeck extends React.Component {
       accounts: null,
       contract: null,
 
-      processName: this.props.location.state['currentProcess'],
+      processName: this.props.location.state['currentProcess']||JSON.parse(localStorage.getItem('processID')),
       projectionID: 'Global',
       roleMaps:{},
       edges: {
@@ -145,6 +145,7 @@ class CreationDeck extends React.Component {
     this.fileUpload = this.fileUpload.bind(this);
     this.privateGraphUpd = this.privateGraphUpd.bind(this);
     this.saveToLibrary = this.saveToLibrary.bind(this);
+    this.postLibrary = this.postLibrary.bind(this);
 
     this.createFile = this.createFile.bind(this);
     this.instantiate= this.instantiate.bind(this);
@@ -216,42 +217,40 @@ class CreationDeck extends React.Component {
   onIPFSSubmit = async (event) => {
     event.preventDefault();
 
-    alert('Sending from Metamask account: ' + this.state.accounts[0]);
-
-    //obtain contract address from storehash.js
-    const ethAddress = await this.state.contract.options.address;
-    this.setState({ ethAddress });
-
     //save document to IPFS,return its hash#, and set hash# to state
     //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add 
 
-    var input = ProcessDB[this.state.processID]['TextExtraction']['public'];
+    var input = ProcessDB[this.state.processID]['Public']['data'];
 
-    alert(input);
-    ipfs.files.add(Buffer.from(JSON.stringify(input)))
-      .then(res => {
-        const hash = res[0].hash
-        alert(hash);
-
-        this.setState({
-          ipfsHash: hash
-        }, () => {
-          localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
-        });
-
-        axios.post(`http://localhost:5000/saveHash`,
-          {
-            "hash": hash,
-            "processId": this.state.processID,
-          },
-          { "headers": { "Access-Control-Allow-Origin": "*" } }
-        );
-
-        return ipfs.files.cat(hash)
-      })
-      .then(output => {
-        alert('retrieved data:', JSON.parse(output))
-      })
+    try{
+        ipfs.files.add(Buffer.from(JSON.stringify(input)))
+        .then(res => {
+          const hash = res[0].hash
+  
+          this.setState({
+            ipfsHash: hash
+          }, () => {
+            localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
+          });
+  
+          axios.post(`http://localhost:5000/saveHash`,
+            {
+              "hash": hash,
+              "processId": this.state.processID,
+            },
+            { "headers": { "Access-Control-Allow-Origin": "*" } }
+          );
+  
+          return ipfs.files.cat(hash)
+        })
+        .then(output => {
+          console.log(JSON.parse(output));
+          alert('Saved to IPFS')
+        })
+      }
+      catch(error){
+        alert('Is the VPN on?');
+      }   
 
   }; //onIPFSSubmit 
 
@@ -353,24 +352,14 @@ class CreationDeck extends React.Component {
    * Instanciate the process in the BC
    * 
    */
-  fileUpload(e,file) {
-    e.preventDefault();
+  fileUpload(file) {
 
     const url = `http://localhost:5000/inputFile`;
-
-    var processNum = Object.keys(ProcessDB).length + 1;
-    var processID = 'p' + processNum;
-
-    this.setState({
-      processID: processID
-    }, () => {
-      localStorage.setItem('processID', JSON.stringify(this.state.processID))
-    });
 
     const formData = new FormData();
 
     formData.append('file', file);
-    formData.append('processID', processID);
+    formData.append('processID', this.state.processID);
     formData.append('projType', this.state.selectValue);
 
     const config = {
@@ -383,6 +372,7 @@ class CreationDeck extends React.Component {
     return axios.post(url, formData, config);
   }
   /**
+   * 
    * Get the template data if it already exist in DB
    * @returns 
    * 
@@ -408,7 +398,7 @@ class CreationDeck extends React.Component {
    * @returns 
    */
   postLibrary(data) {
-
+    
     const config = {
       headers: {
         'content-type': 'application/json',
@@ -424,7 +414,10 @@ class CreationDeck extends React.Component {
       (error) => {
         console.log(error);
       }
-    );
+    ).then(() => {this.privateGraphUpd()});
+
+    return "posted"
+
   }
 
   /**
@@ -438,8 +431,7 @@ class CreationDeck extends React.Component {
    * Private graph update processing > calls the API to update the markings and nodes.
    * 
    */
-  privateGraphUpd(e) {
-    e.preventDefault();
+  privateGraphUpd() {
     if (this.cy.elements().length === 0) {
       window.alert('Graph is empty')
     } else if (window.confirm('Confirm new graph version?')) {
@@ -449,11 +441,11 @@ class CreationDeck extends React.Component {
       // retrieve data
       var rolelist = new Map()
       this.cy.elements().forEach(function (ele, id) {
-        console.log(ele)
-        console.log("id = " + id);
+        //console.log(ele)
+        //console.log("id = " + id);
         var newEle = {};
 
-        console.log("then id = " + id);
+        //console.log("then id = " + id);
 
         var tmp='';
 
@@ -471,26 +463,21 @@ class CreationDeck extends React.Component {
           } else {
 
             var tmp = ele['_private']['data']['name'].split(' ');
-            console.log("ttototootototo");
-            console.log(tmp[1]);
-            console.log(this.state.roles.indexOf(tmp[0]));
-            console.log(this.state.addresses[this.state.roles.indexOf(tmp[0])]);
             rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])]);
-            console.log(rolelist);
-            console.log(rolelist.get(tmp[0]));
-        newEle = {
+            newEle = {
               "name": '"' + tmp[0] + '"' + " [role=" + tmp[1] + "]\n",
             };
           }
         } else if (ele['_private']['group'] === "edges") {
-          var src = this.findName(ele['_private']['data']['source'])
-          var trg = this.findName(ele['_private']['data']['target'])
-          var link = this.state.edges[ele['_private']['classes'].values().next().value]
-          newEle = { "link": src + link + trg + '\n' }
+            var src = this.findName(ele['_private']['data']['source'])
+            var trg = this.findName(ele['_private']['data']['target'])
+            var link = this.state.edges[ele['_private']['classes'].values().next().value]
+            newEle = { "link": src + link + trg + '\n' }
         }
-        newData.push(newEle);
+          newData.push(newEle);
       }.bind(this));
-      this.createFile(e,newData, rolelist)
+
+      this.createFile(newData, rolelist)
     }
     else {
       console.log('save aborted');
@@ -517,8 +504,8 @@ class CreationDeck extends React.Component {
      * Create an input File to send to the API
      * 
      */
-  createFile(e,data, rolelist) {
-    e.preventDefault() // Stop form submit
+  createFile(data, rolelist) {
+    //e.preventDefault() // Stop form submit
 
     var arrayEvent = []
     var arrayLink = []
@@ -535,7 +522,7 @@ class CreationDeck extends React.Component {
     const newdata = arrayEvent.concat(arrayLink)
     const file = new File(newdata, 'creationDeck.txt', { type: "text/plain" });
 
-    this.fileUpload(e, file).then((response) => {
+    this.fileUpload(file).then((response) => {
       console.log(response.data);
       if (response.data === "ok") {
         // save to BC
@@ -573,9 +560,10 @@ class CreationDeck extends React.Component {
     const tmp = this.cy.json(true)
     this.setState({ data: tmp.elements, iterator: 1 })
     // this.cy.remove('nodes')
-    this.postLibrary(tmp.elements)
-    alert("saved")
+    this.postLibrary(tmp.elements);
+    console.log("saved");
 
+    return "saved"
   }
 
   ///// Render
@@ -714,14 +702,11 @@ class CreationDeck extends React.Component {
                       </Col>
                     </Row>
                   </div>
-                  <Button onClick={this.privateGraphUpd}>1. Generate projection</Button>
+                  <Button onClick={this.saveToLibrary}>1. Generate projection</Button>
 
                   <Button onClick={this.onIPFSSubmit}>2. Save public text extraction to IPFS</Button>
 
                   <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} />
-
-                  <Button onClick={this.saveToLibrary}>save</Button>
-
 
                   <Legend src={this.state.src}/>
 

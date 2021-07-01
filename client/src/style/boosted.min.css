@@ -82,4 +82,10 @@ text-align:center;
 .nav-item-header{
   color: white;
 }
+.my-modal {
+  width: 90vw;  
+  max-width: 90vw;
+} 
+
 /*# sourceMappingURL=boosted.min.css.map */
+

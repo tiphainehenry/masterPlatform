@@ -19,6 +19,7 @@ import WelcomeModel from './components/WelcomeModel';
 import CreationDeck from './components/CreationDeck';
 import NewRole from './components/NewRole';
 import Headers from './components/Header';
+import MyNotifications from './components/MyNotifications';
 // import store from './components/store'
 import { Provider } from 'react-redux'
 
@@ -51,6 +52,8 @@ const App = () => (
       <Route exact path="/new" component={NewInstance} />
       <Route exact path="/creation" component={CreationDeck} />
       <Route exact path="/newrole" component={NewRole} />
+      <Route exact path="/mynotifications" component={MyNotifications} />
+
       <Switch>
           <Route 
           exact 

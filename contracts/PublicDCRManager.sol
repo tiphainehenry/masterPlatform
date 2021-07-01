@@ -111,7 +111,7 @@ contract PublicDCRManager {
     }
     
     
-    function requestChange(address[] memory toNotify, string memory _hash) public{
+    function requestChange(address[] memory toNotify, string memory _hash) public payable {
         for (
             uint256 id = 0;
             id < toNotify.length;
