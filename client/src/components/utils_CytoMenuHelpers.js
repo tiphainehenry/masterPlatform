@@ -79,6 +79,37 @@ const cytoMenuHelpers = {
 
     },
 
+    /**
+    * remove event or relation
+    */
+     removeCreate: function () {
+        // watch out node or edge
+
+        var id = this.state.elemClicked.id;
+
+        switch (this.state.elemClicked.type) {
+            case 'nodes':
+                    console.log('removing node with id ' + id);
+                    var jn = this.cy.getElementById(id);
+
+                    this.setState({
+                        numSelected: this.state.numSelected - 1
+                    });
+                    this.cy.remove(jn);
+                break;
+
+            case 'edges':
+                console.log('removing edge with id ' + id);
+                var je = this.cy.getElementById(id);
+                this.cy.remove(je);
+                break;
+
+            default:
+                console.log('remove type error');
+        };
+
+    },
+
 
     //////// ADD ACTIVITY ///////////////
 

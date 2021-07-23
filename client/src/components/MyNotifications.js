@@ -21,9 +21,8 @@ import AdminRoleManager from '../contracts/AdminRoleManager.json';
 import ChangeModal from './ChangeModal';
 
 import '../style/Dashboard.css'
-import { Mail, ThumbsUp, ThumbsDown } from 'react-feather';
+import { Mail, XOctagon, Clock, Check } from 'react-feather';
 import { faCommentsDollar } from '@fortawesome/free-solid-svg-icons';
-
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
@@ -68,7 +67,7 @@ class MyNotifications extends React.Component {
 
       web3: null,
       accounts: null,
-      contract: null,
+      contractDCR: null,
 
       source: { ID: '', type: '' },
       target: { ID: '', type: '' },
@@ -104,7 +103,7 @@ class MyNotifications extends React.Component {
         deployedNetwork && deployedNetwork.address,
       );
 
-      this.setState({ web3, accounts, contract: instance });
+      this.setState({ web3, accounts, contractDCR: instance });
 
 
       const adminNetwork = AdminRoleManager.networks[networkId];
@@ -132,55 +131,106 @@ class MyNotifications extends React.Component {
       var tree = [];
       const output='';
       var eventsList = [];
+
+      var declinedEvents= [];
+      var okEvents= [];
+
+      instance.getPastEvents('AcceptChange', {
+        //  filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
+          fromBlock: 0,
+          toBlock: 'latest'
+        })
+        .then(function (events) {
+            console.log('one accepted event');
+            console.log(events[0]); // same results as the optional callback above
+            console.log(events); // same results as the optional callback above
+
+
+            for (var j = 0; j < events.length; j++) { 
+              console.log(events[j].returnValues.endorser);
+              console.log(accounts[0]);
+              if(events[j].returnValues.endorser == accounts[0]){
+                okEvents.push(events[j].returnValues.reqWkfHash.toUpperCase()); 
+              }
+              }        
+            });
+    
+
+      instance.getPastEvents('DeclineChange', {
+        //filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
+        fromBlock: 0,
+        toBlock: 'latest'
+      })
+      .then(function (eventsList) {
+        console.log('one declined event');
+        console.log(eventsList);
+
+        for (var j = 0; j < eventsList.length; j++) { 
+          declinedEvents.push(eventsList[j].returnValues.reqWkfHash.toUpperCase()); 
+          }});
+
       instance.getPastEvents('RequestChange', {
         filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
         fromBlock: 0,
         toBlock: 'latest'
       })
-        .then(function (events) {
-          eventsList = events;
-          console.log(events); // same results as the optional callback above
+        .then(function (eventsList) {
+            console.log(eventsList);
 
-          var numEvents = eventsList.length;
-
-    
-          for (var j = 1; j < numEvents; j++) { // TEMP >> set init to 0 afterwards!!
-            var event = [];
-
-
-            var initiator='';
-            var endorser='';
-
-            for (var l = 0; l < roleMaps.length; l++) {
-
-              if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                initiator=roleMaps[l].role;
+            for (var j = 0; j < eventsList.length; j++) { 
+              var event = [];
+  
+              var initiator='';
+              var endorser='';
+  
+              for (var l = 0; l < roleMaps.length; l++) {
+  
+                if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
+                  initiator=roleMaps[l].role;
+                }
+                if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
+                  endorser=roleMaps[l].role; 
+                }
+  
               }
-              if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                endorser=roleMaps[l].role; 
+  
+              event.push(initiator);
+              event.push(endorser);
+              var currHash=eventsList[j].returnValues.workflowHashes.split('|')[0];
+              var reqHash=eventsList[j].returnValues.workflowHashes.split('|')[1];
+
+              event.push(currHash);
+              event.push(reqHash);
+
+              if(declinedEvents.includes(reqHash.toUpperCase())){
+                event.push('[Declined]');
               }
-
-            }
-
-            event.push(initiator);
-            event.push(endorser);
-
-            event.push(eventsList[j].returnValues.workflowHashes.split('|')[0]);
-            event.push(eventsList[j].returnValues.workflowHashes.split('|')[1]);
-
-            tree.push(event);    
-          }    
-    
+              
+              else if(okEvents.includes(reqHash.toUpperCase())){
+                event.push('[Waiting for other endorsers]');
+              }
+              else{
+                event.push('[Waiting for decision]');
+              }
+  
+              tree.push(event);    
+  
+          }
         }).then(()=>{
           this.setState({
             'tree': tree,
             'numEvents': eventsList.length,
           });
         })
+
+    
+    
+    
     } catch (error) {
       console.error(error);
     }
 
+    
   }
 
 
@@ -211,29 +261,42 @@ class MyNotifications extends React.Component {
                   <Nav>
                     <TableScrollbar rows={8}>
                       <Table>
-                      <thead class="cf">
-            <tr>
-              <th class="header" scope="col">Status</th>
-              <th class="header hide-when-big" scope="col">From</th>
-              <th class="header hide-when-small" scope="col">To</th>
-              <th class="header" scope="col">Workflow Hashes</th>
-              <th class="header" scope="col">Actions</th>
-            </tr>
-            </thead>
+                      <thead className="cf">
+                        <tr>
+                          <th className="header" scope="col">Status</th>
+                          <th className="header hide-when-big" scope="col">From</th>
+                          <th className="header hide-when-small" scope="col">To</th>
+                          <th className="header" scope="col">Workflow Hashes</th>
+                          <th className="header" scope="col">Actions</th>
+                        </tr>
+                      </thead>
 
                         <tbody>
 
                           {this.state.tree.map((event, i) => {
                             return <tr key={i} title={event[0]}>
-                              <td class="align-middle"><Mail color='orange'/></td>
+                              <td title={event[4]} className="align-middle">
+                              {event[4] == '[Declined]'? 
+                                <XOctagon color='red'/>:<></>}
+                              {event[4] == '[Waiting for other endorsers]'? 
+                                <Clock color='blue'/>:<></>}
+                              {event[4] == '[Waiting for decision]'? 
+                                <Mail color='orange'/>:<></>}
+                                                                </td>
                               <td className="align-middle">{event[0]}</td>
                               <td className="align-middle">{event[1]}</td>
-                              <td ><pre>Current: {event[2]} </pre>
-<pre>
-                              New: {event[3]}</pre>
+                              <td >
+                                <pre>Current: {event[2]} </pre>
+                                <pre>New: {event[3]}</pre>
                               </td>
                               <td className="align-middle">
-                              <ChangeModal currHash={event[2]} reqHash={event[3]} web3={this.state.web3} accounts={this.state.accounts} contract={this.state.contract}/>
+                                <ChangeModal  currHash={event[2]} 
+                                              reqHash={event[3]} 
+                                              web3={this.state.web3} 
+                                              accounts={this.state.accounts} 
+                                              contractDCR={this.state.contractDCR}
+                                              status={event[4]}
+                                              />
                               </td>
                               </tr>
                           }

@@ -68,6 +68,20 @@ const App = () => (
          />
       </Switch>
 
+      <Switch>
+          <Route 
+          exact 
+          path="/publicInstance/:pid" 
+          render={({ 
+              location, 
+              match 
+          }) => (
+              <ViewPublic match={match} />
+          )}           
+          
+         />
+      </Switch>
+
       <Route exact path="/tenantInstance" component={ViewRi} />
       <Route exact path="/publicInstance" component={ViewPublic} />
 

@@ -295,11 +295,7 @@ class WelcomeInstance extends React.Component {
                                 <td className="align-middle">
                                   <Nav.Link as={Link}
                                     to={{
-                                      pathname: './publicInstance',
-                                      state: {
-                                        currentProcess: process[0].split(' '),
-                                        currentInstance: 'Public'
-                                      }
+                                      pathname: './publicInstance/' + process[0] 
                                     }}
                                   >
                                     Public Projection [BC]

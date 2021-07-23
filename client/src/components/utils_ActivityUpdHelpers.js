@@ -5,6 +5,7 @@ const activityUpdHelpers = {
     * @param e: click event
     */
     handleActivityName: function (e) {
+        console.log(e)
         e.preventDefault();
         const noSpaceValue = e.target.value.replace(' ', '')
         this.setState({

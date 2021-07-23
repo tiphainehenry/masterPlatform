@@ -19,7 +19,7 @@ class Legend extends React.Component {
 
   <ul class="nav nav-tabs nav-tabs-light">
           <li class="nav-item">
-          <Accordion.Toggle eventKey="0" style={{'background-color':'white'}}>
+          <Accordion.Toggle eventKey="0" style={{'backgroundColor':'white'}}>
           <u class="nav-link active" data-toggle="tab">Help</u>
           </Accordion.Toggle>
 

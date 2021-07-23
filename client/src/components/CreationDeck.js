@@ -126,7 +126,7 @@ class CreationDeck extends React.Component {
     this.handleMP = activityUpdHelpers.handleMP.bind(this);
 
     /// Remove activity or relation
-    this.remove = cytoMenuHelpers.remove.bind(this);
+    this.remove = cytoMenuHelpers.removeCreate.bind(this);
 
     /// Add activity
     this.addLocalActivity = cytoMenuHelpers.addLocalActivity.bind(this);
@@ -572,9 +572,6 @@ class CreationDeck extends React.Component {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
-    var roles = []
-    if (this.state.roles)
-      roles = this.state.roles.map((x, y) => <option key={y}>{x}</option>)
     return <>
       <div>
         <Header />
@@ -584,24 +581,24 @@ class CreationDeck extends React.Component {
               <SidebarModel />
              
 
-              <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+              <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
               
 
-              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+              <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
 
               <Container>
 
             
-                <div class='container'>
+                <div className='container'>
                   <h2>Creating [process {this.state.processID}]</h2>
 
-                  <div class="form-group">
-                        <label class="is-required" for="role">Select projection type</label>
-                        <select class="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>
+                  <div className="form-group">
+                        <label className="is-required" for="role">Select projection type</label>
+                        <select className="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>
                           <option value="g_to_p">Global view</option>
                           <option value="p_to_g">Public view</option>
                         </select>
-                        <span class="form-text small text-muted" id="helpTextFile">
+                        <span className="form-text small text-muted" id="helpTextFile">
                           Public view: declare ONLY the public tasks of the participants.
                           Global view: declare all tasks (public+private).</span>
 
@@ -625,7 +622,10 @@ class CreationDeck extends React.Component {
                         </Card>
 
                       </Col>
+
                       <Col>
+                      {this.state.web3 === null ? <div>Loading web3...</div> :
+                  
                         <Card bg={'light'} style={{ 'marginTop': '3vh', width: '100%' }}>
                           <Card.Body>
                             <Card.Title><h3>Editor Deck</h3></Card.Title>
@@ -641,27 +641,42 @@ class CreationDeck extends React.Component {
                                 <hr style={{ "size": "5px" }} /><br />
 
                                 <h4>Assign role</h4>
-                                <div class="form-group">
-                                  <label class="is-required" for="role">Private role</label>
-                                  <select class="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
-                                  <option value=''> ---</option>{roles}
+                                <div className="form-group">
+                                  <label className="is-required" for="role">Private role</label>
+                                  <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+                                  <option value=''> ---</option>
+                                  {
+                                    React.Children.toArray(
+                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                    )
+                                  }
                                   </select>
                                 </div>
                                 <br />
 
-                                <div class="form-group">
-                                  <label class="is-required" for="role">Choreography Sender</label>
-                                  <select class="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
-                                  <option value=''> ---</option>{roles}
+                                <div className="form-group">
+                                  <label className="is-required" for="role">Choreography Sender</label>
+                                  <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
+                                  <option value=''> ---</option>
+                                  {
+                                    React.Children.toArray(
+                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                    )
+                                  }
                                   </select>
                                 </div>
 
                                 <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
                                 <br />
-                                <div class="form-group">
-                                  <label class="is-required" for="role">Choreography Receiver</label>
-                                  <select class="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
-                                  <option value=''> ---</option>{roles}
+                                <div className="form-group">
+                                  <label className="is-required" for="role">Choreography Receiver</label>
+                                  <select className="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
+                                  <option value=''> ---</option>
+                                  {
+                                    React.Children.toArray(
+                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                    )
+                                  }
                                   </select>
                                 </div>
 
@@ -699,6 +714,7 @@ class CreationDeck extends React.Component {
 
                           </Card.Body>
                         </Card>
+                        }
                       </Col>
                     </Row>
                   </div>
@@ -709,7 +725,8 @@ class CreationDeck extends React.Component {
                   <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} />
 
                   <Legend src={this.state.src}/>
-
+                            
+                  
                 </div>
                 </Container>
               </div>

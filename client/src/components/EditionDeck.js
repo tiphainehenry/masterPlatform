@@ -2,7 +2,11 @@ import React from 'react';
 
 import activityUpdHelpers from './utils_ActivityUpdHelpers';
 import cytoMenuHelpers from './utils_CytoMenuHelpers';
+import changeManager from './utils_ChangeManager';
+import dcrHelpers from './utils_dcrHelpers';
+
 import { getMenuStyle } from './utils_ContextMenuHelpers';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCommentsDollar, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
@@ -10,7 +14,7 @@ import Header from './Header';
 
 import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
 import Legend from './Legend';
-
+import SimpleLoader from './SimpleLoader';
 
 import axios from 'axios';
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
@@ -97,8 +101,15 @@ class EditionDeck extends React.Component {
       roles:[],
 
       hashPublicReq:'',
-      publicHash:''
+      publicHash:'',
 
+      chgStatus:'loading',
+      test:'loading', 
+      chgEndorsement:'loading',
+
+      WKFValue:'',
+
+      roleLoading:'loading'
 
     };
 
@@ -111,6 +122,11 @@ class EditionDeck extends React.Component {
     this.handleMI = activityUpdHelpers.handleMI.bind(this);
     this.handleME = activityUpdHelpers.handleME.bind(this);
     this.handleMP = activityUpdHelpers.handleMP.bind(this);
+
+    this.computeRoles = dcrHelpers.computeRoles.bind(this);
+    this.setUpNodeListeners= dcrHelpers.setUpNodeListeners.bind(this);
+    this.setUpEdgeListeners= dcrHelpers.setUpEdgeListeners.bind(this);
+    this.switchDest = dcrHelpers.switchDest.bind(this); 
 
     /// Remove activity or relation
     this.remove = cytoMenuHelpers.remove.bind(this);
@@ -130,11 +146,83 @@ class EditionDeck extends React.Component {
     this.getMenuStyle = getMenuStyle.bind(this);
 
     this.saveGraph = this.saveGraph.bind(this);
-    this.privateGraphUpd = this.privateGraphUpd.bind(this);
-    this.requestChange = this.requestChange.bind(this);
+    this.privateUpd = this.privateUpd.bind(this);
+    this.privateGraphUpd = changeManager.privateGraphUpd.bind(this);
+    this.publicGraphUpd = changeManager.publicGraphUpd.bind(this);
+
+    this.publicUpd = this.publicUpd.bind(this);
+
+    this.loadSCs = this.loadSCs.bind(this);
 
   }
 
+    /**
+   * Instanciates component with the right process and projection view.
+   */
+     componentWillMount() {
+
+      this.loadSCs();
+  
+      var processID = this.props.match.params.pid;
+      var projectionID = this.props.match.params.rid;
+  
+      this.setState({
+        'processID': processID,
+        'projectionID': projectionID,
+        'data': ProcessDB[processID][projectionID]['init']['data'],
+        'publicHash':ProcessDB[processID]['hash']
+      });
+  
+      }
+  
+      async loadSCs(){
+        try{
+          const web3 = await getWeb3();
+          const accounts = await web3.eth.getAccounts();
+          const networkId = await web3.eth.net.getId();
+          const adminNetwork = AdminRoleManager.networks[networkId];
+          const adminInstance = new web3.eth.Contract(
+            AdminRoleManager.abi,
+            adminNetwork && adminNetwork.address,
+          );
+    
+          this.setState({ web3, accounts, contractRole: adminInstance });
+          var roles = await adminInstance.methods.getRoles().call();
+    
+          this.computeRoles(roles);
+  
+  
+          const processNetwork = PublicDCRManager.networks[networkId];
+          const processInstance = new web3.eth.Contract(
+            PublicDCRManager.abi,
+            processNetwork && processNetwork.address,
+          );
+    
+          this.setState({ web3, accounts, contractProcess: processInstance });
+    
+          var chgstt = await processInstance.methods.getChangeValue(this.state.publicHash).call();
+          var wkfstt = await processInstance.methods.getWKFValue(this.state.publicHash).call();
+          var test = await processInstance.methods.getTest().call();
+          var chgendorse = await processInstance.methods.getChangeEndorsement(this.state.publicHash).call();
+    
+          this.setState({ 
+            chgStatus:chgstt,
+            chgEndorsement:chgendorse,
+            WKFValue:wkfstt,
+            test: test
+          })
+    
+          processInstance.events.RequestChange().on('data', (event) => {
+            console.log(event);    
+          })
+          .on('error', console.error);
+    
+        }
+        catch(error){
+        console.log(error);
+        }
+      }
+  
   /**
    * Setting up the environment:
    * - Fits the graph display to the window, 
@@ -156,347 +244,86 @@ class EditionDeck extends React.Component {
 
     });
     this.setState({
-      newActivityCnt:newActivityCnt
+      newActivityCnt:newActivityCnt,
+      roleLoading:'done'
     });
-
   };
 
-  /**
-   * Instanciates component with the right process and projection view.
-   */
-  componentWillMount() {
 
-    this.getRoles()
-
-    var processID = this.props.match.params.pid;
-    var projectionID = this.props.match.params.rid;
-
-    this.setState({
-      'processID': processID,
-      'projectionID': projectionID,
-      'data': ProcessDB[processID][projectionID]['init']['data'],
-      'publicHash':ProcessDB[processID]['hash']
-    });
-
-    //console.log(this.props.location);
-    //if (typeof (this.props.location.state) !== 'undefined') {
-    //  if (typeof (this.props.location.state['currentProcess'][1]) !== 'undefined') {
-    //    var processID = this.props.location.state['currentProcess'][1];
-    //    var projectionID = this.props.location.state['currentInstance'];
-
-    //    this.setState({
-    //      'processID': processID,
-    //      'processName': this.props.location.state['currentProcess'][1],
-    //      'projectionID': projectionID,
-    //      'data': ProcessDB[processID][projectionID]['init']['data']
-    //    });
-    //  }
-    }
-
-    async getRoles() {
-
-      try {
-        const web3 = await getWeb3();
-        const accounts = await web3.eth.getAccounts();
-        const networkId = await web3.eth.net.getId();
-        const adminNetwork = AdminRoleManager.networks[networkId];
-        const adminInstance = new web3.eth.Contract(
-          AdminRoleManager.abi,
-          adminNetwork && adminNetwork.address,
-        );
-    
-        this.setState({ web3, accounts, contractRole: adminInstance });
-
-        const processNetwork = PublicDCRManager.networks[networkId];
-        const processInstance = new web3.eth.Contract(
-          PublicDCRManager.abi,
-          processNetwork && processNetwork.address,
-        );
-
-        this.setState({ web3, accounts, contractProcess: processInstance });
-
-        
-        var roles = await adminInstance.methods.getRoles().call()
-
-        var roleMaps = []
-        var tmpRoles = []
-        var tmpAddress = []
-        roles.forEach(line => {
-          var r = line.split('///')[0];
-          var a = line.split('///')[1];
-          tmpRoles.push(r);
-          tmpAddress.push(a);
-          roleMaps.push({'role':r, 'address':a});
-        });
-        this.setState({ roles: tmpRoles, addresses: tmpAddress, roleMaps:roleMaps })
-
-        processInstance.events.RequestChange().on('data', (event) => {
-          console.log(event);    
-        })
-        .on('error', console.error);
-
-      } catch (error) {
-        //alert(
-        //  `Failed to load web3, accounts, or contract. Check console for details.`,
-        //);
-        console.error(error);
-      }
-    }
-
-    switchDest() {
-      const tmp = this.state.choreographyNames.sender
-      this.setState({
-        choreographyNames: {
-          sender: this.state.choreographyNames.receiver,
-          receiver: tmp
-        }
-      })
-    }
-  
-  
-  //////////  LISTENERS /////////////////
-
-  /**
-   * Listeners to monitor node click events.
-   */
-  setUpNodeListeners = () => {
-
-    this.cy.on('click', 'node', (event, data) => {
-      //getClikedNode
-      if ((!event.target['_private']['classes'].has('selected')) && (this.state.numSelected < 2)) {
-        console.log(event.target['_private']['data']['id'] + ' clicked');
-
-        var type = '';
-        if (event.target['_private']['classes'].has('subgraph')) {
-          type = 'subgraph';
-        }
-
-        /// monitor clicked elements
-        switch (this.state.numSelected) {
-          case 0:
-            console.log('source');
-            this.setState({
-              source: {
-                ID: event.target['_private']['data']['id'],
-                type: type
-              }
-            });
-            break;
-          case 1:
-            console.log('target');
-            this.setState({
-              target: {
-                ID: event.target['_private']['data']['id'],
-                type: type
-              }
-            });
-            break;
-          default: console.log('num selected nodes: ' + this.state.numSelected);
-        }
-
-        // update states
-        this.cy.getElementById(event.target['_private']['data']['id']).addClass('selected');
-
-        this.setState({
-          elemClicked: {
-            id: event.target['_private']['data']['id'],
-            activityName: event.target['_private']['data']['name'],
-            classes: event.target['_private']['classes'],
-            type: event.target['_private']['group']
-          },
-          numSelected: this.state.numSelected + 1
-        });
-      }
-
-      else if (event.target['_private']['classes'].has('selected')) {
-        this.cy.getElementById(event.target['_private']['data']['id']).removeClass('selected');
-
-        if (this.state.numSelected !== 1) {
-          this.setState({ numSelected: this.state.numSelected - 1 });
-        }
-
-      }
-      else {
-        console.log('two elements already selected');
-      }
-    });
+  privateUpd(data){
+            // generate vect, text extraction (role, role mapping, global/events) , and save to new version
+            axios.post(`http://localhost:5000/privateGraphUpd`,
+            data,
+            { "headers": { "Access-Control-Allow-Origin": "*" } }
+          );
 
   }
 
-  /**
-   * Listeners to monitor edge/relations click events.
-   */
-  setUpEdgeListeners = () => {
-    this.cy.on('click', 'edge', (event, data) => {
-      console.log(event.target['_private']['data']['id'] + ' clicked');
-      var idSelected = event.target['_private']['data']['id'];
-      var elemType = event.target['_private']['group'];
+  publicUpd(data, addressesToNotify){
+    var hash=this.state.hash;
+    ipfs.files.add(data)
+    .then(res => {
+      hash = res[0].hash;
+      alert(hash);
+      this.setState({ hashPublicReq: hash });
+      return ipfs.files.cat(hash)
+   })
+  .then(output => {
+    console.log('retrieved public req data:', JSON.parse(output));
+    console.log('retrieved hash:',hash);
 
-      this.setState({
-        elemClicked: {
-          id: idSelected,
-          activityName: '',
-          classes: '',
-          type: elemType
-        }
-      })
-    })
+    this.requestChange(addressesToNotify,this.state.publicHash, hash);
+
+  })
   }
 
-  /**
+    /**
    * Switcher function to save graphs (whether private storage or BC trigger for negociation).
    * We check the graph subgraph type to assess if we need to trigger the SC negociation stage. 
    * If one of the subgraph elems is a choreography, then we will need to call the SC for peer concertation. 
    * Otherwise we can update the private projection directly. 
    */
+
   async saveGraph() {
-
-    var publicUpd = false;
-    var publicNodes = [];
-    this.cy.elements().forEach(function (ele) {
-      if (ele['_private']['classes'].has('choreography') && ele['_private']['classes'].has('subgraph')) {
-        publicUpd = true;
-        var splElem = ele['_private']['data']['name'].trim().split(' '); 
-        var cleanedEle = []
-        splElem.forEach(function (ele) {
-          if(ele != ""){
-            cleanedEle.push(ele);
-          }
-        })
-
-        publicNodes.push({
-          'name': cleanedEle[1],
-          'src': cleanedEle[0],
-          'tgt': cleanedEle[2]
-      });
-      }
-    });
-
-    if (publicUpd) {
-      alert('choreography task - negotiation launched');
-
-      console.log(publicNodes);
-
-      var roles = this.state.roleMaps;
-      var addressesToNotify = []
-      publicNodes.forEach(function(node){
-        roles.forEach(function(r){
-          if ((node['src']==r['role'])||(node['tgt']==r['role'])) {
-            addressesToNotify.push(r['address']);
-          }
-        })
-      });
-      
-      // generate cyto data and save to IPFS
-      var newData = [];
+      var publicUpd = false;
+      var publicNodes = [];
       this.cy.elements().forEach(function (ele) {
-        var newEle = {
-          "data": ele['_private']['data'],
-          "group": ele['_private']['group'],// group can be two types: nodes == activity, or edges == relation
-        };
-
-        console.log(newEle);
-
-        if (newEle.data.name[0]==('!'||'?')){
-          console.log(newEle.data.name);
-
-          var acName=newEle.data.name.split('(')[1].split(',')[0];
-          var sender=newEle.data.name.split(', ')[1].split('>')[0].replace('-','').replace('-','');
-          var receiver=newEle.data.name.split('>')[1].replace('*','').replace(')','').replace(' ','');
-
-          newEle.data = {
-            'id':newEle.data.id.slice(0,-1),
-            'name':sender+'\n'+acName+'\n'+receiver,
-            'nbr':0,
-            'properName':sender+'\n'+acName+'\n'+receiver
-          }
-
-        }
-
-        var classes = Array.from(ele['_private']['classes']).join(' ');
-        if (classes !== '') {
-          newEle['classes'] = classes;
-        }
-        newData.push(newEle);
-      });
-
-      var hash=this.state.hash;
-
-      ipfs.files.add(Buffer.from(JSON.stringify(newData)))
-      .then(res => {
-      hash = res[0].hash;
-      this.setState({ hashPublicReq: hash });
-      return ipfs.files.cat(hash)
-     })
-    .then(output => {
-      console.log('retrieved public req data:', JSON.parse(output));
-
-      this.requestChange(addressesToNotify,this.state.publicHash+"|"+hash);
+        if (ele['_private']['classes'].has('choreography') && ele['_private']['classes'].has('subgraph')) {
+          publicUpd = true;
+          var splElem = ele['_private']['data']['name'].trim().split(' '); 
+          var cleanedEle = []
+          splElem.forEach(function (ele) {
+            if(ele != ""){
+              cleanedEle.push(ele);
+            }
+          })
   
-    })
-
-    }
-    else {
-      this.privateGraphUpd();
-    }
-  }
-
-
-  async requestChange(addressesToNotify,hashes){
-    // request change
-    console.log(hashes);
-    this.state.contractProcess.methods.requestChange(addressesToNotify, hashes).send({
-      from: this.state.accounts[0]
-    }, (error) => {
-              console.log(error);
-    }); //storehash 
-
-  // send request to list of addresses with ipfs hash of public nodes and relations. 
-
-  }
-
-  /**
-   * Private graph update processing > calls the API to update the markings and nodes.
-   * 
-   */
-  privateGraphUpd() {
-
-    if (window.confirm('Confirm new graph version?')) {
-
-      var newData = [];
-
-      // retrieve data 
-      this.cy.elements().forEach(function (ele) {
-        var newEle = {
-          "data": ele['_private']['data'],
-          "group": ele['_private']['group'],// group can be two types: nodes == activity, or edges == relation
-        };
-
-        var classes = Array.from(ele['_private']['classes']).join(' ');
-        if (classes !== '') {
-          newEle['classes'] = classes;
+          publicNodes.push({
+            'name': cleanedEle[1],
+            'src': cleanedEle[0],
+            'tgt': cleanedEle[2]
+        });
         }
-        newData.push(newEle);
       });
+      if (window.confirm('Confirm new graph version?')) {
+  
+        if (publicUpd) {
+            this.publicGraphUpd(publicNodes);
+            }
+        else {
+          this.privateGraphUpd();
+          console.log('new graph version saved!')
 
-      // generate vect, text extraction (role, role mapping, global/events) , and save to new version
-      axios.post(`http://localhost:5000/privateGraphUpd`,
-        {
-          newData: newData,
-          projID: this.state.projectionID,
-          processID: this.state.processID
-        },
-        { "headers": { "Access-Control-Allow-Origin": "*" } }
-      );
+        }
+        }
 
-      console.log('new graph version saved!')
-      //window.location = '/welcomeinstance';
+      else {
+        console.log('save aborted');
+      }
+
     }
-    else {
-      console.log('save aborted');
-    }
-  }
-
+  
+  
   ///// Render
 
   render() {
@@ -504,14 +331,13 @@ class EditionDeck extends React.Component {
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
     
-    var roles = []
-    if (this.state.roles)
-      roles = this.state.roles.map((x, y) => <option key={y}>{x}</option>)
-
-    console.log(this.state);
     return <>
       <div>
-      <Container fluid >
+
+      <Container fluid  >
+      <SimpleLoader load={this.state.chgStatus} type={"bubble-top"} msg={"loading blockchain data"}/>
+
+<div style={(this.state.chgStatus == 'loading') ? {display: 'none' } : {} }>
         <Row >
           <Col >
             <div className="bg-green pt-5 pb-3">
@@ -555,27 +381,44 @@ class EditionDeck extends React.Component {
 
                                 <hr style={{ "size": "5px" }} /><br />
                                 <h4>Assign role</h4>
-                                <div class="form-group">
-                                  <label class="is-required" for="role">Private role</label>
-                                  <select class="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
-                                  <option value=''> ---</option>{roles}
+                                <div className="form-group">
+                                  <label className="is-required" for="role">Private role</label>
+                                  <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+                                  <option value=''> --- </option>          
+                                  {
+                                    React.Children.toArray(
+                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                    )
+                                  }
                                   </select>
                                 </div>
                                 <br />
 
-                                <div class="form-group">
-                                  <label class="is-required" for="role">Choreography Sender</label>
-                                  <select class="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
-                                  <option value=''> ---</option>{roles}
+                                <div className="form-group">
+                                  <label className="is-required" for="role">Choreography Sender</label>
+                                  <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
+                                  <option value=''> ---</option>
+                                  
+                                  {
+                                    React.Children.toArray(
+                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                    )
+                                  }
+
                                   </select>
                                 </div>
 
                                 <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
                                 <br />
-                                <div class="form-group">
-                                  <label class="is-required" for="role">Choreography Receiver</label>
-                                  <select class="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
-                                  <option value=''> ---</option>{roles}
+                                <div className="form-group">
+                                  <label className="is-required" for="role">Choreography Receiver</label>
+                                  <select className="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
+                                  <option value=''> ---</option>
+                                  {
+                                    React.Children.toArray(
+                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                    )
+                                  }
                                   </select>
                                 </div>
                                 <hr /><br />
@@ -614,6 +457,9 @@ class EditionDeck extends React.Component {
                       </Col>
                     </Row>
                   </div>
+                  <p> chg status: {this.state.chgStatus}</p>
+                  <p>chg endorsement: {this.state.chgEndorsement}</p>
+                  <p> test: {this.state.test}</p>
                   <Button onClick={this.saveGraph}>save new version</Button>
                     </div>
                     <Legend src={this.state.src}/>
@@ -623,6 +469,7 @@ class EditionDeck extends React.Component {
 
                     </Col>
         </Row>
+        </div>
       </Container>
 
                     </div>

@@ -40,6 +40,8 @@ class CreateL extends React.Component {
       contract: null,
       fileReader: null,
 
+      fileName:'Input file',
+
       selectValue: 'p_to_g'
 
     };
@@ -133,8 +135,10 @@ class CreateL extends React.Component {
    * @param e click event
    */
   onFormSubmit(e) {
+    alert('submitting');
     e.preventDefault() // Stop form submit
     this.fileUpload(e, this.state.file).then((response) => {
+      console.log('coucou i\'m here');
       console.log(response.data);
       if (response.data === "ok") {
         // save to BC
@@ -182,7 +186,10 @@ class CreateL extends React.Component {
    * @param e upload event
    */
   onChange(e) {
-    this.setState({ file: e.target.files[0] })
+    this.setState({ 
+      file: e.target.files[0],
+      fileName: e.target.files[0]['name'] })
+
     var fileReader = new FileReader();
     this.setState({ fileReader: fileReader });
     fileReader.onloadend = this.handleFileRead;
@@ -247,7 +254,6 @@ class CreateL extends React.Component {
                 <div class="row">
                   <div class="col-sm-6">
                     <form role="form" id="myForm">
-
                       <div class="form-group">
                         <label class="is-required" for="role">Select projection type</label>
                         <select class="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>
@@ -257,15 +263,12 @@ class CreateL extends React.Component {
                         <span class="form-text small text-muted" id="helpTextFile">
                           Public view: declare ONLY the public tasks of the participants.
                           Global view: declare all tasks (public+private).</span>
-
                       </div>
 
-
                       <div class="custom-file">
-
-                        <form onSubmit={this.onFormSubmit}>
+                        <form>
                           <input type="file" class="custom-file-input" id="exampleInputFile" onChange={this.onChange} aria-describedby="helpTextFile" />
-                          <label class="custom-file-label" for="exampleInputFile">Input file</label>
+                          <label class="custom-file-label" for="exampleInputFile">{this.state.fileName}</label>
                           <span class="form-text small text-muted" id="helpTextFile">The three input files used for our experiments are accessible in the <a href='https://github.com/tiphainehenry/react-cyto/'>dcrInputs repository</a> of our github.</span>
                         </form>
                       </div>
@@ -273,11 +276,11 @@ class CreateL extends React.Component {
                         <Button className='btn btn-secondary' onClick={() => this.BcAccountCreate()}> 1. Creates roles and accounts</Button>
                       </div>
                       <div class="form-group my-3">
-                        <button type="submit" class="btn btn-secondary">2. Project</button>
+                        <button class="btn btn-secondary" onClick={this.onFormSubmit}>2. Project</button>
                       </div>
 
-                      <div class="form-group my-3" onSubmit={this.onIPFSSubmit}>
-                        <button type="submit" class="btn btn-secondary">3. Save public text extraction to IPFS</button>
+                      <div class="form-group my-3" >
+                        <button class="btn btn-secondary" onClick={this.onIPFSSubmit}>3. Save public text extraction to IPFS</button>
                       </div>
 
                       <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} />

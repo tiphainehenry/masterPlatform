@@ -53,7 +53,9 @@ class ChangeModal extends React.Component {
     };
     this.saveReqWkf = this.saveReqWkf.bind(this);
     this.saveCurrWkf = this.saveCurrWkf.bind(this);
-
+    this.answer = this.answer.bind(this);
+    this.accept = this.accept.bind(this);
+    this.decline = this.decline.bind(this);
   }
 
   componentWillMount() {
@@ -95,6 +97,30 @@ class ChangeModal extends React.Component {
     }
   }
 
+
+  async answer(rsp){
+
+    console.log(rsp);
+    try{
+        this.props.contractDCR.methods.endorserRSP(this.props.currHash, this.props.reqHash, rsp).send({
+          from: this.props.accounts[0]
+        }, (error) => {
+                  console.log(error);
+        }); //storehash 
+      }
+    catch(error){
+        alert(error);
+    }
+  }
+
+  async decline(){
+    this.answer(2); 
+  }
+
+  async accept(){
+    this.answer(1); 
+  }
+
   render() {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
@@ -102,9 +128,17 @@ class ChangeModal extends React.Component {
 
     return <div>
 
-      <Button onClick={() => this.setState({ show: true })}>
-        Compare and Decide
-      </Button>
+      {this.props.status == '[Waiting for decision]'? 
+    <Button onClick={() => this.setState({ show: true })} title='Click me'>
+      Compare and Decide
+    </Button>    
+    :
+    <Button disabled onClick={() => this.setState({ show: true })} title='Request has been processed'>
+      Compare and Decide
+    </Button>
+
+    }
+
       <Modal show={this.state.show} animation={true} >
         <Modal.Header >
           <Modal.Title >
@@ -138,12 +172,13 @@ class ChangeModal extends React.Component {
                             />
                   </div>
         </Row>
+        <hr/>
         <Row >
-          <Col class="col-md-6 ml-auto">
-        <Button  variant="outline-success"><ThumbsUp/> Accept</Button>
+          <Col class="col-md-6 ml-auto"  className="text-center">
+        <Button  variant="outline-success" onClick={this.accept}><ThumbsUp/> Accept</Button>
         </Col>
-        <Col class="col-md-6 ml-auto">
-        <Button  variant="outline-danger"><ThumbsDown/> Decline </Button>
+        <Col class="col-md-6 ml-auto"  className="text-center">
+        <Button  variant="outline-danger" onClick={this.decline}><ThumbsDown/> Decline </Button>
 </Col>
 </Row>
       </Container>
