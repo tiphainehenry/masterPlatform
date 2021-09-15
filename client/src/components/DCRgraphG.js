@@ -8,6 +8,7 @@ import PublicMarkings from './PublicMarkings';
 
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
 import getWeb3 from '../getWeb3';
+import ipfs from '../ipfs';
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -60,12 +61,15 @@ class DCRgraphG extends React.Component {
       activityData: '',
       wkID: '',
       dataValues: [],
-      altVersionExists: false
+      altVersionExists: false,
+      chgType:'NA'
     };
 
     this.fetchBCid = this.fetchBCid.bind(this);
     this.loadContract = this.loadContract.bind(this);
     this.handleProjSwitch = this.handleProjSwitch.bind(this);
+    this.reqHashUpload = this.reqHashUpload.bind(this);
+    this.generateLocalChg = this.generateLocalChg.bind(this);
   }
 
   /**
@@ -80,7 +84,8 @@ class DCRgraphG extends React.Component {
       //console.log(key, value);
       if (value === 'v_upd') {
         this.setState({
-          altVersionExists: true
+          altVersionExists: true, 
+          chgType:'Private'
         });
       }
     });
@@ -108,14 +113,24 @@ class DCRgraphG extends React.Component {
         PublicDCRManager.abi,
         deployedNetwork && deployedNetwork.address,
       );
-        console.log(instance);
-      var wkID = this.props.processName.replace('p', '') - 1;
       var pHash = ProcessDB[this.props.processName]['hash'];
       
       const inclVector = await instance.methods.getIncluded(pHash).call();
       const execVector = await instance.methods.getExecuted(pHash).call();
       const pendVector = await instance.methods.getPending(pHash).call();
       const hashesVector = await instance.methods.getHashes(pHash).call();
+
+      await instance.methods.getChangeArgs(pHash).call()
+      .then(res=>{
+        console.log('approved by all endorsers');
+        if (res.Test === 'approved by all endorsers') {
+          this.setState({
+            altVersionExists: true, 
+            chgType:'public',
+            reqHash: res.reqHash
+          });
+        }
+      });
 
       this.setState({
         web3, accounts, contract: instance,
@@ -127,6 +142,10 @@ class DCRgraphG extends React.Component {
         pend: pendVector,
         dataHashes: hashesVector
       })
+
+
+
+
       this.cy.fit();
 
     } catch (error) {
@@ -324,8 +343,82 @@ class DCRgraphG extends React.Component {
     })
   }
 
+  async reqHashUpload() {
+
+      //alert('fetch reqHash public projection');
+          
+      this.getIPFSOutput(this.state.reqHash).then(output => {
+
+        // step1: get req data
+        var JSONpubView = JSON.parse(output);
+        console.log('retrieved data:', JSONpubView);
+
+        // step2: get local data
+        var privateNodes = [];
+        var edges = [];
+        this.cy.nodes().forEach(function (ele) {
+          console.log(ele);
+          if (!ele['_private']['classes'].has('type_choreography') && 
+              !ele['_private']['classes'].has('type_projChoreo')&&
+              !ele['_private']['classes'].has('choreography')&&
+              !ele['_private']['data']['name'].includes('!')&&
+              !ele['_private']['data']['name'].includes('?')
+          ) {
+            privateNodes.push({
+              'data' : ele['_private']['data'],
+              'group': ele['_private']['group'],
+              'classes': ele['_private']['classes'],
+          });
+          }
+        });
+
+        console.log('privateNodes',privateNodes);
+
+        this.cy.edges().forEach(function(ele){
+          edges.push({
+            'data' : ele['_private']['data'],
+            'group': ele['_private']['group'],
+            'classes': ele['_private']['classes']
+          })
+        });
+
+        // step3: merge projections (reqHash+ localProj)
+        const formData = new FormData();
+        formData.append('processID', this.props.processName);
+        formData.append('roleID', this.props.id);
+        formData.append('roleNum', this.props.projectionID);
+        formData.append('JSONPubView', JSON.stringify(JSONpubView));
+        formData.append('JSONPriView', JSON.stringify(privateNodes));
+        formData.append('JSONedges', JSON.stringify(edges));
+        this.generateLocalChg(formData);
+        // step4: notify SC that local proj has been done. 
+
+      })
+         
+  }
+
+  async getIPFSOutput(hash){
+    return ipfs.cat(hash);
+  }
+
+  async generateLocalChg(formData){
+    const url = `http://localhost:5000/localChg`;
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        //'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+
+    return axios.post(url, formData, config);
+
+  } 
+
+
   /**
-   * Updates private projection on demand --> checks if any ungoing pending activities exist. 
+   * Updates projection on demand --> checks if any ungoing pending activities exist. 
    * If no pending activities is spotted, then launch update via an API call.
    * Function accessible only if an alternative version has been generated on the process model pannel.
    */
@@ -342,34 +435,40 @@ class DCRgraphG extends React.Component {
 
     if (hasPending) {
       // If ongoing graph execution, revert. 
-      console.log('not possible yet: we spotted a pending event --> the instance is under execution!');
+      alert('[INFO] switch not possible yet (we spotted a pending event)');
     }
     else {
-      // else, launch update: the current projection will be replaced by the alternative one via an API call.
-      var headers = {
-        "Access-Control-Allow-Origin": "*",
-      };
-      axios.post(`http://localhost:5000/switchProj`,
-        {
-          projID: this.props.id,
-          processID: this.props.processID
-        },
-        { "headers": headers }
-      ).then(
-        (response) => {
-          console.log('switched proj');
-          this.setState({
-            altVersionExists: false
-          });
+      if (this.state.chgType === 'Private'){
+        // else, launch update: the current projection will be replaced by the alternative one via an API call.
+        var headers = {
+          "Access-Control-Allow-Origin": "*",
+        };
+        axios.post(`http://localhost:5000/switchProj`,
+          {
+            projID: this.props.id,
+            processID: this.props.processID
+          },
+          { "headers": headers }
+        ).then(
+          (response) => {
+            console.log('switched proj');
+            this.setState({
+              altVersionExists: false
+            });
 
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+      else{
 
+        console.log('change is public');
 
+        this.reqHashUpload();
+      }
+    } 
   }
 
 
@@ -393,7 +492,7 @@ class DCRgraphG extends React.Component {
           <p> Click on one of the nodes of the graph below to update the state of the workflow execution. NB. A task needs to be enabled (with a white background here) to be successful. Black tasks are external tasks, managed by another tenant.</p>
 
           <Card style={{ height: '90%', 'marginTop': '3vh' }}>
-            <Card.Header as="p" style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
+            <Card.Header  style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
               {this.props.id} Projection
               <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
             </Card.Header>

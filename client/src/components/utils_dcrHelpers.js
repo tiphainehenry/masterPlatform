@@ -33,6 +33,8 @@ const dcrHelpers = {
       //getClikedNode
       if ((!event.target['_private']['classes'].has('selected')) && (this.state.numSelected < 2)) {
         console.log(event.target['_private']['data']['id'] + ' clicked');
+        console.log(event.target['_private']['classes']);
+        
 
         var type = '';
         if (event.target['_private']['classes'].has('subgraph')) {
@@ -65,12 +67,28 @@ const dcrHelpers = {
         // update states
         this.cy.getElementById(event.target['_private']['data']['id']).addClass('selected');
 
+        var isChoreo=false;
+        var activityName = ''
+        if((event.target['_private']['classes'].has("type_projChoreo"))){
+          isChoreo=true;
+          console.log('ischoreo:', isChoreo);
+          activityName = event.target['_private']['data']['name'].split('(')[1].split(',')[0];
+        }
+        else if((event.target['_private']['classes'].has("type_choreography"))){
+          isChoreo=true;
+          activityName = event.target['_private']['data']['name'].split('\n')[1];
+        }
+        else{
+          activityName=event.target['_private']['data']['name'].split(' ')[1];
+        }
         this.setState({
           elemClicked: {
             id: event.target['_private']['data']['id'],
-            activityName: event.target['_private']['data']['name'],
+            activityName: activityName,
+            raw_activityName:event.target['_private']['data']['name'],
             classes: event.target['_private']['classes'],
-            type: event.target['_private']['group']
+            type: event.target['_private']['group'],
+            isChoreo: isChoreo
           },
           numSelected: this.state.numSelected + 1
         });

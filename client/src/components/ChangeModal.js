@@ -1,29 +1,14 @@
-import ReactDOM from "react-dom";
-import React, { Component } from "react";
-import {  Modal, Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
-import ModalDialog from 'react-bootstrap/ModalDialog'
-
-import { Nav } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import TableScrollbar from 'react-table-scrollbar';
-
-import { Table } from 'react-bootstrap';
+import React from "react";
+import {  Modal, Button, Row, Col, Container } from 'react-bootstrap';
 import '../style/boosted.min.css';
-import axios from 'axios';
 
 import ipfs from '../ipfs';
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { Mail, ThumbsUp, ThumbsDown } from 'react-feather';
-
-import getWeb3 from "../getWeb3";
-import PublicDCRManager from '../contracts/PublicDCRManager.json';
-import AdminRoleManager from '../contracts/AdminRoleManager.json';
+import { ThumbsUp, ThumbsDown } from 'react-feather';
 
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
-import contextMenus from 'cytoscape-context-menus';
 import 'cytoscape-context-menus/cytoscape-context-menus.css';
 
 import COSEBilkent from 'cytoscape-cose-bilkent';
@@ -59,8 +44,6 @@ class ChangeModal extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.props.currHash);
-    console.log(this.props.reqHash);
 
     try{
       this.saveCurrWkf(this.props.currHash);
@@ -89,6 +72,7 @@ class ChangeModal extends React.Component {
     try{
     await ipfs.files.cat(hash).then((output) =>
       {
+        console.log(JSON.parse(output));
         this.setState({currWkf:JSON.parse(output)})
       } 
     );}
@@ -99,8 +83,6 @@ class ChangeModal extends React.Component {
 
 
   async answer(rsp){
-
-    console.log(rsp);
     try{
         this.props.contractDCR.methods.endorserRSP(this.props.currHash, this.props.reqHash, rsp).send({
           from: this.props.accounts[0]
@@ -128,7 +110,7 @@ class ChangeModal extends React.Component {
 
     return <div>
 
-      {this.props.status == '[Waiting for decision]'? 
+      {this.props.status === '[Waiting for decision]'? 
     <Button onClick={() => this.setState({ show: true })} title='Click me'>
       Compare and Decide
     </Button>    
@@ -162,14 +144,14 @@ class ChangeModal extends React.Component {
 
                   <div class="col-md-6 ml-auto">
                   <p>After</p>
-
-                            <CytoscapeComponent elements={this.state.reqWkf}
+                  <CytoscapeComponent elements={this.state.reqWkf}
                               stylesheet={stylesheet}
                               layout={layout}
                               style={style}
                               cy={(cy) => { this.cy = cy }}
                               boxSelectionEnabled={true}
                             />
+
                   </div>
         </Row>
         <hr/>

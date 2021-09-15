@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './Header';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Container } from 'react-bootstrap';
 import SidebarModel from './SidebarModel';
 
 import '../style/App.css';

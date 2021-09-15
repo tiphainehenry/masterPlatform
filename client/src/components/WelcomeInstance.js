@@ -1,20 +1,18 @@
 import React from 'react';
 import Header from './Header';
-import { Button, Row, Col, Container } from 'react-bootstrap';
-
-import { Nav } from "react-bootstrap";
+import { Button, Row, Col, Container, Nav, Card, CardGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import TableScrollbar from 'react-table-scrollbar';
 
-import { Table } from 'react-bootstrap';
-import '../style/boosted.min.css';
+import { Play, Edit } from 'react-feather';
+
 import axios from 'axios';
-
 import getWeb3 from "../getWeb3";
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
 
+import '../style/boosted.min.css';
 import '../style/Dashboard.css'
-import { Users, Play, Edit } from 'react-feather';
+
+
 
 
 var ProcessDB = require('../projections/DCR_Projections.json');
@@ -64,8 +62,8 @@ class WelcomeInstance extends React.Component {
 
       source: { ID: '', type: '' },
       target: { ID: '', type: '' },
-      
-      SCHashes:[]
+
+      SCHashes: []
     };
     this.delete = this.delete.bind(this);
     this.connectToWeb3 = this.connectToWeb3.bind(this);
@@ -97,58 +95,62 @@ class WelcomeInstance extends React.Component {
       this.setState({ web3, accounts, contract: instance });
 
       const SCHashes = await instance.methods.getAllWKHashes().call();
-    
 
-    var numProcess = Object.keys(ProcessDB).length;
 
-    var tree = [];
+      var numProcess = Object.keys(ProcessDB).length;
 
-    for (var j = 0; j <= numProcess; j++) {
-        var hash = ProcessDB[Object.keys(ProcessDB)[j]]['hash'];
-        if(SCHashes.includes(hash)){
-          var dcrText = ProcessDB[Object.keys(ProcessDB)[j]]['TextExtraction']
-          var name = ProcessDB[Object.keys(ProcessDB)[j]]['id']
-          var type = ProcessDB[Object.keys(ProcessDB)[j]]['projType']
-          var roleLength = dcrText['roleMapping'].length;
+      var tree = [];
+
+      for (var j = 0; j <= numProcess; j++) {
+        try{
+          var hash = ProcessDB[Object.keys(ProcessDB)[j]]['hash'];
+          if (SCHashes.includes(hash)) {
+            var dcrText = ProcessDB[Object.keys(ProcessDB)[j]]['TextExtraction']
+            var name = ProcessDB[Object.keys(ProcessDB)[j]]['id']
+            var type = ProcessDB[Object.keys(ProcessDB)[j]]['projType']
+            var roleLength = dcrText['roleMapping'].length;
   
-          var i;
-          var roles = [];
-          for (i = 1; i <= roleLength; i++) {
-            var role = [];
-            var r = 'r' + i;
-            role.push(r);
-            role.push(dcrText[r]['role'])
-            roles.push(role)
+            var i;
+            var roles = [];
+            for (i = 1; i <= roleLength; i++) {
+              var role = [];
+              var r = 'r' + i;
+              role.push(r);
+              role.push(dcrText[r]['role'])
+              roles.push(role)
+            }
+            this.setState({
+              roleLength: roleLength,
+              roles: roles
+            });
+  
+            var process = [];
+            process.push(name);
+            process.push(roles);
+            process.push(type);
+            process.push(hash);
+  
+            tree.push(process);
+  
           }
+          else {
+            console.log('Process not displayed (because not tracked in the BC)')
+          }
+  
+          tree.sort();
           this.setState({
-            roleLength: roleLength,
-            roles: roles
+            'tree': tree,
+            'numProcesses': numProcess,
+            wkState: 'Create Global Workflow OnChain.',
+            SCHashes: SCHashes
           });
   
-          var process = [];
-          process.push(name);
-          process.push(roles);
-          process.push(type);
-          process.push(hash);
-  
-          tree.push(process);
-  
         }
-        else{
-          console.log('Process not displayed (because not tracked in the BC)')
-        }
-
-        tree.sort();
-        this.setState({ 
-          'tree': tree, 
-          'numProcesses': numProcess,
-          wkState: 'Create Global Workflow OnChain.' ,
-          SCHashes: SCHashes         
-        });
-    
+        catch(error){
+          //console.log(error);
       }
 
-    } catch (error) {
+    }} catch (error) {
       console.error(error);
     };
   }
@@ -227,7 +229,6 @@ class WelcomeInstance extends React.Component {
 
               <div className='container'>
 
-
                 <div className="row align-items-center">
 
                   <div className="col-6 col-md-6 col-lg-4">
@@ -243,78 +244,62 @@ class WelcomeInstance extends React.Component {
                 </div>
 
                 <h5>Choose the process projection instance to manage:</h5>
-
                 <div className="bg-green">
                   <Nav>
-                    <TableScrollbar rows={8}>
-                      <Table>
+                    {this.state.tree.map((process, i) => {
+                      return <Nav key={i} title={process[0]} >
+<Row key={i}>
+<CardGroup>
+<Card bg="light">
+<Card.Body>
+  <Card.Text className="text-center">Process {process[0]} <br/> 
+  </Card.Text>
+</Card.Body>
+<Card.Footer className="justify-content text-center ">
+{process[2]}
+</Card.Footer>
+</Card>
 
-                        <tbody>
-                          {this.state.tree.map((process, i) => {
-                            return <Nav key={i} title={process[0]} >
-                              <tr>
-                                <td className="align-middle">{process[0]}</td>
-                                {/*<td className="align-middle">Public view hash: {process[3]}</td>*/}
-                                <td className="align-middle">Type: {process[2]}</td>
+{process[1].map((item, i) =>
+<Card key={i}>
+<Card.Body>
+  <Card.Title>Projection on {item[1]}</Card.Title>
+  <div className="row">
+                                      <div className="col-sm-12 other">
 
-                                {process[1].map((item, i) =>
-                                  <td key={i} className="align-middle td-test">
+                                        <Nav.Link as={Link}
+                                          to={{
+                                            pathname: './tenantInstance/' + process[0] + '/' + item[0]
+                                          }}
+                                        >  <Button variant="outline-success" title='run instance'>
+                                            <Play />                                      </Button>
+                                        </Nav.Link>
 
-                                  <div class="row">
-                                      <div class="col-sm-8 align-middle">
-                                      <h6 className="align-middle">Projection on {item[1]}</h6> 
-                                        <div class="row">
-                                          <div class="col-sm-12 other">
-                                        
-                                          <Nav.Link as={Link}
-                                      to={{
-                                        pathname: './tenantInstance/' + process[0] + '/' + item[0]
-                                      }}
-                                    >  <Button variant="outline-success" title='run instance'>
-                                      <Play/>                                      </Button>
-                                      </Nav.Link>
-
-                                          </div>
-                                          <div class="col-sm-8 other2">
-                                          
-                                          <Nav.Link as={Link}
-                                      to={{
-                                        pathname: './editing/' + process[0] + '/' + item[0]
-                                      }}
-                                      ><Button variant="outline-warning" title='request change'>
-                                      <Edit/></Button>
-                                      </Nav.Link>
-                                          </div>
-                                        </div>
                                       </div>
+                                      <div className="col-sm-8 other2">
+
+                                        <Nav.Link as={Link}
+                                          to={{
+                                            pathname: './editing/' + process[0] + '/' + item[0]
+                                          }}
+                                        ><Button variant="outline-warning" title='request change'>
+                                            <Edit /></Button>
+                                        </Nav.Link>
                                       </div>
-                                  </td>
+                                    </div>
 
-                                )}
+</Card.Body>
+</Card>
 
-                                <td className="align-middle">
-                                  <Nav.Link as={Link}
-                                    to={{
-                                      pathname: './publicInstance/' + process[0] 
-                                    }}
-                                  >
-                                    Public Projection [BC]
-                                 </Nav.Link>
-                                </td>
-                                <td className="align-middle">
-                                  <Link type="button" className="btn btn-sm btn-danger" value={process[0]} to={'./welcomeinstance'} onClick={() => this.delete(process[0])}>Delete</Link>
-                                </td>
 
-                              </tr>
 
-                            </Nav>
-                          }
-                          )
-                          }
-                        </tbody>
+                            )}
 
-                      </Table>
-                    </TableScrollbar>
+</CardGroup>
+<br/>
+</Row></Nav>
+                    })}
+
                   </Nav>
 
 

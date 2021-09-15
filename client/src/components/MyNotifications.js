@@ -1,17 +1,12 @@
 import React from 'react';
 import Header from './Header';
-import { Button, Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 
 import { Nav } from "react-bootstrap";
-import { Link } from 'react-router-dom';
 import TableScrollbar from 'react-table-scrollbar';
 
 import { Table } from 'react-bootstrap';
 import '../style/boosted.min.css';
-import axios from 'axios';
-
-import ipfs from '../ipfs';
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
 import getWeb3 from "../getWeb3";
@@ -22,9 +17,7 @@ import ChangeModal from './ChangeModal';
 
 import '../style/Dashboard.css'
 import { Mail, XOctagon, Clock, Check } from 'react-feather';
-import { faCommentsDollar } from '@fortawesome/free-solid-svg-icons';
 
-var ProcessDB = require('../projections/DCR_Projections.json');
 
 /**
  * Welcome component
@@ -129,11 +122,34 @@ class MyNotifications extends React.Component {
       this.setState({ roleMaps:roleMaps })
 
       var tree = [];
-      const output='';
       var eventsList = [];
 
       var declinedEvents= [];
       var okEvents= [];
+      var acceptedEvents= [];
+
+
+      instance.getPastEvents('AcceptChangeAll', {
+        //  filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
+          fromBlock: 0,
+          toBlock: 'latest'
+        })
+        .then(function (events) {
+            console.log('one fully accepted event');
+            console.log(events[0]); // same results as the optional callback above
+            console.log(events); // same results as the optional callback above
+
+
+            for (var j = 0; j < events.length; j++) { 
+              console.log(events[j].returnValues.reqWkfHash);
+              console.log(accounts[0]);
+              acceptedEvents.push({
+                'hash':events[j].returnValues.reqWkfHash.toUpperCase(),
+              }  
+              ); 
+
+              }        
+            });
 
       instance.getPastEvents('AcceptChange', {
         //  filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
@@ -149,8 +165,12 @@ class MyNotifications extends React.Component {
             for (var j = 0; j < events.length; j++) { 
               console.log(events[j].returnValues.endorser);
               console.log(accounts[0]);
-              if(events[j].returnValues.endorser == accounts[0]){
-                okEvents.push(events[j].returnValues.reqWkfHash.toUpperCase()); 
+              if(events[j].returnValues.endorser === accounts[0]){
+                okEvents.push({
+                  'hash':events[j].returnValues.reqWkfHash.toUpperCase(),
+                  'endorser':events[j].returnValues.endorser
+                }  
+                ); 
               }
               }        
             });
@@ -167,64 +187,123 @@ class MyNotifications extends React.Component {
 
         for (var j = 0; j < eventsList.length; j++) { 
           declinedEvents.push(eventsList[j].returnValues.reqWkfHash.toUpperCase()); 
+
+          console.log(eventsList[j].returnValues.reqWkfHash.toUpperCase());
           }});
 
       instance.getPastEvents('RequestChange', {
-        filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
-        fromBlock: 0,
-        toBlock: 'latest'
+          fromBlock: 0,
+          toBlock: 'latest'
       })
         .then(function (eventsList) {
-            console.log(eventsList);
 
-            for (var j = 0; j < eventsList.length; j++) { 
-              var event = [];
-  
-              var initiator='';
-              var endorser='';
-  
-              for (var l = 0; l < roleMaps.length; l++) {
-  
-                if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                  initiator=roleMaps[l].role;
+          for (var j = 0; j < eventsList.length; j++) { 
+
+            if((eventsList[j].returnValues.initiator.toUpperCase() === accounts[0].toUpperCase())
+              && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase())){
+
+                var event = [];
+    
+                var initiator='';
+                var endorser='';
+    
+                for (var l = 0; l < roleMaps.length; l++) {
+    
+                  if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
+                    initiator=roleMaps[l].role;
+                  }
+                  if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
+                    endorser=roleMaps[l].role; 
+                  }
                 }
-                if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                  endorser=roleMaps[l].role; 
-                }
-  
-              }
-  
-              event.push(initiator);
-              event.push(endorser);
-              var currHash=eventsList[j].returnValues.workflowHashes.split('|')[0];
-              var reqHash=eventsList[j].returnValues.workflowHashes.split('|')[1];
+                
+                event.push('Me ('+ initiator+')');
+                event.push(endorser);
+                var currHash=eventsList[j].returnValues.workflowHashes.split(',')[0];
+                var reqHash=eventsList[j].returnValues.workflowHashes.split(',')[1];
 
-              event.push(currHash);
-              event.push(reqHash);
+                event.push(currHash);
+                event.push(reqHash);
 
-              if(declinedEvents.includes(reqHash.toUpperCase())){
-                event.push('[Declined]');
-              }
-              
-              else if(okEvents.includes(reqHash.toUpperCase())){
                 event.push('[Waiting for other endorsers]');
+
+                console.log(event);
+
+                tree.push(event);
               }
-              else{
-                event.push('[Waiting for decision]');
-              }
-  
-              tree.push(event);    
+
+           if((((eventsList[j].returnValues.endorser.toUpperCase() === accounts[0].toUpperCase()))
+              && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase()))) {
+
+                var event = [];
+    
+                var initiator='';
+                var endorser='';
+    
+                for (var l = 0; l < roleMaps.length; l++) {
+    
+                  if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
+                    initiator=roleMaps[l].role;
+                  }
+                  if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
+                    endorser=roleMaps[l].role; 
+                  }
+                }
+                
+                event.push(initiator);
+                event.push(endorser);
+                var currHash=eventsList[j].returnValues.workflowHashes.split(',')[0];
+                var reqHash=eventsList[j].returnValues.workflowHashes.split(',')[1];
+
+                event.push(currHash);
+                event.push(reqHash);
+
+                if((declinedEvents.length!==0) && (declinedEvents.includes(reqHash.toUpperCase()))){
+                  event.push('[Declined]');
+                }
+                else if((okEvents.length!==0)){
+                  var isfullyOk=false;
+                  // check if elem belongs to the list of accepted events   
+                  for(var ind=0; ind<acceptedEvents.length;ind++){
+                    if(acceptedEvents[ind].hash === reqHash.toUpperCase()){
+                      isfullyOk=true;
+                      event.push('[Approved]');
+                    }
+                  }
+
+                    // if not, check if already processed
+                  var isprocessed = false;
+                  if(!isfullyOk){
+                    for(var i=0; i<okEvents.length;i++){
+                      if ((okEvents[i].hash === reqHash.toUpperCase())&&(okEvents[i].endorser===accounts[0])){              
+                        event.push('[Waiting for other endorsers]');
+                        isprocessed=true;
+                      }
+                    }
+                    if(!isprocessed){
+                      event.push('[Waiting for decision]');
+
+                    }
+
+                  }
+
+                }
+                else{
+                  event.push('[Waiting for decision]');
+                }
+    
+                tree.push(event);    
   
           }
-        }).then(()=>{
+        }
+        }).then(()=>{         
+
           this.setState({
             'tree': tree,
             'numEvents': eventsList.length,
-          });
+          })
         })
 
-    
-    
     
     } catch (error) {
       console.error(error);
@@ -276,12 +355,14 @@ class MyNotifications extends React.Component {
                           {this.state.tree.map((event, i) => {
                             return <tr key={i} title={event[0]}>
                               <td title={event[4]} className="align-middle">
-                              {event[4] == '[Declined]'? 
+                              {event[4] === '[Declined]'? 
                                 <XOctagon color='red'/>:<></>}
-                              {event[4] == '[Waiting for other endorsers]'? 
+                              {event[4] === '[Waiting for other endorsers]'? 
                                 <Clock color='blue'/>:<></>}
-                              {event[4] == '[Waiting for decision]'? 
+                              {event[4] === '[Waiting for decision]'? 
                                 <Mail color='orange'/>:<></>}
+                              {event[4] === '[Approved]'? 
+                                <Check color='green'/>:<></>}
                                                                 </td>
                               <td className="align-middle">{event[0]}</td>
                               <td className="align-middle">{event[1]}</td>

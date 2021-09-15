@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from './Header';
 
-import { Row, Col, Container, Nav, ListGroup } from 'react-bootstrap';
+import { Row, Container, Nav, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import SidebarModel from './SidebarModel';

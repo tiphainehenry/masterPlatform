@@ -128,8 +128,9 @@ class LoadToBCL extends React.Component {
     
     var orderedPk = []
     var orderedNames= ProcessDB[pid]['Public']['vect']['activityNames']['default'];
+    
     for (let i in orderedNames){
-      var matchingPk = ''
+      let matchingPk = ''
       Object.keys(activities).forEach(k => {
         if(activities[k].eventName === orderedNames[i]){
           //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);

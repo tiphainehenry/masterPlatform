@@ -256,7 +256,7 @@ class DCRgraphL extends React.Component {
     switch (lastChar) {
       case 's':
         activities = this.state.activityNames["send"];
-        break; const { create } = require('ipfs-http-client')
+        break; 
 
       case 'r':
         activities = this.state.activityNames["receive"];
@@ -554,7 +554,7 @@ class DCRgraphL extends React.Component {
           <h2>Process {this.props.processName}</h2>
           <h3>Private Projection for the role {this.props.id}</h3>
 
-          {this.state.web3 === null ? <div>Loading web3...</div> : <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 0)) && (this.state.projType == 'p_to_g') ? {} : { display: 'none' }}>
+          {this.state.web3 === null ? <div>Loading web3...</div> : <div style={((this.state.owner === this.state.addressProj) && (this.state.hasApproved === 0)) && (this.state.projType === 'p_to_g') ? {} : { display: 'none' }}>
             <form onSubmit={this.onFormSubmit}>
               <input type="file" onChange={this.onChange} />
               <Button className="btn btn-primary my-2 my-sm-0" type="submit">Upload and project my local projection</Button>

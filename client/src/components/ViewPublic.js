@@ -5,8 +5,6 @@ import ExecLogger from './execLogger';
 import PublicMarkings from './PublicMarkings';
 import { Card, Row, Col, Container } from 'react-bootstrap';
 
-import equal from 'fast-deep-equal'
-
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
 import getWeb3 from '../getWeb3';
 
@@ -97,7 +95,6 @@ class ViewPublic extends React.Component {
       console.log('connected to web3');
       console.log(instance);
 
-      var wkID = this.state.processID.replace('p', '') - 1;
       var pHash = ProcessDB[this.state.processID]['hash'];
       
       const inclVector = await instance.methods.getIncluded(pHash).call();

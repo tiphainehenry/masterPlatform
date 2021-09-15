@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
 import getWeb3 from '../getWeb3';
-
-
-
 /**
  * Component displaying all possible projections to update
  */
@@ -40,18 +37,20 @@ class Authentification extends React.Component {
                 AdminRoleManager.abi,
                 deployedNetwork && deployedNetwork.address,
             );
-            const tmp = await instance.methods.imRole().call({ from: accounts[0] });
-            if (tmp[0] !== "Not registered") {
-                ret.isRole = true
-                ret.name = tmp[0]
-                ret.isAdmin = (tmp[1] === "false" ? false : true)
-            } else {
-                ret.isRole = false
-                ret.name = ""
-                ret.isAdmin = false
-            }
-            // console.log(ret);
-            this.props.status(ret)
+            await instance.methods.imRole().call({ from: accounts[0] })
+            .then(tmp=> {
+                if (tmp[0] !== "Not registered") {
+                    ret.isRole = true
+                    ret.name = tmp[0]
+                    ret.isAdmin = (tmp[1] === "false" ? false : true)
+                } else {
+                    ret.isRole = false
+                    ret.name = ""
+                    ret.isAdmin = false
+                }
+                // console.log(ret);
+                this.props.status(ret)                    
+            });
         } catch (error) {
             console.error(error);
         }

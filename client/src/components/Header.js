@@ -1,11 +1,10 @@
 import React from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
 import '../style/boosted.min.css';
 import Authentification from './Authentification';
-import createBrowserHistory from 'history/createBrowserHistory'
+import {createBrowserHistory} from 'history'
 
-import { User, Bell,Tool,Radio } from 'react-feather';
+import { User, Bell} from 'react-feather';
 
 /**
  * Component ...
@@ -45,8 +44,8 @@ class Header extends React.Component {
   render() {
     let links = []
     if (this.state.auth.isAdmin) {
-      links.push(<Nav.Link href="/welcomeInstance" class="nav-item" style={{ color: "white" }}> My Running Instances</Nav.Link>)
-      links.push(<Nav.Link href="/welcomemodel" class="nav-item" style={{ color: "white" }}>My Process Models </Nav.Link>)
+      links.push(<Nav.Link key='welcomeInstance' href="/welcomeInstance" className="nav-item" style={{ color: "white" }}> My Running Instances</Nav.Link>)
+      links.push(<Nav.Link key='welcomemodel' href="/welcomemodel" className="nav-item" style={{ color: "white" }}>My Process Models </Nav.Link>)
     }
     return <div>
       <Authentification status={this.getStatus} />
@@ -54,18 +53,18 @@ class Header extends React.Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/" class="nav-item" style={{ color: "white" }}>Homepage</Nav.Link>
+            <Nav.Link href="/" className="nav-item" style={{ color: "white" }}>Homepage</Nav.Link>
             {links}
           </Nav>
 
           <Nav >
-          <Nav.Link href="/mynotifications" class="nav-item" style={{ color: "white" }}> <Bell />
- My notifications</Nav.Link>
+          <Nav.Link href="/mynotifications" className="nav-item" style={{ color: "white" }}> <Bell />
+ Change requests</Nav.Link>
 
             {this.state.auth.isRole ?
               <NavDropdown title={<>
                 <User />
-                <span>Hello <span class="text-primary">{this.state.auth.name}</span></span></>
+                <span>Hello <span className="text-primary">{this.state.auth.name}</span></span></>
               } id="collasible-nav-dropdown">
                 <NavDropdown.Item style={{ "fontSize": '16px' }}><p>Admin : {this.state.auth.isAdmin ? "true" : "false"}</p>
                   <p>Role : {this.state.auth.isRole ? "true" : "false"}</p>

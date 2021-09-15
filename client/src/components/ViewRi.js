@@ -62,7 +62,7 @@ class ViewRi extends React.Component {
       <Container fluid>
         <Row>
           <Col>
-            {(this.state.projectionsExist && this.state.projType == 'p_to_g') ?
+            {(this.state.projectionsExist && this.state.projType === 'p_to_g') ?
               <DCRgraphL
                 id={this.state.id}
                 data={this.state.data}
@@ -74,7 +74,7 @@ class ViewRi extends React.Component {
               /> : <div></div>
             }
 
-            {(this.state.projectionsExist && this.state.projType == 'g_to_p') ?
+            {(this.state.projectionsExist && this.state.projType === 'g_to_p') ?
               <DCRgraphG
                 id={this.state.id}
                 data={this.state.data}

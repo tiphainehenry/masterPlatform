@@ -1,0 +1,64 @@
+pk[role=VIPCustomer] = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB
+pk[role=KeyAccountManager] = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819
+pk[role=1LSupportAgent] = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5
+pk[role=2LSupportAgent] = 0xC9f167B5056B03eB29963aB8e6F78bB12Cf5BA17
+pk[role=SoftwareDeveloper] = 0x2a706c6006e33610D92ea2a440Cc99d5b58353E1
+
+
+
+## declare events
+
+# Choreography exchanges
+e1[CustomerHasPB src=VIPCustomer tgt=KeyAccountManager]
+e2[GetPBDescription src=KeyAccountManager tgt=VIPCustomer]
+e3[ExplainSolution src=KeyAccountManager tgt=VIPCustomer]
+e4[Ask1LSupport src=KeyAccountManager tgt=1LSupportAgent]
+e5[ProvideFbToKAM src=1LSupportAgent tgt=KeyAccountManager]
+e6[Ask2LSupport src=1LSupportAgent tgt=2LSupportAgent]
+e7[ProvideFbTo1L src=2LSupportAgent tgt=1LSupportAgent]
+e8[AskDeveloper src=2LSupportAgent tgt=SoftwareDeveloper]
+e9[ProvideFbTo2L src=SoftwareDeveloper tgt=2LSupportAgent]
+
+
+## link events
+e1 -->* e2
+e1 *--> e2
+
+e2 -->+ e3
+e2 *--> e3
+
+e2 -->+ e4
+e2 *--> e4
+
+e3 -->% e4
+e4 -->% e3
+
+e4 *--> e5
+e4 -->+ e5
+
+e5 *--> e3
+e5 -->* e3
+
+e4 *--> e6
+e4 -->+ e6
+
+e5 -->% e5
+e6 -->% e6
+
+e6 *--> e7 
+e6 -->+ e7 
+
+e6 *--> e8
+e6 -->+ e8 
+
+e7 -->% e7
+e8 -->% e8
+
+e8 *--> e9 
+e8 -->* e9 
+
+e9 *--> e7
+e9 -->* e7
+
+
+

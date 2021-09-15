@@ -536,6 +536,154 @@ def privateGraphUpd():
 
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
+@app.route('/localChg', methods=['GET', 'POST'])
+def localChg():
+
+    """
+    updates local projection after change 
+    """ 
+
+    try:
+        print("-----------------------------------")
+        processID = str(request.form['processID'])
+        roleID = str(request.form['roleID'])
+        roleNum = str(request.form['roleNum'])
+        publicData = json.loads(request.form['JSONPubView'])
+        privateNodes = json.loads(request.form['JSONPriView'])
+        edges = json.loads(request.form['JSONedges'])
+
+        dataJson = loadJSONFile(projDBPath)
+
+        # to do: newEdges: retrieve ! // watch out // upd vectors and markings
+        # fetch complementary edges
+
+        #retrieve public edges
+        publicEdges = []
+        publicEdges_ids = ",".join(str(x["data"]["id"]) for x in publicData if x["group"] == "edges").split(',')
+        edges_ids = ",".join(str(x["data"]["id"]) for x in edges if x["group"] == "edges").split(',')
+
+        edges_toAdd_ids = []
+        edges_toAdd = []
+        # first the id
+        for ele in publicEdges_ids:
+            if ele not in edges_ids:
+                edges_toAdd_ids.append(ele)
+
+        # then the full cytoscape description
+        for _id in edges_toAdd_ids:
+            for ele in publicData:
+                toTest=ele['data']['id']
+                if toTest == _id : 
+                    edges_toAdd.append(ele)
+
+        newData = publicData+privateNodes+edges_toAdd
+
+        # afterwards, translate newData into textual input (dcr workbench formalism)
+        dcrTextList=[]
+
+        choreo=[]
+        private=[]
+        toreformat=[]
+        events=[]
+
+        for ele in newData:
+            if ele['group']=='nodes':
+                line=ele['data']
+
+                if((ele['data']['id'][0]=='e')& (ele['data']['id'][-1].isnumeric())):
+                    activityName=ele['data']['name'].split('\n')[1]
+                    src=ele['data']['name'].split('\n')[0]
+                    tgt=ele['data']['name'].split('\n')[2]
+                    event=ele['data']['id']+'['+activityName+' src='+src+' tgt='+tgt+']'
+
+                    if str(event) not in choreo:
+                        choreo.append(str(event))
+
+                elif ((ele['data']['id'][0]=='e')& (not ele['data']['id'][-1].isnumeric())):
+                    #precheck projection (may be wrong index)
+                    if(ele['data']['name'][0] in ['?','!']):
+                        activityName=ele['data']['name'].split('?(')[1].split(',')[0]
+                        src=ele['data']['name'].split(', ')[1].split('-')[0]
+                        tgt=ele['data']['name'].split('>')[1].replace(')','')
+                        event=ele['data']['id'][0:-1]+'['+activityName+' src='+src+' tgt='+tgt+']'
+
+                        if str(event) not in choreo:
+                            choreo.append(str(event))
+
+                    else:
+                        activityName=str(ele['data']['name'].split('\n')[1])
+                        src=str(ele['data']['name'].split('\n')[0])
+                        tgts=ele['data']['name'].split('\n')[2].split(',')
+
+                        event=ele['data']['id'][0:-1]+'['+activityName+' src='+src 
+                        
+                        for ele in tgts:
+                            event=event+' tgt='+str(ele)
+                        event=event+']'
+                        if str(event) not in choreo:
+                            choreo.append(str(event))
+
+                else:
+                    if((('\n' in ele['data']['name']) and (len(ele['data']['name'].split('\n'))!=2))or(
+                        (' ' in ele['data']['name']) and (len(ele['data']['name'].split(' '))!=2))):
+
+                        if ele not in toreformat:
+                            toreformat.append(ele)
+                    else:
+                        if(('\n' in ele['data']['name']) and (len(ele['data']['name'].split('\n'))==2)):
+                            event=ele['data']['name'].split('\n')[1]+' [role='+ele['data']['name'].split('\n')[0]+']'
+                            if str(event) not in private:
+                                private.append(str(event))
+
+                        elif((' ' in ele['data']['name']) and (len(ele['data']['name'].split(' '))==2)):
+                            event=ele['data']['name'].split(' ')[1]+' [role='+ele['data']['name'].split(' ')[0]+']'
+                            if str(event) not in private:
+                                private.append(str(event))
+                        else:
+                            print('oops, error in detecting node category')
+
+        #print(private)
+
+        #print(toreformat)
+        # fetch number of public nodes in the original version
+        dataJson = loadJSONFile(projDBPath)
+        publicEvents = dataJson[processID]['TextExtraction']['public']['privateEvents']
+        
+        cleaned_publicEvents=[]
+        for elem in publicEvents:
+            if str(elem['eventName']) not in cleaned_publicEvents:
+                cleaned_publicEvents.append(str(elem['eventName']))
+        max=0
+        for elem in cleaned_publicEvents:
+            if ((elem[0]=='e') and elem[-1].isdigit()):
+                if int(elem.replace('e',''))>max:
+                    max=int(elem.replace('e',''))
+        mapping=[]
+        for ele in toreformat:
+            # reformat node, and then reformat edges !!!
+            max=max+1
+            activityName = str(ele['data']['name'].split(' ')[1]).capitalize()
+            src=str(ele['data']['name'].split(' ')[0])
+            tgt=str(ele['data']['name'].split(' ')[2])
+            event='e'+str(max)+'['+activityName+' src='+src+' tgt='+tgt+']'
+
+            choreo.append(event)
+            mapping.append({
+                'old_id':str(ele['data']['id']),
+                'new_id':'e'+str(max)
+            })
+        print(choreo)
+        print(mapping)
+
+        ###### add edges ########## (watchout: need to reformat edges)
+
+        ###### add public keys ########
+
+        return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+
+    except:
+        return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
+
 
 
 @app.route('/switchProj', methods=['GET', 'POST'])

@@ -1,6 +1,5 @@
 import '../style/Dashboard.css'
 import React from "react";
-import { Nav } from "react-bootstrap";
 import { withRouter } from "react-router";
 
 import '../style/boosted.min.css';
@@ -25,7 +24,6 @@ class SidebarModel extends React.Component {
     getStatus = auth => this.setState({ auth })
 
     render() {
-        var importBtn = []
         if (this.state.auth.isAdmin) {
             var button = <div>                  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                 Role management

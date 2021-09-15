@@ -110,6 +110,19 @@ contract PublicDCRManager {
     function getHash(string memory _hash) public view returns (string memory x) {
         return workflows[_hash].ipfsViewHash;
     }
+
+    function  getChangeArgs(string memory _hash) public view returns (string memory reqHash, uint ChangeValue, uint WKFValue, string memory Test, uint[] memory ChangeEndorsement){
+        
+        return (    
+                    changeRequests[_hash].reqHash,
+                    uint(changeRequests[_hash].status), 
+                    uint(workflows[_hash].wkfStatus),
+                    test,
+                    changeRequests[_hash].changeEndorsement
+                    );
+
+    }
+
     
     function  getChangeValue(string memory _hash) public view returns (uint){
         return uint(changeRequests[_hash].status);
@@ -287,25 +300,27 @@ contract PublicDCRManager {
 
 
     function finalApprovalManager(string memory myHash) public payable {
-        // check if all have answered --> if yes: unlock (set status to ChgStatus.Approved, update process markings and graph, )
-
-        bool cumulatedDecisions = true;
+        // check if required endorsers have answered --> if yes: unlock (set status to ChgStatus.Approved, update process markings and graph, )
+        uint totalRsp =1; //message sender is already ok 
         
-        for (
+        for ( 
                 uint256 id = 0;
                 id < changeRequests[myHash].endorsers.length;
                 id++
             ) {
-                if((changeRequests[myHash].changeEndorsement[id] != 1)){
-                     cumulatedDecisions = false;
+                if((changeRequests[myHash].changeEndorsement[id] == 1)){
+                     totalRsp = totalRsp+1;
                 }
             }
             
-        if (cumulatedDecisions == true){
+        if (totalRsp == changeRequests[myHash].numEndorsers){
+            test  = 'approved by all endorsers';
             changeRequests[myHash].status == ChgStatus.Init;
             emit AcceptChangeAll(changeRequests[myHash].reqHash);
             
+            // reinit chgEndorsement (?)
             // TODO Add graph locker/unlocker (update process markings and graph)
+
         }
     }
 
@@ -318,7 +333,7 @@ contract PublicDCRManager {
                 updateTableOnAddress(msg.sender,changeRequests[curr_hash].endorsers, curr_hash,1);
                 test  = 'approved by one person';
                 emit AcceptChange(req_hash, msg.sender);
-                //finalApprovalManager(curr_hash, msg.sender);
+                finalApprovalManager(curr_hash);
             }         
             
             // decline

@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from './Header';
-import { Card, Row, Col, Container, Table } from 'react-bootstrap';
+import { Row, Container, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import axios, { get } from 'axios';
+import axios from 'axios';
 
 import SidebarModel from './SidebarModel';
 

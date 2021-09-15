@@ -30,11 +30,24 @@ const cytoMenuHelpers = {
             console.log(tmp.data('name').split(' ')[1]);
             this.setState({ elemeClicked: { activityName: tmp.data('name').split(' ')[1] } })
         }
-        if (this.state.elemClicked.classes.has("choreography")) {
+
+        if ((this.state.elemClicked.classes.has("type_choreography"))) {
+            console.log('ich bin ein choreography task');
             tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
         }
+        else if((this.state.elemClicked.classes.has("type_projChoreo"))){
+            console.log('ich bin ein projected choreography task');
+            console.log(this.state.elemClicked.raw_activityName);
+            console.log(tmp.classes);
+            var act = this.state.elemClicked.raw_activityName.split('(')[1].split(',')[0];
+            tmp['_private']['classes'].delete("type_projChoreo");
+            tmp['_private']['classes'].add("type_choreography");
+
+            console.log(tmp['_private']['classes']);
+            tmp.data('name', this.state.choreographyNames.sender + ' ' + act + ' ' + this.state.choreographyNames.receiver);
+        }
         else {
-            tmp.data('name', this.state.tenantName + ' ' + this.state.elemClicked.activityName);
+            tmp.data('name', this.state.auth.name + ' ' + this.state.elemClicked.activityName);
         }
         tmp.data('properName', tmp.data('name'));
 
@@ -118,7 +131,7 @@ const cytoMenuHelpers = {
     */
     addLocalActivity: function () {
         console.log('add local activity');
-        var label = 'NewActivity' + this.state.newActivityCnt;
+        var label = this.state.auth.name + ' NewActivity' + this.state.newActivityCnt;
         this.cy.add({
             group: 'nodes',
             data: {
@@ -151,7 +164,7 @@ const cytoMenuHelpers = {
                 name: this.state.choreographyNames.sender + " " + label + " " + this.state.choreographyNames.receiver,
                 nbr: this.state.newActivityCnt
             },
-            classes: "subgraph choreography"
+            classes: "subgraph type_choreography"
         });
 
         this.setState({

@@ -8,7 +8,7 @@ const changeManager = {
 
     var updAddresses = [];
     for(var i=0; i<addressesToNotify.length; i++){
-      if(addressesToNotify[i].slice(0,2) != '0x'){
+      if(addressesToNotify[i].slice(0,2) !== '0x'){
         updAddresses.push('0x'+addressesToNotify[i]);
       }
       else{
@@ -41,8 +41,12 @@ const changeManager = {
     var addressesToNotify = []
     publicNodes.forEach(function(node){
       roles.forEach(function(r){
-        if ((node['src']==r['role'])||(node['tgt']==r['role'])) {
-          addressesToNotify.push(r['address']);
+        if ((node['src']===r['role'])||(node['tgt']===r['role'])) {
+          var new_address = r['address'];
+          if (new_address.slice(0,2)!=='0x'){
+            new_address = '0x'+new_address;
+          }
+          addressesToNotify.push(new_address);
         }
       })
     });
@@ -58,7 +62,7 @@ const changeManager = {
       console.log(newEle);
 
 
-      if ((newEle.group == "nodes" ) && (newEle.data.name[0]==('!'||'?'))){
+      if ((newEle.group === "nodes" ) && (newEle.data.name[0]===('!'||'?'))){
         console.log(newEle.data.name);
 
         var acName=newEle.data.name.split('(')[1].split(',')[0];
@@ -66,7 +70,7 @@ const changeManager = {
         var receiver=newEle.data.name.split('>')[1].replace('*','').replace(')','').replace(' ','');
 
         newEle.data = {
-          'id':newEle.data.id.slice(0,-1),
+          'id':newEle.data.id,
           'name':sender+'\n'+acName+'\n'+receiver,
           'nbr':0,
           'properName':sender+'\n'+acName+'\n'+receiver
@@ -110,7 +114,7 @@ const changeManager = {
       });
 
     
-      this.privateGraphUpd(            {
+      this.privateUpd(            {
         newData: newData,
         projID: this.state.projectionID,
         processID: this.state.processID

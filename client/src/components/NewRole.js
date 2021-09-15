@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './Header';
-import { Card, Button, Row, Col, Form, Container, Nav, ListGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import axios, { get } from 'axios';
+import { Button, Row, Form, Container } from 'react-bootstrap';
 
 import SidebarModel from './SidebarModel';
 
@@ -123,8 +121,8 @@ class NewRole extends React.Component {
      */
      async addNewRole() {
         const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
-        console.log(add);
-        const res = await this.state.instance.methods.AddElemRole(add, this.state.newRoleName).send({ from: this.state.accounts[0] })
+        //console.log(add);
+        await this.state.instance.methods.AddElemRole(add, this.state.newRoleName).send({ from: this.state.accounts[0] })
     }
 
 
@@ -135,7 +133,7 @@ class NewRole extends React.Component {
     async deleteRole(index) {
         const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
         console.log("azer");
-        const res = await this.state.instance.methods.RemoveElemRole(add, index).send({ from: this.state.accounts[0] })
+        await this.state.instance.methods.RemoveElemRole(add, index).send({ from: this.state.accounts[0] })
         console.log("tyuiop");
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Table, Button, Form, ListGroup, Row, Col, Container } from 'react-bootstrap';
+import { Button, ListGroup, Row, Container } from 'react-bootstrap';
 
 import '../style/boosted.min.css';
 
@@ -103,7 +103,8 @@ class CreateL extends React.Component {
     //save document to IPFS,return its hash#, and set hash# to state
     //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add 
 
-    var input = ProcessDB[this.state.processID]['TextExtraction']['public'];
+    var input = ProcessDB[this.state.processID]['Public']['data'];
+
     ipfs.files.add(Buffer.from(JSON.stringify(input)))
       .then(res => {
         const hash = res[0].hash
@@ -155,21 +156,13 @@ class CreateL extends React.Component {
     var addresses = []
     for (let i = 0; i < this.state.fileValue.length; i++) {
       if (this.state.fileValue[i].indexOf('pk[') === 0) {
-        console.log(this.state.fileValue[i].lastIndexOf("role="));
-        console.log("ttototo");
         const role = this.state.fileValue[i].substring((this.state.fileValue[i].indexOf("role=") + 5), this.state.fileValue[i].lastIndexOf("]"));
         const address = this.state.fileValue[i].substring(this.state.fileValue[i].lastIndexOf("0x"), this.state.fileValue[i].length);
-        console.log("Role = " + role);
-        console.log("address = " + address);
         roles.push(role)
         addresses.push(address)
       }
-
     }
-    console.log(roles);
-    console.log(addresses);
-    const test = this.state.instanceRole.methods.importAccount(addresses, roles).send({ from: this.state.accounts[0] })
-    console.log(test);
+    this.state.instanceRole.methods.importAccount(addresses, roles).send({ from: this.state.accounts[0] })
     // this.state.web3.eth.sendTransaction({to:this.state.adminNetwork, from:this.state.accounts[0], data: test})
   }
   /**
@@ -194,7 +187,7 @@ class CreateL extends React.Component {
     this.setState({ fileReader: fileReader });
     fileReader.onloadend = this.handleFileRead;
     fileReader.readAsText(e.target.files[0]);
-    const res = fileReader.result
+    //const res=fileReader.result
   }
 
   /**
@@ -253,7 +246,7 @@ class CreateL extends React.Component {
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <form role="form" id="myForm">
+                    <form id="myForm">
                       <div class="form-group">
                         <label class="is-required" for="role">Select projection type</label>
                         <select class="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>

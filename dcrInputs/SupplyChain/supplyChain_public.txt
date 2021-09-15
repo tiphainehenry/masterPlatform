@@ -1,0 +1,56 @@
+pk[role=BulkBuyer] = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB
+pk[role=Manufacturer] = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819
+pk[role=Middleman] = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5
+pk[role=Supplier] = 0xC9f167B5056B03eB29963aB8e6F78bB12Cf5BA17
+pk[role=SpecialCarrier] = 0x2a706c6006e33610D92ea2a440Cc99d5b58353E1
+
+
+
+## declare events
+
+# Choreography exchanges
+e1[OrderGoods src=BulkBuyer tgt=Manufacturer]
+e2[PlaceSuppliesOrder src=Manufacturer tgt=Middleman]
+e3[ForwardSuppliesOrder src=Middleman tgt=Supplier]
+e4[PlaceTransportOrder src=Middleman tgt=SpecialCarrier]
+e5[RequestDetails src= tgt=Supplier]
+e6[ProvideDetails src=Supplier tgt=SpecialCarrier]
+e7[SendWayBill src=Supplier tgt=SpecialCarrier]
+e8[DeliverSupplies src=SpecialCarrier tgt=Manufacturer]
+e9[ReportStartProd src=Manufacturer tgt=BulkBuyer]
+e10[DeliverGoods src=Manufacturer tgt=BulkBuyer]
+
+
+## link events
+e1 -->* e2
+e1 *--> e2
+
+e2 -->+ e3
+e2 *--> e3
+
+e2 -->+ e4
+e2 *--> e4
+
+e3 *--> e5
+e3 -->* e5
+
+e4 *--> e5
+e4 -->* e5
+
+e5 *--> e6
+e5 -->* e6
+
+e6 *--> e7 
+e6 -->* e7 
+
+e7 *--> e8
+e7 -->* e8 
+
+e8 *--> e9 
+e8 -->* e9 
+
+e9 *--> e10 
+e9 -->* e10
+
+
+

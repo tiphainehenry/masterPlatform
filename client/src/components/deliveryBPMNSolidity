@@ -1,0 +1,700 @@
+pragma solidity ^0.4.14;
+
+
+
+contract Process_0_Contract {
+    uint tokens = 525314;
+    address owner = 0;
+    address parent = 0;
+    uint subprocesses = 0;
+    uint [] requestedID;
+    event Element_Execution_Completed(uint elementId);
+    Process_0_WorkList workList = new Process_0_WorkList();
+    uint active_reject = 0;
+    uint active_accept = 0;
+    uint active_paymentReceived = 0;
+    uint active_commandShipped = 0;
+    uint active_GetMerchandise = 0;
+    uint active_Shipping = 0;
+    uint active_UnloadTruck = 0;
+    uint active_PayDriver = 0;
+    uint active_CheckDelivery = 0;
+    uint active_Accept = 0;
+    uint active_Reject = 0;
+    uint active_PayFlorist = 0;
+    
+    function Process_0_Contract() {
+        owner = msg.sender;
+        for (uint i = 0; i < 9; i++)
+            requestedID.push(0);
+        step(tokens);
+    }
+
+    function setParent(address newParent) {
+        if (owner == msg.sender)
+            parent = newParent;
+    }
+
+    function handleGlobalDefaultEnd() {
+        // ................ Nothing to do ...........
+    }
+
+    function handleGlobalErrorEnd(bytes32 eventName) {
+        if (parent != 0)
+            Process_0_Contract(parent).handleGlobalErrorEnd(eventName);
+        else
+            tokens &= uint(~kill_Process_0());
+     }
+
+    function handleGlobalEscalationEnd(bytes32 eventName) {
+        if (parent != 0)
+            Process_0_Contract(parent).handleGlobalEscalationEnd(eventName);
+     }
+
+    function kill_Process_0() returns (uint) {
+        uint tokensToKill = 0;
+        tokensToKill |= uint(2147483646);
+        active_reject = 0;
+        active_accept = 0;
+        active_paymentReceived = 0;
+        active_commandShipped = 0;
+        active_accept = 0;
+        active_reject = 0;
+        active_paymentReceived = 0;
+        active_commandShipped = 0;
+        active_GetMerchandise = 0;
+        active_Shipping = 0;
+        active_UnloadTruck = 0;
+        active_PayDriver = 0;
+        active_CheckDelivery = 0;
+        active_Accept = 0;
+        active_Reject = 0;
+        active_PayFlorist = 0;
+        tokens &= uint(~tokensToKill);
+        return 0;   
+    }
+
+     function broadcastSignal_Process_0() {
+        // Nothing to do ...
+    }
+
+
+    function reject_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.reject_callback);
+        active_reject |= uint(1) << reqId;
+        return localTokens;
+    }
+
+    function reject_callback (uint reqId) returns (bool) {
+        if (active_reject == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_reject & index == index) {
+            active_reject &= ~index;
+            
+            active_accept = 0;
+            step(tokens & uint(~24) | 128);
+            Element_Execution_Completed(1);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function accept_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.accept_callback);
+        active_accept |= uint(1) << reqId;
+        return localTokens;
+    }
+
+    function accept_callback (uint reqId) returns (bool) {
+        if (active_accept == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_accept & index == index) {
+            active_accept &= ~index;
+            
+            active_reject = 0;
+            step(tokens & uint(~24) | 32);
+            Element_Execution_Completed(2);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function paymentReceived_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.paymentReceived_callback);
+        active_paymentReceived |= uint(1) << reqId;
+        return localTokens & uint(~256);
+    }
+
+    function paymentReceived_callback (uint reqId) returns (bool) {
+        if (active_paymentReceived == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_paymentReceived & index == index) {
+            active_paymentReceived &= ~index;
+            
+            step (tokens | 512);
+            Element_Execution_Completed(4);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function commandShipped_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.commandShipped_callback);
+        active_commandShipped |= uint(1) << reqId;
+        return localTokens & uint(~1024);
+    }
+
+    function commandShipped_callback (uint reqId) returns (bool) {
+        if (active_commandShipped == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_commandShipped & index == index) {
+            active_commandShipped &= ~index;
+            
+            step (tokens | 2048);
+            Element_Execution_Completed(8);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function accept_start2 (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.accept_callback);
+        active_accept |= uint(1) << reqId;
+        return localTokens;
+    }
+
+    function accept_callback2 (uint reqId) returns (bool) {
+        if (active_accept == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_accept & index == index) {
+            active_accept &= ~index;
+            
+            active_reject = 0;
+            step(tokens & uint(~12288) | 16384);
+            Element_Execution_Completed(16);
+            return true;
+        }
+        return false ;
+    }
+    
+
+
+    function reject_start3 (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.reject_callback);
+        active_reject |= uint(1) << reqId;
+        return localTokens;
+    }
+
+    function reject_callback3 (uint reqId) returns (bool) {
+        if (active_reject == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_reject & index == index) {
+            active_reject &= ~index;
+            
+            active_accept = 0;
+            step(tokens & uint(~12288) | 262144);
+            Element_Execution_Completed(32);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function paymentReceived_start2 (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.paymentReceived_callback);
+        active_paymentReceived |= uint(1) << reqId;
+        return localTokens & uint(~16384);
+    }
+
+    function paymentReceived_callback2 (uint reqId) returns (bool) {
+        if (active_paymentReceived == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_paymentReceived & index == index) {
+            active_paymentReceived &= ~index;
+            
+            step (tokens | 32768);
+            Element_Execution_Completed(64);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function commandShipped_start2 (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.commandShipped_callback);
+        active_commandShipped |= uint(1) << reqId;
+        return localTokens & uint(~524288);
+    }
+
+    function commandShipped_callback2 (uint reqId) returns (bool) {
+        if (active_commandShipped == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_commandShipped & index == index) {
+            active_commandShipped &= ~index;
+            
+            step (tokens | 1048576);
+            Element_Execution_Completed(128);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function GetMerchandise_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.GetMerchandise_callback);
+        active_GetMerchandise |= uint(1) << reqId;
+        return localTokens & uint(~67108864);
+    }
+
+    function GetMerchandise_callback (uint reqId) returns (bool) {
+        if (active_GetMerchandise == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_GetMerchandise & index == index) {
+            active_GetMerchandise &= ~index;
+            
+            step (tokens | 268435456);
+            Element_Execution_Completed(256);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function Shipping_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.Shipping_callback);
+        active_Shipping |= uint(1) << reqId;
+        return localTokens & uint(~2);
+    }
+
+    function Shipping_callback (uint reqId) returns (bool) {
+        if (active_Shipping == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_Shipping & index == index) {
+            active_Shipping &= ~index;
+            
+            step (tokens | 4);
+            Element_Execution_Completed(512);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function UnloadTruck_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.UnloadTruck_callback);
+        active_UnloadTruck |= uint(1) << reqId;
+        return localTokens & uint(~32);
+    }
+
+    function UnloadTruck_callback (uint reqId) returns (bool) {
+        if (active_UnloadTruck == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_UnloadTruck & index == index) {
+            active_UnloadTruck &= ~index;
+            
+            step (tokens | 64);
+            Element_Execution_Completed(2048);
+            return true;
+        }
+        return false ;
+    }
+
+    function EndEvent_1kfur9w(uint localTokens) internal returns (uint) {
+        tokens = localTokens & uint(~512);
+        if (tokens & 2147483646 != 0) {
+            return tokens;
+        }
+        if (parent != 0)
+            Process_0_Contract(parent).handleGlobalDefaultEnd();
+        Element_Execution_Completed(8192);
+        return tokens;
+    }
+
+
+    function PayDriver_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.PayDriver_callback);
+        active_PayDriver |= uint(1) << reqId;
+        return localTokens & uint(~65536);
+    }
+
+    function PayDriver_callback (uint reqId) returns (bool) {
+        if (active_PayDriver == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_PayDriver & index == index) {
+            active_PayDriver &= ~index;
+            
+            step (tokens | 131072);
+            Element_Execution_Completed(65536);
+            return true;
+        }
+        return false ;
+    }
+
+    function EndEvent_0qgjctm(uint localTokens) internal returns (uint) {
+        tokens = localTokens & uint(~131072);
+        if (tokens & 2147483646 != 0) {
+            return tokens;
+        }
+        if (parent != 0)
+            Process_0_Contract(parent).handleGlobalDefaultEnd();
+        Element_Execution_Completed(131072);
+        return tokens;
+    }
+
+
+    function CheckDelivery_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.CheckDelivery_callback);
+        active_CheckDelivery |= uint(1) << reqId;
+        return localTokens & uint(~1048576);
+    }
+
+    function CheckDelivery_callback (uint reqId) returns (bool) {
+        if (active_CheckDelivery == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_CheckDelivery & index == index) {
+            active_CheckDelivery &= ~index;
+            
+            step (tokens | 2097152);
+            Element_Execution_Completed(262144);
+            return true;
+        }
+        return false ;
+    }
+
+    function ExclusiveGateway_0dz02fv(uint localTokens) internal returns (uint) {
+        if (active_Accept == 1)            return localTokens & uint(~2097152) | 4194304;
+        else             return localTokens & uint(~2097152) | 8388608;
+    }
+
+
+    function Accept_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.Accept_callback);
+        active_Accept |= uint(1) << reqId;
+        return localTokens & uint(~4194304);
+    }
+
+    function Accept_callback (uint reqId) returns (bool) {
+        if (active_Accept == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_Accept & index == index) {
+            active_Accept &= ~index;
+            
+            step (tokens | 33554432);
+            Element_Execution_Completed(1048576);
+            return true;
+        }
+        return false ;
+    }
+
+
+    function Reject_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.Reject_callback);
+        active_Reject |= uint(1) << reqId;
+        return localTokens & uint(~8388608);
+    }
+
+    function Reject_callback (uint reqId) returns (bool) {
+        if (active_Reject == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_Reject & index == index) {
+            active_Reject &= ~index;
+            
+            step (tokens | 16777216);
+            Element_Execution_Completed(2097152);
+            return true;
+        }
+        return false ;
+    }
+
+    function EndEvent_1u697dv(uint localTokens) internal returns (uint) {
+        tokens = localTokens & uint(~16777216);
+        if (tokens & 2147483646 != 0) {
+            return tokens;
+        }
+        if (parent != 0)
+            Process_0_Contract(parent).handleGlobalDefaultEnd();
+        Element_Execution_Completed(4194304);
+        return tokens;
+    }
+
+    function ExclusiveGateway_16xyacj(uint localTokens) internal returns (uint) {
+        if (active_Reject == 1)            return localTokens & uint(~33554432) | 67108864;
+        else             return localTokens & uint(~33554432) | 134217728;
+    }
+
+
+    function PayFlorist_start (uint localTokens) internal returns (uint) {
+        uint reqId = workList.DefaultTask_start (this.PayFlorist_callback);
+        active_PayFlorist |= uint(1) << reqId;
+        return localTokens & uint(~134217728);
+    }
+
+    function PayFlorist_callback (uint reqId) returns (bool) {
+        if (active_PayFlorist == 0) 
+            return false;
+        uint index = uint(1) << reqId;
+        if(active_PayFlorist & index == index) {
+            active_PayFlorist &= ~index;
+            
+            step (tokens | 536870912);
+            Element_Execution_Completed(16777216);
+            return true;
+        }
+        return false ;
+    }
+
+    function EndEvent_14cr8m2(uint localTokens) internal returns (uint) {
+        tokens = localTokens & uint(~1073741824);
+        if (tokens & 2147483646 != 0) {
+            return tokens;
+        }
+        if (parent != 0)
+            Process_0_Contract(parent).handleGlobalDefaultEnd();
+        Element_Execution_Completed(67108864);
+        return tokens;
+    }
+
+    function step(uint localTokens) internal { 
+        bool done = false;
+        while (!done) {
+            if (localTokens & 2 == 2) {
+                localTokens = Shipping_start(localTokens);
+                continue;
+            }
+            if (localTokens & 4 == 4) {      
+                localTokens = localTokens & uint(~4) | 24;
+                continue;
+            }
+            if (localTokens & 32 == 32) {
+                localTokens = UnloadTruck_start(localTokens);
+                continue;
+            }
+            if (localTokens & 192 != 0) {
+                localTokens = localTokens & uint(~192) | 256; 
+                continue;
+            }
+            if (localTokens & 512 == 512) {
+                localTokens = EndEvent_1kfur9w(localTokens); 
+                continue;
+            }
+            if (localTokens & 2048 == 2048) {      
+                localTokens = localTokens & uint(~2048) | 12288;
+                continue;
+            }
+            if (localTokens & 294912 != 0) {
+                localTokens = localTokens & uint(~294912) | 65536; 
+                continue;
+            }
+            if (localTokens & 65536 == 65536) {
+                localTokens = PayDriver_start(localTokens);
+                continue;
+            }
+            if (localTokens & 131072 == 131072) {
+                localTokens = EndEvent_0qgjctm(localTokens); 
+                continue;
+            }
+            if (localTokens & 1048576 == 1048576) {
+                localTokens = CheckDelivery_start(localTokens);
+                continue;
+            }
+            if (localTokens & 2097152 != 0) {
+                localTokens = ExclusiveGateway_0dz02fv(localTokens); 
+                continue;
+            }
+            if (localTokens & 4194304 == 4194304) {
+                localTokens = Accept_start(localTokens);
+                continue;
+            }
+            if (localTokens & 8388608 == 8388608) {
+                localTokens = Reject_start(localTokens);
+                continue;
+            }
+            if (localTokens & 16777216 == 16777216) {
+                localTokens = EndEvent_1u697dv(localTokens); 
+                continue;
+            }
+            if (localTokens & 33554432 != 0) {
+                localTokens = ExclusiveGateway_16xyacj(localTokens); 
+                continue;
+            }
+            if (localTokens & 134217728 == 134217728) {
+                localTokens = PayFlorist_start(localTokens);
+                continue;
+            }
+            if (localTokens & 805306368 == 805306368) {      
+                localTokens = localTokens & uint(~805306368) | 1073741824;
+                continue;
+            }
+            if (localTokens & 1073741824 == 1073741824) {
+                localTokens = EndEvent_14cr8m2(localTokens); 
+                continue;
+            }
+
+            if (active_reject == 0 && localTokens & 24 == 24) {
+                localTokens = reject_start(localTokens);
+                continue;
+            }
+
+            if (active_accept == 0 && localTokens & 24 == 24) {
+                localTokens = accept_start(localTokens);
+                continue;
+            }
+            if (localTokens & 256 != 0) {
+                localTokens = paymentReceived_start(localTokens);
+                continue;
+            }
+            if (localTokens & 1024 != 0) {
+                localTokens = commandShipped_start(localTokens);
+                continue;
+            }
+
+            if (active_accept == 0 && localTokens & 12288 == 12288) {
+                localTokens = accept_start(localTokens);
+                continue;
+            }
+
+            if (active_reject == 0 && localTokens & 12288 == 12288) {
+                localTokens = reject_start(localTokens);
+                continue;
+            }
+            if (localTokens & 16384 != 0) {
+                localTokens = paymentReceived_start(localTokens);
+                continue;
+            }
+            if (localTokens & 524288 != 0) {
+                localTokens = commandShipped_start(localTokens);
+                continue;
+            }
+            if (localTokens & 67108864 != 0) {
+                localTokens = GetMerchandise_start(localTokens);
+                continue;
+            }
+            done = true;
+        }
+        tokens = localTokens;
+    }
+ 
+    function getRunningFlowNodes() returns (uint) {
+        uint flowNodes = 0;
+        uint localTokens = tokens;
+        return flowNodes;
+    }
+
+    function getStartedFlowNodes() returns (uint) {
+        uint flowNodes = 0;
+        uint localTokens = tokens;
+        if(active_reject != 0)
+            flowNodes |= 1;
+        if(active_accept != 0)
+            flowNodes |= 2;
+        if(active_paymentReceived != 0)
+            flowNodes |= 4;
+        if(active_commandShipped != 0)
+            flowNodes |= 8;
+        if(active_accept != 0)
+            flowNodes |= 16;
+        if(active_reject != 0)
+            flowNodes |= 32;
+        if(active_paymentReceived != 0)
+            flowNodes |= 64;
+        if(active_commandShipped != 0)
+            flowNodes |= 128;
+        if(active_GetMerchandise != 0)
+            flowNodes |= 256;
+        if(active_Shipping != 0)
+            flowNodes |= 512;
+        if(active_UnloadTruck != 0)
+            flowNodes |= 2048;
+        if(active_PayDriver != 0)
+            flowNodes |= 65536;
+        if(active_CheckDelivery != 0)
+            flowNodes |= 262144;
+        if(active_Accept != 0)
+            flowNodes |= 1048576;
+        if(active_Reject != 0)
+            flowNodes |= 2097152;
+        if(active_PayFlorist != 0)
+            flowNodes |= 16777216;
+
+        return flowNodes;
+    }
+
+    function getWorkListAddress() returns (address) {
+        return workList;
+    }
+
+    function getTaskRequestIndex(uint taskId) returns (uint) { 
+        if (taskId == 1)
+            return active_reject;
+        if (taskId == 2)
+            return active_accept;
+        if (taskId == 4)
+            return active_paymentReceived;
+        if (taskId == 8)
+            return active_commandShipped;
+        if (taskId == 16)
+            return active_accept;
+        if (taskId == 32)
+            return active_reject;
+        if (taskId == 64)
+            return active_paymentReceived;
+        if (taskId == 128)
+            return active_commandShipped;
+        if (taskId == 256)
+            return active_GetMerchandise;
+        if (taskId == 512)
+            return active_Shipping;
+        if (taskId == 2048)
+            return active_UnloadTruck;
+        if (taskId == 65536)
+            return active_PayDriver;
+        if (taskId == 262144)
+            return active_CheckDelivery;
+        if (taskId == 1048576)
+            return active_Accept;
+        if (taskId == 2097152)
+            return active_Reject;
+        if (taskId == 16777216)
+            return active_PayFlorist;
+    }
+
+}
+
+
+
+contract Process_0_WorkList {
+    struct DefaultTask_Request {
+        function (uint) external returns (bool) callback;    
+    }
+    DefaultTask_Request [] DefaultTask_requests;
+
+    function DefaultTask_start (function (uint) external returns (bool) callback) returns (uint) {
+        uint index = DefaultTask_requests.length;
+        DefaultTask_requests.push(DefaultTask_Request(callback));
+        return index;
+    }
+    
+    function DefaultTask_callback (uint reqId) {
+        DefaultTask_requests[reqId].callback(reqId);
+    }
+
+}

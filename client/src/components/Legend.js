@@ -1,34 +1,30 @@
 import React from 'react';
 import { Accordion } from 'react-bootstrap';
 import '../style/boosted.min.css';
-import createBrowserHistory from 'history/createBrowserHistory'
-
-import { Info } from 'react-feather';
 
 /**
  * Component ...
  */
 
-const history = createBrowserHistory({ forceRefresh: true });
 class Legend extends React.Component {
 
   render() {
-    return <div style={{'padding-top':'2rem'}}>
+    return <div style={{'paddingTop':'2rem'}}>
 
 <Accordion>
 
-  <ul class="nav nav-tabs nav-tabs-light">
-          <li class="nav-item">
+  <ul className="nav nav-tabs nav-tabs-light">
+          <li className="nav-item">
           <Accordion.Toggle eventKey="0" style={{'backgroundColor':'white'}}>
-          <u class="nav-link active" data-toggle="tab">Help</u>
+          <u className="nav-link active" data-toggle="tab">Help</u>
           </Accordion.Toggle>
 
           </li>
         </ul>
         <Accordion.Collapse eventKey="0">
     
-        <div class="tab-content border-left-0 border-right-0 border-bottom-0">
-          <div class="tab-pane active" id="help">
+        <div className="tab-content border-left-0 border-right-0 border-bottom-0">
+          <div className="tab-pane active" id="help">
           <ul>
             {((this.props.src==='creation-deck') || (this.props.src==='edition-deck'))?<>
             <li><u>How do I add an activity?</u>

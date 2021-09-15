@@ -8,9 +8,7 @@ import dcrHelpers from './utils_dcrHelpers';
 import { getMenuStyle } from './utils_ContextMenuHelpers';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCommentsDollar, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
-
-import Header from './Header';
+import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
 import Legend from './Legend';
@@ -19,6 +17,8 @@ import SimpleLoader from './SimpleLoader';
 import axios from 'axios';
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
 import PublicDCRManager from "../contracts/PublicDCRManager.json";
+import Authentification from './Authentification'
+
 
 import getWeb3 from '../getWeb3';
 import ipfs from '../ipfs';
@@ -45,6 +45,7 @@ var cyto_style = require('../style/cytoStyle.json')['edit'];
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
+
 /**
  * Template component to edit a projection
  */
@@ -57,6 +58,8 @@ class EditionDeck extends React.Component {
     super(props);
 
     this.state = {
+      auth:{},
+
       iterator: 0,
 
       data: ProcessDB[Object.keys(ProcessDB)[0]]['Global'],
@@ -66,11 +69,14 @@ class EditionDeck extends React.Component {
       elemClicked: {
         id: '',
         activityName: '',
+        rawActivity:'',
         classes: '',
-        type: ''
+        type: '',
+        isChoreo:''
       },
 
       numSelected: 0,
+
 
       tenantName: '',
 
@@ -113,6 +119,7 @@ class EditionDeck extends React.Component {
 
     };
 
+
     /// Activity update functions
     this.updActivity = cytoMenuHelpers.updActivity.bind(this);
     this.handleActivityName = activityUpdHelpers.handleActivityName.bind(this);
@@ -154,13 +161,18 @@ class EditionDeck extends React.Component {
 
     this.loadSCs = this.loadSCs.bind(this);
 
+    this.childElement = React.createRef()
+    this.getStatus = this.getStatus.bind(this)
+
+
   }
+
 
     /**
    * Instanciates component with the right process and projection view.
    */
      componentWillMount() {
-
+      console.log('[INFO] componentWillMount starts');
       this.loadSCs();
   
       var processID = this.props.match.params.pid;
@@ -168,17 +180,23 @@ class EditionDeck extends React.Component {
   
       this.setState({
         'processID': processID,
-        'projectionID': projectionID,
+        'projectionID': projectionID,    
         'data': ProcessDB[processID][projectionID]['init']['data'],
-        'publicHash':ProcessDB[processID]['hash']
+        'publicHash':ProcessDB[processID]['hash'],
       });
   
       }
-  
+
+      getStatus = auth => this.setState({ auth })
+
       async loadSCs(){
         try{
+          console.log('[INFO] loadSCs starts');
+
           const web3 = await getWeb3();
           const accounts = await web3.eth.getAccounts();
+          console.log('[INFO] accounts:',accounts);
+
           const networkId = await web3.eth.net.getId();
           const adminNetwork = AdminRoleManager.networks[networkId];
           const adminInstance = new web3.eth.Contract(
@@ -190,6 +208,8 @@ class EditionDeck extends React.Component {
           var roles = await adminInstance.methods.getRoles().call();
     
           this.computeRoles(roles);
+
+          console.log(roles);
   
   
           const processNetwork = PublicDCRManager.networks[networkId];
@@ -199,18 +219,19 @@ class EditionDeck extends React.Component {
           );
     
           this.setState({ web3, accounts, contractProcess: processInstance });
+
+          
+          await processInstance.methods.getChangeArgs(this.state.publicHash).call()
+          .then(res=>{
+            this.setState({ 
+              chgStatus:res.ChangeValue,
+              chgEndorsement:res.ChangeEndorsement,
+              WKFValue:res.WKFValue,
+              test: res.Test
+            })
+            
+          });
     
-          var chgstt = await processInstance.methods.getChangeValue(this.state.publicHash).call();
-          var wkfstt = await processInstance.methods.getWKFValue(this.state.publicHash).call();
-          var test = await processInstance.methods.getTest().call();
-          var chgendorse = await processInstance.methods.getChangeEndorsement(this.state.publicHash).call();
-    
-          this.setState({ 
-            chgStatus:chgstt,
-            chgEndorsement:chgendorse,
-            WKFValue:wkfstt,
-            test: test
-          })
     
           processInstance.events.RequestChange().on('data', (event) => {
             console.log(event);    
@@ -232,6 +253,7 @@ class EditionDeck extends React.Component {
   componentDidMount = async () => {
     this.cy.fit();
     this.cy.contextMenus(this.getMenuStyle());
+
 
     this.setUpNodeListeners();
     this.setUpEdgeListeners();
@@ -256,7 +278,6 @@ class EditionDeck extends React.Component {
             data,
             { "headers": { "Access-Control-Allow-Origin": "*" } }
           );
-
   }
 
   publicUpd(data, addressesToNotify){
@@ -272,7 +293,11 @@ class EditionDeck extends React.Component {
     console.log('retrieved public req data:', JSON.parse(output));
     console.log('retrieved hash:',hash);
 
-    this.requestChange(addressesToNotify,this.state.publicHash, hash);
+    this.state.contractProcess.methods.requestChange(this.state.accounts[0], addressesToNotify, this.state.publicHash+','+hash, this.state.publicHash, hash).send({
+      from: this.state.accounts[0]
+    }, (error) => {
+              console.log(error);
+    });  
 
   })
   }
@@ -288,12 +313,13 @@ class EditionDeck extends React.Component {
       var publicUpd = false;
       var publicNodes = [];
       this.cy.elements().forEach(function (ele) {
-        if (ele['_private']['classes'].has('choreography') && ele['_private']['classes'].has('subgraph')) {
+        console.log(ele);
+        if (ele['_private']['classes'].has('type_choreography') && ele['_private']['classes'].has('subgraph')) {
           publicUpd = true;
           var splElem = ele['_private']['data']['name'].trim().split(' '); 
           var cleanedEle = []
           splElem.forEach(function (ele) {
-            if(ele != ""){
+            if(ele !== ""){
               cleanedEle.push(ele);
             }
           })
@@ -305,16 +331,18 @@ class EditionDeck extends React.Component {
         });
         }
       });
+
       if (window.confirm('Confirm new graph version?')) {
   
-        if (publicUpd) {
-            this.publicGraphUpd(publicNodes);
-            }
-        else {
-          this.privateGraphUpd();
-          console.log('new graph version saved!')
-
-        }
+          if (publicUpd) {
+              this.publicGraphUpd(publicNodes);
+              }
+          else {
+            this.privateGraphUpd();
+            console.log('new graph version saved!')
+  
+          }
+  
         }
 
       else {
@@ -333,18 +361,19 @@ class EditionDeck extends React.Component {
     
     return <>
       <div>
+      <Authentification status={this.getStatus} />
 
       <Container fluid  >
       <SimpleLoader load={this.state.chgStatus} type={"bubble-top"} msg={"loading blockchain data"}/>
 
-<div style={(this.state.chgStatus == 'loading') ? {display: 'none' } : {} }>
+<div style={(this.state.chgStatus === 'loading') ? {display: 'none' } : {} }>
         <Row >
           <Col >
             <div className="bg-green pt-5 pb-3">
 
               <div className='container'>
 
-        <div className="align-items-center">
+                <div className="align-items-center">
 
                   <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
 
@@ -372,30 +401,19 @@ class EditionDeck extends React.Component {
                             <Card.Title><h3>Editor Deck</h3></Card.Title>
                             <hr /><br />
 
-                            <Card.Text>
                               <Form>
                                 <h4>Activity</h4>
 
                                 <Form.Label>Activity name</Form.Label>
                                 <Form.Control type="address" onChange={this.handleActivityName} placeholder={'enter activity name'} value={this.state.elemClicked.activityName} />
 
-                                <hr style={{ "size": "5px" }} /><br />
+                                {this.state.elemClicked.isChoreo?       
+                                <>                         <hr style={{ "size": "5px" }} /><br />
                                 <h4>Assign role</h4>
-                                <div className="form-group">
-                                  <label className="is-required" for="role">Private role</label>
-                                  <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
-                                  <option value=''> --- </option>          
-                                  {
-                                    React.Children.toArray(
-                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
-                                    )
-                                  }
-                                  </select>
-                                </div>
                                 <br />
 
                                 <div className="form-group">
-                                  <label className="is-required" for="role">Choreography Sender</label>
+                                  <label className="is-required" htmlFor="role">Choreography Sender</label>
                                   <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
                                   <option value=''> ---</option>
                                   
@@ -411,7 +429,7 @@ class EditionDeck extends React.Component {
                                 <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
                                 <br />
                                 <div className="form-group">
-                                  <label className="is-required" for="role">Choreography Receiver</label>
+                                  <label className="is-required" htmlFor="role">Choreography Receiver</label>
                                   <select className="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
                                   <option value=''> ---</option>
                                   {
@@ -421,6 +439,9 @@ class EditionDeck extends React.Component {
                                   }
                                   </select>
                                 </div>
+                                </>:
+                                <></>
+                                }
                                 <hr /><br />
 
                                 <h4>Marking</h4>
@@ -449,8 +470,6 @@ class EditionDeck extends React.Component {
                               </Form>
 
                               <Button onClick={this.updActivity}>update activity</Button>
-
-                            </Card.Text>
 
                           </Card.Body>
                         </Card>

@@ -7,13 +7,30 @@ const activityUpdHelpers = {
     handleActivityName: function (e) {
         console.log(e)
         e.preventDefault();
-        const noSpaceValue = e.target.value.replace(' ', '')
+
+        var activityName = e.target.value;
+        console.log(activityName);
+        if((activityName.includes('!('))||(activityName.includes('?('))){
+            activityName = e.target.value.split('(')[1].split(',')[0];
+        }
+        else{
+            if(activityName.includes(' ')){
+                activityName = e.target.value.split(' ')[1];
+                if(activityName.includes(' ')){
+                    activityName = activityName.replace(' ', '')
+                }
+            }    
+        }
+        
+
         this.setState({
             elemClicked: {
                 id: this.state.elemClicked.id,
-                activityName: noSpaceValue,
+                raw_activityName:e.target.value,
+                activityName: activityName,
                 classes: this.state.elemClicked.classes,
-                type: this.state.elemClicked.type
+                type: this.state.elemClicked.type,
+                isChoreo:this.state.elemClicked.isChoreo
             },
         });
     },
@@ -24,7 +41,10 @@ const activityUpdHelpers = {
     */
     handleTenant: function (e) {
         e.preventDefault();
-        this.setState({ tenantName: e.target.value });
+        console.log(this.state.tenantName);
+        console.log(this.state.auth.name);
+
+        //this.setState({ tenantName: e.target.value });
     },
 
     /**

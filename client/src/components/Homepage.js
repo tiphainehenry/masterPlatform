@@ -1,9 +1,8 @@
 import React from 'react';
 import '../style/boosted.min.css';
-import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header';
 import Authentification from './Authentification'
-import { Container, Card, CardDeck } from 'react-bootstrap';
+import { Card, CardDeck } from 'react-bootstrap';
 
 /**
  * Component ...
@@ -32,6 +31,7 @@ class Homepage extends React.Component {
     console.log(this.state.auth);
     return (<div>
       <Header/>
+
       <Authentification status={this.getStatus} />
       {this.state.auth.isRole ?
         <div>

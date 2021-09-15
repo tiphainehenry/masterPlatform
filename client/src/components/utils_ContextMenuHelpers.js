@@ -7,10 +7,9 @@ export function getMenuStyle() {
     // Customize event to bring up the context menu
     // Possible options https://js.cytoscape.org/#events/user-input-device-events
     evtType: 'cxttap',
-    menuItemClasses: [
-    ],
-    ctxMenuClasses: [
-    ],
+
+    menuItemClasses: ['custom-menu-item'],
+    contextMenuClasses: ['custom-context-menu'],
 
     // List of initial menu items
     // A menu item must have either onClickFunction or submenu or both
@@ -27,8 +26,7 @@ export function getMenuStyle() {
         show: true, // Whether the item will be shown or not
         hasTrailingDivider: true, // Whether the item will have a trailing divider
         coreAsWell: false, // Whether core instance have this item on cxttap
-        submenu: [] // Shows the listed menuItems as a submenu for this item. An item must have either submenu or onClickFunction or both.
-      },
+        },
       {
         id: 'add-activity',
         content: 'add activity',

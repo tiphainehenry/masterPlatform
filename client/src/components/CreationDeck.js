@@ -52,8 +52,6 @@ class CreationDeck extends React.Component {
    */
   constructor(props) {
     super(props);
-    console.log(Object.keys(ProcessDB)[0]);
-    console.log(ProcessDB[Object.keys(ProcessDB)[0]]);
     this.loadToBC = React.createRef()
 
     this.state = {
@@ -462,10 +460,10 @@ class CreationDeck extends React.Component {
             ele['_private']['data']['name'] = "e" + id;
           } else {
 
-            var tmp = ele['_private']['data']['name'].split(' ');
+            tmp = ele['_private']['data']['name'].split(' ');
             rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])]);
             newEle = {
-              "name": '"' + tmp[0] + '"' + " [role=" + tmp[1] + "]\n",
+              "name": '"' + tmp[0] + '" [role=' + tmp[1] + "]\n",
             };
           }
         } else if (ele['_private']['group'] === "edges") {
