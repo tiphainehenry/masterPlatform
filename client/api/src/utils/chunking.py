@@ -138,6 +138,7 @@ def extractChunks(data):
     
     """
     #print("2.3/ chunk's data")
+
     events, internalEvents = [], []
     groupings, linkages = [], []
     roles, addresses = [], []
