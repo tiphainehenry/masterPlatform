@@ -471,3 +471,4 @@ def generateGraph(pi, data, externalIds, target, role):
 
     with open(os.path.join(target, 'temp_data'+role_id+'.json'), 'w') as outfile:
         json.dump(cData, outfile, indent=2)
+    

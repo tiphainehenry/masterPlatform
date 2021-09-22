@@ -450,7 +450,6 @@ def inputFileLaunch():
         file = request.files['file']
         data = file.readlines()
         print("-----------------------------------")
-        print('data', data)
         processID = str(request.form['processID'])
         projType = str(request.form['projType'])
 
@@ -552,6 +551,181 @@ def cleanActivityId(id, mapping):
             if id == elem['old_id']:
                 return elem['new_id']
         return id
+
+
+@app.route('/publicChg', methods=['GET', 'POST'])
+def publicChg():
+    """
+    updates public view after change approval // 
+    """
+    try:
+        processID = str(request.form['processID'])
+        roleID = str(request.form['roleID'])
+        roleNum = 'Public'
+        publicData = json.loads(request.form['JSONPubView'])
+
+        #step1: generate text
+        dcrTextList = []
+
+        choreo = []
+        toreformat = []
+        events = []
+        edges = []
+
+
+        for ele in publicData:
+            if ele['group'] == 'nodes':
+                line = ele['data']
+                print(line)
+
+                if((ele['data']['id'][0] == 'e') & (ele['data']['id'][-1].isnumeric())):
+                    activityName = ele['data']['name'].split('\n')[1]
+                    src = ele['data']['name'].split('\n')[0]
+                    tgt = ele['data']['name'].split('\n')[2]
+                    event = ele['data']['id'] + \
+                        '['+activityName+' src='+src+' tgt='+tgt+']'
+
+                    if str(event) not in choreo:
+                        choreo.append(str(event))
+
+                elif ((ele['data']['id'][0] == 'e') & (not ele['data']['id'][-1].isnumeric())):
+                    # precheck projection (may be wrong index)
+                    if(ele['data']['name'][0] in ['?', '!']):
+                        activityName = ele['data']['name'].split(
+                            '?(')[1].split(',')[0]
+                        src = ele['data']['name'].split(', ')[1].split('-')[0]
+                        tgt = ele['data']['name'].split(
+                            '>')[1].replace(')', '')
+                        event = ele['data']['id'][0:-1] + \
+                            '['+activityName+' src='+src+' tgt='+tgt+']'
+
+                        if str(event) not in choreo:
+                            choreo.append(str(event))
+
+                    else:
+                        activityName = str(ele['data']['name'].split('\n')[1])
+                        src = str(ele['data']['name'].split('\n')[0])
+                        tgts = ele['data']['name'].split('\n')[2].split(',')
+
+                        event = ele['data']['id'][0:-1] + \
+                            '['+activityName+' src='+src
+
+                        for ele in tgts:
+                            event = event+' tgt='+str(ele)
+                        event = event+']'
+                        if str(event) not in choreo:
+                            choreo.append(str(event))
+
+                else:
+                    if((('\n' in ele['data']['name']) and (len(ele['data']['name'].split('\n')) != 2)) or (
+                            (' ' in ele['data']['name']) and (len(ele['data']['name'].split(' ')) != 2))):
+
+                        if ele not in toreformat:
+                            toreformat.append(ele)
+
+        print(choreo)
+
+        # fetch number of public nodes in the original version
+        dataJson = loadJSONFile(projDBPath)
+        publicEvents = dataJson[processID]['TextExtraction']['public']['privateEvents']
+
+        cleaned_publicEvents = []
+        for elem in publicEvents:
+            if str(elem['eventName']) not in cleaned_publicEvents:
+                cleaned_publicEvents.append(str(elem['eventName']))
+        max = 0
+        for elem in cleaned_publicEvents:
+            if ((elem[0] == 'e') and elem[-1].isdigit()):
+                if int(elem.replace('e', '')) > max:
+                    max = int(elem.replace('e', ''))
+        mapping = []
+        for ele in toreformat:
+            # reformat node, (and later reformat edges)
+            max = max+1
+            activityName = str(ele['data']['name'].split(' ')[1]).capitalize()
+            src = str(ele['data']['name'].split(' ')[0])
+            tgt = str(ele['data']['name'].split(' ')[2])
+            event = 'e'+str(max)+'['+activityName+' src='+src+' tgt='+tgt+']'
+
+            choreo.append(event)
+            mapping.append({
+                'old_id': str(ele['data']['id']),
+                'new_id': 'e'+str(max)
+            })
+
+        ###### add edges ##########
+        for ele in publicData:
+            if ele['group'] == 'edges':
+                line = ele['data']
+
+                arrow = ''
+                if 'condition' in line['id']:
+                    arrow = '-->*'
+                elif 'response_back' in line['id']:
+                    pass
+                elif 'response' in line['id']:
+                    arrow = '*-->'
+                elif 'milestone' in line['id']:
+                    arrow = '--<>'
+                elif 'include' in line['id']:
+                    arrow = '-->+'
+                elif 'exclude' in line['id']:
+                    arrow = '-->%'
+                else:
+                    pass
+                    # print('NA')
+
+                src = cleanActivityId(line['source'], mapping)
+                tgt = cleanActivityId(line['target'], mapping)
+
+                if arrow != '':
+                    newLine = src+' '+arrow+' '+tgt
+                    edges.append(newLine)
+
+        ###### add public keys ########
+        addresses = []
+        for elem in publicEvents:
+            newA = 'pk[role='+elem['role']+']='+elem['address']
+            if(newA not in addresses):
+                addresses.append(str(newA))
+
+        # merge all and project
+        projText = addresses+choreo+edges
+
+
+        #step2: public projection (data and vect)
+        target = '../../client/src/projections/'
+        dataPath = '../../client/src/projections/dcrTexts.json'
+        this_folder = os.path.dirname(os.path.abspath(__file__))
+
+        projectPublic(processID, projText, target)
+        
+        dataJson = loadJSONFile(projDBPath)
+        dataJson[processID][roleNum] = {
+            'data': loadJSONFile(os.path.join(target, 'temp_data'+roleNum+'.json')),
+            'exec': dataJson[processID][roleNum]['exec'],
+            'vect': loadJSONFile(os.path.join(target, 'temp_vect'+roleNum+'.json')),
+            'init': {
+                'data': loadJSONFile(os.path.join(target, 'temp_data'+roleNum+'.json')),
+                'vect': loadJSONFile(os.path.join(target, 'temp_vect'+roleNum+'.json'))
+            }
+        }
+
+        dataJson['projType'] = 'g_to_p' ### to check
+
+        dumpJSONFile(projDBPath, dataJson)
+
+        os.remove(os.path.join(
+            this_folder, '../src/projections/temp_data'+roleNum+'.json'))
+        os.remove(os.path.join(
+            this_folder, '../src/projections/temp_vect'+roleNum+'.json'))
+        os.remove(os.path.join(this_folder, '../src/projections/dcrTexts.json'))
+
+        return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+
+    except:
+        return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
+
 
 
 @app.route('/localChg', methods=['GET', 'POST'])
@@ -701,7 +875,6 @@ def localChg():
         for ele in newData:
             if ele['group'] == 'edges':
                 line = ele['data']
-                print(line)
 
                 arrow = ''
                 if 'condition' in line['id']:
@@ -737,20 +910,10 @@ def localChg():
         # merge all and project
         projText = addresses+choreo+private+edges
 
-        for e in projText:
-            print(e)
-
         # step2: generate local projection (data and vect)
         target = '../../client/src/projections/'
         dataPath = '../../client/src/projections/dcrTexts.json'
         this_folder = os.path.dirname(os.path.abspath(__file__))
-
-
-        print('processID', processID)
-        print('projText', projText)
-        print('target', target)
-        print('roleID', roleID)
-        print('roleNum', roleNum)
 
         projRole_fromLocalRequest(processID, projText, target, roleID, roleNum)
 
@@ -774,9 +937,6 @@ def localChg():
         os.remove(os.path.join(
             this_folder, '../src/projections/temp_vect'+roleNum['id']+'.json'))
         os.remove(os.path.join(this_folder, '../src/projections/temp_local.json'))
-
-
-        print(dataJson)
 
         return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 

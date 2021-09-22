@@ -60,18 +60,21 @@ def addRoleExternals(events, filename):
     :param filename: filename where projection data is stored
     :returns: retrieved external events to the projection
     """
+    try:
+        with open(filename) as json_file:
+            data = json.load(json_file)
 
-    with open(filename) as json_file:
-        data = json.load(json_file)
+        print(data)
+        extEvents = [str(elem['event'].strip()) for elem in data['externalEvents']]
+        publicEvents = getRoleList(events)
+        newExtEvents = []
+        for elem in extEvents:
+            if elem not in publicEvents:
+                newExtEvents.append(elem)
 
-    extEvents = [str(elem['event'].strip()) for elem in data['externalEvents']]
-    publicEvents = getRoleList(events)
-    newExtEvents = []
-    for elem in extEvents:
-        if elem not in publicEvents:
-            newExtEvents.append(elem)
-
-    return newExtEvents
+        return newExtEvents
+    except:
+        return []
 
 
 def addExternalEvents(cNames, chunks, filename):
@@ -139,10 +142,16 @@ def generatePublicProjection(chunks, filename):
 
     # Extract choreography events and relations
     cNames = getRoleList(chunks['events'])
+    
     choreoLinkages = filterOnChoreo(cNames, chunks['linkages'])
+    
     # Add role external events to the public projection
     roleExternals = addRoleExternals(cNames, filename)
+        
     public_events = roleExternals+cNames
+
+    print('public_events:')
+    print(public_events)
 
     for elem in public_events:
         if('[' not in elem):
@@ -150,34 +159,48 @@ def generatePublicProjection(chunks, filename):
                 if (getRole(cEvent) == elem):
                     public_events[public_events.index(elem)] = cEvent
 
+    print(public_events)
+
     public_relations = retrieveRelations(public_events, chunks['linkages'])
+    print('public_relations')
+    print(public_relations)
 
     # Look for external events
     externalIds, externalEvents, externalLinkages = addExternalEvents(
         public_events, chunks, filename)
 
+    print('test')
     # Merge projection items
     tasks = getRoleList(public_events) + externalIds
     events = public_events + externalEvents
 
     linkages = public_relations + externalLinkages
 
+    print(linkages)
+
     projGrouping = groupItems('Public', tasks)
     projection = ["##### Public Projection #######"] + \
         events + projGrouping + linkages
+
+    print(projection)
 
     # generate dict
     privateEvents = generateDictEvent(public_events, chunks['addresses'])
     externalEvents = generateDictEvent(externalEvents, chunks['addresses'])
     relations = generateDictRelation(linkages)
 
-    with open(filename) as json_file:
-        data = json.load(json_file)
+    try:
+        with open(filename) as json_file:
+            data = json.load(json_file)
+    except:
+        data={}
     data['public'] = {
         'privateEvents': privateEvents,
         'externalEvents': externalEvents,
         'relations': relations
     }
+
+    print(data['public'])
 
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)
@@ -203,7 +226,6 @@ def projectPublic(processID, data, target):
         chunks.copy(), os.path.join(target, "dcrTexts.json"))
     generateGraph(processID, projection, externalIds, target, "Public")
     vectorize(projection, os.path.join(target, "temp_vectPublic"))
-
     # addFullMarkings(os.path.join(target,"vectChoreo"))
 
     print('[INFO] Public Projection generated')
