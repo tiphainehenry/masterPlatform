@@ -2,6 +2,8 @@
 pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
+import "./LibPublicDCRM.sol";
+
 contract PublicDCRManager {
     // event declaration
     event LogWorkflowCreation(
@@ -12,7 +14,8 @@ contract PublicDCRManager {
     event LogExecution(
         string indexed workflowHash,
         uint256 indexed activityId,
-        address indexed executor
+        uint256 indexed status
+        //address indexed executor
     );
 
     event LogWorkflowProjection(
@@ -65,10 +68,16 @@ contract PublicDCRManager {
         Activity execStatus;
     }
     
-    enum ChgStatus { Approved, Declined, BeingProcessed, Init }
+    enum ChgStatus { Approved, Declined, BeingProcessed, Init, Switched }
    // enum EndorserDecision { Approve, Decline, NA}
 
-    string test='init';
+    struct fooTest{
+        string test;
+        string testBis;
+    }
+
+    fooTest Test = fooTest({test:'init', testBis:'init'});
+
     struct ChangeRequest {
         string currHash; 
         string reqHash;
@@ -77,6 +86,10 @@ contract PublicDCRManager {
         uint numEndorsers;
         address[] endorsers;
         uint[] changeEndorsement;
+
+        uint[] approvalOutcomes;
+        uint[] didFetch;
+
     }
     
     struct Marking {
@@ -103,77 +116,36 @@ contract PublicDCRManager {
         return registeredViewHashes;
     }
 
-    function sendHash(string memory _hash, string memory x) public {
-        workflows[_hash].ipfsViewHash = x;
-    }
-
-    function getHash(string memory _hash) public view returns (string memory x) {
-        return workflows[_hash].ipfsViewHash;
-    }
-
-    function  getChangeArgs(string memory _hash) public view returns (string memory reqHash, uint ChangeValue, uint WKFValue, string memory Test, uint[] memory ChangeEndorsement){
+    function  getChangeArgs(string memory _hash) public view returns (string memory reqHash, uint ChangeValue, uint WKFValue, string memory _Test, uint[] memory ChangeEndorsement, uint numEndorsers, address initiator){
         
         return (    
                     changeRequests[_hash].reqHash,
                     uint(changeRequests[_hash].status), 
                     uint(workflows[_hash].wkfStatus),
-                    test,
-                    changeRequests[_hash].changeEndorsement
+                    Test.test,
+                    changeRequests[_hash].changeEndorsement,
+                    changeRequests[_hash].numEndorsers,
+                    changeRequests[_hash].initiator
                     );
 
     }
 
-    
-    function  getChangeValue(string memory _hash) public view returns (uint){
-        return uint(changeRequests[_hash].status);
-    }
 
-    function  getWKFValue(string memory _hash) public view returns (uint){
-        return uint(workflows[_hash].wkfStatus);
-    }
-
-    function getChangeEndorsement(string memory _hash) public view returns (uint[] memory){
-            return changeRequests[_hash].changeEndorsement;
-    }
-
-    function  getTest() public view returns (string memory){
-        return test;
-    }
-
-    /** @dev Getter for workflow name.
-      * @param _hash index of the workflow (eg 0 for the first workflow).
-      * @return workflow name.
-      */
-    function getWorkflowName(string memory _hash)
-        public
-        view
-        returns (string memory)
-    {
-        return workflows[_hash].name;
+    function  getTest() public view returns (string memory,string memory){
+        return (Test.test,
+                Test.testBis);
     }
 
     /** @dev Getter for workflow execution status.
       * @param _hash index of the workflow (eg 0 for the first workflow).
       * @return execution status of the task: 0=ok, 1= 
       */
-    function getCanExecuteCheck(string memory _hash, uint256 activityId)
+    function getCanExecuteCheck(string memory _hash)
         public
         view
         returns (uint32)
     {
         return workflows[_hash].execStatus.canExecuteCheck;
-    }
-
-    function getStatus(string memory _hash, uint256 activityId)
-        public
-        view
-        returns (uint256)
-    {
-        return workflows[_hash].execStatus.status;
-    }
-
-    function getWkfLength(string memory _hash) public view returns (uint256) {
-        return workflows[_hash].relations[0].length;
     }
 
     function getIncluded(string memory _hash)
@@ -216,14 +188,6 @@ contract PublicDCRManager {
         return workflows[_hash].ipfsActivityHashes;
     }
 
-    function getActivityName(string memory _hash, uint256 activityId)
-        public
-        view
-        returns (string memory)
-    {
-        return workflows[_hash].activityNames[activityId];
-    }
-
     function getRoleAddresses(string memory _hash, uint256 activityId)
         public
         view
@@ -241,6 +205,14 @@ contract PublicDCRManager {
     }
 
 
+    function getEndorserAddresses(string memory _hash)
+        public
+        view
+        returns (address[] memory)
+    {
+        return changeRequests[_hash].endorsers;
+    }
+
     ///////////////// Change requests ////////////////////////
 
     /** @dev manages change requests: if a request is already ongoing, cancel. Else, create a new change request and notify endorsers.
@@ -255,10 +227,10 @@ contract PublicDCRManager {
         
         require(myAddress==msg.sender, "Must be role owner."); //web3js bug carefew 
 
-        test = 'chg request being processed';
+        Test.test = 'chg request being processed';
 
         if(changeRequests[curr_hash].status == ChgStatus.Init){
-            test = 'chg request validated';
+            Test.test = 'chg request validated';
             //workflows[curr_hash].wkfStatus = ChgStatus.BeingProcessed;
 
             changeRequests[curr_hash].status = ChgStatus.BeingProcessed;
@@ -286,19 +258,6 @@ contract PublicDCRManager {
     }
 
 
-    function updateTableOnAddress(address myAddress, address[] memory myAddresses, string memory myHash, uint myDecision) public payable{
-        for (
-                uint256 id = 0;
-                id < myAddresses.length;
-                id++
-            ) {
-                if((myAddress == myAddresses[id])){
-                    changeRequests[myHash].changeEndorsement[id] = myDecision;
-                }
-            }   
-    }
-
-
     function finalApprovalManager(string memory myHash) public payable {
         // check if required endorsers have answered --> if yes: unlock (set status to ChgStatus.Approved, update process markings and graph, )
         uint totalRsp =1; //message sender is already ok 
@@ -314,31 +273,41 @@ contract PublicDCRManager {
             }
             
         if (totalRsp == changeRequests[myHash].numEndorsers){
-            test  = 'approved by all endorsers';
+            Test.test  = 'approved by all endorsers';
             changeRequests[myHash].status == ChgStatus.Init;
             emit AcceptChangeAll(changeRequests[myHash].reqHash);
             
             // reinit chgEndorsement (?)
-            // TODO Add graph locker/unlocker (update process markings and graph)
+            // TODO update process markings and graph
 
         }
     }
-
+    function updateTableOnAddress(address myAddress, address[] memory myAddresses, string memory myHash, uint myDecision) public payable{
+        for (
+                uint256 id = 0;
+                id < myAddresses.length;
+                id++
+            ) {
+                if((myAddress == myAddresses[id])){
+                    changeRequests[myHash].changeEndorsement[id] = myDecision;
+                }
+            }   
+    }
     function endorserRSP(string memory curr_hash, string memory req_hash, uint rsp) public payable returns (string memory) {
         
         if(changeRequests[curr_hash].status == ChgStatus.BeingProcessed){
-            test  = 'enteringNode';
+            Test.test  = 'enteringNode';
             // accept: emit decision and update change memory
             if (rsp==1){
                 updateTableOnAddress(msg.sender,changeRequests[curr_hash].endorsers, curr_hash,1);
-                test  = 'approved by one person';
+                Test.test  = 'approved by one person';
                 emit AcceptChange(req_hash, msg.sender);
                 finalApprovalManager(curr_hash);
             }         
             
-            // decline
+            // declineapprovalOutcomes
             else if (rsp == 2){
-                test  = 'declined';
+                Test.test  = 'declined';
                 changeRequests[curr_hash].status = ChgStatus.Init;
                 emit DeclineChange(req_hash, msg.sender);
             }
@@ -353,6 +322,106 @@ contract PublicDCRManager {
         else{
             return 'RSP not applicable here (already processed?)';
         }    
+    }
+
+    ////////////// Accepted Changes post treatment //////////////
+
+
+
+
+    function getChangeApprovalsOutcome(string memory _hash)
+        public
+        view
+        returns (uint[] memory)
+    {
+        return (changeRequests[_hash].approvalOutcomes);
+    }
+
+    function hasApprovedProjection(string memory _hash, address myAddress)
+        public
+        view
+        returns (uint)
+    {
+        //uint res = 0;
+        for (
+            uint256 id = 0;
+            id < changeRequests[_hash].endorsers.length;
+            id++
+        ) {
+            if((myAddress == changeRequests[_hash].endorsers[id]) && changeRequests[_hash].approvalOutcomes[id] == 1){
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    /** @dev post private projection approval function.
+      * @param _hash index of the workflow (eg 0 for the first workflow).
+      * @param myAddress address of the sender (necessary for web3js dev).
+      * @return list of approval outcomes.
+      */
+    function confirmChangeProjection(string memory _hash, address myAddress) public payable returns (uint[] memory){
+        // get id of approvalList.addresses corresponding to msgSender. If (approval[id]==0): set to one;
+
+        Test.testBis='A';
+
+        require(myAddress==msg.sender, "Must be role owner.");
+        Test.testBis='B';
+
+        for (
+            uint256 id = 0;
+            id < changeRequests[_hash].endorsers.length;
+            id++
+        ) {
+            Test.testBis='C';
+
+            if((myAddress == changeRequests[_hash].endorsers[id]) ){ 
+
+                Test.testBis='approval stage 1';
+                if(changeRequests[_hash].approvalOutcomes[id] != 1){ // must not have approved before
+                    changeRequests[_hash].approvalOutcomes[id] = 1;
+                    emit LogWorkflowProjection(_hash, myAddress);
+                    Test.testBis='approval stage 2';
+                    if(LibPublicDCRM.evaluateChgApproval(changeRequests[_hash].approvalOutcomes, changeRequests[_hash].numEndorsers)==1){
+                        changeRequests[_hash].status = ChgStatus.Approved;
+                    }
+                    return changeRequests[_hash].approvalOutcomes;
+                }
+            }
+        }
+        
+        return changeRequests[_hash].approvalOutcomes;
+    }  
+
+    function switchWorkflows(string memory _hash, uint256[][] memory _markingStates,
+            uint256[][][] memory _relations,   
+            string[] memory _activityNames, 
+            address[] memory _roleAddresses
+) public payable returns (string memory){
+
+        require((msg.sender==changeRequests[_hash].initiator) && 
+        (LibPublicDCRM.evaluateChgApproval(changeRequests[_hash].approvalOutcomes, changeRequests[_hash].numEndorsers)==1));
+        
+        uploadPublicView(
+            // packed state variables
+            _markingStates,
+            changeRequests[_hash].reqHash,
+
+            //process information
+            _roleAddresses,
+            _roleAddresses,
+
+            _activityNames,         
+            workflows[_hash].name,                 
+
+            // relations
+            _relations        
+            );
+
+            changeRequests[_hash].status=ChgStatus.Switched;
+            
+
+            return 'switch done';
     }
 
     ///////////////// Public-to-local Projections ////////////////////////
@@ -433,11 +502,9 @@ contract PublicDCRManager {
                     return workflows[_hash].approvalOutcomes;
                 }
             }
-
         }
         
         return workflows[_hash].approvalOutcomes;
-        
     }  
 
     ///////////////// Execution functions /////////////////////////
@@ -506,6 +573,8 @@ contract PublicDCRManager {
     {
         if (!canExecute(_hash, activityId, msg.sender)) {
             workflows[_hash].execStatus.status = 1;
+            emit LogExecution(_hash, activityId,1);
+
             //revert();
         } else {
             // executed activity
@@ -554,7 +623,7 @@ contract PublicDCRManager {
                 }
             }
 
-            emit LogExecution(_hash, activityId, msg.sender);
+            emit LogExecution(_hash, activityId,0);
 
             workflows[_hash].execStatus.status = 1;
         }
@@ -580,6 +649,7 @@ contract PublicDCRManager {
         uint256[][][] memory _relations // includesto, excludesto, responsesto, conditionsfrom, milestonesFrom
     ) public payable {
         
+        
         Activity memory execStatus = Activity(0, 0);
         Marking memory markings = Marking(markingStates[0],markingStates[1],markingStates[2]);
         Workflow memory wf =
@@ -601,7 +671,6 @@ contract PublicDCRManager {
         workflows[_ipfsViewHash]=wf;
         registeredViewHashes.push(_ipfsViewHash);
 
-
         ChangeRequest memory chgReq = ChangeRequest(
             _ipfsViewHash,
             '', 
@@ -609,6 +678,8 @@ contract PublicDCRManager {
             address(0), 
             0, 
             new address[](_approvalAddresses.length),
+            new uint[](_approvalAddresses.length),
+            new uint[](_approvalAddresses.length),
             new uint[](_approvalAddresses.length)
         );       
 

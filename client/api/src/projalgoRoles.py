@@ -277,3 +277,34 @@ def projRole_fromLocalRequest(processID, data, target, role, roleID):
 
     print('[INFO] LOCAL projection of role '+role+' generated')
 
+def projRole_fromPublicRequest(processID, data, target, role):       
+    """
+    generates role projection (text, cytoscape, and vector descriptions) out of a global DCR description
+
+    :param processID: the ID of the current process. eg: "p1"
+    :param data: json description of the global dcr
+    :param target: the path where the projection will be saved. eg: '../../client/src/projections/'
+    :param role: the role to project. eg: 'Driver'
+    """ 
+    chunks, roles = extractChunks(data)
+
+    choreoEventsProj = []
+    for line in chunks['events']:
+        eventName, task, src, tgts = getChoreographyDetails(line)         
+        if src == role:
+            newEvent = eventName+'s["!('+ str(task) +', '+ str(src) + '-&gt;'+str(tgts)+')"]'
+            choreoEventsProj.append(newEvent)
+        elif role in tgts:
+            newEvent = eventName+'r["?('+ str(task) +', '+ str(src) + '-&gt;'+role+')"]'
+            choreoEventsProj.append(newEvent)
+        else:
+            pass
+
+    roleMapping=getRoleMapping(processID, role)
+    projection, externalIds = generateDCRText(processID, chunks, role, choreoEventsProj, os.path.join(target,"dcrTexts.json"))            
+    #generateGraph(processID, projection, externalIds, target, role)
+
+    #print("[DEBUG] Vectorizing"+ role)
+    #vectorizeRole(projection, os.path.join(target,"temp_vect"+roleMapping['id']))
+
+    print('[INFO] Projection of role '+role+' generated')

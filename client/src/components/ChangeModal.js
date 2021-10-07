@@ -41,6 +41,7 @@ class ChangeModal extends React.Component {
     this.answer = this.answer.bind(this);
     this.accept = this.accept.bind(this);
     this.decline = this.decline.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentWillMount() {
@@ -72,7 +73,7 @@ class ChangeModal extends React.Component {
     try{
     await ipfs.files.cat(hash).then((output) =>
       {
-        console.log(JSON.parse(output));
+        //console.log(JSON.parse(output));
         this.setState({currWkf:JSON.parse(output)})
       } 
     );}
@@ -101,6 +102,11 @@ class ChangeModal extends React.Component {
 
   async accept(){
     this.answer(1); 
+  }
+
+  async closeModal(){
+    this.setState({ show: false });
+    window.location.reload();
   }
 
   render() {
@@ -168,7 +174,7 @@ class ChangeModal extends React.Component {
         </Modal.Body>
         <Modal.Footer className="py-1 d-flex justify-content-center">
           <div>
-            <Button variant="outline-dark" onClick={() => this.setState({ show: false })}>
+            <Button variant="outline-dark" onClick={this.closeModal}>
               Ok
             </Button>
           </div>

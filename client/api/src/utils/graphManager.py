@@ -344,6 +344,7 @@ def executeNode(execInfo):
             publicInfos['activityNames']['send'] + \
             publicInfos['activityNames']['receive']
 
+        print('publicEvents', publicEvents)
         # execution
         if activity_name in publicEvents:
             # execute event onChain

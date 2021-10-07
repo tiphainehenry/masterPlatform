@@ -14,22 +14,22 @@ contract AdminRoleManager {
     address[] roleList;
 
     constructor() public {
-        address modAddress = 0x1D27B15fEbF8dce6fe0Fd5B45A4784C4dD3e11e1;
+        address modAddress = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
         newRole(modAddress, "Alice", true);
         AddElemRole(modAddress, "Role1");
         AddElemRole(modAddress, "Role2");
         AddElemRole(modAddress, "Role3");
 
-        address peonAddress1 = 0x78F7c9953D321Fb9864Af3B86782759bC32d4968;
+        address peonAddress1 = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819;
         newRole(peonAddress1, "Bob", false);
 
-        address modAddress1 = 0x705aCb9996338094b6E16C5319e85132E978B3B6;
+        address modAddress1 = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5;
         newRole(modAddress1, "Carol", true);
 
-        address modAddress2 = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
+        address modAddress2 = 0xC9f167B5056B03eB29963aB8e6F78bB12Cf5BA17;
         newRole(modAddress2, "Dave", true);
 
-        address modAddress3 = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5;
+        address modAddress3 = 0x2a706c6006e33610D92ea2a440Cc99d5b58353E1;
         newRole(modAddress3, "Trent", true);
 
     }
@@ -130,6 +130,23 @@ contract AdminRoleManager {
                     (Roles[roleList[i]].isAdmin ? "true" : "false")
                 )
             );
+        }
+        return listofRoles;
+    }
+
+
+    function getAccountRoles() public view returns (string[] memory list) {
+        string[] memory listofRoles = new string[](roleList.length);
+        for (uint256 i = 0; i < roleList.length; i++) {
+            for(uint256 j = 0; j < Roles[roleList[i]].roles.length; j++){
+                listofRoles[i] = string(
+                    abi.encodePacked(
+                        Roles[roleList[i]].roles[j],
+                        "///",
+                        toAsciiString(roleList[i])
+                    )
+                );
+            }
         }
         return listofRoles;
     }

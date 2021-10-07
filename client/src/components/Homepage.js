@@ -42,7 +42,7 @@ class Homepage extends React.Component {
                   <p className="lead text-muted">Welcome to the experimental platform.</p>
                   <p className="lead text-muted">You are connected as {this.state.auth.name}</p>
                   <p className="lead text-muted">Admin : {this.state.auth.isAdmin ? "true" : "false"}</p>
-                  <p className="lead text-muted">Role : {this.state.auth.isRole ? "true" : "false"}</p>
+                  <p className="lead text-muted">Roles : {this.state.auth.isRole ? this.state.auth.myRoles.join(", ") : "null"}</p>
                 </div>
                 <br />
                 <br />

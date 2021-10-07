@@ -85,7 +85,12 @@ text-align:center;
 .my-modal {
   width: 90vw;  
   max-width: 90vw;
-} 
-
+}
+ 
+#loader {
+  width: 100px;
+  display:none;
+}
 /*# sourceMappingURL=boosted.min.css.map */
+
 

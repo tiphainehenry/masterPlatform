@@ -64,7 +64,7 @@ def addRoleExternals(events, filename):
         with open(filename) as json_file:
             data = json.load(json_file)
 
-        print(data)
+        #print(data)
         extEvents = [str(elem['event'].strip()) for elem in data['externalEvents']]
         publicEvents = getRoleList(events)
         newExtEvents = []
@@ -150,39 +150,26 @@ def generatePublicProjection(chunks, filename):
         
     public_events = roleExternals+cNames
 
-    print('public_events:')
-    print(public_events)
-
     for elem in public_events:
         if('[' not in elem):
             for cEvent in chunks['events']:
                 if (getRole(cEvent) == elem):
                     public_events[public_events.index(elem)] = cEvent
 
-    print(public_events)
-
     public_relations = retrieveRelations(public_events, chunks['linkages'])
-    print('public_relations')
-    print(public_relations)
 
     # Look for external events
     externalIds, externalEvents, externalLinkages = addExternalEvents(
         public_events, chunks, filename)
-
-    print('test')
     # Merge projection items
     tasks = getRoleList(public_events) + externalIds
     events = public_events + externalEvents
 
     linkages = public_relations + externalLinkages
 
-    print(linkages)
-
     projGrouping = groupItems('Public', tasks)
     projection = ["##### Public Projection #######"] + \
         events + projGrouping + linkages
-
-    print(projection)
 
     # generate dict
     privateEvents = generateDictEvent(public_events, chunks['addresses'])
@@ -200,7 +187,7 @@ def generatePublicProjection(chunks, filename):
         'relations': relations
     }
 
-    print(data['public'])
+    #print(data['public'])
 
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)

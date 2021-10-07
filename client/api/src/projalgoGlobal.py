@@ -98,10 +98,25 @@ def projectGlobal(processID, data, target):
     this_folder = os.path.dirname(os.path.abspath(__file__))
     print('[INFO] Starting Global Projection')
     projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json"))
-    #print("3/projection ")
-    #print(projection)
-    #print("4/ externalIDS")
-    #print(externalIds)
     generateGraph(processID, projection, externalIds, target, "Global")
+    
     vectorize(projection, os.path.join(target,"temp_vectGlobal"))
+    
+    print('[INFO] Global Projection generated')
+
+
+def projectGlobalforPublicChange(processID, data, target):
+    """
+    generates global projection (text, cytoscape, and vector descriptions) out of a textual DCR description
+
+    :param processID: the ID of the current process. eg: "p1"
+    :param data: json description of the global dcr
+    :param target: the path where the projection will be saved. eg: '../../client/src/projections/'
+    """ 
+    this_folder = os.path.dirname(os.path.abspath(__file__))
+    print('[INFO] Starting Global Projection')
+    projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json"))
+    generateGraph(processID, projection, externalIds, target, "Global")    
+    #vectorize(projection, os.path.join(target,"temp_vectGlobal"))
+    
     print('[INFO] Global Projection generated')

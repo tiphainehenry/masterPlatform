@@ -58,7 +58,7 @@ class EditionDeck extends React.Component {
     super(props);
 
     this.state = {
-      auth:{},
+      auth: {},
 
       iterator: 0,
 
@@ -69,10 +69,10 @@ class EditionDeck extends React.Component {
       elemClicked: {
         id: '',
         activityName: '',
-        rawActivity:'',
+        rawActivity: '',
         classes: '',
         type: '',
-        isChoreo:''
+        isChoreo: ''
       },
 
       numSelected: 0,
@@ -102,20 +102,20 @@ class EditionDeck extends React.Component {
       contractRole: null,
       contractProcess: null,
 
-      roleMaps:[],
+      roleMaps: [],
 
-      roles:[],
+      roles: [],
 
-      hashPublicReq:'',
-      publicHash:'',
+      hashPublicReq: '',
+      publicHash: '',
 
-      chgStatus:'loading',
-      test:'loading', 
-      chgEndorsement:'loading',
+      chgStatus: 'loading',
+      test: 'loading',
+      chgEndorsement: 'loading',
 
-      WKFValue:'',
+      WKFValue: '',
 
-      roleLoading:'loading'
+      roleLoading: 'loading'
 
     };
 
@@ -131,9 +131,10 @@ class EditionDeck extends React.Component {
     this.handleMP = activityUpdHelpers.handleMP.bind(this);
 
     this.computeRoles = dcrHelpers.computeRoles.bind(this);
-    this.setUpNodeListeners= dcrHelpers.setUpNodeListeners.bind(this);
-    this.setUpEdgeListeners= dcrHelpers.setUpEdgeListeners.bind(this);
-    this.switchDest = dcrHelpers.switchDest.bind(this); 
+    this.cmpAccountRoles = dcrHelpers.cmpAccountRoles.bind(this);
+    this.setUpNodeListeners = dcrHelpers.setUpNodeListeners.bind(this);
+    this.setUpEdgeListeners = dcrHelpers.setUpEdgeListeners.bind(this);
+    this.switchDest = dcrHelpers.switchDest.bind(this);
 
     /// Remove activity or relation
     this.remove = cytoMenuHelpers.remove.bind(this);
@@ -168,82 +169,83 @@ class EditionDeck extends React.Component {
   }
 
 
-    /**
-   * Instanciates component with the right process and projection view.
-   */
-     componentWillMount() {
-      console.log('[INFO] componentWillMount starts');
-      this.loadSCs();
+  /**
+ * Instanciates component with the right process and projection view.
+ */
+  componentWillMount() {
+    //console.log('[INFO] componentWillMount starts');
+    this.loadSCs();
+
+    var processID = this.props.match.params.pid;
+    var projectionID = this.props.match.params.rid;
+
+    this.setState({
+      'processID': processID,
+      'projectionID': projectionID,
+      'data': ProcessDB[processID][projectionID]['init']['data'],
+      'publicHash': ProcessDB[processID]['hash'],
+    });
+
+  }
+
+  getStatus = auth => this.setState({ auth })
+
+  async loadSCs() {
+    try {
+      //console.log('[INFO] loadSCs starts');
+
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+      //console.log('[INFO] accounts:', accounts);
+
+      const networkId = await web3.eth.net.getId();
+      const adminNetwork = AdminRoleManager.networks[networkId];
+      const adminInstance = new web3.eth.Contract(
+        AdminRoleManager.abi,
+        adminNetwork && adminNetwork.address,
+      );
+
+      this.setState({ web3, accounts, contractRole: adminInstance });
+
+      // get list of addresses
+      var roles = await adminInstance.methods.getAccountRoles().call();
   
-      var processID = this.props.match.params.pid;
-      var projectionID = this.props.match.params.rid;
-  
-      this.setState({
-        'processID': processID,
-        'projectionID': projectionID,    
-        'data': ProcessDB[processID][projectionID]['init']['data'],
-        'publicHash':ProcessDB[processID]['hash'],
-      });
-  
-      }
+      this.cmpAccountRoles(roles);
 
-      getStatus = auth => this.setState({ auth })
+      const processNetwork = PublicDCRManager.networks[networkId];
+      const processInstance = new web3.eth.Contract(
+        PublicDCRManager.abi,
+        processNetwork && processNetwork.address,
+      );
 
-      async loadSCs(){
-        try{
-          console.log('[INFO] loadSCs starts');
+      this.setState({ web3, accounts, contractProcess: processInstance });
 
-          const web3 = await getWeb3();
-          const accounts = await web3.eth.getAccounts();
-          console.log('[INFO] accounts:',accounts);
 
-          const networkId = await web3.eth.net.getId();
-          const adminNetwork = AdminRoleManager.networks[networkId];
-          const adminInstance = new web3.eth.Contract(
-            AdminRoleManager.abi,
-            adminNetwork && adminNetwork.address,
-          );
-    
-          this.setState({ web3, accounts, contractRole: adminInstance });
-          var roles = await adminInstance.methods.getRoles().call();
-    
-          this.computeRoles(roles);
-
-          console.log(roles);
-  
-  
-          const processNetwork = PublicDCRManager.networks[networkId];
-          const processInstance = new web3.eth.Contract(
-            PublicDCRManager.abi,
-            processNetwork && processNetwork.address,
-          );
-    
-          this.setState({ web3, accounts, contractProcess: processInstance });
-
-          
-          await processInstance.methods.getChangeArgs(this.state.publicHash).call()
-          .then(res=>{
-            this.setState({ 
-              chgStatus:res.ChangeValue,
-              chgEndorsement:res.ChangeEndorsement,
-              WKFValue:res.WKFValue,
-              test: res.Test
-            })
-            
-          });
-    
-    
-          processInstance.events.RequestChange().on('data', (event) => {
-            console.log(event);    
+      await processInstance.methods.getChangeArgs(this.state.publicHash).call()
+        .then(res => {
+          this.setState({
+            chgStatus: res.ChangeValue,
+            chgEndorsement: res.ChangeEndorsement,
+            WKFValue: res.WKFValue,
+            test: res.Test
           })
-          .on('error', console.error);
-    
-        }
-        catch(error){
-        console.log(error);
-        }
-      }
-  
+
+        });
+
+
+      processInstance.events.RequestChange().on('data', (event) => {
+        //console.log(event);
+      })
+        .on('error', console.error);
+
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
   /**
    * Setting up the environment:
    * - Fits the graph display to the window, 
@@ -266,232 +268,229 @@ class EditionDeck extends React.Component {
 
     });
     this.setState({
-      newActivityCnt:newActivityCnt,
-      roleLoading:'done'
+      newActivityCnt: newActivityCnt,
+      roleLoading: 'done'
     });
   };
 
 
-  privateUpd(data){
-            // generate vect, text extraction (role, role mapping, global/events) , and save to new version
-            axios.post(`http://localhost:5000/privateGraphUpd`,
-            data,
-            { "headers": { "Access-Control-Allow-Origin": "*" } }
-          );
+  privateUpd(data) {
+    // generate vect, text extraction (role, role mapping, global/events) , and save to new version
+    axios.post(`http://localhost:5000/privateGraphUpd`,
+      data,
+      { "headers": { "Access-Control-Allow-Origin": "*" } }
+    );
   }
 
-  publicUpd(data, addressesToNotify){
-    var hash=this.state.hash;
+  publicUpd(data, addressesToNotify) {
+    var hash = this.state.hash;
     ipfs.files.add(data)
-    .then(res => {
-      hash = res[0].hash;
-      alert(hash);
-      this.setState({ hashPublicReq: hash });
-      return ipfs.files.cat(hash)
-   })
-  .then(output => {
-    console.log('retrieved public req data:', JSON.parse(output));
-    console.log('retrieved hash:',hash);
+      .then(res => {
+        hash = res[0].hash;
+        //alert(hash);
+        this.setState({ hashPublicReq: hash });
+        return ipfs.files.cat(hash)
+      })
+      .then(output => {
+        //console.log('retrieved public req data:', JSON.parse(output));
+        //console.log('retrieved hash:', hash);
 
-    this.state.contractProcess.methods.requestChange(this.state.accounts[0], addressesToNotify, this.state.publicHash+','+hash, this.state.publicHash, hash).send({
-      from: this.state.accounts[0]
-    }, (error) => {
-              console.log(error);
-    });  
+        this.state.contractProcess.methods.requestChange(this.state.accounts[0], addressesToNotify, this.state.publicHash + ',' + hash, this.state.publicHash, hash).send({
+          from: this.state.accounts[0]
+        }, (error) => {
+          console.log(error);
+        });
 
-  })
+      })
   }
 
-    /**
-   * Switcher function to save graphs (whether private storage or BC trigger for negociation).
-   * We check the graph subgraph type to assess if we need to trigger the SC negociation stage. 
-   * If one of the subgraph elems is a choreography, then we will need to call the SC for peer concertation. 
-   * Otherwise we can update the private projection directly. 
-   */
+  /**
+ * Switcher function to save graphs (whether private storage or BC trigger for negociation).
+ * We check the graph subgraph type to assess if we need to trigger the SC negociation stage. 
+ * If one of the subgraph elems is a choreography, then we will need to call the SC for peer concertation. 
+ * Otherwise we can update the private projection directly. 
+ */
 
   async saveGraph() {
-      var publicUpd = false;
-      var publicNodes = [];
-      this.cy.elements().forEach(function (ele) {
-        console.log(ele);
-        if (ele['_private']['classes'].has('type_choreography') && ele['_private']['classes'].has('subgraph')) {
-          publicUpd = true;
-          var splElem = ele['_private']['data']['name'].trim().split(' '); 
-          var cleanedEle = []
-          splElem.forEach(function (ele) {
-            if(ele !== ""){
-              cleanedEle.push(ele);
-            }
-          })
-  
-          publicNodes.push({
-            'name': cleanedEle[1],
-            'src': cleanedEle[0],
-            'tgt': cleanedEle[2]
-        });
-        }
-      });
-
-      if (window.confirm('Confirm new graph version?')) {
-  
-          if (publicUpd) {
-              this.publicGraphUpd(publicNodes);
-              }
-          else {
-            this.privateGraphUpd();
-            console.log('new graph version saved!')
-  
+    var publicUpd = false;
+    var publicNodes = [];
+    this.cy.elements().forEach(function (ele) {
+      //console.log(ele);
+      if (ele['_private']['classes'].has('type_choreography') && ele['_private']['classes'].has('subgraph')) {
+        publicUpd = true;
+        var splElem = ele['_private']['data']['name'].trim().split(' ');
+        var cleanedEle = []
+        splElem.forEach(function (ele) {
+          if (ele !== "") {
+            cleanedEle.push(ele);
           }
-  
-        }
+        })
 
+        publicNodes.push({
+          'name': cleanedEle[1],
+          'src': cleanedEle[0],
+          'tgt': cleanedEle[2]
+        });
+      }
+    });
+
+    if (window.confirm('Confirm new graph version?')) {
+
+      if (publicUpd) {
+        this.publicGraphUpd(publicNodes);
+      }
       else {
-        console.log('save aborted');
+        this.privateGraphUpd();
+        console.log('new graph version saved!')
+
       }
 
     }
-  
-  
+
+    else {
+      console.log('save aborted');
+    }
+
+  }
+
+
   ///// Render
 
   render() {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
-    
+
     return <>
       <div>
-      <Authentification status={this.getStatus} />
+        <Authentification status={this.getStatus} />
 
-      <Container fluid  >
-      <SimpleLoader load={this.state.chgStatus} type={"bubble-top"} msg={"loading blockchain data"}/>
+        <Container fluid  >
+          <SimpleLoader load={this.state.chgStatus} type={"bubble-top"} msg={"loading blockchain data"} />
 
-<div style={(this.state.chgStatus === 'loading') ? {display: 'none' } : {} }>
-        <Row >
-          <Col >
-            <div className="bg-green pt-5 pb-3">
+          <div style={(this.state.chgStatus === 'loading') ? { display: 'none' } : {}}>
+            <Row >
+              <Col >
+                <div className="bg-green pt-5 pb-3">
 
-              <div className='container'>
+                  <div className='container'>
 
-                <div className="align-items-center">
+                    <div className="align-items-center">
 
-                  <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
+                      <h2>Editing [process {this.state.processID}: projection {this.state.projectionID}]</h2>
 
-                  <p>Right click on the graph to see the menu</p>
+                      <p>Right click on the graph to see the menu</p>
 
-                  <div>
-                    <Row>
-                      <Col sm={9}>
-                        <Card style={{ height: '95%', 'marginTop': '3vh' }}>
-                          <Card.Body >
-                            <CytoscapeComponent elements={this.state.data}
-                              stylesheet={stylesheet}
-                              layout={layout}
-                              style={style}
-                              cy={(cy) => { this.cy = cy }}
-                              boxSelectionEnabled={true}
-                            />
-                          </Card.Body>
-                        </Card>
+                      <div>
+                        <Row>
+                          <Col sm={9}>
+                            <Card style={{ height: '95%', 'marginTop': '3vh' }}>
+                              <Card.Body >
+                                <CytoscapeComponent elements={this.state.data}
+                                  stylesheet={stylesheet}
+                                  layout={layout}
+                                  style={style}
+                                  cy={(cy) => { this.cy = cy }}
+                                  boxSelectionEnabled={true}
+                                />
+                              </Card.Body>
+                            </Card>
 
-                      </Col>
-                      <Col>
-                        <Card bg={'light'} style={{ 'marginTop': '3vh', width: '100%' }}>
-                          <Card.Body>
-                            <Card.Title><h3>Editor Deck</h3></Card.Title>
-                            <hr /><br />
-
-                              <Form>
-                                <h4>Activity</h4>
-
-                                <Form.Label>Activity name</Form.Label>
-                                <Form.Control type="address" onChange={this.handleActivityName} placeholder={'enter activity name'} value={this.state.elemClicked.activityName} />
-
-                                {this.state.elemClicked.isChoreo?       
-                                <>                         <hr style={{ "size": "5px" }} /><br />
-                                <h4>Assign role</h4>
-                                <br />
-
-                                <div className="form-group">
-                                  <label className="is-required" htmlFor="role">Choreography Sender</label>
-                                  <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
-                                  <option value=''> ---</option>
-                                  
-                                  {
-                                    React.Children.toArray(
-                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
-                                    )
-                                  }
-
-                                  </select>
-                                </div>
-
-                                <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
-                                <br />
-                                <div className="form-group">
-                                  <label className="is-required" htmlFor="role">Choreography Receiver</label>
-                                  <select className="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
-                                  <option value=''> ---</option>
-                                  {
-                                    React.Children.toArray(
-                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
-                                    )
-                                  }
-                                  </select>
-                                </div>
-                                </>:
-                                <></>
-                                }
+                          </Col>
+                          <Col>
+                            <Card bg={'light'} style={{ 'marginTop': '3vh', width: '100%' }}>
+                              <Card.Body>
+                                <Card.Title><h3>Editor Deck</h3></Card.Title>
                                 <hr /><br />
 
-                                <h4>Marking</h4>
+                                <Form>
+                                  <h4>Activity</h4>
 
-                                <Form.Group controlId="formBasicEmail">
-                                  <Form.Check
-                                    onChange={this.handleMI}
-                                    type={'checkbox'}
-                                    id={`default-checkbox`}
-                                    label={`included`}
-                                  />
-                                  <Form.Check
-                                    onChange={this.handleME}
-                                    type={'checkbox'}
-                                    id={`default-checkbox`}
-                                    label={`executed`}
-                                  />
-                                  <Form.Check
-                                    onChange={this.handleMP}
-                                    type={'checkbox'}
-                                    id={`default-checkbox`}
-                                    label={`pending`}
-                                  />
-                                </Form.Group>
+                                  <Form.Label>Activity name</Form.Label>
+                                  <Form.Control type="address" onChange={this.handleActivityName} placeholder={'enter activity name'} value={this.state.elemClicked.activityName} />
 
-                              </Form>
+                                  {this.state.elemClicked.isChoreo ?
+                                    <>                         <hr style={{ "size": "5px" }} /><br />
+                                      <h4>Assign role</h4>
+                                      <br />
 
-                              <Button onClick={this.updActivity}>update activity</Button>
+                                      <div className="form-group">
+                                        <label className="is-required" htmlFor="role">Choreography Sender</label>
+                                        <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
+                                          <option value=''> ---</option>
 
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
+                                          {
+                                            React.Children.toArray(
+                                              this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                            )
+                                          }
+
+                                        </select>
+                                      </div>
+
+                                      <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
+                                      <br />
+                                      <div className="form-group">
+                                        <label className="is-required" htmlFor="role">Choreography Receiver</label>
+                                        <select className="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
+                                          <option value=''> ---</option>
+                                          {
+                                            React.Children.toArray(
+                                              this.state.roles.map((name, i) => <option key={i}>{name}</option>)
+                                            )
+                                          }
+                                        </select>
+                                      </div>
+                                    </> :
+                                    <></>
+                                  }
+                                  <hr /><br />
+
+                                  <h4>Marking</h4>
+
+                                  <Form.Group controlId="formBasicEmail">
+                                    <Form.Check
+                                      onChange={this.handleMI}
+                                      type={'checkbox'}
+                                      id={`default-checkbox`}
+                                      label={`included`}
+                                    />
+                                    <Form.Check
+                                      onChange={this.handleME}
+                                      type={'checkbox'}
+                                      id={`default-checkbox`}
+                                      label={`executed`}
+                                    />
+                                    <Form.Check
+                                      onChange={this.handleMP}
+                                      type={'checkbox'}
+                                      id={`default-checkbox`}
+                                      label={`pending`}
+                                    />
+                                  </Form.Group>
+
+                                </Form>
+
+                                <Button onClick={this.updActivity}>update activity</Button>
+
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        </Row>
+                      </div>
+                      <Button onClick={this.saveGraph}>save new version</Button>
+                    </div>
+                    <Legend src={this.state.src} />
+
                   </div>
-                  <p> chg status: {this.state.chgStatus}</p>
-                  <p>chg endorsement: {this.state.chgEndorsement}</p>
-                  <p> test: {this.state.test}</p>
-                  <Button onClick={this.saveGraph}>save new version</Button>
-                    </div>
-                    <Legend src={this.state.src}/>
+                </div>
 
-                    </div>
-                    </div>
+              </Col>
+            </Row>
+          </div>
+        </Container>
 
-                    </Col>
-        </Row>
-        </div>
-      </Container>
-
-                    </div>
+      </div>
 
     </>
 

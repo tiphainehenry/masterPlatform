@@ -2,7 +2,10 @@ import React from 'react';
 import '../style/App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
+
 import activityUpdHelpers from './utils_ActivityUpdHelpers';
+import dcrHelpers from './utils_dcrHelpers';
+
 import cytoMenuHelpers from './utils_CytoMenuHelpers';
 import { getMenuStyle } from './utils_ContextMenuHelpers';
 
@@ -113,6 +116,8 @@ class CreationDeck extends React.Component {
 
     };
 
+    this.cmpAccountRoles = dcrHelpers.cmpAccountRoles.bind(this);
+
     /// Activity update functions
     this.updActivity = cytoMenuHelpers.updActivity.bind(this);
     this.handleActivityName = activityUpdHelpers.handleActivityName.bind(this);
@@ -197,14 +202,17 @@ class CreationDeck extends React.Component {
 
       this.setState({ web3, accounts, contract: instance });
 
-      var roles = await instance.methods.getRoles().call()
-      var tmpRoles = []
-      var tmpAddress = []
+      var roles = await instance.methods.getRoles().call();
+      var tmpAddress = []      
       roles.forEach(line => {
-        tmpRoles.push(line.split('///')[0])
         tmpAddress.push(line.split('///')[1])
       });
-      this.setState({ roles: tmpRoles, addresses: tmpAddress })
+      this.setState({ addresses: tmpAddress })
+
+
+      var accroles = await instance.methods.getAccountRoles().call();
+      this.cmpAccountRoles(accroles);
+
     } catch (error) {
       //alert(
       //  `Failed to load web3, accounts, or contract. Check console for details.`,

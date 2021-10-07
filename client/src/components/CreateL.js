@@ -139,8 +139,6 @@ class CreateL extends React.Component {
     alert('submitting');
     e.preventDefault() // Stop form submit
     this.fileUpload(e, this.state.file).then((response) => {
-      console.log('coucou i\'m here');
-      console.log(response.data);
       if (response.data === "ok") {
         // save to BC
         console.log('projection done');

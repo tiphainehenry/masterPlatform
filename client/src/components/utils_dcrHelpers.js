@@ -22,6 +22,31 @@ const dcrHelpers = {
     })
   },
 
+
+  cmpAccountRoles: function(roles) {
+    var roleMaps = []
+    var tmpRoles = []
+    var tmpAddress = []
+
+    roles.forEach(line => {
+      var r = line.split('///')[0].replace('///', '');
+      var a = line.split('///')[1];
+
+      if ((r !== '') && (!tmpRoles.includes(r))) {
+        tmpRoles.push(r);
+        tmpAddress.push(a);
+        roleMaps.push({'role':r, 'address':a});
+      };
+  
+    })
+
+    this.setState({ 
+        roles: tmpRoles, 
+        addresses: tmpAddress, 
+        roleMaps:roleMaps,
+      })
+    },
+
     //////////  LISTENERS /////////////////
 
   /**

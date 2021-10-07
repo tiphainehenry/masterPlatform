@@ -23,6 +23,7 @@ class NewRole extends React.Component {
             name: "",
             selectValue: "",
             roles: [],
+            myRoles:[],
             addresses: [],
             admins: [],
             listOfRoles: [],
@@ -83,9 +84,7 @@ class NewRole extends React.Component {
      * Get the list of existing roles for an account
      */
     async getListRoles(address) {
-        console.log(address);
         const roles = await this.state.instance.methods.getElemRoles(address).call()
-        console.log(roles);
         var line = []
         for (let i = 0; i < roles.length; i++) {
             line.push(
@@ -103,7 +102,7 @@ class NewRole extends React.Component {
      */
     async getRoles() {
         const roles = await this.state.instance.methods.getRoles().call()
-        console.log(roles);
+        
         var tmpRoles = []
         var tmpAddress = []
         var tmpAdmin = []

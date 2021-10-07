@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+
 const changeManager = {
   /**
    * Ask change nego via smart contract intermediary
@@ -40,8 +42,15 @@ const changeManager = {
     var roles = this.state.roleMaps;
     var addressesToNotify = []
     publicNodes.forEach(function(node){
+      console.log('node');
+      console.log(node);
+
       roles.forEach(function(r){
+        console.log(r);
+
+        // test if role is accrole
         if ((node['src']===r['role'])||(node['tgt']===r['role'])) {
+
           var new_address = r['address'];
           if (new_address.slice(0,2)!=='0x'){
             new_address = '0x'+new_address;

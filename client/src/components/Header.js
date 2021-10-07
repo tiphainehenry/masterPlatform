@@ -44,8 +44,8 @@ class Header extends React.Component {
   render() {
     let links = []
     if (this.state.auth.isAdmin) {
-      links.push(<Nav.Link key='welcomeInstance' href="/welcomeInstance" className="nav-item" style={{ color: "white" }}> My Running Instances</Nav.Link>)
-      links.push(<Nav.Link key='welcomemodel' href="/welcomemodel" className="nav-item" style={{ color: "white" }}>My Process Models </Nav.Link>)
+      links.push(<Nav.Link key='welcomeInstance' href="/welcomeInstance" className="nav-item" style={{ color: "white" }}> My Running Instances (admin view)</Nav.Link>)
+      links.push(<Nav.Link key='welcomemodel' href="/welcomemodel" className="nav-item" style={{ color: "white" }}>My Process Models (admin view) </Nav.Link>)
     }
     return <div>
       <Authentification status={this.getStatus} />
@@ -67,7 +67,8 @@ class Header extends React.Component {
                 <span>Hello <span className="text-primary">{this.state.auth.name}</span></span></>
               } id="collasible-nav-dropdown">
                 <NavDropdown.Item style={{ "fontSize": '16px' }}><p>Admin : {this.state.auth.isAdmin ? "true" : "false"}</p>
-                  <p>Role : {this.state.auth.isRole ? "true" : "false"}</p>
+                  <p>Account : {this.state.auth.isRole ? "true" : "false"}</p>
+                  <p>Roles : {this.state.auth.isRole ? this.state.auth.myRoles.join(', ') : "false"}</p>
 
                 </NavDropdown.Item>
 

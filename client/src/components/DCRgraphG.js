@@ -7,6 +7,8 @@ import ExecLogger from './execLogger';
 import PublicMarkings from './PublicMarkings';
 
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
+import AdminRoleManager from '../contracts/AdminRoleManager.json';
+
 import getWeb3 from '../getWeb3';
 import ipfs from '../ipfs';
 
@@ -16,6 +18,11 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import Dagre from 'cytoscape-dagre'
 import Klay from 'cytoscape-klay'
 import COSEBilkent from 'cytoscape-cose-bilkent';
+
+import { Spinner } from 'react-bootstrap';
+
+import { SolarSystemLoading } from 'react-loadingg';
+
 
 Cytoscape.use(COSEBilkent);
 Cytoscape.use(Dagre)
@@ -55,14 +62,23 @@ class DCRgraphG extends React.Component {
       exec: '',
       pend: '',
 
-      pHash : ProcessDB[this.props.processName]['hash'] || '',
+      pHash: ProcessDB[this.props.processName]['hash'] || '',
 
       dataHashes: '',
       activityData: '',
       wkID: '',
       dataValues: [],
       altVersionExists: false,
-      chgType:'NA'
+      chgType: 'NA',
+
+      BCQuery: JSON.parse(localStorage.getItem('BCQuery')) || false,
+      hasApprovedChg: 0,
+      chgAprovalOutcomes: '',
+      iamTheInitiator: '',
+      markingStates: JSON.parse(localStorage.getItem('markingStates')) || [],
+      relations: JSON.parse(localStorage.getItem('relations')) || [],
+      addresses: JSON.parse(localStorage.getItem('addresses')) || [],
+
     };
 
     this.fetchBCid = this.fetchBCid.bind(this);
@@ -70,6 +86,12 @@ class DCRgraphG extends React.Component {
     this.handleProjSwitch = this.handleProjSwitch.bind(this);
     this.reqHashUpload = this.reqHashUpload.bind(this);
     this.generateLocalChg = this.generateLocalChg.bind(this);
+    this.finalSwitchProj = this.finalSwitchProj.bind(this);
+    this.handleUpdWkf = this.handleUpdWkf.bind(this);
+    this.uploadOnChain = this.uploadOnChain.bind(this);
+    this.updMyHash = this.updMyHash.bind(this);
+    this.getCanExecuteCheck = this.getCanExecuteCheck.bind(this);
+
   }
 
   /**
@@ -80,15 +102,29 @@ class DCRgraphG extends React.Component {
   componentWillMount() {
     var dict = Object.keys(ProcessDB[this.props.processID][this.props.projectionID]);
 
+    var alt_v = false;
     Object.entries(dict).forEach(([key, value]) => {
       //console.log(key, value);
       if (value === 'v_upd') {
+        alt_v = true
         this.setState({
-          altVersionExists: true, 
-          chgType:'Private'
+          chgType: 'Private'
         });
       }
+
+      this.setState({
+        altVersionExists: alt_v,
+      });
+
     });
+
+
+    var projType = ProcessDB[this.props.processID]['projType'];
+
+    this.setState({
+      'projType': projType
+    });
+
 
     this.loadContract();
   }
@@ -114,23 +150,56 @@ class DCRgraphG extends React.Component {
         deployedNetwork && deployedNetwork.address,
       );
       var pHash = ProcessDB[this.props.processName]['hash'];
-      
+
       const inclVector = await instance.methods.getIncluded(pHash).call();
       const execVector = await instance.methods.getExecuted(pHash).call();
       const pendVector = await instance.methods.getPending(pHash).call();
       const hashesVector = await instance.methods.getHashes(pHash).call();
 
+
+
+
+      const AdminDeployedNetwork = AdminRoleManager.networks[networkId];
+      const AdminInstance = new web3.eth.Contract(
+          AdminRoleManager.abi,
+          AdminDeployedNetwork && AdminDeployedNetwork.address,
+      );
+      var userRoles = await AdminInstance.methods.getElemRoles(accounts[0]).call();
+      var isRoleOwner=false;
+      if(userRoles.includes(this.props.id)){
+        console.log('success, user is role owner')
+        isRoleOwner=true;
+      }
+  
+      var acc = web3.currentProvider.selectedAddress;
+      const hasApprovedChg = await instance.methods.hasApprovedProjection(pHash, acc).call();
+
+      const chgApprovalList = await instance.methods.getChangeApprovalsOutcome(pHash).call();
+      //console.log('chg',chgApprovalList);
+      const chgApprovalAddresses = await instance.methods.getEndorserAddresses(pHash).call();
+      const Test = await instance.methods.getTest().call(); //?
+
       await instance.methods.getChangeArgs(pHash).call()
-      .then(res=>{
-        console.log('approved by all endorsers');
-        if (res.Test === 'approved by all endorsers') {
-          this.setState({
-            altVersionExists: true, 
-            chgType:'public',
-            reqHash: res.reqHash
-          });
-        }
-      });
+        .then(res => {
+          if (res._Test === 'approved by all endorsers') {
+
+            const chgApprovalOutcome = chgApprovalList.reduce((a, b) => parseInt(a) + parseInt(b), 0);
+
+            const outcome = chgApprovalOutcome / parseInt(res.numEndorsers);
+
+            //console.log('chgStatus',res.ChangeValue);
+            //console.log('iaminiti',res.initiator);
+            var iamInit = (res.initiator === this.state.owner);
+            this.setState({
+              altVersionExists: true,
+              chgType: 'public',
+              reqHash: res.reqHash,
+              chgApprovalOutcome: parseInt(outcome),
+              chgStatus: parseInt(res.ChangeValue),
+              iamTheInitiator: iamInit
+            });
+          }
+        });
 
       this.setState({
         web3, accounts, contract: instance,
@@ -140,12 +209,28 @@ class DCRgraphG extends React.Component {
         incl: inclVector,
         exec: execVector,
         pend: pendVector,
-        dataHashes: hashesVector
+        dataHashes: hashesVector,
+        isRoleOwner: isRoleOwner,
+
+        hasApprovedChg: parseInt(hasApprovedChg),
+        chgApprovalList: chgApprovalList,
+        chgApprovalAddresses: chgApprovalAddresses,
+        testBis: Test[1],
+        test: Test[0]
+
       })
 
 
+      instance.getPastEvents('LogExecution', {
+        //  filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
+        fromBlock: 0,
+        toBlock: 'latest'
+      })
+        .then(function (events) {
+          console.log(events); // same results as the optional callback above        
+        });
 
-
+      //console.log(chgApprovalAddresses);
       this.cy.fit();
 
     } catch (error) {
@@ -171,6 +256,7 @@ class DCRgraphG extends React.Component {
     Object.entries(dict).forEach(([key, value]) => {
       //console.log(key, value);
       if (value === 'v_upd') {
+        //alert('its true');
         this.setState({
           altVersionExists: true
         });
@@ -211,6 +297,8 @@ class DCRgraphG extends React.Component {
     const isElem = (element) => element.includes(this.state.idClicked);
     const indexClicked = activities.findIndex(isElem);
 
+    //console.log(indexClicked);
+
     this.setState({ indexClicked: indexClicked });
 
   }
@@ -226,39 +314,16 @@ class DCRgraphG extends React.Component {
     // fetch public workflow id
     this.fetchBCid();
 
+    //console.log('phash',this.state.pHash);
+    //console.log('clicked index',this.state.indexClicked);
+    //console.log('myAcc',accounts[0]);
     // execute transaction
     try {
       //var hashData = this.state.web3.utils.fromAscii(this.state.activityData);
       //await contract.methods.checkCliquedIndex(this.state.indexClicked, hashData).send({ from: accounts[0] });
-      await contract.methods.checkCliquedIndex(this.state.pHash, this.state.indexClicked).send({ from: accounts[0] });
-
-      // Get the value from the contract.
-      const output = await contract.methods.getCanExecuteCheck(this.state.pHash, this.state.indexClicked).call();
-      switch (output) {
-        case '1':
-          window.alert('Task not included');
-          this.setState({ bcRes: 'BC exec - rejected - taskNotIncluded' });
-          break;
-        case '2':
-          window.alert('Conditions not fulfilled');
-          this.setState({ bcRes: 'BC exec - rejected - conditionsNotFulfilled' });
-          break;
-        case '3':
-          window.alert('Milestones not fulfilled');
-          this.setState({ bcRes: 'BC exec - rejected - milestonesNotFulfilled' });
-          break;
-        case '4':
-          const rightAddress = await contract.methods.getRoleAddresses(this.state.pHash, this.state.indexClicked).call();
-          window.alert('Authentication issue - wrong user tried to execute task.\nExpected '+rightAddress+'...');
-          this.setState({ bcRes: 'BC exec - rejected - authentication error' });
-          break;
-        case '0':
-          //window.alert('Task executable');
-          this.setState({ bcRes: 'executed' });
-          break;
-        default:
-          this.setState({ bcRes: 'BC exec - rejected - Did not evaluate the task' });
-      }
+      await contract.methods.checkCliquedIndex(this.state.pHash, this.state.indexClicked).send({ from: accounts[0] }).then(res => {
+        this.getCanExecuteCheck();
+      })
 
     }
     catch (err) {
@@ -281,11 +346,43 @@ class DCRgraphG extends React.Component {
       },
       { "headers": { "Access-Control-Allow-Origin": "*" } }
     );
-
   };
 
 
+  async getCanExecuteCheck() {
+    const { accounts, contract } = this.state;
 
+    //   Get the value from the contract.
+    await contract.methods.getCanExecuteCheck(this.state.pHash).call().then(output => {
+      //console.log(output);
+      switch (output) {
+        case '1':
+          window.alert('Task not included');
+          this.setState({ bcRes: 'BC exec - rejected - taskNotIncluded' });
+          break;
+        case '2':
+          window.alert('Conditions not fulfilled');
+          this.setState({ bcRes: 'BC exec - rejected - conditionsNotFulfilled' });
+          break;
+        case '3':
+          window.alert('Milestones not fulfilled');
+          this.setState({ bcRes: 'BC exec - rejected - milestonesNotFulfilled' });
+          break;
+        case '4':
+          //const rightAddress = await contract.methods.getRoleAddresses(this.state.pHash, this.state.indexClicked).call();
+          window.alert('Authentication issue - wrong user tried to execute task.'); //\nExpected '+rightAddress+'...'
+          this.setState({ bcRes: 'BC exec - rejected - authentication error' });
+          break;
+        case '0':
+          //window.alert('Task executable');
+          this.setState({ bcRes: 'executed' });
+          break;
+        default:
+          this.setState({ bcRes: 'BC exec - rejected - Did not evaluate the task' });
+      }
+
+    });
+  }
   /**
    * Listens to the graph for any node click. 
    * If a click occurs on a node, an API request is sent to the backend: if the event is private, its execution is directly processed. 
@@ -312,6 +409,9 @@ class DCRgraphG extends React.Component {
         //updateGraphMarkings
         event.preventDefault();
         const idClicked = this.state.idClicked;
+
+        console.log(this.state.nameClicked);
+        console.log(idClicked)
         var headers = {
           "Access-Control-Allow-Origin": "*",
         };
@@ -345,63 +445,60 @@ class DCRgraphG extends React.Component {
 
   async reqHashUpload() {
 
-      //alert('fetch reqHash public projection');
-          
-      this.getIPFSOutput(this.state.reqHash).then(output => {
+    //alert('fetch reqHash public projection');
 
-        // step1: get req data
-        var JSONpubView = JSON.parse(output);
-        console.log('retrieved data:', JSONpubView);
+    this.getIPFSOutput(this.state.reqHash).then(output => {
 
-        // step2: get local data
-        var privateNodes = [];
-        var edges = [];
-        this.cy.nodes().forEach(function (ele) {
-          console.log(ele);
-          if (!ele['_private']['classes'].has('type_choreography') && 
-              !ele['_private']['classes'].has('type_projChoreo')&&
-              !ele['_private']['classes'].has('choreography')&&
-              !ele['_private']['data']['name'].includes('!')&&
-              !ele['_private']['data']['name'].includes('?')
-          ) {
-            privateNodes.push({
-              'data' : ele['_private']['data'],
-              'group': ele['_private']['group'],
-              'classes': ele['_private']['classes'],
-          });
-          }
-        });
+      // step1: get req data
+      var JSONpubView = JSON.parse(output);
 
-        console.log('privateNodes',privateNodes);
+      // step2: get local data
+      var privateNodes = [];
+      var edges = [];
+      this.cy.nodes().forEach(function (ele) {
 
-        this.cy.edges().forEach(function(ele){
-          edges.push({
-            'data' : ele['_private']['data'],
+        if (!ele['_private']['classes'].has('type_choreography') &&
+          !ele['_private']['classes'].has('type_projChoreo') &&
+          !ele['_private']['classes'].has('choreography') &&
+          !ele['_private']['data']['name'].includes('!') &&
+          !ele['_private']['data']['name'].includes('?')
+        ) {
+          privateNodes.push({
+            'data': ele['_private']['data'],
             'group': ele['_private']['group'],
-            'classes': ele['_private']['classes']
-          })
-        });
+            'classes': ele['_private']['classes'],
+          });
+        }
+      });
 
-        // step3: merge projections (reqHash+ localProj)
-        const formData = new FormData();
-        formData.append('processID', this.props.processName);
-        formData.append('roleID', this.props.id);
-        formData.append('roleNum', this.props.projectionID);
-        formData.append('JSONPubView', JSON.stringify(JSONpubView));
-        formData.append('JSONPriView', JSON.stringify(privateNodes));
-        formData.append('JSONedges', JSON.stringify(edges));
-        this.generateLocalChg(formData);
-        // step4: notify SC that local proj has been done. 
+      this.cy.edges().forEach(function (ele) {
+        edges.push({
+          'data': ele['_private']['data'],
+          'group': ele['_private']['group'],
+          'classes': ele['_private']['classes']
+        })
+      });
 
-      })
-         
+      // step3: merge projections (reqHash+ localProj)
+      const formData = new FormData();
+      formData.append('processID', this.props.processName);
+      formData.append('roleID', this.props.id);
+      formData.append('roleNum', this.props.projectionID);
+      formData.append('JSONPubView', JSON.stringify(JSONpubView));
+      formData.append('JSONPriView', JSON.stringify(privateNodes));
+      formData.append('JSONedges', JSON.stringify(edges));
+      this.generateLocalChg(formData);
+      // step4: notify SC that local proj has been done. 
+
+    })
+
   }
 
-  async getIPFSOutput(hash){
+  async getIPFSOutput(hash) {
     return ipfs.cat(hash);
   }
 
-  async generateLocalChg(formData){
+  async generateLocalChg(formData) {
     const url = `http://localhost:5000/localChg`;
 
     const config = {
@@ -413,9 +510,152 @@ class DCRgraphG extends React.Component {
     };
 
     return axios.post(url, formData, config);
+  }
 
-  } 
+  async generatePublicChg(formData) {
+    const url = `http://localhost:5000/publicChg`;
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+    return axios.post(url, formData, config);
+  }
 
+  fetchWKData(pid) {
+
+    //Object.keys(ProcessDB).forEach(k => {console.log(k)});
+
+    var activities = ProcessDB[pid]['TextExtraction']['public']['privateEvents'];
+
+
+    var orderedPk = []
+    var orderedNames = ProcessDB[pid]['Public']['vect']['activityNames']['default'];
+
+    for (let i in orderedNames) {
+      let matchingPk = ''
+      Object.keys(activities).forEach(k => {
+        if (activities[k].eventName === orderedNames[i]) {
+          //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
+          matchingPk = activities[k].address;
+        }
+      });
+      if (matchingPk !== '') {
+        orderedPk.push(matchingPk);
+      }
+    }
+    let approvalList = [...new Set(orderedPk)];
+    //console.log(ProcessDB[pid]['Public']['vect']['fullMarkings']['included'].length);
+
+    var PubVec = ProcessDB[pid]['Public']['vect'];
+    return [ProcessDB[pid]['Global']['data'],
+      pid,
+    PubVec['activityNames']['default'],
+    PubVec['fullMarkings']['included'],
+    PubVec['fullMarkings']['executed'],
+    PubVec['fullMarkings']['pending'],
+    PubVec['fullRelations']['include'],
+    PubVec['fullRelations']['exclude'],
+    PubVec['fullRelations']['response'],
+    PubVec['fullRelations']['condition'],
+    PubVec['fullRelations']['milestone'],
+      orderedPk,
+      approvalList
+    ]
+
+
+  }
+
+
+
+  /**
+ * launches a transaction to the smart contract workflow manager to update a workflow.
+ */
+  handleUpdWkf = async () => {
+    //alert('Update public view onchain');
+
+    const { accounts, contract } = this.state;
+
+    try {
+      // connect list of activities to corresponding role first, and then to the right role address
+
+      var wkData = this.fetchWKData(this.props.processID);
+
+      var addresses = wkData[11];
+      var _markingStates = [wkData[3], wkData[4], wkData[5]];
+      var _relations = [wkData[6],
+      wkData[7],
+      wkData[8],
+      wkData[9],
+      wkData[10]];
+      //console.log('_relations');
+      //console.log(_relations);
+      //console.log('_markingStates');
+      //console.log(_markingStates);
+      console.log('addresses');
+      console.log(addresses);
+
+      this.setState({
+        markingStates: _markingStates
+      }, () => {
+        localStorage.setItem('markingStates', JSON.stringify(this.state.markingStates))
+      });
+      this.setState({
+        relations: _relations
+      }, () => {
+        localStorage.setItem('relations', JSON.stringify(this.state.relations))
+      });
+      this.setState({
+        addresses: addresses
+      }, () => {
+        localStorage.setItem('addresses', JSON.stringify(this.state.addresses))
+      });
+
+      this.setState({
+        data: wkData[0],
+        processName: wkData[1],
+
+        activityNames: wkData[2],
+        includedStates: wkData[3],
+        executedStates: wkData[4],
+        pendingStates: wkData[5],
+        includesTo: wkData[6],
+        excludesTo: wkData[7],
+        responsesTo: wkData[8],
+        conditionsFrom: wkData[9],
+        milestonesFrom: wkData[10],
+        approvalList: wkData[12],
+        pHash: this.state.reqHash,
+        altVersionExists: false
+      });
+
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+  async finalSwitchProj() {
+
+    this.getIPFSOutput(this.state.reqHash).then(output => {
+
+      // step1: get req data
+      var JSONpubView = JSON.parse(output);
+
+      // step2: bitvectorize
+      const formData = new FormData();
+      formData.append('processID', this.props.processName);
+      formData.append('roleID', this.props.id);
+      formData.append('JSONPubView', JSON.stringify(JSONpubView));
+      formData.append('reqHash', this.state.reqHash);
+      this.generatePublicChg(formData).then(res => {
+        this.handleUpdWkf();//FETCH MARKINGS, RELS, ACTIVITYNAMES
+      });
+    })
+  }
 
   /**
    * Updates projection on demand --> checks if any ungoing pending activities exist. 
@@ -438,7 +678,7 @@ class DCRgraphG extends React.Component {
       alert('[INFO] switch not possible yet (we spotted a pending event)');
     }
     else {
-      if (this.state.chgType === 'Private'){
+      if (this.state.chgType === 'Private') {
         // else, launch update: the current projection will be replaced by the alternative one via an API call.
         var headers = {
           "Access-Control-Allow-Origin": "*",
@@ -446,12 +686,12 @@ class DCRgraphG extends React.Component {
         axios.post(`http://localhost:5000/switchProj`,
           {
             projID: this.props.id,
-            processID: this.props.processID
+            processID: this.props.processID,
+            reqHash: this.state.reqHash
           },
           { "headers": headers }
         ).then(
           (response) => {
-            console.log('switched proj');
             this.setState({
               altVersionExists: false
             });
@@ -462,13 +702,107 @@ class DCRgraphG extends React.Component {
           }
         );
       }
-      else{
+      else {
 
         console.log('change is public');
 
-        this.reqHashUpload();
+        this.callSwitchProj().then(res => {
+          this.reqHashUpload();
+
+        });
       }
-    } 
+    }
+  }
+
+  async callSwitchProj() {
+    const { accounts, contract } = this.state;
+
+    await contract.methods.confirmChangeProjection(this.state.pHash, this.state.accounts[0])
+      .send({ from: this.state.accounts[0] })
+      .then(res => {
+        //console.log(res);
+      });
+  }
+
+  async uploadOnChain() {
+    const { accounts, contract } = this.state;
+
+    var wkData = this.fetchWKData(this.props.processID);
+    var addresses = wkData[11];
+    
+
+    //console.log(this.state.pHash);
+    //console.log(this.state.markingStates);
+    //console.log(this.state.relations);
+    console.log(this.state.activityNames['default']);
+    console.log(addresses);
+
+    await contract.methods.switchWorkflows(
+      this.state.pHash,
+      this.state.markingStates,
+      this.state.relations,
+      this.state.activityNames['default'],
+      addresses
+    )
+      .send({ from: this.state.accounts[0] })
+      .then(res => {
+        this.updMyHash();
+      });
+  }
+
+  async updMyHash() {
+
+    const formData = new FormData();
+    formData.append('processID', this.props.processName);
+    formData.append('roleID', this.props.id);
+    formData.append('reqHash', this.state.reqHash);
+
+    var headers = {
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    axios.post(`http://localhost:5000/updMyHash`,
+      formData,
+      { "headers": headers }
+    ).then(
+      (response) => {
+        //console.log('switched proj');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+  }
+
+
+
+  onFormSubmit = async (e) => {
+    const { accounts, contract } = this.state;
+
+    try {
+      e.preventDefault() // Stop form submit
+      this.fileUpload(this.state.file);
+    }
+    catch (err) {
+      console.log(err);
+      this.reinitBCQuery();
+    }
+
+    try {
+      alert('confirm projection');
+      var acc = this.state.web3.currentProvider.selectedAddress;
+      await contract.methods.confirmProjection(this.state.pHash, acc)
+        .send({ from: accounts[0] });
+      this.refreshBCQuery();
+
+    }
+    catch (err) {
+      localStorage.clear();
+      this.reinitBCQuery();
+
+    }
+
   }
 
 
@@ -480,52 +814,138 @@ class DCRgraphG extends React.Component {
     return <div>
       <div className="bg-green pt-5 pb-3">
 
+
+
         <div className='container'>
-          <h2>Process {this.props.processName}</h2>
-          <h3>Private Projection for the role {this.props.id}</h3>
-          <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
-          The local tasks are updated locally via API calls.
+
+
+          <div style={((this.state.web3 !== null) && !this.state.isRoleOwner) ? {} : { display: 'none', 'marginTop': '3vh' }} >
+            <h3 style={{ color: 'red' }}>Wrong address, connected with account {this.state.owner} instead of {this.props.id}'s one.</h3>
+          </div>
+
+
+          <div style={(this.state.isRoleOwner &&
+            (Number.isNaN(this.state.chgApprovalOutcome) || (!this.state.altVersionExists ||
+              ((this.state.chgApprovalOutcome === 1) && (this.state.chgStatus === 4))))) ? {} :
+            { display: 'none' }}>
+            <h2>Process {this.props.processName}</h2>
+            <h3>Private Projection for the role {this.props.id}</h3>
+
+            {this.state.BCQuery ? <Button variant="primary" disabled>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              <span className="sr-only">Loading...</span>
+            </Button>
+              :
+              <div></div>
+            }
+
+            <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
+            The local tasks are updated locally via API calls.
                   The public tasks are updated after a call to the smart contract instance of the public projection. </p>
 
-          <p> Execution logs and the markings of the public graph are displayed in the panels below. </p>
+            <p> Execution logs and the markings of the public graph are displayed in the panels below. </p>
 
-          <p> Click on one of the nodes of the graph below to update the state of the workflow execution. NB. A task needs to be enabled (with a white background here) to be successful. Black tasks are external tasks, managed by another tenant.</p>
+            <p> Click on one of the nodes of the graph below to update the state of the workflow execution. NB. A task needs to be enabled (with a white background here) to be successful. Black tasks are external tasks, managed by another tenant.</p>
 
-          <Card style={{ height: '90%', 'marginTop': '3vh' }}>
-            <Card.Header  style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
-              {this.props.id} Projection
+            <Card style={{ height: '90%', 'marginTop': '3vh' }}>
+              <Card.Header style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
+                {this.props.id} Projection
               <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
-            </Card.Header>
-            <Card.Body >
-              <CytoscapeComponent elements={this.props.data}
-                stylesheet={stylesheet}
-                layout={layout}
-                style={style}
-                cy={(cy) => { this.cy = cy }}
-                boxSelectionEnabled={true}
-              />
-            </Card.Body>
-          </Card>
+              <div className='bg-idheader'>Public view IPFS hash: {this.state.pHash}</div>
+              </Card.Header>
+              <Card.Body >
+                <CytoscapeComponent elements={this.props.data}
+                  stylesheet={stylesheet}
+                  layout={layout}
+                  style={style}
+                  cy={(cy) => { this.cy = cy }}
+                  boxSelectionEnabled={true}
+                />
+              </Card.Body>
+            </Card>
 
-          <ExecLogger execLogs={this.props.execLogs} activityNames={this.state.activityNames} />
-          <PublicMarkings
-            activityNames={this.state.activityNames["default"]}
-            incl={this.state.incl}
-            pend={this.state.pend}
-            exec={this.state.exec}
-            dataHashes={this.state.dataHashes}
-            dataValues={this.state.dataValues}
-            processID={this.props.processName}
-          />
+            <ExecLogger execLogs={this.props.execLogs} activityNames={this.state.activityNames} />
+            <PublicMarkings
+              activityNames={this.state.activityNames["default"]}
+              incl={this.state.incl}
+              pend={this.state.pend}
+              exec={this.state.exec}
+              dataHashes={this.state.dataHashes}
+              dataValues={this.state.dataValues}
+              processID={this.props.processName}
+            />
 
-          {this.state.altVersionExists ?
-            <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button> :
+          </div>
+
+          {(this.state.isRoleOwner &&
+            this.state.altVersionExists && 
+            (this.state.chgApprovalOutcome !== 1) && 
+            (!Number.isNaN(this.state.chgApprovalOutcome))&&
+            (this.state.hasApprovedChg==0)
+            ) ?
+            <>
+              <p>A change request has been accepted by participants: please switch to new version by clicking below.
+            </p>
+
+              <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button>
+
+            </> :
             <></>
           }
 
+
+          {(this.state.isRoleOwner &&
+            this.state.altVersionExists && 
+            (this.state.chgApprovalOutcome !== 1) && 
+            (!Number.isNaN(this.state.chgApprovalOutcome)&&
+            (this.state.hasApprovedChg==1))) ?
+            <>
+              <p>Waiting for initiator switch.</p>
+              <div style={{ 'marginTop': '60vh' }}>
+                <SolarSystemLoading color={'#ff7900'} />
+              </div>
+            </> :
+            <></>
+          }
+
+
+          <div style={(this.state.isRoleOwner &&
+            this.state.altVersionExists & (this.state.chgApprovalOutcome === 1) & (this.state.chgStatus !== 4)) ? {} : { display: 'none' }}>
+            {
+              this.state.iamTheInitiator ?
+                <div>
+                  <p> Dear change initiator, your change request has been approved.
+                  Please click below to change the public view onchain.
+</p>
+                  <Button onClick={this.finalSwitchProj}>1./ Click me to compute public view</Button>
+                  <Button onClick={this.uploadOnChain}>2./ Click me to switch projection onchain</Button>
+                </div> :
+                <>
+                  <p>Waiting for initiator switch.</p>
+                  <div style={{ 'marginTop': '60vh' }}>
+                    <SolarSystemLoading color={'#ff7900'} />
+                  </div>
+
+                </>}
+          </div>
+          <div>
+          </div>
+
+          <div style={((this.state.owner === this.state.addressProj) && this.state.altVersionExists & (this.state.chgApprovalOutcome !== 1) & (this.state.hasApproved === 1)) ? {} : { display: 'none' }}>
+            <p>Successful user projection. Waiting for other participants submissions.</p>
+            <div style={{ 'marginTop': '60vh' }}>
+              <SolarSystemLoading color={'#ff7900'} />
+            </div>
+          </div>
+
         </div>
       </div>
-
     </div>;
   }
 }

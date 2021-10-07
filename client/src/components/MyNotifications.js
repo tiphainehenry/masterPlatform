@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 import Header from './Header';
 import { Row, Col, Container } from 'react-bootstrap';
 
@@ -68,10 +69,12 @@ class MyNotifications extends React.Component {
       SCHashes: [],
       roleMaps:[],
       reqWkf:'',
-      output:''
+      output:'', 
+
+      newEvEval:''
     };
     this.connectToWeb3 = this.connectToWeb3.bind(this);
-    
+    this.reloadEvent = this.reloadEvent.bind(this);
   }
 
   componentWillMount() {
@@ -80,6 +83,11 @@ class MyNotifications extends React.Component {
 
   }
 
+
+  reloadEvent(){
+    console.log('im new hehe');
+    this.setState({'newEvEval':true});
+  }
   /**
    * Lists all processes that live in the SC (based on hash computations) and their role projections, and stores it into the tree state variable
    */
@@ -128,7 +136,6 @@ class MyNotifications extends React.Component {
       var okEvents= [];
       var acceptedEvents= [];
 
-
       instance.getPastEvents('AcceptChangeAll', {
         //  filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
           fromBlock: 0,
@@ -136,35 +143,22 @@ class MyNotifications extends React.Component {
         })
         .then(function (events) {
             console.log('one fully accepted event');
-            console.log(events[0]); // same results as the optional callback above
-            console.log(events); // same results as the optional callback above
-
 
             for (var j = 0; j < events.length; j++) { 
-              console.log(events[j].returnValues.reqWkfHash);
-              console.log(accounts[0]);
               acceptedEvents.push({
                 'hash':events[j].returnValues.reqWkfHash.toUpperCase(),
               }  
               ); 
-
               }        
             });
 
       instance.getPastEvents('AcceptChange', {
-        //  filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
           fromBlock: 0,
           toBlock: 'latest'
         })
         .then(function (events) {
-            console.log('one accepted event');
-            console.log(events[0]); // same results as the optional callback above
-            console.log(events); // same results as the optional callback above
-
 
             for (var j = 0; j < events.length; j++) { 
-              console.log(events[j].returnValues.endorser);
-              console.log(accounts[0]);
               if(events[j].returnValues.endorser === accounts[0]){
                 okEvents.push({
                   'hash':events[j].returnValues.reqWkfHash.toUpperCase(),
@@ -177,18 +171,12 @@ class MyNotifications extends React.Component {
     
 
       instance.getPastEvents('DeclineChange', {
-        //filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
         fromBlock: 0,
         toBlock: 'latest'
       })
       .then(function (eventsList) {
-        console.log('one declined event');
-        console.log(eventsList);
-
         for (var j = 0; j < eventsList.length; j++) { 
           declinedEvents.push(eventsList[j].returnValues.reqWkfHash.toUpperCase()); 
-
-          console.log(eventsList[j].returnValues.reqWkfHash.toUpperCase());
           }});
 
       instance.getPastEvents('RequestChange', {
@@ -219,29 +207,31 @@ class MyNotifications extends React.Component {
                 
                 event.push('Me ('+ initiator+')');
                 event.push(endorser);
-                var currHash=eventsList[j].returnValues.workflowHashes.split(',')[0];
-                var reqHash=eventsList[j].returnValues.workflowHashes.split(',')[1];
+                event.push(eventsList[j].returnValues.workflowHashes.split(',')[0]); //currHash
+                event.push(eventsList[j].returnValues.workflowHashes.split(',')[1]); //reqHash
 
-                event.push(currHash);
-                event.push(reqHash);
+                var isfullyOk=false;
+                for(var ind=0; ind<acceptedEvents.length;ind++){
+                  if(acceptedEvents[ind].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()){
+                    isfullyOk=true;
+                    event.push('[Approved]');
+                  }
+                }
 
-                event.push('[Waiting for other endorsers]');
+                if(!isfullyOk){
+                  event.push('[Waiting for other endorsers]');
+                }
+                tree.push(event);  
 
-                console.log(event);
-
-                tree.push(event);
               }
 
            if((((eventsList[j].returnValues.endorser.toUpperCase() === accounts[0].toUpperCase()))
               && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase()))) {
 
                 var event = [];
-    
                 var initiator='';
                 var endorser='';
-    
                 for (var l = 0; l < roleMaps.length; l++) {
-    
                   if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
                     initiator=roleMaps[l].role;
                   }
@@ -252,20 +242,17 @@ class MyNotifications extends React.Component {
                 
                 event.push(initiator);
                 event.push(endorser);
-                var currHash=eventsList[j].returnValues.workflowHashes.split(',')[0];
-                var reqHash=eventsList[j].returnValues.workflowHashes.split(',')[1];
+                event.push(eventsList[j].returnValues.workflowHashes.split(',')[0]); //currHash
+                event.push(eventsList[j].returnValues.workflowHashes.split(',')[1]); //reqHash
 
-                event.push(currHash);
-                event.push(reqHash);
-
-                if((declinedEvents.length!==0) && (declinedEvents.includes(reqHash.toUpperCase()))){
+                if((declinedEvents.length!==0) && (declinedEvents.includes(eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()))){
                   event.push('[Declined]');
                 }
                 else if((okEvents.length!==0)){
                   var isfullyOk=false;
                   // check if elem belongs to the list of accepted events   
                   for(var ind=0; ind<acceptedEvents.length;ind++){
-                    if(acceptedEvents[ind].hash === reqHash.toUpperCase()){
+                    if(acceptedEvents[ind].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()){
                       isfullyOk=true;
                       event.push('[Approved]');
                     }
@@ -275,18 +262,15 @@ class MyNotifications extends React.Component {
                   var isprocessed = false;
                   if(!isfullyOk){
                     for(var i=0; i<okEvents.length;i++){
-                      if ((okEvents[i].hash === reqHash.toUpperCase())&&(okEvents[i].endorser===accounts[0])){              
+                      if ((okEvents[i].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase())&&(okEvents[i].endorser===accounts[0])){              
                         event.push('[Waiting for other endorsers]');
                         isprocessed=true;
                       }
                     }
                     if(!isprocessed){
                       event.push('[Waiting for decision]');
-
                     }
-
                   }
-
                 }
                 else{
                   event.push('[Waiting for decision]');
@@ -335,7 +319,7 @@ class MyNotifications extends React.Component {
                 </div>
 
                 <h5>Change requests:</h5>
-
+                <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif"/>
                 <div className="bg-green">
                   <Nav>
                     <TableScrollbar rows={8}>

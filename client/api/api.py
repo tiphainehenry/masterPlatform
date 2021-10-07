@@ -14,9 +14,9 @@ from flask import Flask, flash, request, redirect, url_for, session, jsonify
 from flask_cors import CORS, cross_origin
 from flask_restful import reqparse, abort, Api, Resource
 from werkzeug.utils import secure_filename
-from src.projalgoGlobal import projectGlobal
+from src.projalgoGlobal import projectGlobal,projectGlobalforPublicChange
 from src.projalgoPublic import projectPublic
-from src.projalgoRoles import projRole, projRole_fromLocalRequest
+from src.projalgoRoles import projRole, projRole_fromLocalRequest,projRole_fromPublicRequest
 from src.utils.formatting import removeGroups, getChoreographyDetails
 from src.utils.vectorization import getRelationElems
 from src.utils.chunking import getRoles, getRoleMapping
@@ -89,9 +89,12 @@ def updWithName(dataTxt, pi, projType):
 
     for role in getRoles(pi):
         print('[INFO] Starting projection on role '+role)
-        projRole(pi, dataTxt, target, role)
+        projRole(pi, dataTxt, target, role) 
         dumpJSONFile(os.path.join(target, 'exec' +
                                   getId(pi, role)+'.json'), {"execLogs": []})
+
+
+
 
     projectPublic(pi, dataTxt, target)
 
@@ -171,7 +174,7 @@ def SaveToLibrary():
     """
 
     dataPath = '../../client/src/projections/Library.json'
-    print(request.method)
+    #print(request.method)
     if request.method == 'POST':
         data = request.get_json(silent=True)
 
@@ -196,7 +199,7 @@ def SaveToLibrary():
         with open(dataPath, "r") as json_file:
             library = json.load(json_file)
             if not all == "":
-                print(library.keys())
+                #print(library.keys())
                 return jsonify(library.keys())
             if not(key in library):
                 return "KO", 200, {'Access-Control-Allow-Origin': '*'}
@@ -413,7 +416,7 @@ def localProj():
             this_folder, '../src/projections/temp_data'+roleNum+'.json'))
         os.remove(os.path.join(
             this_folder, '../src/projections/temp_vect'+roleNum['id']+'.json'))
-        os.remove(os.path.join(this_folder, '../src/projections/temp_local.json'))
+        os.remove(os.path.join(this_folder, '../src/projections/l.json'))
 
         return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
@@ -553,6 +556,19 @@ def cleanActivityId(id, mapping):
         return id
 
 
+
+def pprintDict(_dict):
+    for key, value in _dict.items():
+        print('[KEY] '+str(key)+':')
+        if isinstance(value, dict):
+            for k, v in value.items():
+                print('-->'+str(k)+':')
+                print('   '+str(v))
+        else:
+            print(value)
+        print('\n')
+
+
 @app.route('/publicChg', methods=['GET', 'POST'])
 def publicChg():
     """
@@ -561,8 +577,8 @@ def publicChg():
     try:
         processID = str(request.form['processID'])
         roleID = str(request.form['roleID'])
-        roleNum = 'Public'
         publicData = json.loads(request.form['JSONPubView'])
+        reqHash = str(request.form['reqHash'])
 
         #step1: generate text
         dcrTextList = []
@@ -576,8 +592,7 @@ def publicChg():
         for ele in publicData:
             if ele['group'] == 'nodes':
                 line = ele['data']
-                print(line)
-
+                
                 if((ele['data']['id'][0] == 'e') & (ele['data']['id'][-1].isnumeric())):
                     activityName = ele['data']['name'].split('\n')[1]
                     src = ele['data']['name'].split('\n')[0]
@@ -623,7 +638,6 @@ def publicChg():
                         if ele not in toreformat:
                             toreformat.append(ele)
 
-        print(choreo)
 
         # fetch number of public nodes in the original version
         dataJson = loadJSONFile(projDBPath)
@@ -697,28 +711,52 @@ def publicChg():
         target = '../../client/src/projections/'
         dataPath = '../../client/src/projections/dcrTexts.json'
         this_folder = os.path.dirname(os.path.abspath(__file__))
+    
+        projectGlobalforPublicChange(processID, projText, target)
+
+        dataJson = loadJSONFile(projDBPath)
+
 
         projectPublic(processID, projText, target)
+
+        TxtExt = loadJSONFile(os.path.join(target, 'dcrTexts.json'))
         
-        dataJson = loadJSONFile(projDBPath)
-        dataJson[processID][roleNum] = {
-            'data': loadJSONFile(os.path.join(target, 'temp_data'+roleNum+'.json')),
-            'exec': dataJson[processID][roleNum]['exec'],
-            'vect': loadJSONFile(os.path.join(target, 'temp_vect'+roleNum+'.json')),
+        pprintDict(TxtExt)
+        
+        dataJson[processID]['TextExtraction']['public'] = TxtExt['public'] 
+        dataJson[processID]['TextExtraction']['global'] = TxtExt['global'] 
+
+        #for role in getRoles(processID):
+        #    print('[INFO] Starting projection on role '+role)
+        #    projRole_fromPublicRequest(processID, projTxt, target, role) 
+        #print('ok 5')
+        dataJson[processID]['Public'] = {
+            'data': loadJSONFile(os.path.join(target, 'temp_data'+'Public'+'.json')),
+            'exec': dataJson[processID]['Public']['exec'],
+            'vect': loadJSONFile(os.path.join(target, 'temp_vect'+'Public'+'.json')),
             'init': {
-                'data': loadJSONFile(os.path.join(target, 'temp_data'+roleNum+'.json')),
-                'vect': loadJSONFile(os.path.join(target, 'temp_vect'+roleNum+'.json'))
+                'data': loadJSONFile(os.path.join(target, 'temp_data'+'Public'+'.json')),
+                'vect': loadJSONFile(os.path.join(target, 'temp_vect'+'Public'+'.json'))
             }
         }
 
-        dataJson['projType'] = 'g_to_p' ### to check
+        dataJson[processID]['projType'] = 'g_to_p' ### to check
+        print('ok 5')
 
         dumpJSONFile(projDBPath, dataJson)
 
+        for role in getRoles(processID):
+            roleMapping = getRoleMapping(processID, role)
+            #rolePath= os.path.join(this_folder, '../src/projections/temp_data'+roleMapping['id']+'.json')
+            os.remove(os.path.join(
+                this_folder, '../src/projections/temp_vect'+roleMapping['id']+'.json'))
+
         os.remove(os.path.join(
-            this_folder, '../src/projections/temp_data'+roleNum+'.json'))
+            this_folder, '../src/projections/temp_local.json'))
         os.remove(os.path.join(
-            this_folder, '../src/projections/temp_vect'+roleNum+'.json'))
+            this_folder, '../src/projections/temp_data'+'Public'+'.json'))
+        os.remove(os.path.join(
+            this_folder, '../src/projections/temp_vect'+'Public'+'.json'))
         os.remove(os.path.join(this_folder, '../src/projections/dcrTexts.json'))
 
         return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
@@ -947,7 +985,7 @@ def localChg():
 @app.route('/switchProj', methods=['GET', 'POST'])
 def switchProj():
     """
-    switches current projection for an alternative one at the demand of the local tenant. 
+    switches current projection for an alternative one at the demand of the local tenant (public change). 
     """
 
     # retrieve post data
@@ -955,6 +993,7 @@ def switchProj():
     processID = data['processID']
     projID = data['projID']
     roleMapping = getRoleMapping(processID, projID)
+    reqHash = data['reqHash']
 
     # open db
     # projDBPath='../../client/src/projections/DCR_Projections.json'
@@ -972,10 +1011,22 @@ def switchProj():
         'vect': dataProj[processID][roleMapping['id']]['v_upd']['vect']
     }
 
+    dataProj[processID]['hash']=reqHash
+    
     # clean db and save
     dataProj[processID][roleMapping['id']].pop('v_upd', None)
     dumpJSONFile(projDBPath, dataProj)
 
+    return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+
+
+@app.route('/updMyHash', methods=['GET', 'POST'])
+def updMyHash():
+    reqHash = str(request.form['reqHash'])
+    processID = str(request.form['processID'])
+    dataJson = loadJSONFile(projDBPath)
+    dataJson[processID]['hash'] = reqHash
+    dumpJSONFile(projDBPath, dataJson)
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
 

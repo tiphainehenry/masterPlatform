@@ -4,7 +4,7 @@ export const counterSlice = createSlice({
   name: 'counter',
   initialState: {
     value: 0,
-    auth:["lol", "mdr"],
+    auth:["testAuth1", "testAuth2"],
   },
   reducers: {
     increment: (state) => {

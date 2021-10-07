@@ -95,7 +95,7 @@ class WelcomeInstance extends React.Component {
       this.setState({ web3, accounts, contract: instance });
 
       const SCHashes = await instance.methods.getAllWKHashes().call();
-
+      console.log(SCHashes);
 
       var numProcess = Object.keys(ProcessDB).length;
 
