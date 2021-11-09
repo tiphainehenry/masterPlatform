@@ -100,7 +100,7 @@ def projectGlobal(processID, data, target):
     projection, externalIds = generateGlobalProjection(data, os.path.join(target,"dcrTexts.json"))
     generateGraph(processID, projection, externalIds, target, "Global")
     
-    vectorize(projection, os.path.join(target,"temp_vectGlobal"))
+    vectorize(projection, os.path.join(target, "temp_vectGlobal"))
     
     print('[INFO] Global Projection generated')
 

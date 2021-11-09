@@ -4,7 +4,6 @@ const cytoMenuHelpers = {
     * handle activity update (name, markings, tenant(s))
     */
     updActivity: function () {
-        console.log(this.state.elemClicked);
         var id = this.state.elemClicked.id;
         console.log('updating activity ' + id);
         /// Marking
@@ -23,34 +22,74 @@ const cytoMenuHelpers = {
         }
 
         /// Remove space in name and assign Name
-        const tmp = this.cy.getElementById(this.state.elemClicked.id)
-        console.log(tmp);
-        if (this.state.elemClicked.activityName !== tmp.data('properName')) {
-            console.log("verif");
-            console.log(tmp.data('name').split(' ')[1]);
-            this.setState({ elemeClicked: { activityName: tmp.data('name').split(' ')[1] } })
+        const tmp = this.cy.getElementById(this.state.elemClicked.id);
+        //console.log(tmp['private']);
+        try{
+            if (this.state.elemClicked.activityName !== tmp.data('properName')) {
+                //console.log("verif"this.state.dataFields);
+                this.setState({ elemClicked: { activityName: tmp.data('name').split(' ')[1] } })
+            }    
+        }
+        catch(error){
+            console.log(error);
         }
 
         if ((this.state.elemClicked.classes.has("type_choreography"))) {
-            console.log('ich bin ein choreography task');
-            tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + this.state.choreographyNames.receiver);
+            //console.log('choreography task');
+
+            try{
+                var receivers = "";
+                this.state.optionSelected.forEach(elem=>{
+                    receivers=receivers+","+elem['value'];
+                })
+                if(receivers[0]==","){
+                    receivers=receivers.substring(1);
+                }
+    
+                tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + receivers);    
+            }
+            catch(error){
+                console.log(error);
+            }
         }
         else if((this.state.elemClicked.classes.has("type_projChoreo"))){
-            console.log('ich bin ein projected choreography task');
-            console.log(this.state.elemClicked.raw_activityName);
-            console.log(tmp.classes);
+            try{
+            //console.log('choreography task');
             var act = this.state.elemClicked.raw_activityName.split('(')[1].split(',')[0];
             tmp['_private']['classes'].delete("type_projChoreo");
             tmp['_private']['classes'].add("type_choreography");
 
-            console.log(tmp['_private']['classes']);
-            tmp.data('name', this.state.choreographyNames.sender + ' ' + act + ' ' + this.state.choreographyNames.receiver);
+            var receivers = "";
+            this.state.optionSelected.forEach(elem=>{
+                receivers=receivers+","+elem['value'];
+            })
+            if(receivers[0]==","){
+                receivers=receivers.substring(1);
+            }
+
+            tmp.data('name', this.state.choreographyNames.sender + ' ' + act + ' ' + receivers);
+            }
+            catch(error){
+                console.log(error);
+            }
         }
         else {
-            tmp.data('name', this.state.auth.name + ' ' + this.state.elemClicked.activityName);
+            //local activity
+            console.log('upd of local activity');
+            tmp.data('name', this.state.tenantName + ' ' + this.state.elemClicked.activityName);
         }
         tmp.data('properName', tmp.data('name'));
 
+
+        /// take care of datafields
+
+        if(this.state.dataFields.length > 0){
+            tmp.data('dataFields', this.state.dataFields);
+            tmp['_private']['classes'].add("has_datafields");
+        }
+
+        console.log(tmp.data('dataFields'));        
+        
     },
 
     /**
@@ -131,7 +170,9 @@ const cytoMenuHelpers = {
     */
     addLocalActivity: function () {
         console.log('add local activity');
-        var label = this.state.auth.name + ' NewActivity' + this.state.newActivityCnt;
+
+        //console.log(this.state.auth);
+        var label = ' NewActivity' + this.state.newActivityCnt;
         this.cy.add({
             group: 'nodes',
             data: {

@@ -274,7 +274,7 @@ class CreateL extends React.Component {
                         <button class="btn btn-secondary" onClick={this.onIPFSSubmit}>3. Save public text extraction to IPFS</button>
                       </div>
 
-                      <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} />
+                      <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} stage="importFromFile"/>
 
                     </form>
                   </div>

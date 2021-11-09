@@ -67,6 +67,7 @@ def initializeGraph(filename):
     :param filename: filename to analyze
 
     """
+
     with open(filename) as json_data:
         data = json.load(json_data)
 
@@ -85,16 +86,22 @@ def initializeGraph(filename):
                     elemMarking = retrieveMarkingOnId(markings, elem)
                     if(len(elemMarking) != 0):
                         if (elemMarking['include'] == 1):
-                            elem['classes'] = elem['classes']+ ' included executable'
+                            if ('classes' not in elem.keys()):
+                                elem['classes'] = 'included executable'
+                            else:
+                                elem['classes'] = elem['classes']+ ' included executable'
 
             updProj.append(elem)
+        
+        print(dataFilename +' was initialized')
+        print(updProj)
 
         with open(os.path.join(dataFilename), 'w') as outfile:
             json.dump(updProj, outfile, indent=2)
 
-    except: 
-        pass #global vec: no need to generate it here
-
+    except Exception as e: 
+        print('error in initVect')
+        print(e)
 
 def retrieveActivityRelations(relations, activity_id, dataProj):
     """

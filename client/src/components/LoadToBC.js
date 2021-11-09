@@ -121,7 +121,7 @@ class LoadToBCL extends React.Component {
 
   fetchWKData(pid){
     
-    Object.keys(ProcessDB).forEach(k => {console.log(k)});
+    //Object.keys(ProcessDB).forEach(k => {console.log(k)});
 
     var activities = ProcessDB[pid]['TextExtraction']['public']['privateEvents'];
 
@@ -142,8 +142,7 @@ class LoadToBCL extends React.Component {
       }
     }
     let approvalList = [...new Set(orderedPk)];
-    console.log(ProcessDB[pid]['Public']['vect']['fullMarkings']['included'].length);
-
+    
     var PubVec = ProcessDB[pid]['Public']['vect'];
     return [ProcessDB[pid]['Global']['data'],
             pid,
@@ -293,8 +292,10 @@ class LoadToBCL extends React.Component {
     if (window.location.href.indexOf("creation"))
       return (<>
 
-            <div class="form-group my-3" >
-              <button onClick= {this.handleCreateWkf} class="btn btn-secondary">4. Instantiate view in smart contract</button>
+            <div className="form-group my-3" >
+              <button onClick= {this.handleCreateWkf} className="btn btn-secondary">
+                {this.props.stage=="templateInstance"? "3. ":"4. "} Instantiate view in smart contract
+              </button>
             </div>
 
      <br/>
@@ -303,43 +304,43 @@ class LoadToBCL extends React.Component {
                   <Button onClick={this.getWKCreationReceipt} variant='info'> <span><Info/> <span>Get Transaction Receipt</span> </span></Button>
 
 
-                  <Table id="myTable" class="table tablesorter table-responsive">
-                    <thead class="cf">
+                  <Table id="myTable" className="table tablesorter table-responsive">
+                    <thead className="cf">
                       <tr>
-                        <th class="header" scope="col">Tx Receipt Category</th>
-                        <th class="header" scope="col">Values</th>
+                        <th className="header" scope="col">Tx Receipt Category</th>
+                        <th className="header" scope="col">Values</th>
                       </tr>
                     </thead>
                     <tbody>
 
                         <tr>
-                          <td class="align-middle">IPFS Hash # stored on Eth Contract
+                          <td className="align-middle">IPFS Hash # stored on Eth Contract
                           </td>
-                          <td class="align-middle">{this.props.ipfsHash}</td>
+                          <td className="align-middle">{this.props.ipfsHash}</td>
 
                         </tr>
 
                         <tr>
-                          <td class="align-middle">Ethereum Contract Address
+                          <td className="align-middle">Ethereum Contract Address
                           </td>
-                          <td class="align-middle">{this.state.ethAddress}</td>
+                          <td className="align-middle">{this.state.ethAddress}</td>
 
                         </tr>
 
 
                         <tr>
-                        <td class="align-middle">Tx Hash # </td>
-                        <td class="align-middle">{this.state.transactionHash}</td>
+                        <td className="align-middle">Tx Hash # </td>
+                        <td className="align-middle">{this.state.transactionHash}</td>
                       </tr>
 
                       <tr>
-                        <td class="align-middle">Block Number # </td>
-                        <td class="align-middle">{this.state.blockNumber}</td>
+                        <td className="align-middle">Block Number # </td>
+                        <td className="align-middle">{this.state.blockNumber}</td>
                       </tr>
 
                       <tr>
-                        <td class="align-middle">Gas Used</td>
-                        <td class="align-middle">{this.state.gasUsed}</td>
+                        <td className="align-middle">Gas Used</td>
+                        <td className="align-middle">{this.state.gasUsed}</td>
                       </tr>
 
 

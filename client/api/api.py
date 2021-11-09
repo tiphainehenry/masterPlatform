@@ -78,7 +78,6 @@ def updWithName(dataTxt, pi, projType):
 
     _data = removeGroups(dataTxt)
     #print("2/ updWithName  -----------------------")
-    # print(dataTxt)
     projectGlobal(pi, dataTxt, target)
 
     dataDict = loadJSONFile(dataPath)

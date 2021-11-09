@@ -1,12 +1,14 @@
 import React from 'react';
 import Header from './Header';
-import { Row, Container, Table } from 'react-bootstrap';
+
+import { Table, Row, Container, Nav} from 'react-bootstrap';
+
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import SidebarModel from './SidebarModel';
 
-import { FilePlus, File } from 'react-feather';
+import {File } from 'react-feather';
 
 var ProcessDB = require('../projections/DCR_Projections.json');
 
@@ -83,73 +85,39 @@ class NewInstance extends React.Component {
               <Container fluid >
 
                 <div className='container'>
-                  <h1>Creation of a new Process model</h1>
-                  <ul class="nav nav-tabs">
-                  </ul>
-                  <div class="tab-content" >
-                    <div class="tab-pane active" id="users">
-
-                      <form id="search-users" name="searchUsers" method="post" action="/">
-                        <div class="row">
-                          <div class="form-group col-12 ">
-                            <label class="is-required" for="role">Choose the name of your process</label>
-                            <input type="input" onChange={e => this.onChange(e)} placeholder={this.state.processName} class="form-control required"></input>
-                            {!this.state.valid ? <p style={{ 'padding': '10px', 'color': 'red' }}>Name of template already taken</p> : null}
-                          </div>
-                          <div class="form-group col-12 ">
-
-                            {this.state.valid ? <Link class="btn btn-primary my-2 my-sm-0" to={{
-                              pathname: './creation',
-                              state: {
-                                currentProcess: this.state.processName,
-                                currentInstance: 'r1'
-                              }
-                            }}> create new model <FilePlus /></Link> :
-                              <Link class="btn btn-primary my-2 my-sm-0" >create new model <FilePlus /></Link>
-                            }
-                          </div>
-
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-
-                  <br />
-                  <br></br>
-
-                  <br />
-                  <br />
+                  <h1>Instanciate a process model</h1>
 
                   <Table id="myTable" class="table tablesorter table-responsive">
-                    <caption>My templates </caption>
-                    <thead class="cf">
-                      <tr>
-                        <th class="header" scope="col">Name (click to edit)</th>
-                        <th class="header" scope="col">Type</th>
-                        <th class="header" scope="col">Last Update</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Array.from({ length: this.state.templates.length }, (x, i) =>
+                          <thead class="cf">
+                            <tr>
+                              <th class="header" scope="col">My templates (click to instanciate)</th>
+                              <th class="header" scope="col">Type</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Array.from({ length: this.state.templates.length }, (x, i) =>
 
-                        <tr>
-                          <td class="align-middle"><Link to={{
-                            pathname: './creation',
-                            state: {
-                              currentProcess: this.state.templates[i],
-                              currentInstance: 'r1'
-                            }
-                          }}><File />{this.state.templates[i]} </Link>
-                          </td>
-                          <td class="align-middle">("test")</td>
-                          <td class="align-middle">("test")</td>
+                              <tr>
+                                <td class="align-middle">
+                                  
+                                  
+                                <Nav.Link as={Link}
+                                        to={{
+                                          pathname: './loadInstance/' + this.state.templates[i] 
+                                        }}
+                                      >  <File />{this.state.templates[i]}
+                                      </Nav.Link>
 
-                        </tr>
-                      )}
+                                </td>
+                                <td class="align-middle">("test")</td>
+                              </tr>
+                            )}
 
 
-                    </tbody>
-                  </Table>
+                          </tbody>
+                        </Table>
+
+
                 </div>
 
               </Container>

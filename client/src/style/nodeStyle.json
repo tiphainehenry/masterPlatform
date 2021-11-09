@@ -78,6 +78,13 @@
       "style": {
         "shape":"octagon"
 }
+    },
+    {
+      "selector":"node.has_datafields",
+      "style": {
+        "overlay-color":"pink",
+        "overlay-shape":"ellipse"
+      }
     }
   
 ]

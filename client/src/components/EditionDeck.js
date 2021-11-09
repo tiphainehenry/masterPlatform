@@ -23,6 +23,10 @@ import Authentification from './Authentification'
 import getWeb3 from '../getWeb3';
 import ipfs from '../ipfs';
 
+import { default as ReactSelect } from "react-select";
+import { components } from "react-select";
+
+import Option from './Option';
 
 import Cytoscape from 'cytoscape';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -102,9 +106,14 @@ class EditionDeck extends React.Component {
       contractRole: null,
       contractProcess: null,
 
+      optionSelected: null,
+      roleOptions:[],
       roleMaps: [],
 
       roles: [],
+      allRegisteredRoles:[],
+
+      dataFields:[],
 
       hashPublicReq: '',
       publicHash: '',
@@ -174,7 +183,20 @@ class EditionDeck extends React.Component {
  */
   componentWillMount() {
     //console.log('[INFO] componentWillMount starts');
-    this.loadSCs();
+    this.loadSCs().then(res=> 
+      {
+        var roleOptions = [];
+
+        this.state.allRegisteredRoles.forEach((r)=>{
+          var newOption = {'value':r, 'label':r};
+          roleOptions.push(newOption);
+        })
+
+        this.setState({'roleOptions':roleOptions});
+      }  
+
+);
+
 
     var processID = this.props.match.params.pid;
     var projectionID = this.props.match.params.rid;
@@ -211,6 +233,36 @@ class EditionDeck extends React.Component {
       var roles = await adminInstance.methods.getAccountRoles().call();
   
       this.cmpAccountRoles(roles);
+
+
+      // fetch participants addresses
+      const participantsData = await adminInstance.methods.getRoles().call()
+      var addresses = []
+      participantsData.forEach(line => {
+          var val = line.split('///')[1];
+          if(val.slice(0,2)!='0x'){
+            val= '0x'+val;
+          }
+          addresses.push(val);
+        });
+
+      // fetch list of roles registered per address
+      var roles = [];
+      for(var i=0; i<addresses.length; i++){
+          const addressRoles = await adminInstance.methods.getElemRoles(addresses[i]).call();
+          for(var j=0; j<addressRoles.length; j++){
+              if(!roles.includes(addressRoles[j])){
+                  roles.push(addressRoles[j]);            
+              }
+          }
+      }
+
+      this.setState({
+          allRegisteredRoles:roles,
+          addresses:addresses
+      })
+     
+
 
       const processNetwork = PublicDCRManager.networks[networkId];
       const processInstance = new web3.eth.Contract(
@@ -295,6 +347,10 @@ class EditionDeck extends React.Component {
         //console.log('retrieved public req data:', JSON.parse(output));
         //console.log('retrieved hash:', hash);
 
+        console.log(this.state.accounts[0]);
+        console.log(addressesToNotify);
+        console.log(this.state.publicHash + ',' + hash);
+
         this.state.contractProcess.methods.requestChange(this.state.accounts[0], addressesToNotify, this.state.publicHash + ',' + hash, this.state.publicHash, hash).send({
           from: this.state.accounts[0]
         }, (error) => {
@@ -316,7 +372,10 @@ class EditionDeck extends React.Component {
     var publicNodes = [];
     this.cy.elements().forEach(function (ele) {
       //console.log(ele);
+      console.log(ele['_private']['classes'])
+
       if (ele['_private']['classes'].has('type_choreography') && ele['_private']['classes'].has('subgraph')) {
+
         publicUpd = true;
         var splElem = ele['_private']['data']['name'].trim().split(' ');
         var cleanedEle = []
@@ -354,6 +413,41 @@ class EditionDeck extends React.Component {
   }
 
 
+  addInput = () => {
+
+    var dataFields = this.state.dataFields;
+
+    dataFields.push(        {
+      type: "text",
+      value: ""
+    }
+    );
+
+    this.setState(dataFields);
+  };
+
+  handleDataFieldChange = e => {
+    e.preventDefault();
+
+    const index = e.target.id;
+
+    const newArr = this.state.dataFields.slice();
+    newArr[index].value = e.target.value;
+
+    this.setState({dataFields:newArr});
+
+  };
+
+
+  handleReceiverChange = (selected) => {
+    this.setState({
+      optionSelected: selected
+    });
+    console.log("selected");
+
+    console.log(selected);
+
+  };
   ///// Render
 
   render() {
@@ -408,42 +502,57 @@ class EditionDeck extends React.Component {
 
                                   <Form.Label>Activity name</Form.Label>
                                   <Form.Control type="address" onChange={this.handleActivityName} placeholder={'enter activity name'} value={this.state.elemClicked.activityName} />
+                                  <hr /><br />
 
-                                  {this.state.elemClicked.isChoreo ?
-                                    <>                         <hr style={{ "size": "5px" }} /><br />
-                                      <h4>Assign role</h4>
-                                      <br />
+                                  <h4>Assign role</h4>
 
-                                      <div className="form-group">
-                                        <label className="is-required" htmlFor="role">Choreography Sender</label>
-                                        <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
-                                          <option value=''> ---</option>
+{this.state.elemClicked.isChoreo ?
+<>
+<div className="form-group">
+  <label className="is-required" for="role">Choreography Sender</label>
+  <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
+  <option value=''> ---</option>
+  {
+    React.Children.toArray(
+      this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
+    )
+  }
+  </select>
+</div>
 
-                                          {
-                                            React.Children.toArray(
-                                              this.state.roles.map((name, i) => <option key={i}>{name}</option>)
-                                            )
-                                          }
+<Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
+<br />
 
-                                        </select>
-                                      </div>
+<div className="form-group">
+  <label className="is-required" for="role">Choreography Receiver</label>
+  <ReactSelect
+    options={this.state.roleOptions}
+    isMulti
+    closeMenuOnSelect={false}
+    hideSelectedOptions={false}
+    components={{
+      Option
+    }}
+    onChange={this.handleReceiverChange}
+    allowSelectAll={true}
+    value={this.state.optionSelected}
 
-                                      <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
-                                      <br />
-                                      <div className="form-group">
-                                        <label className="is-required" htmlFor="role">Choreography Receiver</label>
-                                        <select className="custom-select" name="view-selector" onChange={this.handleReceiver} placeholder={"Receiver"} value={this.state.choreographyNames.receiver}>
-                                          <option value=''> ---</option>
-                                          {
-                                            React.Children.toArray(
-                                              this.state.roles.map((name, i) => <option key={i}>{name}</option>)
-                                            )
-                                          }
-                                        </select>
-                                      </div>
-                                    </> :
-                                    <></>
-                                  }
+/>
+</div></>
+:<>                                
+<div className="form-group">
+<label className="is-required" for="role">Private role</label>
+<select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+<option value=''> ---</option>
+{
+  React.Children.toArray(
+    this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
+  )
+}
+</select>
+</div>
+</>}
+
                                   <hr /><br />
 
                                   <h4>Marking</h4>

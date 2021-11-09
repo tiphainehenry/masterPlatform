@@ -23,11 +23,12 @@ class NewRole extends React.Component {
             name: "",
             selectValue: "",
             roles: [],
-            myRoles:[],
+            myRoles: [],
             addresses: [],
             admins: [],
             listOfRoles: [],
-            newRole:"",
+            newRole: "",
+            allRegisteredRoles:[]
         };
 
     }
@@ -53,7 +54,7 @@ class NewRole extends React.Component {
         } else if (e.target.name === "isAdmin") {
             this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
         } else if (e.target.name === "newRole") {
-            this.setState({newRoleName: e.target.value});
+            this.setState({ newRoleName: e.target.value });
         }
     }
 
@@ -72,7 +73,8 @@ class NewRole extends React.Component {
             );
             this.setState({ instance: instance })
             this.setState({ web3, accounts, contract: instance });
-            this.getRoles()
+            this.getRoles();
+            this.computeListofAllRegisteredRoles();
         } catch (error) {
             //alert(
             //  `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -102,12 +104,12 @@ class NewRole extends React.Component {
      */
     async getRoles() {
         const roles = await this.state.instance.methods.getRoles().call()
-        
+
         var tmpRoles = []
         var tmpAddress = []
         var tmpAdmin = []
         roles.forEach(line => {
-            const val = line.split('///')
+            var val = line.split('///')
             tmpRoles.push(val[0])
             tmpAddress.push(val[1])
             tmpAdmin.push(val[2] === "true" ? true : false)
@@ -118,12 +120,50 @@ class NewRole extends React.Component {
     /**
      * Create a new role for an existing account
      */
-     async addNewRole() {
+    async addNewRole() {
         const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
         //console.log(add);
         await this.state.instance.methods.AddElemRole(add, this.state.newRoleName).send({ from: this.state.accounts[0] })
     }
 
+    async computeListofAllRegisteredRoles(){
+        // fetch participants addresses
+        const participantsData = await this.state.instance.methods.getRoles().call()
+        var addresses = [];
+        console.log(participantsData);
+        participantsData.forEach(line => {
+            var val = line.split('///')[1];
+            if(val.slice(0,2)!='0x'){
+              val= '0x'+val;
+            }
+            addresses.push([line.split('///')[0],val]);
+          });
+
+        // fetch list of roles registered per address
+        var roles = [];
+        for(var i=0; i<addresses.length; i++){
+            const addressRoles = await this.state.instance.methods.getElemRoles(addresses[i][1]).call();
+
+            for(var j=0; j<addressRoles.length; j++){
+                if(!roles.includes(addressRoles[j])){
+                    roles.push([addressRoles[j],addresses[i][0]]);            
+                }
+            }
+        }
+
+        var line = []
+        for (let i = 0; i < roles.length; i++) {
+            line.push(
+                <tr>
+                    <td>{i}</td>
+                    <td>{roles[i][0]}</td>
+                    <td>{roles[i][1]}</td>
+                </tr>)
+        }
+        this.setState({
+            allRegisteredRoles:line
+        })
+    }
 
     /**
      * delete one of the roles 
@@ -131,9 +171,7 @@ class NewRole extends React.Component {
      */
     async deleteRole(index) {
         const add = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
-        console.log("azer");
         await this.state.instance.methods.RemoveElemRole(add, index).send({ from: this.state.accounts[0] })
-        console.log("tyuiop");
     }
 
     /**
@@ -142,20 +180,20 @@ class NewRole extends React.Component {
      */
     async manageRole() {
         if (this.state.isNew) {
-           try {
-               await this.state.instance.methods.newRole(this.state.address, this.state.name, !this.state.isAdmin).send({ from: this.state.accounts[0] })
-           }
-           catch {
-               alert('Unable to create this role')
-           }
+            try {
+                await this.state.instance.methods.newRole(this.state.address, this.state.name, !this.state.isAdmin).send({ from: this.state.accounts[0] })
+            }
+            catch {
+                alert('Unable to create this role')
+            }
         }
         else {
-           try {
-               const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
-               await this.state.instance.methods.updateRole(address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
-           } catch {
-               alert('Unable to update this role')
-           }
+            try {
+                const address = '0x' + this.state.addresses[this.state.roles.indexOf(this.state.selectValue)]
+                await this.state.instance.methods.updateRole(address, this.state.name, this.state.isAdmin).send({ from: this.state.accounts[0] })
+            } catch {
+                alert('Unable to update this role')
+            }
         }
         window.location.reload()
         this.getRoles()
@@ -262,6 +300,31 @@ class NewRole extends React.Component {
                                         </form>
                                     </div>
                                 </div>
+                                <br />
+                                <ul class="nav nav-tabs"></ul>
+                                <div class="tab-content" >
+                                    <div class="tab-pane active" id="users">
+                                        <form id="search-users" name="searchUsers">
+                                            <div class="row">
+                                                <div className='form-group col-12'>
+                                                    <table className='table' striped bordered hover>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Registered Roles</th>
+                                                                <th>Assigned Participants</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {this.state.allRegisteredRoles}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                                 <Form>
 
 

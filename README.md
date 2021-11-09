@@ -40,7 +40,11 @@ To run the app locally, run the four commands below, one in each terminal:
 ```bash
 cd ~/client && npm start #frontend 
 cd ~/client/api && python api.py #backend
-ganache-cli #deploy the ethereum testnet
+
+Launch local blockchain in terminal:
+
+ganache-cli -m "east enjoy keen nut hat debris blur trophy alone steak large federal"
+
 truffle migrate #migrate the contract
 ```
 Make sure that the database is initially empty ! (Button 'delete all instances' in the 'my instances' panel)

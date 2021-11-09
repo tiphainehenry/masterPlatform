@@ -67,11 +67,11 @@ class MyNotifications extends React.Component {
       target: { ID: '', type: '' },
 
       SCHashes: [],
-      roleMaps:[],
-      reqWkf:'',
-      output:'', 
+      roleMaps: [],
+      reqWkf: '',
+      output: '',
 
-      newEvEval:''
+      newEvEval: ''
     };
     this.connectToWeb3 = this.connectToWeb3.bind(this);
     this.reloadEvent = this.reloadEvent.bind(this);
@@ -84,9 +84,9 @@ class MyNotifications extends React.Component {
   }
 
 
-  reloadEvent(){
+  reloadEvent() {
     console.log('im new hehe');
-    this.setState({'newEvEval':true});
+    this.setState({ 'newEvEval': true });
   }
   /**
    * Lists all processes that live in the SC (based on hash computations) and their role projections, and stores it into the tree state variable
@@ -112,7 +112,7 @@ class MyNotifications extends React.Component {
         AdminRoleManager.abi,
         adminNetwork && adminNetwork.address,
       );
-  
+
       this.setState({ web3, accounts, contractRole: adminInstance });
 
       var roles = await adminInstance.methods.getRoles().call()
@@ -125,162 +125,212 @@ class MyNotifications extends React.Component {
         var a = line.split('///')[1];
         tmpRoles.push(r);
         tmpAddress.push(a);
-        roleMaps.push({'role':r, 'address':a});
+        roleMaps.push({ 'role': r, 'address': a });
       });
-      this.setState({ roleMaps:roleMaps })
+      this.setState({ roleMaps: roleMaps })
 
       var tree = [];
       var eventsList = [];
 
-      var declinedEvents= [];
-      var okEvents= [];
-      var acceptedEvents= [];
+      var declinedEvents = [];
+      var okEvents = [];
+      var acceptedEvents = [];
 
+      var events_tab = [];
+      var curr_hashes = [];
+
+      instance.getPastEvents('RequestChange', {
+        fromBlock: 0,
+        toBlock: 'latest'
+      })
+        .then(function (events) {
+
+          events.forEach(res => {
+
+            if (!curr_hashes.includes(res.returnValues.workflowHashes.split(',')[0])) {
+              var myEvent = {}
+              curr_hashes.push(res.returnValues.workflowHashes.split(',')[0]);
+              myEvent = {
+                'currHash': res.returnValues.workflowHashes.split(',')[0],
+                'reqHash': res.returnValues.workflowHashes.split(',')[1],
+                'status': [{
+                  'event':res['event'],
+                  'address': res.returnValues.initiator
+                }],
+                'initiator': res.returnValues.initiator,
+                'endorser': res.returnValues.endorser
+              };
+              events_tab.push({ myEvent });
+            }
+          }
+          )
+        });
+
+      console.log('number of events: '+events_tab.length);
+
+      instance.getPastEvents("allEvents").then(function (events) {
+        if(events.length>0){
+
+          console.log('allEvents');
+
+          events.forEach(res=>{
+            if(res['event']==='AcceptChangeAll'){
+              var i= 0; 
+              //while(events_tab[i]['currHash'])            
+              //events_tab[]
+              }
+            }
+          )
+        }
+      })
+
+      console.log('\n');
       instance.getPastEvents('AcceptChangeAll', {
         //  filter: { endorser: accounts[0] }, // Using an array means OR: e.g. 20 or 23
-          fromBlock: 0,
-          toBlock: 'latest'
-        })
+        fromBlock: 0,
+        toBlock: 'latest'
+      })
         .then(function (events) {
-            console.log('one fully accepted event');
-
-            for (var j = 0; j < events.length; j++) { 
+          if(events.length>0){
+            console.log('accepted events');
+            for (var j = 0; j < events.length; j++) {
               acceptedEvents.push({
-                'hash':events[j].returnValues.reqWkfHash.toUpperCase(),
-              }  
-              ); 
-              }        
-            });
+                'hash': events[j].returnValues.reqWkfHash.toUpperCase(),
+              }
+              );
+            }  
+          }
+        });
 
       instance.getPastEvents('AcceptChange', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        })
+        fromBlock: 0,
+        toBlock: 'latest'
+      })
         .then(function (events) {
 
-            for (var j = 0; j < events.length; j++) { 
-              if(events[j].returnValues.endorser === accounts[0]){
-                okEvents.push({
-                  'hash':events[j].returnValues.reqWkfHash.toUpperCase(),
-                  'endorser':events[j].returnValues.endorser
-                }  
-                ); 
+          for (var j = 0; j < events.length; j++) {
+            if (events[j].returnValues.endorser === accounts[0]) {
+              okEvents.push({
+                'hash': events[j].returnValues.reqWkfHash.toUpperCase(),
+                'endorser': events[j].returnValues.endorser
               }
-              }        
-            });
-    
+              );
+            }
+          }
+        });
 
       instance.getPastEvents('DeclineChange', {
         fromBlock: 0,
         toBlock: 'latest'
       })
-      .then(function (eventsList) {
-        for (var j = 0; j < eventsList.length; j++) { 
-          declinedEvents.push(eventsList[j].returnValues.reqWkfHash.toUpperCase()); 
-          }});
+        .then(function (eventsList) {
+          for (var j = 0; j < eventsList.length; j++) {
+            declinedEvents.push(eventsList[j].returnValues.reqWkfHash.toUpperCase());
+          }
+        });
 
       instance.getPastEvents('RequestChange', {
-          fromBlock: 0,
-          toBlock: 'latest'
+        fromBlock: 0,
+        toBlock: 'latest'
       })
         .then(function (eventsList) {
 
-          for (var j = 0; j < eventsList.length; j++) { 
+          for (var j = 0; j < eventsList.length; j++) {
 
-            if((eventsList[j].returnValues.initiator.toUpperCase() === accounts[0].toUpperCase())
-              && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase())){
+            if ((eventsList[j].returnValues.initiator.toUpperCase() === accounts[0].toUpperCase())
+              && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase())) {
 
-                var event = [];
-    
-                var initiator='';
-                var endorser='';
-    
-                for (var l = 0; l < roleMaps.length; l++) {
-    
-                  if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                    initiator=roleMaps[l].role;
-                  }
-                  if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                    endorser=roleMaps[l].role; 
-                  }
+              var event = [];
+
+              var initiator = '';
+              var endorser = '';
+
+              for (var l = 0; l < roleMaps.length; l++) {
+
+                if (eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())) {
+                  initiator = roleMaps[l].role;
                 }
-                
-                event.push('Me ('+ initiator+')');
-                event.push(endorser);
-                event.push(eventsList[j].returnValues.workflowHashes.split(',')[0]); //currHash
-                event.push(eventsList[j].returnValues.workflowHashes.split(',')[1]); //reqHash
+                if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())) {
+                  endorser = roleMaps[l].role;
+                }
+              }
 
-                var isfullyOk=false;
-                for(var ind=0; ind<acceptedEvents.length;ind++){
-                  if(acceptedEvents[ind].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()){
-                    isfullyOk=true;
+              event.push('Me (' + initiator + ')');
+              event.push(endorser);
+              event.push(eventsList[j].returnValues.workflowHashes.split(',')[0]); //currHash
+              event.push(eventsList[j].returnValues.workflowHashes.split(',')[1]); //reqHash
+
+              var isfullyOk = false;
+              for (var ind = 0; ind < acceptedEvents.length; ind++) {
+                if (acceptedEvents[ind].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()) {
+                  isfullyOk = true;
+                  event.push('[Approved]');
+                }
+              }
+
+              if (!isfullyOk) {
+                event.push('[Waiting for other endorsers]');
+              }
+              tree.push(event);
+
+            }
+
+            if ((((eventsList[j].returnValues.endorser.toUpperCase() === accounts[0].toUpperCase()))
+              && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase()))) {
+
+              var event = [];
+              var initiator = '';
+              var endorser = '';
+              for (var l = 0; l < roleMaps.length; l++) {
+                if (eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())) {
+                  initiator = roleMaps[l].role;
+                }
+                if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())) {
+                  endorser = roleMaps[l].role;
+                }
+              }
+
+              event.push(initiator);
+              event.push(endorser);
+              event.push(eventsList[j].returnValues.workflowHashes.split(',')[0]); //currHash
+              event.push(eventsList[j].returnValues.workflowHashes.split(',')[1]); //reqHash
+
+              if ((declinedEvents.length !== 0) && (declinedEvents.includes(eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()))) {
+                event.push('[Declined]');
+              }
+              else if ((okEvents.length !== 0)) {
+                var isfullyOk = false;
+                // check if elem belongs to the list of accepted events   
+                for (var ind = 0; ind < acceptedEvents.length; ind++) {
+                  if (acceptedEvents[ind].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()) {
+                    isfullyOk = true;
                     event.push('[Approved]');
                   }
                 }
 
-                if(!isfullyOk){
-                  event.push('[Waiting for other endorsers]');
+                // if not, check if already processed
+                var isprocessed = false;
+                if (!isfullyOk) {
+                  for (var i = 0; i < okEvents.length; i++) {
+                    if ((okEvents[i].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()) && (okEvents[i].endorser === accounts[0])) {
+                      event.push('[Waiting for other endorsers]');
+                      isprocessed = true;
+                    }
+                  }
+                  if (!isprocessed) {
+                    event.push('[Waiting for decision]');
+                  }
                 }
-                tree.push(event);  
-
+              }
+              else {
+                event.push('[Waiting for decision]');
               }
 
-           if((((eventsList[j].returnValues.endorser.toUpperCase() === accounts[0].toUpperCase()))
-              && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase()))) {
+              tree.push(event);
 
-                var event = [];
-                var initiator='';
-                var endorser='';
-                for (var l = 0; l < roleMaps.length; l++) {
-                  if(eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                    initiator=roleMaps[l].role;
-                  }
-                  if (eventsList[j].returnValues.endorser.toUpperCase().includes(roleMaps[l].address.toUpperCase())){
-                    endorser=roleMaps[l].role; 
-                  }
-                }
-                
-                event.push(initiator);
-                event.push(endorser);
-                event.push(eventsList[j].returnValues.workflowHashes.split(',')[0]); //currHash
-                event.push(eventsList[j].returnValues.workflowHashes.split(',')[1]); //reqHash
-
-                if((declinedEvents.length!==0) && (declinedEvents.includes(eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()))){
-                  event.push('[Declined]');
-                }
-                else if((okEvents.length!==0)){
-                  var isfullyOk=false;
-                  // check if elem belongs to the list of accepted events   
-                  for(var ind=0; ind<acceptedEvents.length;ind++){
-                    if(acceptedEvents[ind].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()){
-                      isfullyOk=true;
-                      event.push('[Approved]');
-                    }
-                  }
-
-                    // if not, check if already processed
-                  var isprocessed = false;
-                  if(!isfullyOk){
-                    for(var i=0; i<okEvents.length;i++){
-                      if ((okEvents[i].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase())&&(okEvents[i].endorser===accounts[0])){              
-                        event.push('[Waiting for other endorsers]');
-                        isprocessed=true;
-                      }
-                    }
-                    if(!isprocessed){
-                      event.push('[Waiting for decision]');
-                    }
-                  }
-                }
-                else{
-                  event.push('[Waiting for decision]');
-                }
-    
-                tree.push(event);    
-  
+            }
           }
-        }
-        }).then(()=>{         
+        }).then(() => {
 
           this.setState({
             'tree': tree,
@@ -288,12 +338,12 @@ class MyNotifications extends React.Component {
           })
         })
 
-    
+
     } catch (error) {
       console.error(error);
     }
 
-    
+
   }
 
 
@@ -319,35 +369,35 @@ class MyNotifications extends React.Component {
                 </div>
 
                 <h5>Change requests:</h5>
-                <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif"/>
+                <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
                 <div className="bg-green">
                   <Nav>
                     <TableScrollbar rows={8}>
                       <Table>
-                      <thead className="cf">
-                        <tr>
-                          <th className="header" scope="col">Status</th>
-                          <th className="header hide-when-big" scope="col">From</th>
-                          <th className="header hide-when-small" scope="col">To</th>
-                          <th className="header" scope="col">Workflow Hashes</th>
-                          <th className="header" scope="col">Actions</th>
-                        </tr>
-                      </thead>
+                        <thead className="cf">
+                          <tr>
+                            <th className="header" scope="col">Status</th>
+                            <th className="header hide-when-big" scope="col">From</th>
+                            <th className="header hide-when-small" scope="col">To</th>
+                            <th className="header" scope="col">Workflow Hashes</th>
+                            <th className="header" scope="col">Actions</th>
+                          </tr>
+                        </thead>
 
                         <tbody>
 
                           {this.state.tree.map((event, i) => {
                             return <tr key={i} title={event[0]}>
                               <td title={event[4]} className="align-middle">
-                              {event[4] === '[Declined]'? 
-                                <XOctagon color='red'/>:<></>}
-                              {event[4] === '[Waiting for other endorsers]'? 
-                                <Clock color='blue'/>:<></>}
-                              {event[4] === '[Waiting for decision]'? 
-                                <Mail color='orange'/>:<></>}
-                              {event[4] === '[Approved]'? 
-                                <Check color='green'/>:<></>}
-                                                                </td>
+                                {event[4] === '[Declined]' ?
+                                  <XOctagon color='red' /> : <></>}
+                                {event[4] === '[Waiting for other endorsers]' ?
+                                  <Clock color='blue' /> : <></>}
+                                {event[4] === '[Waiting for decision]' ?
+                                  <Mail color='orange' /> : <></>}
+                                {event[4] === '[Approved]' ?
+                                  <Check color='green' /> : <></>}
+                              </td>
                               <td className="align-middle">{event[0]}</td>
                               <td className="align-middle">{event[1]}</td>
                               <td >
@@ -355,15 +405,15 @@ class MyNotifications extends React.Component {
                                 <pre>New: {event[3]}</pre>
                               </td>
                               <td className="align-middle">
-                                <ChangeModal  currHash={event[2]} 
-                                              reqHash={event[3]} 
-                                              web3={this.state.web3} 
-                                              accounts={this.state.accounts} 
-                                              contractDCR={this.state.contractDCR}
-                                              status={event[4]}
-                                              />
+                                <ChangeModal currHash={event[2]}
+                                  reqHash={event[3]}
+                                  web3={this.state.web3}
+                                  accounts={this.state.accounts}
+                                  contractDCR={this.state.contractDCR}
+                                  status={event[4]}
+                                />
                               </td>
-                              </tr>
+                            </tr>
                           }
                           )
                           }

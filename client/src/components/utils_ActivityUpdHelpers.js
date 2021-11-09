@@ -5,11 +5,9 @@ const activityUpdHelpers = {
     * @param e: click event
     */
     handleActivityName: function (e) {
-        console.log(e)
         e.preventDefault();
 
         var activityName = e.target.value;
-        console.log(activityName);
         if((activityName.includes('!('))||(activityName.includes('?('))){
             activityName = e.target.value.split('(')[1].split(',')[0];
         }
@@ -41,10 +39,8 @@ const activityUpdHelpers = {
     */
     handleTenant: function (e) {
         e.preventDefault();
-        console.log(this.state.tenantName);
-        console.log(this.state.auth.name);
-
-        //this.setState({ tenantName: e.target.value });
+        
+        this.setState({ tenantName: e.target.value });
     },
 
     /**

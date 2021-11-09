@@ -679,17 +679,21 @@ class DCRgraphG extends React.Component {
     }
     else {
       if (this.state.chgType === 'Private') {
+        alert('Launching '+this.state.chgType+' change');
+
         // else, launch update: the current projection will be replaced by the alternative one via an API call.
         var headers = {
           "Access-Control-Allow-Origin": "*",
         };
+        alert('reqHash: '+this.state.reqHash);
         axios.post(`http://localhost:5000/switchProj`,
           {
             projID: this.props.id,
             processID: this.props.processID,
-            reqHash: this.state.reqHash
+            reqHash: this.state.pHash
+            //reqHash: this.state.reqHash
           },
-          { "headers": headers }
+          { "headers": { "Access-Control-Allow-Origin": "*" }}
         ).then(
           (response) => {
             this.setState({
@@ -887,10 +891,28 @@ class DCRgraphG extends React.Component {
             this.state.altVersionExists && 
             (this.state.chgApprovalOutcome !== 1) && 
             (!Number.isNaN(this.state.chgApprovalOutcome))&&
-            (this.state.hasApprovedChg==0)
+            (this.state.hasApprovedChg==0) &&
+            (this.state.chgType=='Private')
             ) ?
             <>
-              <p>A change request has been accepted by participants: please switch to new version by clicking below.
+            <p>A private change request has been registered: please switch to new version by clicking below.
+            </p>
+
+              <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button>
+            </> :
+            <></>
+          }
+
+{(this.state.isRoleOwner &&
+            this.state.altVersionExists && 
+            (this.state.chgApprovalOutcome !== 1) && 
+            (!Number.isNaN(this.state.chgApprovalOutcome))&&
+            (this.state.hasApprovedChg==0)&&
+            (this.state.chgType!=='Private')
+            
+            ) ?
+            <>
+            <p>A change request has been accepted by participants: please switch to new version by clicking below.
             </p>
 
               <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button>

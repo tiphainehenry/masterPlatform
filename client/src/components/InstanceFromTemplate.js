@@ -68,11 +68,7 @@ class CreationDeck extends React.Component {
       auth: {},
       iterator: 0,
       data: [],
-      allRegisteredRoles:[],
-
-      templateID: this.props.match.params.pid,
-
-      processID: JSON.parse(localStorage.getItem('processID')) || '',
+      processID: this.props.location.state['currentProcess']||JSON.parse(localStorage.getItem('processID')),
       ipfsHash: JSON.parse(localStorage.getItem('ipfsHash')) || null,
       buffer: '',
       ethAddress: '',
@@ -84,7 +80,7 @@ class CreationDeck extends React.Component {
       accounts: null,
       contract: null,
 
-      processID: JSON.parse(localStorage.getItem('processID')) || '',
+      processName: this.props.location.state['currentProcess']||JSON.parse(localStorage.getItem('processID')),
       projectionID: 'Global',
       roleMaps:{},
       edges: {
@@ -105,7 +101,6 @@ class CreationDeck extends React.Component {
       roleOptions:[],
 
       dataFields:[],
-      dataFieldsList:[],
 
       roles:[],
 
@@ -141,9 +136,8 @@ class CreationDeck extends React.Component {
         isChoreo: ''
       },
 
-    };
 
-    this.deleteDataField = this.deleteDataField.bind(this);
+    };
 
     this.cmpAccountRoles = dcrHelpers.cmpAccountRoles.bind(this);
 
@@ -175,12 +169,14 @@ class CreationDeck extends React.Component {
     this.getMenuStyle = getMenuStyle.bind(this);
 
     this.fileUpload = this.fileUpload.bind(this);
-    this.graphUpdate = this.graphUpdate.bind(this);
+    this.privateGraphUpd = this.privateGraphUpd.bind(this);
     this.saveToLibrary = this.saveToLibrary.bind(this);
     this.postLibrary = this.postLibrary.bind(this);
 
     this.createFile = this.createFile.bind(this);
+    this.instantiate= this.instantiate.bind(this);
 
+    this.onIPFSSubmit = this.onIPFSSubmit.bind(this);
     this.onChangeView = this.onChangeView.bind(this);
   }
 
@@ -210,7 +206,7 @@ class CreationDeck extends React.Component {
       {
         var roleOptions = [];
 
-        this.state.allRegisteredRoles.forEach((r)=>{
+        this.state.roles.forEach((r)=>{
           var newOption = {'value':r, 'label':r};
           roleOptions.push(newOption);
         })
@@ -233,24 +229,6 @@ class CreationDeck extends React.Component {
     this.setState({ selectValue: e.target.value });
   }
 
-  onChange(e) {
-    if (e.target.name === "address")
-        this.setState({ address: e.target.value })
-    else if (e.target.name === "name")
-        this.setState({ name: e.target.value })
-    else if (e.target.name === "selector") {
-        this.setState({ selectValue: e.target.value })
-        this.setState({ isNew: (e.target.value === "") })
-        if (e.target.value !== "") {
-            this.getListRoles('0x' + this.state.addresses[this.state.allRegisteredRoles.indexOf(e.target.value)])
-        }
-    } else if (e.target.name === "isAdmin") {
-        this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
-    } else if (e.target.name === "newDataField") {
-        this.setState({newDataField: e.target.value});
-    }
-}
-
   async getRoles() {
 
     try {
@@ -265,33 +243,20 @@ class CreationDeck extends React.Component {
 
 
       this.setState({ web3, accounts, contract: instance });
-      
-      // fetch participants addresses
-      const participantsData = await instance.methods.getRoles().call()
-      var addresses = []
-      participantsData.forEach(line => {
-          const val = line.split('///')[1];
-          if(val.slice(0,2)!='0x'){
-            val= '0x'+val;
-          }
-          addresses.push(val);
-        });
 
-      // fetch list of roles registered per address
-      var roles = [];
-      for(var i=0; i<addresses.length; i++){
-          const addressRoles = await instance.methods.getElemRoles(addresses[i]).call();
-          for(var j=0; j<addressRoles.length; j++){
-              if(!roles.includes(addressRoles[j])){
-                  roles.push(addressRoles[j]);            
-              }
-          }
-      }
+      var roles = await instance.methods.getRoles().call();
+      var tmpAddress = []      
+      roles.forEach(line => {
+        tmpAddress.push(line.split('///')[1])
+      });
+      this.setState({ addresses: tmpAddress })
 
-      this.setState({
-          allRegisteredRoles:roles,
-          addresses:addresses
-      })
+
+      var accroles = await instance.methods.getAccountRoles().call();
+      this.cmpAccountRoles(accroles);
+
+
+
       
     } catch (error) {
       //alert(
@@ -300,113 +265,62 @@ class CreationDeck extends React.Component {
       console.error(error);
     }
   }
+  onIPFSSubmit = async (event) => {
+    event.preventDefault();
 
+    //save document to IPFS,return its hash#, and set hash# to state
+    //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add 
 
+    var input = ProcessDB[this.state.processID]['Public']['data'];
 
+    try{
+        ipfs.files.add(Buffer.from(JSON.stringify(input)))
+        .then(res => {
+          const hash = res[0].hash
+  
+          this.setState({
+            ipfsHash: hash
+          }, () => {
+            localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
+          });
+  
+          axios.post(`http://localhost:5000/saveHash`,
+            {
+              "hash": hash,
+              "processId": this.state.processID,
+            },
+            { "headers": { "Access-Control-Allow-Origin": "*" } }
+          );
+  
+          return ipfs.files.cat(hash)
+        })
+        .then(output => {
+          console.log(JSON.parse(output));
+          alert('Saved to IPFS')
+        })
+      }
+      catch(error){
+        alert('Is the VPN on?');
+      }   
 
+  }; //onIPFSSubmit 
 
   //////////  LISTENERS /////////////////
 
-  nodeListener_datafield(node_df){
-    if(typeof node_df !== 'undefined'){
-      console.log(node_df);
-      this.setState(
-        {dataFields:node_df},
-        );
-  
-        var line = [];
-        for (let l = 0; l < node_df.length; l++) {
-            line.push(
-                <tr key={l}>
-                    <td>{l}</td>
-                    <td>{node_df[l].value}</td>
-                    <td><Button onClick={() => this.deleteDataField(l)} class="btn btn-danger">Delete</Button></td>
-                </tr>)
+  /**
+   * Listeners to monitor node click events.
+   */
+  setUpNodeListeners = () => {
+
+    this.cy.on('click', 'node', (event, data) => {
+      //getClikedNode
+      if ((!event.target['_private']['classes'].has('selected')) && (this.state.numSelected < 2)) {
+        console.log(event.target['_private']['data']['id'] + ' clicked');
+
+        var type = '';
+        if (event.target['_private']['classes'].has('subgraph')) {
+          type = 'subgraph';
         }
-        this.setState({ "dataFieldsList": line });
-    }
-    else{
-      console.log("no datafield in this node");
-      this.setState(
-        {dataFields:[]},
-        );
-        var line = [];
-        this.setState({ "dataFieldsList": line });
-
-    }
-  }
-
-  nodeListener_activityName(node_actName, node_classes){
-
-    var isChoreo=false;
-    var activityName = '';
-    if(node_classes.has("type_projChoreo")){
-      isChoreo=true;
-      activityName = node_actName.split('(')[1].split(',')[0];
-    }
-    else if((node_classes.has("type_choreography"))){
-      isChoreo=true;
-      if(node_actName.includes('\n')){
-        activityName = node_actName.split('\n')[1];
-      }
-      else if(node_actName.includes(' ')){
-        activityName = node_actName.split(' ')[1];
-      }
-      else{
-        console.log('fails at choreography name split');
-      }
-    }
-    else{
-      activityName=node_actName.split(' ')[1];
-    }
-    return [activityName, isChoreo];
-  }
-
-  nodeListener_recipients(node_actName, node_classes){
-    var activityName = '';
-    if(node_classes.has("type_projChoreo")){
-      activityName = node_actName.split('(')[1].split(',')[0];
-    }
-    else if((node_classes.has("type_choreography"))){
-      if(node_actName.includes('\n')){
-        activityName = node_actName.split('\n');
-      }
-      else if(node_actName.includes(' ')){
-        activityName = node_actName.split(' ');
-      }
-      else{
-        console.log('fails at choreography name split');
-      }
-
-      this.setState({
-        choreographyNames:{
-          sender: activityName[0],
-          receiver:this.state.choreographyNames.receiver
-        }
-      })
-    }
-    else{
-      if (node_actName.split(' ').length>1){
-        try{
-          var tenantName=node_actName.split(' ')[0];
-          this.setState(tenantName);    
-        }
-        catch(error){
-          console.log(error);
-        }
-      }
-    }
-
-
-  }
-
-
-
-  nodeListener_edges(myID, myClasses){
-    var type = '';
-    if (myClasses.has('subgraph')) {
-      type = 'subgraph';
-    }
 
         /// monitor clicked elements
         switch (this.state.numSelected) {
@@ -414,7 +328,7 @@ class CreationDeck extends React.Component {
             console.log('source');
             this.setState({
               source: {
-                ID: myID,
+                ID: event.target['_private']['data']['id'],
                 type: type
               }
             });
@@ -423,67 +337,49 @@ class CreationDeck extends React.Component {
             console.log('target');
             this.setState({
               target: {
-                ID: myID,
+                ID: event.target['_private']['data']['id'],
                 type: type
               }
             });
             break;
           default: console.log('num selected nodes: ' + this.state.numSelected);
-        }    
-  }
+        }
 
-  nodeListener_is_selected(event){
-    console.log(event.target['_private']['data']['id'] + ' clicked');
+        // update states
+        this.cy.getElementById(event.target['_private']['data']['id']).addClass('selected');
+        var name = event.target['_private']['data']['name'].split(' ')
 
-    this.cy.getElementById(event.target['_private']['data']['id']).addClass('selected');
+        var isChoreo=false;
+        var activityName = ''
+        if((event.target['_private']['classes'].has("type_projChoreo"))){
+          isChoreo=true;
+          console.log('ischoreo:', isChoreo);
+          activityName = event.target['_private']['data']['name'].split('(')[1].split(',')[0];
+        }
+        else if((event.target['_private']['classes'].has("type_choreography"))){
+          isChoreo=true;
+          activityName = event.target['_private']['data']['name'].split('\n')[1];
+        }
+        else{
+          activityName=event.target['_private']['data']['name'].split(' ')[1];
+        }
 
-    // dataFields 
-    this.nodeListener_datafield(event.target['_private']['data']['dataFields']);
 
-    // activityName  
-    var answer = this.nodeListener_activityName(event.target['_private']['data']['name'],
-                                                event.target['_private']['classes']);
-
-    // activityName  
-    this.nodeListener_recipients(event.target['_private']['data']['name'],
-                                              event.target['_private']['classes']);
-
-
-    // relations
-    this.nodeListener_edges(event.target['_private']['data']['id'], event.target['_private']['classes']);
-
-    // update states
-    this.setState({
-      elemClicked: {
-        id: event.target['_private']['data']['id'],
-        activityName: answer[0],
-        classes: event.target['_private']['classes'],
-        type: event.target['_private']['group'],
-        isChoreo: answer[1], 
-
-      },
-      numSelected: this.state.numSelected + 1
-    });
-
-  }
-
-  /**
-   * Listeners to monitor node click events.
-   */
-  setUpNodeListeners = () => {
-
-    this.cy.on('click', 'node', (event, data) => {
-
-      //getClikedNode
-      if ((!event.target['_private']['classes'].has('selected')) && (this.state.numSelected < 2)) {
-        this.nodeListener_is_selected(event);
+        this.setState({
+          elemClicked: {
+            id: event.target['_private']['data']['id'],
+            activityName: activityName,
+            classes: event.target['_private']['classes'],
+            type: event.target['_private']['group'],
+            isChoreo: isChoreo
+          },
+          numSelected: this.state.numSelected + 1
+        });
       }
-
       else if (event.target['_private']['classes'].has('selected')) {
         this.cy.$('selected').removeClass('selected')
         this.setState({ source: { ID: "", type: "" }, target: { ID: "", type: "" }, numSelected: 0 })
       }
-
       else {
         this.setState({ numSelected: 0 })
         this.cy.nodes().forEach(ele => ele.removeClass('selected'))
@@ -548,7 +444,7 @@ class CreationDeck extends React.Component {
    * 
    */
   getTemplate() {
-    axios.get(`http://localhost:5000/library?processID=` + this.state.templateID).then(
+    axios.get(`http://localhost:5000/library?processID=` + this.state.processID).then(
       (response) => {
         var result = response;
         if (result.data !== "KO") {
@@ -576,11 +472,7 @@ class CreationDeck extends React.Component {
       }
     };
 
-    axios.post(`http://localhost:5000/library`, { 
-      "data": data, 
-      "processID": this.state.templateID }, 
-      config)
-      .then(
+    axios.post(`http://localhost:5000/library`, { "data": data, "processID": this.state.processID }, config).then(
       (response) => {
         var result = response.data;
         console.log(result);
@@ -588,7 +480,7 @@ class CreationDeck extends React.Component {
       (error) => {
         console.log(error);
       }
-    ).then(() => {this.graphUpdate()});
+    ).then(() => {this.privateGraphUpd()});
 
     return "posted"
 
@@ -605,7 +497,7 @@ class CreationDeck extends React.Component {
    * Private graph update processing > calls the API to update the markings and nodes.
    * 
    */
-  graphUpdate() {
+  privateGraphUpd() {
     if (this.cy.elements().length === 0) {
       window.alert('Graph is empty')
     } else if (window.confirm('Confirm new graph version?')) {
@@ -624,14 +516,12 @@ class CreationDeck extends React.Component {
         var tmp='';
 
         if (ele['_private']['group'] === "nodes") {
-          if (ele['_private']['classes'].has("choreography")||ele['_private']['classes'].has("type_choreography")) {
+          if (ele['_private']['classes'].has("choreography")) {
             id++;
             tmp = ele['_private']['data']['name'].split(' ');
             tmp = tmp.filter(e => e !== "");
-
-            alert(this.state.addresses);
-            rolelist.set(tmp[0], this.state.addresses[this.state.allRegisteredRoles.indexOf(tmp[0])]);
-            rolelist.set(tmp[2], this.state.addresses[this.state.allRegisteredRoles.indexOf(tmp[2])]);
+            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])]);
+            rolelist.set(tmp[2], this.state.addresses[this.state.roles.indexOf(tmp[2])]);
             newEle = {
               "name": "e" + id + "[" + tmp[1] + " src=" + tmp[0] + " tgt=" + tmp[2] + "]\n"
             }
@@ -639,7 +529,7 @@ class CreationDeck extends React.Component {
           } else {
 
             tmp = ele['_private']['data']['name'].split(' ');
-            rolelist.set(tmp[0], this.state.addresses[this.state.allRegisteredRoles.indexOf(tmp[0])]);
+            rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])]);
             newEle = {
               "name": '"' + tmp[0] + '" [role=' + tmp[1] + "]\n",
             };
@@ -677,7 +567,8 @@ class CreationDeck extends React.Component {
   }
 
   /**
-     * Create an input File to send to the API and send to api for projection
+     * Create an input File to send to the API
+     * 
      */
   createFile(data, rolelist) {
     //e.preventDefault() // Stop form submit
@@ -700,9 +591,18 @@ class CreationDeck extends React.Component {
     this.fileUpload(file).then((response) => {
       console.log(response.data);
       if (response.data === "ok") {
+        // save to BC
         console.log('projection done');
+        //this.loadToBC.current.handleCreateWkf();
       }
     })
+
+    //return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
+  }
+
+  async instantiate(){
+    this.loadToBC.current.handleCreateWkf();
+    console.log("is ok loadtoBC");
   }
 
   /**
@@ -732,98 +632,31 @@ class CreationDeck extends React.Component {
     return "saved"
   }
 
-  addNewField = () => {
+
+  addInput = () => {
 
     var dataFields = this.state.dataFields;
 
-    dataFields.push(        
-      {
-        type: "text",
-        value: this.state.newDataField
-      });
+    dataFields.push(        {
+      type: "text",
+      value: ""
+    }
+    );
 
-    this.getDataFieldsList();
-    this.setState(
-      {dataFields:dataFields},
-      );
+    this.setState(dataFields);
   };
 
   handleDataFieldChange = e => {
     e.preventDefault();
+
     const index = e.target.id;
+
     const newArr = this.state.dataFields.slice();
     newArr[index].value = e.target.value;
 
     this.setState({dataFields:newArr});
 
   };
-
-
-  /**
-     * Get the list of existing roles for an account
-     */
-  async getDataFieldsList() {
-      //const roles = await this.state.instance.methods.getElemRoles(address).call()
-      var line = [];
-      for (let i = 0; i < this.state.dataFields.length; i++) {
-          line.push(
-              <tr key={i}>
-                  <td>{i}</td>
-                  <td>{this.state.dataFields[i].value}</td>
-                  <td><Button onClick={() => this.deleteDataField(i)} class="btn btn-danger">Delete</Button></td>
-              </tr>)
-      }
-      this.setState({ "dataFieldsList": line });
-      return line
-  }
-
-
-  addNewField = () => {
-
-    var dataFields = this.state.dataFields;
-
-    dataFields.push(        
-      {
-        type: "text",
-        value: this.state.newDataField
-      });
-
-    this.getDataFieldsList();
-    this.setState(
-      {dataFields:dataFields},
-      );
-  };
-
-  deleteDataField = (i) =>{
-
-    var dataFields = this.state.dataFields;
-
-    var updDataFields = []
-    for(var j=0; j<dataFields.length; j++){
-      if (j!= i){
-        updDataFields.push(dataFields[j]);
-      }
-    }
-    console.log(updDataFields);
-    
-    this.setState(
-      {dataFields:updDataFields},
-      );
-
-      var line = [];
-      for (let l = 0; l < updDataFields.length; l++) {
-          line.push(
-              <tr key={l}>
-                  <td>{l}</td>
-                  <td>{updDataFields[l].value}</td>
-                  <td><Button onClick={() => this.deleteDataField(l)} class="btn btn-danger">Delete</Button></td>
-              </tr>)
-      }
-      this.setState({ "dataFieldsList": line });
-      return line
-
-      //this.getDataFieldsList(); 
-  } 
 
   ///// Render
 
@@ -837,7 +670,7 @@ class CreationDeck extends React.Component {
   
   
     return <>
-
+    
       <Authentification status={this.getStatus} />
       <div>
         <Header />
@@ -856,7 +689,7 @@ class CreationDeck extends React.Component {
 
             
                 <div className='container'>
-                  <h2>Creating [template {this.state.templateID}]</h2>
+                  <h2>Creating [process {this.state.processID}]</h2>
 
                   <div className="form-group">
                         <label className="is-required" for="role">Select projection type</label>
@@ -917,7 +750,7 @@ class CreationDeck extends React.Component {
                                   <option value=''> ---</option>
                                   {
                                     React.Children.toArray(
-                                      this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
+                                      this.state.roles.map((name, i) => <option key={i}>{name}</option>)
                                     )
                                   }
                                   </select>
@@ -942,14 +775,13 @@ class CreationDeck extends React.Component {
                           
                                 />
                                 </div></>
-                                :<>                                
-                                <div className="form-group">
+                                :<>                                <div className="form-group">
                                 <label className="is-required" for="role">Private role</label>
                                 <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
                                 <option value=''> ---</option>
                                 {
                                   React.Children.toArray(
-                                    this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
+                                    this.state.roles.map((name, i) => <option key={i}>{name}</option>)
                                   )
                                 }
                                 </select>
@@ -984,27 +816,19 @@ class CreationDeck extends React.Component {
 
                                 <hr /><br />
 
-                                <h4>Datafields</h4>
+                                <h4>Attach datafields</h4>
 
-                                <table className='table' striped bordered hover>
-                                  <thead>
-                                      <tr key='header'>
-                                          <th>#</th>
-                                          <th>datafield</th>
-                                          <th></th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr key='add_df'>
-                                          <td>new</td>
-                                          <td><input type="input" class="form-control " onPaste={e => this.onChange(e)} name="newDataField" onChange={e => this.onChange(e)}></input></td>
-                                          <td><Button onClick={() => this.addNewField()} class="btn btn-primary">{"  Add  "}</Button></td>
-                                      </tr>
+                                <button onClick={this.addInput}>+</button>
+                                {this.state.dataFields.map((item, i) => {
+                                  return (
+                                    <input
+                                      onChange={this.handleDataFieldChange}
+                                      value={item.value}
+                                      id={i}
+                                      type={item.type}
+                                      size="40"
+                                    />);})}
 
-                                      {this.state.dataFieldsList}
-                                  </tbody>
-                              </table>
-                              <hr /><br />
                               </Form>
 
                               <Button onClick={this.updActivity}>update activity</Button>
@@ -1017,8 +841,11 @@ class CreationDeck extends React.Component {
                       </Col>
                     </Row>
                   </div>
-                  <Button onClick={this.saveToLibrary}>Save to library</Button>
+                  <Button onClick={this.saveToLibrary}>1. Generate projection</Button>
 
+                  <Button onClick={this.onIPFSSubmit}>2. Save public text extraction to IPFS</Button>
+
+                  <LoadToBCL ref={this.loadToBC} ipfsHash={this.state.ipfsHash} processID={this.state.processID} stage="instance from template"/>
 
                   <Legend src={this.state.src}/>
                             

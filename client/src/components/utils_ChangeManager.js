@@ -48,8 +48,11 @@ const changeManager = {
       roles.forEach(function(r){
         console.log(r);
 
+        var targets = node['tgt'].split(',');
+        console.log(targets);
+
         // test if role is accrole
-        if ((node['src']===r['role'])||(node['tgt']===r['role'])) {
+        if ((node['src']===r['role'])||(targets.includes(r['role']))) {
 
           var new_address = r['address'];
           if (new_address.slice(0,2)!=='0x'){
@@ -59,6 +62,8 @@ const changeManager = {
         }
       })
     });
+
+    console.log(addressesToNotify);
     
     // generate cyto data and save to IPFS
     var newData = [];
@@ -84,7 +89,6 @@ const changeManager = {
           'nbr':0,
           'properName':sender+'\n'+acName+'\n'+receiver
         }
-
       }
 
       var classes = Array.from(ele['_private']['classes']).join(' ');

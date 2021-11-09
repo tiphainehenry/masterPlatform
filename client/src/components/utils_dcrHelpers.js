@@ -1,3 +1,5 @@
+import { Cpu } from "react-feather";
+
 const dcrHelpers = {
 
   /**
@@ -8,25 +10,31 @@ const dcrHelpers = {
     var roleMaps = []
     var tmpRoles = []
     var tmpAddress = []
+
     roles.forEach(line => {
       var r = line.split('///')[0];
       var a = line.split('///')[1];
       tmpRoles.push(r);
       tmpAddress.push(a);
       roleMaps.push({'role':r, 'address':a});
+
     });
-    this.setState({ 
-      roles: tmpRoles, 
-      addresses: tmpAddress, 
-      roleMaps:roleMaps,
+
+    this.setState({
+      roles: tmpRoles,
+      addresses: tmpAddress,
+      roleMaps:roleMaps
     })
   },
+
 
 
   cmpAccountRoles: function(roles) {
     var roleMaps = []
     var tmpRoles = []
     var tmpAddress = []
+
+    console.log(roles);
 
     roles.forEach(line => {
       var r = line.split('///')[0].replace('///', '');
@@ -45,6 +53,8 @@ const dcrHelpers = {
         addresses: tmpAddress, 
         roleMaps:roleMaps,
       })
+
+      console.log(tmpRoles);
     },
 
     //////////  LISTENERS /////////////////

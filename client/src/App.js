@@ -7,7 +7,10 @@ import {
   BrowserRouter
 } from "react-router-dom";
 import Homepage from './components/Homepage';
+import NewTemplate from './components/NewTemplate';
 import NewInstance from './components/NewInstance';
+import LoadInstance from './components/LoadInstance';
+
 import ViewPublic from './components/ViewPublic';
 import ViewRi from './components/ViewRi';
 import Edit from './components/Edit';
@@ -49,8 +52,38 @@ const App = () => (
       <Route exact path="/edit" component={Edit} />
       <Route exact path="/createL" component={CreateL} />
 
-      <Route exact path="/new" component={NewInstance} />
-      <Route exact path="/creation" component={CreationDeck} />
+      <Route exact path="/new" component={NewTemplate} />
+      <Route exact path="/instanciateTemplate" component={NewInstance} />
+
+      <Switch>
+          <Route 
+          exact 
+          path="/loadInstance/:pid" 
+          render={({ 
+              location, 
+              match 
+          }) => (
+              <LoadInstance match={match} />
+          )}           
+          
+         />
+      </Switch>
+
+
+      <Switch>
+          <Route 
+          exact 
+          path="/creation/:pid" 
+          render={({ 
+              location, 
+              match 
+          }) => (
+              <CreationDeck match={match} />
+          )}           
+          
+         />
+      </Switch>
+
       <Route exact path="/newrole" component={NewRole} />
       <Route exact path="/mynotifications" component={MyNotifications} />
 

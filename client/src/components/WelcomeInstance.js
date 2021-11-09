@@ -102,14 +102,14 @@ class WelcomeInstance extends React.Component {
       var tree = [];
 
       for (var j = 0; j <= numProcess; j++) {
-        try{
+        try {
           var hash = ProcessDB[Object.keys(ProcessDB)[j]]['hash'];
           if (SCHashes.includes(hash)) {
             var dcrText = ProcessDB[Object.keys(ProcessDB)[j]]['TextExtraction']
             var name = ProcessDB[Object.keys(ProcessDB)[j]]['id']
             var type = ProcessDB[Object.keys(ProcessDB)[j]]['projType']
             var roleLength = dcrText['roleMapping'].length;
-  
+
             var i;
             var roles = [];
             for (i = 1; i <= roleLength; i++) {
@@ -123,20 +123,20 @@ class WelcomeInstance extends React.Component {
               roleLength: roleLength,
               roles: roles
             });
-  
+
             var process = [];
             process.push(name);
             process.push(roles);
             process.push(type);
             process.push(hash);
-  
+
             tree.push(process);
-  
+
           }
           else {
             console.log('Process not displayed (because not tracked in the BC)')
           }
-  
+
           tree.sort();
           this.setState({
             'tree': tree,
@@ -144,13 +144,14 @@ class WelcomeInstance extends React.Component {
             wkState: 'Create Global Workflow OnChain.',
             SCHashes: SCHashes
           });
-  
-        }
-        catch(error){
-          //console.log(error);
-      }
 
-    }} catch (error) {
+        }
+        catch (error) {
+          //console.log(error);
+        }
+
+      }
+    } catch (error) {
       console.error(error);
     };
   }
@@ -248,56 +249,56 @@ class WelcomeInstance extends React.Component {
                   <Nav>
                     {this.state.tree.map((process, i) => {
                       return <Nav key={i} title={process[0]} >
-<Row key={i}>
-<CardGroup>
-<Card bg="light">
-<Card.Body>
-  <Card.Text className="text-center">Process {process[0]} <br/> 
-  </Card.Text>
-</Card.Body>
-<Card.Footer className="justify-content text-center ">
-{process[2]}
-</Card.Footer>
-</Card>
+                        <Row key={i}>
+                          <CardGroup>
+                            <Card bg="light">
+                              <Card.Body>
+                                <Card.Text className="text-center">Process {process[0]} <br />
+                                </Card.Text>
+                              </Card.Body>
+                              <Card.Footer className="justify-content text-center ">
+                                {process[2]}
+                              </Card.Footer>
+                            </Card>
 
-{process[1].map((item, i) =>
-<Card key={i}>
-<Card.Body>
-  <Card.Title>Projection on {item[1]}</Card.Title>
-  <div className="row">
-                                      <div className="col-sm-12 other">
+                            {process[1].map((item, i) =>
+                              <Card key={i}>
+                                <Card.Body>
+                                  <Card.Title>Projection on {item[1]}</Card.Title>
+                                  <div className="row">
+                                    <div className="col-sm-12 other">
 
-                                        <Nav.Link as={Link}
-                                          to={{
-                                            pathname: './tenantInstance/' + process[0] + '/' + item[0]
-                                          }}
-                                        >  <Button variant="outline-success" title='run instance'>
-                                            <Play />                                      </Button>
-                                        </Nav.Link>
+                                      <Nav.Link as={Link}
+                                        to={{
+                                          pathname: './tenantInstance/' + process[0] + '/' + item[0]
+                                        }}
+                                      >  <Button variant="outline-success" title='run instance'>
+                                          <Play />                                      </Button>
+                                      </Nav.Link>
 
-                                      </div>
-                                      <div className="col-sm-8 other2">
-
-                                        <Nav.Link as={Link}
-                                          to={{
-                                            pathname: './editing/' + process[0] + '/' + item[0]
-                                          }}
-                                        ><Button variant="outline-warning" title='request change'>
-                                            <Edit /></Button>
-                                        </Nav.Link>
-                                      </div>
                                     </div>
+                                    <div className="col-sm-8 other2">
 
-</Card.Body>
-</Card>
+                                      <Nav.Link as={Link}
+                                        to={{
+                                          pathname: './editing/' + process[0] + '/' + item[0]
+                                        }}
+                                      ><Button variant="outline-warning" title='request change'>
+                                          <Edit /></Button>
+                                      </Nav.Link>
+                                    </div>
+                                  </div>
+
+                                </Card.Body>
+                              </Card>
 
 
 
                             )}
 
-</CardGroup>
-<br/>
-</Row></Nav>
+                          </CardGroup>
+                          <br />
+                        </Row></Nav>
                     })}
 
                   </Nav>
