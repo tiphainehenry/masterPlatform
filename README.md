@@ -51,4 +51,8 @@ ganache-cli -m "east enjoy keen nut hat debris blur trophy alone steak large fed
 
 truffle migrate #migrate the contract
 ```
+In a third terminal, run the bridge to connect the blockchain to the outside world:
+```
+npm run bridge
+```
 Make sure that the database is initially empty ! (Button 'delete all instances' in the 'my instances' panel)
