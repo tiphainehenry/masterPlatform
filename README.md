@@ -9,6 +9,8 @@ Regarding the process execution:
 - The shared public tasks are gathered together in a public DCR graph. The later is compiled and updated in the blokchain for trust purposes. 
 - The tenant projections are updated locally for privacy concerns and communicate with the public DCR vis external events. 
 
+Additionally, we leverage the on/off-chain mechanism for change management on running instances. A redesign of a private task is managed off-chain, while a redesign of a public task is managed in an on-chain fashion.
+
 We use python Flask for the backend of the application and React for the front end. We use cytoscape.js, a React package, to generate the graph visualizations. Web3.js is used to connect the decentralized application to a blockchain network. Truffle manages the compilation and migration of the DCR smart contract, and Metamask controls contract interactions. 
 
 The projection and bitvector algorithms can be found in the folder ./api/src/
