@@ -21,11 +21,13 @@ The generated data is stored under ./src/projections/
 - Frontend: docs/docsFrontend/_build/html/index.html
 
 ## Functionalities
-On the design side, the platform: 
-- separates the public and private projections out of a given textual representation. 
+On the design side, the user can create a process template by designing a projection using the creation deck, or loading a textual DCR representation of the process.
+
+The user then instantiates the process: the platform:
+- separates the public and private projections out of the process description.  
 - instantiates the public DCR smart contract stored in Ethereum with the newly generated public projection
 
-On the execution side, each user can (1) execute its local projection, (2) have access to the execution logs of its local projection (activity start and end timestamps, state of execution of the task). 
+On the execution side, each user can (1) execute its local projection, (2) have access to the execution logs of its local projection (activity start and end timestamps, state of execution of the task), (3) request changes, (4) accept/decline changes and update its projection when the public view updates.  
 
 Examples of DCR graphs are accessible in the folder ./dcrInputs/.
 
