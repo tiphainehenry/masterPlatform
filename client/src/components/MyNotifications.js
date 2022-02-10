@@ -225,6 +225,8 @@ class MyNotifications extends React.Component {
       })
         .then(function (eventsList) {
           for (var j = 0; j < eventsList.length; j++) {
+
+            console.log('declined: ', eventsList[j].returnValues.reqWkfHash.toUpperCase());
             declinedEvents.push(eventsList[j].returnValues.reqWkfHash.toUpperCase());
           }
         });
@@ -235,10 +237,13 @@ class MyNotifications extends React.Component {
       })
         .then(function (eventsList) {
 
+          console.log(('im at reqChange'));
           for (var j = 0; j < eventsList.length; j++) {
+            console.log(('test one'));
 
             if ((eventsList[j].returnValues.initiator.toUpperCase() === accounts[0].toUpperCase())
               && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase())) {
+
 
               var event = [];
 
@@ -269,15 +274,27 @@ class MyNotifications extends React.Component {
               }
 
               if (!isfullyOk) {
-                event.push('[Waiting for other endorsers]');
+                console.log('couocu')
+                if (declinedEvents.length !== 0){
+                  console.log('at least one declined event');
+                  if (declinedEvents.includes(eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase())) {
+                    event.push('[Declined]');
+                  } 
+                }
+                else{
+                  event.push('[Waiting for endorsers]');
+                }
+
               }
               tree.push(event);
 
             }
 
+
+
             if ((((eventsList[j].returnValues.endorser.toUpperCase() === accounts[0].toUpperCase()))
               && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase()))) {
-
+                
               var event = [];
               var initiator = '';
               var endorser = '';
@@ -295,8 +312,10 @@ class MyNotifications extends React.Component {
               event.push(eventsList[j].returnValues.workflowHashes.split(',')[0]); //currHash
               event.push(eventsList[j].returnValues.workflowHashes.split(',')[1]); //reqHash
 
-              if ((declinedEvents.length !== 0) && (declinedEvents.includes(eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()))) {
-                event.push('[Declined]');
+              if (declinedEvents.length !== 0){
+                if (declinedEvents.includes(eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase())) {
+                  event.push('[Declined]');
+                } 
               }
               else if ((okEvents.length !== 0)) {
                 var isfullyOk = false;
@@ -322,8 +341,9 @@ class MyNotifications extends React.Component {
                   }
                 }
               }
-              else {
+              else { 
                 event.push('[Waiting for decision]');
+
               }
 
               tree.push(event);
@@ -332,8 +352,13 @@ class MyNotifications extends React.Component {
           }
         }).then(() => {
 
+
+          // clean tree
+          var cleaned_tree = Array.from(new Set(tree.map(JSON.stringify)), JSON.parse);
+        
+          // save to state
           this.setState({
-            'tree': tree,
+            'tree': cleaned_tree,
             'numEvents': eventsList.length,
           })
         })

@@ -92,9 +92,6 @@ def updWithName(dataTxt, pi, projType):
         dumpJSONFile(os.path.join(target, 'exec' +
                                   getId(pi, role)+'.json'), {"execLogs": []})
 
-
-
-
     projectPublic(pi, dataTxt, target)
 
     # merge all

@@ -724,7 +724,7 @@ class DCRgraphG extends React.Component {
     await contract.methods.confirmChangeProjection(this.state.pHash, this.state.accounts[0])
       .send({ from: this.state.accounts[0] })
       .then(res => {
-        //console.log(res);
+        console.log(res);
       });
   }
 
@@ -734,10 +734,6 @@ class DCRgraphG extends React.Component {
     var wkData = this.fetchWKData(this.props.processID);
     var addresses = wkData[11];
     
-
-    //console.log(this.state.pHash);
-    //console.log(this.state.markingStates);
-    //console.log(this.state.relations);
     console.log(this.state.activityNames['default']);
     console.log(addresses);
 

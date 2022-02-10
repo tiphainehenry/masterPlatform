@@ -142,6 +142,7 @@ def extractChunks(data):
     events, internalEvents = [], []
     groupings, linkages = [], []
     roles, addresses = [], []
+    publicData= []
 
     for line in data:
         if (line[0] !=  '#'):
@@ -149,6 +150,8 @@ def extractChunks(data):
                 pk_val = line.split('role=')[1].replace(']','').replace(' ','').replace('\n','').split('=')
                 add = {'role':pk_val[0],'pk':pk_val[1]}
                 addresses.append(add)
+            elif('publicData' in line):
+                publicData.append(line)
             else:
                 if ('src' in line) and ('tgt' in line):
                     lineclean = line.replace('= ', '=').replace(' =', '=').replace(' = ', '=')
@@ -180,7 +183,8 @@ def extractChunks(data):
         'events':events,
         'internalEvents':internalEvents,
         'linkages':linkages,
-        'addresses':addresses
+        'addresses':addresses,
+        'publicData':publicData
     }
 
     return chunks, roles

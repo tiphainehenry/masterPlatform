@@ -71,13 +71,13 @@ class SidebarModel extends React.Component {
 
                         <li className="nav-item">
                             <a className="nav-link" href="/createL">
-                                <span><PlayCircle/> Instanciate model from file</span>
+                                <span><PlayCircle/> Instantiate model from file</span>
                             </a>
                         </li>
 
                         <li className="nav-item">
-                            <a className="nav-link" href="/instanciateTemplate">
-                                <span><PlayCircle /> Instanciate template</span>
+                            <a className="nav-link" href="/instantiateTemplate">
+                                <span><PlayCircle /> Instantiate template</span>
                             </a>
                         </li>
 

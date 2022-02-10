@@ -202,7 +202,7 @@ class CreationDeck extends React.Component {
   };
 
   /**
-   * Instanciates component with the right process and projection view.
+   * Instantiates component with the right process and projection view.
    */
   componentWillMount() {
 
@@ -267,10 +267,11 @@ class CreationDeck extends React.Component {
       this.setState({ web3, accounts, contract: instance });
       
       // fetch participants addresses
-      const participantsData = await instance.methods.getRoles().call()
+      const participantsData = await instance.methods.getRoles().call();
+      console.log(participantsData);
       var addresses = []
       participantsData.forEach(line => {
-          const val = line.split('///')[1];
+          var val = line.split('///')[1];
           if(val.slice(0,2)!='0x'){
             val= '0x'+val;
           }
@@ -519,7 +520,7 @@ class CreationDeck extends React.Component {
 
   ////////  CALL API    ////////
   /**
-   * Instanciate the process in the BC
+   * Instantiate the process in the BC
    * 
    */
   fileUpload(file) {

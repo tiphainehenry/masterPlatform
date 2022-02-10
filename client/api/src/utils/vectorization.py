@@ -283,7 +283,6 @@ def vectorize(data, filename):
     """
     chunks, roles = extractChunks(data)
 
-
     relations, fullRelations = generateRelationMatrices(chunks)
 
     markings = generateInitialMarkings(chunks)
@@ -293,6 +292,7 @@ def vectorize(data, filename):
         'relations': relations,
         'markings': markings,
         'activityNames': activitynames,
+        'publicData': chunks['publicData'],
         'fullMarkings': {
             'included': fullMarkings[0],
             'executed': fullMarkings[1],

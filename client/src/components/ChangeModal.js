@@ -85,12 +85,7 @@ class ChangeModal extends React.Component {
 
   async answer(rsp){
     try{
-      console.log(this.props.currHash);
-      console.log(this.props.reqHash);
-      console.log(rsp);
-      console.log(this.props.accounts[0]);
-
-        this.props.contractDCR.methods.endorserRSP(this.props.currHash, this.props.reqHash, rsp).send({
+        this.props.contractDCR.methods.endorserRSP(this.props.accounts[0], this.props.currHash, this.props.reqHash, rsp).send({
           from: this.props.accounts[0]
         }, (error) => {
                   console.log(error);

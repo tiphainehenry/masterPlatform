@@ -36,6 +36,7 @@ class LoadToBCL extends React.Component {
       responsesTo: '',
       conditionsFrom: '',
       milestonesFrom: '',
+      publicData: '',
       ethAddress:''
     };
     this.handleCreateWkf = this.handleCreateWkf.bind(this);
@@ -77,7 +78,8 @@ class LoadToBCL extends React.Component {
           conditionsFrom: wkData[9],
           milestonesFrom: wkData[10],
           addresses: wkData[11],
-          approvalList: wkData[12]
+          approvalList: wkData[12],
+          publicData: wkData[13]
         });    
       }
   
@@ -157,6 +159,7 @@ class LoadToBCL extends React.Component {
             PubVec['fullRelations']['milestone'],
             orderedPk,
             approvalList
+            //PubVec['publicData'].toString()
   ]
 
 
@@ -220,6 +223,7 @@ class LoadToBCL extends React.Component {
         var milestonesFrom= wkData[10];
         var addresses= wkData[11];
         var approvalList= wkData[12];
+//        var publicData = wkData[13];
 
         this.setState({
           data,
@@ -236,19 +240,19 @@ class LoadToBCL extends React.Component {
           milestonesFrom,
           addresses,
           approvalList
+//          publicData
         });
-
-
 
       if(includedStates.length === 0){
         alert("oops -didnt have time to update freshly updated db [to be implemented]");  
       }
       else{
-        var relations = [includesTo,
-          excludesTo,
-          responsesTo,
-          conditionsFrom,
-          milestonesFrom]
+        console.log('passed the if statement');
+        var relations =[includesTo,
+                        excludesTo,
+                        responsesTo,
+                        conditionsFrom,
+                        milestonesFrom]
 
         await contract.methods.uploadPublicView(
           [includedStates,executedStates,pendingStates], //marking
@@ -258,7 +262,9 @@ class LoadToBCL extends React.Component {
           approvalList,
           activityNames,
           processName,
-          relations 
+          relations
+          //publicData
+
         ).send({ from: accounts[0] }
           , (error, transactionHash) => {
             console.log(transactionHash);
@@ -276,7 +282,7 @@ class LoadToBCL extends React.Component {
     }
   }
     catch (err) {
-      window.alert(err);
+      window.alert('test' + err);
 
       this.setState({ wkState: '2/. Save public view onchain' });
     }

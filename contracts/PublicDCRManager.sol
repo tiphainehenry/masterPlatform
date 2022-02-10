@@ -2,6 +2,8 @@
 pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
+import "./ProvableAPI_0.5.sol";
+
 import "./LibPublicDCRM.sol";
 
 contract PublicDCRManager {
@@ -66,6 +68,8 @@ contract PublicDCRManager {
         uint[] approvalOutcomes;
         uint[] didFetch;
         Activity execStatus;
+
+        //string publicData;
     }
     
     enum ChgStatus { Approved, Declined, BeingProcessed, Init, Switched }
@@ -89,7 +93,6 @@ contract PublicDCRManager {
 
         uint[] approvalOutcomes;
         uint[] didFetch;
-
     }
     
     struct Marking {
@@ -293,15 +296,15 @@ contract PublicDCRManager {
                 }
             }   
     }
-    function endorserRSP(string memory curr_hash, string memory req_hash, uint rsp) public payable returns (string memory) {
+    function endorserRSP(address myAddress, string memory curr_hash, string memory req_hash, uint rsp) public payable returns (string memory) {
         
         if(changeRequests[curr_hash].status == ChgStatus.BeingProcessed){
             Test.test  = 'enteringNode';
             // accept: emit decision and update change memory
             if (rsp==1){
-                updateTableOnAddress(msg.sender,changeRequests[curr_hash].endorsers, curr_hash,1);
+                updateTableOnAddress(myAddress,changeRequests[curr_hash].endorsers, curr_hash,1);
                 Test.test  = 'approved by one person';
-                emit AcceptChange(req_hash, msg.sender);
+                emit AcceptChange(req_hash, myAddress);
                 finalApprovalManager(curr_hash);
             }         
             
@@ -309,11 +312,11 @@ contract PublicDCRManager {
             else if (rsp == 2){
                 Test.test  = 'declined';
                 changeRequests[curr_hash].status = ChgStatus.Init;
-                emit DeclineChange(req_hash, msg.sender);
+                emit DeclineChange(req_hash, myAddress);
             }
             
             else {
-                emit RSPErrorChange(req_hash, msg.sender, 'wrong rsp answer');
+                emit RSPErrorChange(req_hash, myAddress, 'wrong rsp answer');
             }
 
             return 'RSP processed';
@@ -415,7 +418,10 @@ contract PublicDCRManager {
             workflows[_hash].name,                 
 
             // relations
-            _relations        
+            _relations
+
+            //changeRequests[_hash].publicData
+
             );
 
             changeRequests[_hash].status=ChgStatus.Switched;
@@ -646,7 +652,8 @@ contract PublicDCRManager {
         string memory _name,
 
         // relations
-        uint256[][][] memory _relations // includesto, excludesto, responsesto, conditionsfrom, milestonesFrom
+        uint256[][][] memory _relations // includesto, excludesto, responsesto, conditionsfrom, milestonesFrom,
+
     ) public payable {
         
         
@@ -667,6 +674,7 @@ contract PublicDCRManager {
                 new uint[](_approvalAddresses.length),
                 new uint[](_approvalAddresses.length),
                 execStatus
+                //_publicData
             );
         workflows[_ipfsViewHash]=wf;
         registeredViewHashes.push(_ipfsViewHash);

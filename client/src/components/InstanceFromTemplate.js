@@ -198,7 +198,7 @@ class CreationDeck extends React.Component {
   };
 
   /**
-   * Instanciates component with the right process and projection view.
+   * Instantiates component with the right process and projection view.
    */
   componentWillMount() {
 
@@ -415,7 +415,7 @@ class CreationDeck extends React.Component {
 
   ////////  CALL API    ////////
   /**
-   * Instanciate the process in the BC
+   * Instantiate the process in the BC
    * 
    */
   fileUpload(file) {

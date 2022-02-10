@@ -208,6 +208,8 @@ def projectPublic(processID, data, target):
 
     chunks, roles = extractChunks(data)
 
+    print(chunks)
+
     # generate choreography projection
     projection, externalIds = generatePublicProjection(
         chunks.copy(), os.path.join(target, "dcrTexts.json"))

@@ -85,12 +85,12 @@ class NewInstance extends React.Component {
               <Container fluid >
 
                 <div className='container'>
-                  <h1>Instanciate a process model</h1>
+                  <h1>Instantiate a process model</h1>
 
                   <Table id="myTable" class="table tablesorter table-responsive">
                           <thead class="cf">
                             <tr>
-                              <th class="header" scope="col">My templates (click to instanciate)</th>
+                              <th class="header" scope="col">My templates (click to instantiate)</th>
                               <th class="header" scope="col">Type</th>
                             </tr>
                           </thead>

@@ -91,6 +91,7 @@ class LoadInstance extends React.Component {
 
       roles:[],
 
+      rolesWithAddresses:[],
       numSelected: 0,
 
       tenantName: '',
@@ -157,7 +158,7 @@ class LoadInstance extends React.Component {
   };
 
   /**
-   * Instanciates component with the right process and projection view.
+   * Instantiates component with the right process and projection view.
    */
   componentWillMount() {
 
@@ -199,30 +200,38 @@ class LoadInstance extends React.Component {
             // fetch participants addresses
             const participantsData = await instance.methods.getRoles().call()
             var addresses = []
+            console.log("ADDRESSES");
+            console.log(participantsData);
             participantsData.forEach(line => {
                 var val = line.split('///')[1];     
-              
                 if(val.slice(0,2)!='0x'){
                   val = '0x'+val;
-                }
-              
+                }              
                 addresses.push(val);
             });
       
+      
       // fetch list of roles registered per address
       var roles = [];
+      var rolesWithAddresses=[];
       for(var i=0; i<addresses.length; i++){
           const addressRoles = await instance.methods.getElemRoles(addresses[i]).call();
           for(var j=0; j<addressRoles.length; j++){
               if(!roles.includes(addressRoles[j])){
-                  roles.push(addressRoles[j]);            
+                  roles.push(addressRoles[j]);  
+                  rolesWithAddresses.push({'role':addressRoles[j], 'address':addresses[i]})          
               }
           }
       }
 
+      console.log(addresses);
+      console.log(roles);
+      console.log(rolesWithAddresses);
+
       this.setState({
           roles:roles,
-          addresses:addresses
+          addresses:addresses,
+          rolesWithAddresses:rolesWithAddresses
       })
       
     } catch (error) {
@@ -277,7 +286,7 @@ class LoadInstance extends React.Component {
 
   ////////  CALL API    ////////
   /**
-   * Instanciate the process in the BC
+   * Instantiate the process in the BC
    * 
    */
   fileUpload(file) {
@@ -404,6 +413,23 @@ class LoadInstance extends React.Component {
     return properName;  
   }
 
+
+  fetchRoleAddress(r){
+    const addressRole='';
+
+    console.log(this.state.rolesWithAddresses)
+
+    var i=0;
+    for(var i=0; i<this.state.rolesWithAddresses; i++){
+      if(this.state.rolesWithAddresses[i]['role']===r){
+        addressRole=this.state.rolesWithAddresses[i]['address'];
+      }
+
+    }
+
+    console.log(addressRole);
+    return addressRole;
+  }
   /**
      * Create an input File to send to the API
      * 
@@ -412,6 +438,7 @@ class LoadInstance extends React.Component {
     //e.preventDefault() // Stop form submit
 
     var newData = [];
+    var publicData=[];
 
     // retrieve data
     var rolelist = new Map()
@@ -430,6 +457,7 @@ class LoadInstance extends React.Component {
           tmp = tmp.filter(e => e !== "");
           rolelist.set(tmp[0], this.state.addresses[this.state.roles.indexOf(tmp[0])]);
 
+
           var receivers="";
           var tgts=tmp[2].split(",");
           if(tgts.length>1){
@@ -439,13 +467,51 @@ class LoadInstance extends React.Component {
             }
           }
           else{
+            console.log('here:'+tmp[2]);
             receivers=" tgt=" + tmp[2];
-            rolelist.set(tmp[2], this.state.addresses[this.state.roles.indexOf(tmp[2])]);
+            console.log(this.state.roles);
+            console.log(this.state.roles.indexOf(tmp[2]));
+            console.log(this.state.addresses.length);
+
+            if(typeof this.state.addresses[this.state.roles.indexOf(tmp[2])]==='undefined'){
+              console.log('undefined');
+              var addressRole='';
+
+              console.log(this.state.rolesWithAddresses)
+          
+              var i=0;
+              console.log(this.state.rolesWithAddresses);
+              for(var i=0; i<this.state.rolesWithAddresses; i++){
+                console.log(this.state.rolesWithAddresses[i]['role']);
+                console.log(tmp[2]);
+                console.log('______________')
+                if(this.state.rolesWithAddresses[i]['role']===tmp[2]){
+                  addressRole=this.state.rolesWithAddresses[i]['address'];
+                }
+          
+              }
+              
+              rolelist.set(tmp[2], addressRole);
+            
+            }
+            else{
+              rolelist.set(tmp[2], this.state.addresses[this.state.roles.indexOf(tmp[2])]);
+
+            }
+
           }
+
+          var eventID = "e" + id;
           newEle = {
-            "name": "e" + id + "[" + tmp[1] + " src=" + tmp[0] + receivers+ "]\n"
+            "name": eventID + "[" + tmp[1] + " src=" + tmp[0] + receivers+ "]\n"
           }
-          ele['_private']['data']['name'] = "e" + id;
+          ele['_private']['data']['name'] = eventID;
+
+          publicData.push({
+            "in": ele['_private']['data']['dataFields'],
+            "eventID": eventID
+          });
+          
         } else {
 
           tmp = ele['_private']['data']['name'].split(' ');
@@ -467,20 +533,41 @@ class LoadInstance extends React.Component {
         newData.push(newEle);
     }.bind(this));
 
+    console.log('rolelist');
+    console.log(rolelist);
 
     var arrayEvent = [];
     var arrayLink = [];
+
+    try{
+      console.log(publicData);
+      for(var i=0; i<publicData.length; i++){
+        console.log(publicData[i]);
+  
+        var input_dataFields = "[type="+publicData[i]['in'][0]['type']+',value='+publicData[i]['in'][0]['value'];
+        for(var j=1; j<publicData[i]['in'].length; j++){
+          console.log(publicData[i]['in'][0]);
+          input_dataFields=input_dataFields+";[type="+publicData[i]['in'][j]['type']+',value='+publicData[i]['in'][j]['value'];
+        }
+        var publicDataDescription = 'publicData[eID='+publicData[i]['eventID']+';in='+input_dataFields+']]';
+        arrayEvent.push(publicDataDescription);
+      }  
+    }
+    catch{
+      console.log('error');
+    }
+
     const it = rolelist.keys();
-    console.log(it);
     for (const key of it) {
+      console.log(key);
       var tmp_add = rolelist.get(key);
       console.log("init:"+tmp_add);
       if(tmp_add.slice(0,2)!='0x'){
         tmp_add='0x'+tmp_add;
       }
-      console.log("processed:"+tmp_add);
+      console.log("processed:"+key+'>'+tmp_add);
 
-      arrayEvent.push("pk[role=" + key + "]=" +tmp_add +'\n')
+      arrayEvent.push("pk[role=" + key + "]=" +tmp_add +'\n');
     }
     newData.forEach(line => {
       if (line.hasOwnProperty('name'))
@@ -556,7 +643,7 @@ class LoadInstance extends React.Component {
               <Container>
 
                 <div className='container'>
-                  <h2>Instanciate process from template [{this.state.templateID}]</h2>
+                  <h2>Instantiate process from template [{this.state.templateID}]</h2>
                   <Row>
                   <Col>
                       <Card style={{ height: '95%'}}>

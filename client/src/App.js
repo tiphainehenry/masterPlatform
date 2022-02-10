@@ -53,7 +53,7 @@ const App = () => (
       <Route exact path="/createL" component={CreateL} />
 
       <Route exact path="/new" component={NewTemplate} />
-      <Route exact path="/instanciateTemplate" component={NewInstance} />
+      <Route exact path="/instantiateTemplate" component={NewInstance} />
 
       <Switch>
           <Route 

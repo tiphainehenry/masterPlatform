@@ -179,7 +179,7 @@ class EditionDeck extends React.Component {
 
 
   /**
- * Instanciates component with the right process and projection view.
+ * Instantiates component with the right process and projection view.
  */
   componentWillMount() {
     //console.log('[INFO] componentWillMount starts');

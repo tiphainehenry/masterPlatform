@@ -18,7 +18,7 @@ module.exports = {
     ropsten: {
       provider:  new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/f86c1527e7f24bf99018c94a7b5abae4"),
       network_id: '3',
-      gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
+      //gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
     }
   }
 };

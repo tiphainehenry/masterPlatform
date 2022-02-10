@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../../../HashCompare"
+		},
+		{
+			"path": "../../../../tfhe-tutorial"
 		}
 	],
 	"settings": {
