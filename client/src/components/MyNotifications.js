@@ -1,5 +1,5 @@
 import React from 'react';
-import $ from 'jquery';
+// import $ from 'jquery';
 import Header from './Header';
 import { Row, Col, Container } from 'react-bootstrap';
 
@@ -175,7 +175,7 @@ class MyNotifications extends React.Component {
 
           events.forEach(res=>{
             if(res['event']==='AcceptChangeAll'){
-              var i= 0; 
+              // var i= 0; 
               //while(events_tab[i]['currHash'])            
               //events_tab[]
               }
@@ -295,10 +295,10 @@ class MyNotifications extends React.Component {
             if ((((eventsList[j].returnValues.endorser.toUpperCase() === accounts[0].toUpperCase()))
               && (eventsList[j].returnValues.initiator.toUpperCase() !== eventsList[j].returnValues.endorser.toUpperCase()))) {
                 
-              var event = [];
-              var initiator = '';
-              var endorser = '';
-              for (var l = 0; l < roleMaps.length; l++) {
+              event = [];
+              initiator = '';
+              endorser = '';
+              for (l = 0; l < roleMaps.length; l++) {
                 if (eventsList[j].returnValues.initiator.toUpperCase().includes(roleMaps[l].address.toUpperCase())) {
                   initiator = roleMaps[l].role;
                 }
@@ -318,9 +318,9 @@ class MyNotifications extends React.Component {
                 } 
               }
               else if ((okEvents.length !== 0)) {
-                var isfullyOk = false;
+                isfullyOk = false;
                 // check if elem belongs to the list of accepted events   
-                for (var ind = 0; ind < acceptedEvents.length; ind++) {
+                for (ind = 0; ind < acceptedEvents.length; ind++) {
                   if (acceptedEvents[ind].hash === eventsList[j].returnValues.workflowHashes.split(',')[1].toUpperCase()) {
                     isfullyOk = true;
                     event.push('[Approved]');
@@ -394,7 +394,7 @@ class MyNotifications extends React.Component {
                 </div>
 
                 <h5>Change requests:</h5>
-                <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
+                <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" alt=""/>
                 <div className="bg-green">
                   <Nav>
                     <TableScrollbar rows={8}>

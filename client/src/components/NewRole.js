@@ -133,7 +133,7 @@ class NewRole extends React.Component {
         console.log(participantsData);
         participantsData.forEach(line => {
             var val = line.split('///')[1];
-            if(val.slice(0,2)!='0x'){
+            if(val.slice(0,2)!=='0x'){
               val= '0x'+val;
             }
             addresses.push([line.split('///')[0],val]);

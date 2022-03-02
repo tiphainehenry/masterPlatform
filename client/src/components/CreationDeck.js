@@ -28,13 +28,13 @@ import Klay from 'cytoscape-klay'
 
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
 import getWeb3 from '../getWeb3';
-import ipfs from '../ipfs';
+// import ipfs from '../ipfs';
 
 import Legend from './Legend';
-import LoadToBCL from './LoadToBC';
+// import LoadToBCL from './LoadToBC';
 
 import { default as ReactSelect } from "react-select";
-import { components } from "react-select";
+// import { components } from "react-select";
 
 import Option from './Option';
 
@@ -48,7 +48,7 @@ var node_style = require('../style/nodeStyle.json');
 var edge_style = require('../style/edgeStyle.json');
 var cyto_style = require('../style/cytoStyle.json')['edit'];
 
-var ProcessDB = require('../projections/DCR_Projections.json');
+// var ProcessDB = require('../projections/DCR_Projections.json');
 
 
 /**
@@ -84,7 +84,7 @@ class CreationDeck extends React.Component {
       accounts: null,
       contract: null,
 
-      processID: JSON.parse(localStorage.getItem('processID')) || '',
+      // processID: JSON.parse(localStorage.getItem('processID')) || '',
       projectionID: 'Global',
       roleMaps:{},
       edges: {
@@ -94,12 +94,12 @@ class CreationDeck extends React.Component {
         response: ' *--> ',
         include: ' -->+ '
       },
-      elemClicked: {
-        id: '',
-        activityName: '',
-        classes: '',
-        type: ''
-      },
+      // elemClicked: {
+      //   id: '',
+      //   activityName: '',
+      //   classes: '',
+      //   type: ''
+      // },
 
       optionSelected: null,
       roleOptions:[],
@@ -272,7 +272,7 @@ class CreationDeck extends React.Component {
       var addresses = []
       participantsData.forEach(line => {
           var val = line.split('///')[1];
-          if(val.slice(0,2)!='0x'){
+          if(val.slice(0,2)!=='0x'){
             val= '0x'+val;
           }
           addresses.push(val);
@@ -331,7 +331,7 @@ class CreationDeck extends React.Component {
       this.setState(
         {dataFields:[]},
         );
-        var line = [];
+        line = [];
         this.setState({ "dataFieldsList": line });
 
     }
@@ -801,7 +801,7 @@ class CreationDeck extends React.Component {
 
     var updDataFields = []
     for(var j=0; j<dataFields.length; j++){
-      if (j!= i){
+      if (j!== i){
         updDataFields.push(dataFields[j]);
       }
     }

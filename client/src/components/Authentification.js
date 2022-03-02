@@ -84,7 +84,7 @@ class Authentification extends React.Component {
                 for (var r in all_roles){
                     var cr=all_roles[r].split('///')[0]
                     //console.log(myRoles[r].split('///')[0])
-                    if ((! cleanedRoles.includes(cr) ) & (cr!='')){
+                    if ((! cleanedRoles.includes(cr) ) & (cr !== '')){
                         cleanedRoles.push(cr)
                     }
                 }                

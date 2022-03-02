@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import '../style/boosted.min.css';
 import Authentification from './Authentification';
 
-import { Users, FilePlus, Edit, Play, PlayCircle } from 'react-feather';
+import { Users, FilePlus, Edit, PlayCircle } from 'react-feather';
 
 
 /**

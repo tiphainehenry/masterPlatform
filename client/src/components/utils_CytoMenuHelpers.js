@@ -42,7 +42,7 @@ const cytoMenuHelpers = {
                 this.state.optionSelected.forEach(elem=>{
                     receivers=receivers+","+elem['value'];
                 })
-                if(receivers[0]==","){
+                if(receivers[0]===","){
                     receivers=receivers.substring(1);
                 }
     
@@ -59,11 +59,11 @@ const cytoMenuHelpers = {
             tmp['_private']['classes'].delete("type_projChoreo");
             tmp['_private']['classes'].add("type_choreography");
 
-            var receivers = "";
+            receivers = "";
             this.state.optionSelected.forEach(elem=>{
                 receivers=receivers+","+elem['value'];
             })
-            if(receivers[0]==","){
+            if(receivers[0]===","){
                 receivers=receivers.substring(1);
             }
 

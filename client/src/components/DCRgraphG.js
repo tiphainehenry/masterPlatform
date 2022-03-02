@@ -350,7 +350,7 @@ class DCRgraphG extends React.Component {
 
 
   async getCanExecuteCheck() {
-    const { accounts, contract } = this.state;
+    const { contract } = this.state;
 
     //   Get the value from the contract.
     await contract.methods.getCanExecuteCheck(this.state.pHash).call().then(output => {
@@ -575,7 +575,7 @@ class DCRgraphG extends React.Component {
   handleUpdWkf = async () => {
     //alert('Update public view onchain');
 
-    const { accounts, contract } = this.state;
+    // const { accounts, contract } = this.state;
 
     try {
       // connect list of activities to corresponding role first, and then to the right role address
@@ -682,9 +682,9 @@ class DCRgraphG extends React.Component {
         alert('Launching '+this.state.chgType+' change');
 
         // else, launch update: the current projection will be replaced by the alternative one via an API call.
-        var headers = {
-          "Access-Control-Allow-Origin": "*",
-        };
+        // var headers = {
+        //   "Access-Control-Allow-Origin": "*",
+        // };
         alert('reqHash: '+this.state.reqHash);
         axios.post(`http://localhost:5000/switchProj`,
           {
@@ -719,7 +719,7 @@ class DCRgraphG extends React.Component {
   }
 
   async callSwitchProj() {
-    const { accounts, contract } = this.state;
+    const { contract } = this.state;
 
     await contract.methods.confirmChangeProjection(this.state.pHash, this.state.accounts[0])
       .send({ from: this.state.accounts[0] })
@@ -729,7 +729,7 @@ class DCRgraphG extends React.Component {
   }
 
   async uploadOnChain() {
-    const { accounts, contract } = this.state;
+    const { contract } = this.state;
 
     var wkData = this.fetchWKData(this.props.processID);
     var addresses = wkData[11];
@@ -887,8 +887,8 @@ class DCRgraphG extends React.Component {
             this.state.altVersionExists && 
             (this.state.chgApprovalOutcome !== 1) && 
             (!Number.isNaN(this.state.chgApprovalOutcome))&&
-            (this.state.hasApprovedChg==0) &&
-            (this.state.chgType=='Private')
+            (this.state.hasApprovedChg === 0) &&
+            (this.state.chgType ==='Private')
             ) ?
             <>
             <p>A private change request has been registered: please switch to new version by clicking below.
@@ -903,7 +903,7 @@ class DCRgraphG extends React.Component {
             this.state.altVersionExists && 
             (this.state.chgApprovalOutcome !== 1) && 
             (!Number.isNaN(this.state.chgApprovalOutcome))&&
-            (this.state.hasApprovedChg==0)&&
+            (this.state.hasApprovedChg === 0)&&
             (this.state.chgType!=='Private')
             
             ) ?
@@ -922,7 +922,7 @@ class DCRgraphG extends React.Component {
             this.state.altVersionExists && 
             (this.state.chgApprovalOutcome !== 1) && 
             (!Number.isNaN(this.state.chgApprovalOutcome)&&
-            (this.state.hasApprovedChg==1))) ?
+            (this.state.hasApprovedChg===1))) ?
             <>
               <p>Waiting for initiator switch.</p>
               <div style={{ 'marginTop': '60vh' }}>

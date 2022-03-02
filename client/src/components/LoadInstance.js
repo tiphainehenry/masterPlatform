@@ -77,12 +77,12 @@ class LoadInstance extends React.Component {
         response: ' *--> ',
         include: ' -->+ '
       },
-      elemClicked: {
-        id: '',
-        activityName: '',
-        classes: '',
-        type: ''
-      },
+      // elemClicked: {
+      //   id: '',
+      //   activityName: '',
+      //   classes: '',
+      //   type: ''
+      // },
 
       optionSelected: null,
       roleOptions:[],
@@ -204,7 +204,7 @@ class LoadInstance extends React.Component {
             console.log(participantsData);
             participantsData.forEach(line => {
                 var val = line.split('///')[1];     
-                if(val.slice(0,2)!='0x'){
+                if(val.slice(0,2)!=='0x'){
                   val = '0x'+val;
                 }              
                 addresses.push(val);
@@ -397,8 +397,8 @@ class LoadInstance extends React.Component {
 
     this.cy.elements().forEach(function (ele, id) {
       if (ele['_private']['group'] === "nodes") {
-        if(ele['_private']['data']['id'].replace(' ','')== id_to_test.replace(' ','')){
-          if (ele['_private']['data']['name'].split(' ').length ==2){
+        if(ele['_private']['data']['id'].replace(' ','') === id_to_test.replace(' ','')){
+          if (ele['_private']['data']['name'].split(' ').length ===2){
             //private event
             properName = ele['_private']['data']['name'].split(' ')[1].replace(' ',''); 
           }
@@ -415,11 +415,10 @@ class LoadInstance extends React.Component {
 
 
   fetchRoleAddress(r){
-    const addressRole='';
+    var addressRole='';
 
     console.log(this.state.rolesWithAddresses)
 
-    var i=0;
     for(var i=0; i<this.state.rolesWithAddresses; i++){
       if(this.state.rolesWithAddresses[i]['role']===r){
         addressRole=this.state.rolesWithAddresses[i]['address'];
@@ -479,7 +478,7 @@ class LoadInstance extends React.Component {
 
               console.log(this.state.rolesWithAddresses)
           
-              var i=0;
+              // var i=0;
               console.log(this.state.rolesWithAddresses);
               for(var i=0; i<this.state.rolesWithAddresses; i++){
                 console.log(this.state.rolesWithAddresses[i]['role']);
@@ -562,7 +561,7 @@ class LoadInstance extends React.Component {
       console.log(key);
       var tmp_add = rolelist.get(key);
       console.log("init:"+tmp_add);
-      if(tmp_add.slice(0,2)!='0x'){
+      if(tmp_add.slice(0,2)!=='0x'){
         tmp_add='0x'+tmp_add;
       }
       console.log("processed:"+key+'>'+tmp_add);

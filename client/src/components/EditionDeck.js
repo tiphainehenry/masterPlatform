@@ -24,7 +24,7 @@ import getWeb3 from '../getWeb3';
 import ipfs from '../ipfs';
 
 import { default as ReactSelect } from "react-select";
-import { components } from "react-select";
+// import { components } from "react-select";
 
 import Option from './Option';
 
@@ -230,6 +230,7 @@ class EditionDeck extends React.Component {
       this.setState({ web3, accounts, contractRole: adminInstance });
 
       // get list of addresses
+      
       var roles = await adminInstance.methods.getAccountRoles().call();
   
       this.cmpAccountRoles(roles);
@@ -240,14 +241,14 @@ class EditionDeck extends React.Component {
       var addresses = []
       participantsData.forEach(line => {
           var val = line.split('///')[1];
-          if(val.slice(0,2)!='0x'){
+          if(val.slice(0,2)!=='0x'){
             val= '0x'+val;
           }
           addresses.push(val);
         });
 
       // fetch list of roles registered per address
-      var roles = [];
+      roles = [];
       for(var i=0; i<addresses.length; i++){
           const addressRoles = await adminInstance.methods.getElemRoles(addresses[i]).call();
           for(var j=0; j<addressRoles.length; j++){
