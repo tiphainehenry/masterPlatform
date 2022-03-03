@@ -197,6 +197,7 @@ def SaveToLibrary():
             if not all == "":
                 #print(library.keys())
                 return jsonify(library.keys())
+                # return json.dumps(list(library.keys()))
             if not(key in library):
                 return "KO", 200, {'Access-Control-Allow-Origin': '*'}
             else:

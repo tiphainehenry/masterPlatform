@@ -249,7 +249,8 @@ class LoadInstance extends React.Component {
 
     alert(this.state.processID);
 
-    var input = ProcessDB[this.state.processID]['Public']['data'];
+    // var input = ProcessDB[this.state.processID]['Public']['data'];
+    var input = "Test";
 
     try{
         ipfs.files.add(Buffer.from(JSON.stringify(input)))

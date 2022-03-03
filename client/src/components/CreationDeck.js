@@ -3,6 +3,7 @@ import '../style/App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import Authentification from './Authentification'
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import activityUpdHelpers from './utils_ActivityUpdHelpers';
 import dcrHelpers from './utils_dcrHelpers';
@@ -68,7 +69,7 @@ class CreationDeck extends React.Component {
       auth: {},
       iterator: 0,
       data: [],
-      allRegisteredRoles:[],
+      allRegisteredRoles: [],
 
       templateID: this.props.match.params.pid,
 
@@ -86,7 +87,7 @@ class CreationDeck extends React.Component {
 
       // processID: JSON.parse(localStorage.getItem('processID')) || '',
       projectionID: 'Global',
-      roleMaps:{},
+      roleMaps: {},
       edges: {
         condition: ' -->* ',
         milestone: ' --<> ',
@@ -102,12 +103,14 @@ class CreationDeck extends React.Component {
       // },
 
       optionSelected: null,
-      roleOptions:[],
+      roleOptions: [],
 
-      dataFields:[],
-      dataFieldsList:[],
 
-      roles:[],
+      dataFields: [],
+      activitiesNames: [],
+      dataFieldsList: [],
+
+      roles: [],
 
       numSelected: 0,
 
@@ -206,17 +209,16 @@ class CreationDeck extends React.Component {
    */
   componentWillMount() {
 
-    this.getRoles().then(res=> 
-      {
-        var roleOptions = [];
+    this.getRoles().then(res => {
+      var roleOptions = [];
 
-        this.state.allRegisteredRoles.forEach((r)=>{
-          var newOption = {'value':r, 'label':r};
-          roleOptions.push(newOption);
-        })
-        this.setState({'roleOptions':roleOptions});
-      }
-);
+      this.state.allRegisteredRoles.forEach((r) => {
+        var newOption = { 'value': r, 'label': r };
+        roleOptions.push(newOption);
+      })
+      this.setState({ 'roleOptions': roleOptions });
+    }
+    );
 
   };
 
@@ -235,21 +237,24 @@ class CreationDeck extends React.Component {
 
   onChange(e) {
     if (e.target.name === "address")
-        this.setState({ address: e.target.value })
+      this.setState({ address: e.target.value })
     else if (e.target.name === "name")
-        this.setState({ name: e.target.value })
+      this.setState({ name: e.target.value })
     else if (e.target.name === "selector") {
-        this.setState({ selectValue: e.target.value })
-        this.setState({ isNew: (e.target.value === "") })
-        if (e.target.value !== "") {
-            this.getListRoles('0x' + this.state.addresses[this.state.allRegisteredRoles.indexOf(e.target.value)])
-        }
+      this.setState({ selectValue: e.target.value })
+      this.setState({ isNew: (e.target.value === "") })
+      if (e.target.value !== "") {
+        this.getListRoles('0x' + this.state.addresses[this.state.allRegisteredRoles.indexOf(e.target.value)])
+      }
     } else if (e.target.name === "isAdmin") {
-        this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
+      this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
     } else if (e.target.name === "newDataField") {
-        this.setState({newDataField: e.target.value});
+      this.setState({ newDataField: e.target.value });
+    } else if (e.target.name === "newDataRole") {
+      console.log(e.target.value);
+      this.setState({ newDataRole: e.target.value })
     }
-}
+  }
 
   async getRoles() {
 
@@ -265,35 +270,35 @@ class CreationDeck extends React.Component {
 
 
       this.setState({ web3, accounts, contract: instance });
-      
+
       // fetch participants addresses
       const participantsData = await instance.methods.getRoles().call();
       console.log(participantsData);
       var addresses = []
       participantsData.forEach(line => {
-          var val = line.split('///')[1];
-          if(val.slice(0,2)!=='0x'){
-            val= '0x'+val;
-          }
-          addresses.push(val);
-        });
+        var val = line.split('///')[1];
+        if (val.slice(0, 2) !== '0x') {
+          val = '0x' + val;
+        }
+        addresses.push(val);
+      });
 
       // fetch list of roles registered per address
       var roles = [];
-      for(var i=0; i<addresses.length; i++){
-          const addressRoles = await instance.methods.getElemRoles(addresses[i]).call();
-          for(var j=0; j<addressRoles.length; j++){
-              if(!roles.includes(addressRoles[j])){
-                  roles.push(addressRoles[j]);            
-              }
+      for (var i = 0; i < addresses.length; i++) {
+        const addressRoles = await instance.methods.getElemRoles(addresses[i]).call();
+        for (var j = 0; j < addressRoles.length; j++) {
+          if (!roles.includes(addressRoles[j])) {
+            roles.push(addressRoles[j]);
           }
+        }
       }
 
       this.setState({
-          allRegisteredRoles:roles,
-          addresses:addresses
+        allRegisteredRoles: roles,
+        addresses: addresses
       })
-      
+
     } catch (error) {
       //alert(
       //  `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -308,91 +313,91 @@ class CreationDeck extends React.Component {
 
   //////////  LISTENERS /////////////////
 
-  nodeListener_datafield(node_df){
-    if(typeof node_df !== 'undefined'){
+  nodeListener_datafield(node_df) {
+    if (typeof node_df !== 'undefined') {
       console.log(node_df);
       this.setState(
-        {dataFields:node_df},
-        );
-  
-        var line = [];
-        for (let l = 0; l < node_df.length; l++) {
-            line.push(
-                <tr key={l}>
-                    <td>{l}</td>
-                    <td>{node_df[l].value}</td>
-                    <td><Button onClick={() => this.deleteDataField(l)} class="btn btn-danger">Delete</Button></td>
-                </tr>)
-        }
-        this.setState({ "dataFieldsList": line });
+        { dataFields: node_df },
+      );
+
+      var line = [];
+      for (let l = 0; l < node_df.length; l++) {
+        line.push(
+          <tr key={l}>
+            <td>{l}</td>
+            <td>{node_df[l].value}</td>
+            <td><Button onClick={() => this.deleteDataField(l)} className="btn btn-danger">Delete</Button></td>
+          </tr>)
+      }
+      this.setState({ "dataFieldsList": line });
     }
-    else{
+    else {
       console.log("no datafield in this node");
       this.setState(
-        {dataFields:[]},
-        );
-        line = [];
-        this.setState({ "dataFieldsList": line });
+        { dataFields: [] },
+      );
+      line = [];
+      this.setState({ "dataFieldsList": line });
 
     }
   }
 
-  nodeListener_activityName(node_actName, node_classes){
+  nodeListener_activityName(node_actName, node_classes) {
 
-    var isChoreo=false;
+    var isChoreo = false;
     var activityName = '';
-    if(node_classes.has("type_projChoreo")){
-      isChoreo=true;
+    if (node_classes.has("type_projChoreo")) {
+      isChoreo = true;
       activityName = node_actName.split('(')[1].split(',')[0];
     }
-    else if((node_classes.has("type_choreography"))){
-      isChoreo=true;
-      if(node_actName.includes('\n')){
+    else if ((node_classes.has("type_choreography"))) {
+      isChoreo = true;
+      if (node_actName.includes('\n')) {
         activityName = node_actName.split('\n')[1];
       }
-      else if(node_actName.includes(' ')){
+      else if (node_actName.includes(' ')) {
         activityName = node_actName.split(' ')[1];
       }
-      else{
+      else {
         console.log('fails at choreography name split');
       }
     }
-    else{
-      activityName=node_actName.split(' ')[1];
+    else {
+      activityName = node_actName.split(' ')[1];
     }
     return [activityName, isChoreo];
   }
 
-  nodeListener_recipients(node_actName, node_classes){
+  nodeListener_recipients(node_actName, node_classes) {
     var activityName = '';
-    if(node_classes.has("type_projChoreo")){
+    if (node_classes.has("type_projChoreo")) {
       activityName = node_actName.split('(')[1].split(',')[0];
     }
-    else if((node_classes.has("type_choreography"))){
-      if(node_actName.includes('\n')){
+    else if ((node_classes.has("type_choreography"))) {
+      if (node_actName.includes('\n')) {
         activityName = node_actName.split('\n');
       }
-      else if(node_actName.includes(' ')){
+      else if (node_actName.includes(' ')) {
         activityName = node_actName.split(' ');
       }
-      else{
+      else {
         console.log('fails at choreography name split');
       }
 
       this.setState({
-        choreographyNames:{
+        choreographyNames: {
           sender: activityName[0],
-          receiver:this.state.choreographyNames.receiver
+          receiver: this.state.choreographyNames.receiver
         }
       })
     }
-    else{
-      if (node_actName.split(' ').length>1){
-        try{
-          var tenantName=node_actName.split(' ')[0];
-          this.setState(tenantName);    
+    else {
+      if (node_actName.split(' ').length > 1) {
+        try {
+          var tenantName = node_actName.split(' ')[0];
+          this.setState(tenantName);
         }
-        catch(error){
+        catch (error) {
           console.log(error);
         }
       }
@@ -403,37 +408,37 @@ class CreationDeck extends React.Component {
 
 
 
-  nodeListener_edges(myID, myClasses){
+  nodeListener_edges(myID, myClasses) {
     var type = '';
     if (myClasses.has('subgraph')) {
       type = 'subgraph';
     }
 
-        /// monitor clicked elements
-        switch (this.state.numSelected) {
-          case 0:
-            console.log('source');
-            this.setState({
-              source: {
-                ID: myID,
-                type: type
-              }
-            });
-            break;
-          case 1:
-            console.log('target');
-            this.setState({
-              target: {
-                ID: myID,
-                type: type
-              }
-            });
-            break;
-          default: console.log('num selected nodes: ' + this.state.numSelected);
-        }    
+    /// monitor clicked elements
+    switch (this.state.numSelected) {
+      case 0:
+        console.log('source');
+        this.setState({
+          source: {
+            ID: myID,
+            type: type
+          }
+        });
+        break;
+      case 1:
+        console.log('target');
+        this.setState({
+          target: {
+            ID: myID,
+            type: type
+          }
+        });
+        break;
+      default: console.log('num selected nodes: ' + this.state.numSelected);
+    }
   }
 
-  nodeListener_is_selected(event){
+  nodeListener_is_selected(event) {
     console.log(event.target['_private']['data']['id'] + ' clicked');
 
     this.cy.getElementById(event.target['_private']['data']['id']).addClass('selected');
@@ -443,11 +448,11 @@ class CreationDeck extends React.Component {
 
     // activityName  
     var answer = this.nodeListener_activityName(event.target['_private']['data']['name'],
-                                                event.target['_private']['classes']);
+      event.target['_private']['classes']);
 
     // activityName  
     this.nodeListener_recipients(event.target['_private']['data']['name'],
-                                              event.target['_private']['classes']);
+      event.target['_private']['classes']);
 
 
     // relations
@@ -460,7 +465,7 @@ class CreationDeck extends React.Component {
         activityName: answer[0],
         classes: event.target['_private']['classes'],
         type: event.target['_private']['group'],
-        isChoreo: answer[1], 
+        isChoreo: answer[1],
 
       },
       numSelected: this.state.numSelected + 1
@@ -553,8 +558,18 @@ class CreationDeck extends React.Component {
       (response) => {
         var result = response;
         if (result.data !== "KO") {
-          this.cy.add(result.data)
-          this.setState({ newActivityCnt: this.cy.filter('nodes').length })
+          this.cy.add(result.data);
+          this.setState({ newActivityCnt: this.cy.filter('nodes').length });
+          var activitiesNames = [];
+          for (var i = 0; i < result.data.length; i++) {
+            if (result.data[i].group === "nodes")
+              activitiesNames.push(result.data[i].data.name);
+          }
+          console.log(activitiesNames);
+          this.setState({ activitiesNames: activitiesNames });
+          console.log(result.data.public_var)
+          this.setState({ dataFields: result.data.public_var });
+          this.getDataFieldsList();
         }
       },
       (error) => {
@@ -569,7 +584,7 @@ class CreationDeck extends React.Component {
    * @returns 
    */
   postLibrary(data) {
-    
+
     const config = {
       headers: {
         'content-type': 'application/json',
@@ -577,19 +592,20 @@ class CreationDeck extends React.Component {
       }
     };
 
-    axios.post(`http://localhost:5000/library`, { 
-      "data": data, 
-      "processID": this.state.templateID }, 
+    axios.post(`http://localhost:5000/library`, {
+      "data": data,
+      "processID": this.state.templateID
+    },
       config)
       .then(
-      (response) => {
-        var result = response.data;
-        console.log(result);
-      },
-      (error) => {
-        console.log(error);
-      }
-    ).then(() => {this.graphUpdate()});
+        (response) => {
+          var result = response.data;
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      ).then(() => { this.graphUpdate() });
 
     return "posted"
 
@@ -622,10 +638,10 @@ class CreationDeck extends React.Component {
 
         //console.log("then id = " + id);
 
-        var tmp='';
+        var tmp = '';
 
         if (ele['_private']['group'] === "nodes") {
-          if (ele['_private']['classes'].has("choreography")||ele['_private']['classes'].has("type_choreography")) {
+          if (ele['_private']['classes'].has("choreography") || ele['_private']['classes'].has("type_choreography")) {
             id++;
             tmp = ele['_private']['data']['name'].split(' ');
             tmp = tmp.filter(e => e !== "");
@@ -646,12 +662,12 @@ class CreationDeck extends React.Component {
             };
           }
         } else if (ele['_private']['group'] === "edges") {
-            var src = this.findName(ele['_private']['data']['source'])
-            var trg = this.findName(ele['_private']['data']['target'])
-            var link = this.state.edges[ele['_private']['classes'].values().next().value]
-            newEle = { "link": src + link + trg + '\n' }
+          var src = this.findName(ele['_private']['data']['source'])
+          var trg = this.findName(ele['_private']['data']['target'])
+          var link = this.state.edges[ele['_private']['classes'].values().next().value]
+          newEle = { "link": src + link + trg + '\n' }
         }
-          newData.push(newEle);
+        newData.push(newEle);
       }.bind(this));
 
       this.createFile(newData, rolelist)
@@ -687,13 +703,13 @@ class CreationDeck extends React.Component {
     var arrayLink = []
     const it = rolelist.keys()
     for (const key of it) {
-        arrayEvent.push("pk[role=" + key + "]=0x" + rolelist.get(key)+'\n')
+      arrayEvent.push("pk[role=" + key + "]=0x" + rolelist.get(key) + '\n')
     }
     data.forEach(line => {
       if (line.hasOwnProperty('name'))
-        arrayEvent.push(line['name']+'\n')
+        arrayEvent.push(line['name'] + '\n')
       else
-        arrayLink.push(line['link']+'\n')
+        arrayLink.push(line['link'] + '\n')
     })
     const newdata = arrayEvent.concat(arrayLink)
     const file = new File(newdata, 'creationDeck.txt', { type: "text/plain" });
@@ -724,10 +740,19 @@ class CreationDeck extends React.Component {
   * 
   */
   saveToLibrary() {
-    const tmp = this.cy.json(true)
-    this.setState({ data: tmp.elements, iterator: 1 })
-    // this.cy.remove('nodes')
-    this.postLibrary(tmp.elements);
+    var tmp = this.cy.json(true);
+    var public_vars = [];
+    for (let i = 0; i < this.state.dataFields.length; i++) {
+      public_vars.push({
+        id: i,
+        value: this.state.dataFields[i].value,
+        role: this.state.dataFields[i].role,
+      });
+    };
+    console.log(public_vars);
+    this.setState({ data: tmp.elements, iterator: 1, public_var: public_vars });
+    var toadd = { public_var: public_vars };
+    this.postLibrary({ ...tmp.elements, ...toadd });
     console.log("saved");
 
     return "saved"
@@ -736,17 +761,18 @@ class CreationDeck extends React.Component {
   addNewField = () => {
 
     var dataFields = this.state.dataFields;
-
-    dataFields.push(        
+    console.log(this.state.newDataRole);
+    dataFields.push(
       {
         type: "text",
-        value: this.state.newDataField
+        value: this.state.newDataField,
+        role: this.state.newDataRole
       });
 
     this.getDataFieldsList();
     this.setState(
-      {dataFields:dataFields},
-      );
+      { dataFields: dataFields },
+    );
   };
 
   handleDataFieldChange = e => {
@@ -755,7 +781,7 @@ class CreationDeck extends React.Component {
     const newArr = this.state.dataFields.slice();
     newArr[index].value = e.target.value;
 
-    this.setState({dataFields:newArr});
+    this.setState({ dataFields: newArr });
 
   };
 
@@ -764,67 +790,69 @@ class CreationDeck extends React.Component {
      * Get the list of existing roles for an account
      */
   async getDataFieldsList() {
-      //const roles = await this.state.instance.methods.getElemRoles(address).call()
-      var line = [];
-      for (let i = 0; i < this.state.dataFields.length; i++) {
-          line.push(
-              <tr key={i}>
-                  <td>{i}</td>
-                  <td>{this.state.dataFields[i].value}</td>
-                  <td><Button onClick={() => this.deleteDataField(i)} class="btn btn-danger">Delete</Button></td>
-              </tr>)
-      }
-      this.setState({ "dataFieldsList": line });
-      return line
+    //const roles = await this.state.instance.methods.getElemRoles(address).call()
+    var line = [];
+    if(this.state.dataFields == null) return;
+    for (let i = 0; i < this.state.dataFields.length; i++) {
+      line.push(
+        <tr key={i}>
+          <td>{i}</td>
+          <td>{this.state.dataFields[i].value}</td>
+          <td>{this.state.dataFields[i].role}</td>
+          <td><Button onClick={() => this.deleteDataField(i)} className="btn btn-danger">Delete</Button></td>
+        </tr>)
+    }
+    this.setState({ "dataFieldsList": line });
+    return line
   }
 
 
-  addNewField = () => {
+  // addNewField = () => {
 
-    var dataFields = this.state.dataFields;
+  //   var dataFields = this.state.dataFields;
 
-    dataFields.push(        
-      {
-        type: "text",
-        value: this.state.newDataField
-      });
+  //   dataFields.push(
+  //     {
+  //       type: "text",
+  //       value: this.state.newDataField
+  //     });
 
-    this.getDataFieldsList();
-    this.setState(
-      {dataFields:dataFields},
-      );
-  };
+  //   this.getDataFieldsList();
+  //   this.setState(
+  //     { dataFields: dataFields },
+  //   );
+  // };
 
-  deleteDataField = (i) =>{
+  deleteDataField = (i) => {
 
     var dataFields = this.state.dataFields;
 
     var updDataFields = []
-    for(var j=0; j<dataFields.length; j++){
-      if (j!== i){
+    for (var j = 0; j < dataFields.length; j++) {
+      if (j !== i) {
         updDataFields.push(dataFields[j]);
       }
     }
     console.log(updDataFields);
-    
+
     this.setState(
-      {dataFields:updDataFields},
-      );
+      { dataFields: updDataFields },
+    );
 
-      var line = [];
-      for (let l = 0; l < updDataFields.length; l++) {
-          line.push(
-              <tr key={l}>
-                  <td>{l}</td>
-                  <td>{updDataFields[l].value}</td>
-                  <td><Button onClick={() => this.deleteDataField(l)} class="btn btn-danger">Delete</Button></td>
-              </tr>)
-      }
-      this.setState({ "dataFieldsList": line });
-      return line
+    var line = [];
+    for (let l = 0; l < updDataFields.length; l++) {
+      line.push(
+        <tr key={l}>
+          <td>{l}</td>
+          <td>{updDataFields[l].value}</td>
+          <td><Button onClick={() => this.deleteDataField(l)} className="btn btn-danger">Delete</Button></td>
+        </tr>)
+    }
+    this.setState({ "dataFieldsList": line });
+    return line
 
-      //this.getDataFieldsList(); 
-  } 
+    //this.getDataFieldsList(); 
+  }
 
   ///// Render
 
@@ -832,11 +860,11 @@ class CreationDeck extends React.Component {
     const layout = cyto_style['layoutCose'];
     const style = cyto_style['style'];
     const stylesheet = node_style.concat(edge_style);
-    
 
-  
-  
-  
+
+
+
+
     return <>
 
       <Authentification status={this.getStatus} />
@@ -845,29 +873,29 @@ class CreationDeck extends React.Component {
         <LoadToBC ref={this.loadToBC} processID={this.state.processID} src={this.state.src}></LoadToBC>
 
         <Row>
-              <SidebarModel />
-             
+          <SidebarModel />
 
-              <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-              
 
-              <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+          <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+
+
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
 
               <Container>
 
-            
+
                 <div className='container'>
                   <h2>Creating [template {this.state.templateID}]</h2>
 
                   <div className="form-group">
-                        <label className="is-required" for="role">Select projection type</label>
-                        <select className="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>
-                          <option value="g_to_p">Global view</option>
-                          <option value="p_to_g">Public view</option>
-                        </select>
-                        <span className="form-text small text-muted" id="helpTextFile">
-                          Public view: declare ONLY the public tasks of the participants.
-                          Global view: declare all tasks (public+private).</span>
+                    <label className="is-required" htmlFor="role">Select projection type</label>
+                    <select className="custom-select" name="view-selector" onChange={e => this.onChangeView(e)}>
+                      <option value="g_to_p">Global view</option>
+                      <option value="p_to_g">Public view</option>
+                    </select>
+                    <span className="form-text small text-muted" id="helpTextFile">
+                      Public view: declare ONLY the public tasks of the participants.
+                      Global view: declare all tasks (public+private).</span>
 
                   </div>
 
@@ -891,145 +919,176 @@ class CreationDeck extends React.Component {
                       </Col>
 
                       <Col>
-                      {this.state.web3 === null ? <div>Loading web3...</div> :
-                  
-                        <Card bg={'light'} style={{ 'marginTop': '3vh', width: '100%' }}>
-                          <Card.Body>
-                            <Card.Title><h3>Editor Deck</h3></Card.Title>
-                            <hr /><br />
+                        {this.state.web3 === null ? <div>Loading web3...</div> :
 
-                            <Card.Text>
+
+                          <>
+                            <ListGroup bg={'light'} style={{ 'marginTop': '3vh', width: '100%' }} variant="flush">
                               <Form>
-                                <h4>Activity</h4>
+                                <ListGroup.Item>
+                                  <Card>
+                                    <Card.Title>
+                                      Activity
+                                    </Card.Title>
+                                    <Card.Body>
+                                      <Form.Label>Activity name</Form.Label>
+                                      <Form.Control type="address" onChange={this.handleActivityName} placeholder={'enter activity name'} value={this.state.elemClicked.activityName} />
+                                    </Card.Body>
+                                  </Card>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                  <Card>
+                                    <Card.Title>
+                                      Assign role
+                                    </Card.Title>
+                                    <Card.Body>
+                                      {this.state.elemClicked.isChoreo ?
+                                        <>
+                                          <div className="form-group">
+                                            <label className="is-required" htmlFor="role">Choreography Sender</label>
+                                            <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
+                                              <option value=''> ---</option>
+                                              {
+                                                React.Children.toArray(
+                                                  this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
+                                                )
+                                              }
+                                            </select>
+                                          </div>
 
-                                <Form.Label>Activity name</Form.Label>
-                                <Form.Control type="address" onChange={this.handleActivityName} placeholder={'enter activity name'} value={this.state.elemClicked.activityName} />
+                                          <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
+                                          <br />
 
-                                <hr style={{ "size": "5px" }} /><br />
+                                          <div className="form-group">
+                                            <label className="is-required" htmlFor="role">Choreography Receiver</label>
+                                            <ReactSelect
+                                              options={this.state.roleOptions}
+                                              isMulti
+                                              closeMenuOnSelect={false}
+                                              hideSelectedOptions={false}
+                                              components={{
+                                                Option
+                                              }}
+                                              onChange={this.handleReceiverChange}
+                                              allowSelectAll={true}
+                                              value={this.state.optionSelected}
 
+                                            />
+                                          </div></>
+                                        : <>
+                                          <div className="form-group">
+                                            <label className="is-required" htmlFor="role">Private role</label>
+                                            <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+                                              <option value=''> ---</option>
+                                              {
+                                                React.Children.toArray(
+                                                  this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
+                                                )
+                                              }
+                                            </select>
+                                          </div>
+                                        </>}
+                                    </Card.Body>
+                                  </Card>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                  <Card>
+                                    <Card.Title>
+                                      Marking
+                                    </Card.Title>
+                                    <Card.Body>
+                                      <Form.Group controlId="formBasicEmail">
+                                        <Form.Check
+                                          onChange={this.handleMI}
+                                          type={'checkbox'}
+                                          id={`default-checkbox`}
+                                          label={`included`}
+                                        />
+                                        <Form.Check
+                                          onChange={this.handleME}
+                                          type={'checkbox'}
+                                          id={`default-checkbox`}
+                                          label={`executed`}
+                                        />
+                                        <Form.Check
+                                          onChange={this.handleMP}
+                                          type={'checkbox'}
+                                          id={`default-checkbox`}
+                                          label={`pending`}
+                                        />
+                                      </Form.Group>
+                                    </Card.Body>
+                                  </Card>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                  <Card>
+                                    <Card.Title>Add Public Variables</Card.Title>
+                                    <Card.Body>
 
-                                <h4>Assign role</h4>
+                                      <table className='table'>
+                                        <thead>
+                                          <tr key='header'>
+                                            <th>#id</th>
+                                            <th>Variable Name</th>
+                                            <th>Activities</th>
+                                            <th>Role</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr key='add_df'>
+                                            <td></td>
+                                            <td><input type="input" className="form-control " onPaste={e => this.onChange(e)} name="newDataField" onChange={e => this.onChange(e)}></input></td>
+                                            <td>
+                                              <select className="custom-select" name="newDataRole" onChange={e => this.onChange(e)} placeholder={"Sender"} value={this.state.newDataRole}>
+                                                <option value=''> ---</option>
+                                                {
+                                                  React.Children.toArray(
+                                                    this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
+                                                  )
+                                                }
+                                              </select>
+                                            </td>
+                                            <td>
+                                              <div className="form-group">
+                                                <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+                                                  <option value=''> ---</option>
+                                                  {
+                                                    React.Children.toArray(
+                                                      this.state.activitiesNames.map((name, i) => <option key={i}>{name}</option>)
+                                                    )
+                                                  }
+                                                </select>
+                                              </div>
+                                            </td>
+                                            <td><Button onClick={() => this.addNewField()} className="btn btn-primary">{"  Add  "}</Button></td>
+                                          </tr>
 
-                                {this.state.elemClicked.isChoreo ?
-                                <>
-                                <div className="form-group">
-                                  <label className="is-required" for="role">Choreography Sender</label>
-                                  <select className="custom-select" name="view-selector" onChange={this.handleSender} placeholder={"Sender"} value={this.state.choreographyNames.sender}>
-                                  <option value=''> ---</option>
-                                  {
-                                    React.Children.toArray(
-                                      this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
-                                    )
-                                  }
-                                  </select>
-                                </div>
-
-                                <Button id="switch-btn" onClick={() => this.switchDest()} ><FontAwesomeIcon icon={faExchangeAlt} /></Button>
-                                <br />
-                                
-                                <div className="form-group">
-                                  <label className="is-required" for="role">Choreography Receiver</label>
-                                  <ReactSelect
-                                    options={this.state.roleOptions}
-                                    isMulti
-                                    closeMenuOnSelect={false}
-                                    hideSelectedOptions={false}
-                                    components={{
-                                      Option
-                                    }}
-                                    onChange={this.handleReceiverChange}
-                                    allowSelectAll={true}
-                                    value={this.state.optionSelected}
-                          
-                                />
-                                </div></>
-                                :<>                                
-                                <div className="form-group">
-                                <label className="is-required" for="role">Private role</label>
-                                <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
-                                <option value=''> ---</option>
-                                {
-                                  React.Children.toArray(
-                                    this.state.allRegisteredRoles.map((name, i) => <option key={i}>{name}</option>)
-                                  )
-                                }
-                                </select>
-                              </div>
-</>}
-
-
-                                <hr /><br />
-
-                                <h4>Marking</h4>
-
-                                <Form.Group controlId="formBasicEmail">
-                                  <Form.Check
-                                    onChange={this.handleMI}
-                                    type={'checkbox'}
-                                    id={`default-checkbox`}
-                                    label={`included`}
-                                  />
-                                  <Form.Check
-                                    onChange={this.handleME}
-                                    type={'checkbox'}
-                                    id={`default-checkbox`}
-                                    label={`executed`}
-                                  />
-                                  <Form.Check
-                                    onChange={this.handleMP}
-                                    type={'checkbox'}
-                                    id={`default-checkbox`}
-                                    label={`pending`}
-                                  />
-                                </Form.Group>
-
-                                <hr /><br />
-
-                                <h4>Datafields</h4>
-
-                                <table className='table' striped bordered hover>
-                                  <thead>
-                                      <tr key='header'>
-                                          <th>#</th>
-                                          <th>datafield</th>
-                                          <th></th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr key='add_df'>
-                                          <td>new</td>
-                                          <td><input type="input" class="form-control " onPaste={e => this.onChange(e)} name="newDataField" onChange={e => this.onChange(e)}></input></td>
-                                          <td><Button onClick={() => this.addNewField()} class="btn btn-primary">{"  Add  "}</Button></td>
-                                      </tr>
-
-                                      {this.state.dataFieldsList}
-                                  </tbody>
-                              </table>
-                              <hr /><br />
+                                          {this.state.dataFieldsList}
+                                        </tbody>
+                                      </table>
+                                    </Card.Body>
+                                  </Card>
+                                </ListGroup.Item>
                               </Form>
-
-                              <Button onClick={this.updActivity}>update activity</Button>
-
-                            </Card.Text>
-
-                          </Card.Body>
-                        </Card>
+                            </ListGroup>
+                          </>
                         }
                       </Col>
                     </Row>
                   </div>
-                  <Button onClick={this.saveToLibrary}>Save to library</Button>
+                  <Button onClick={this.updActivity} style={{ marginTop: "1em" }}>update activity</Button>
+                  <br />
+                  <Button onClick={this.saveToLibrary} style={{ marginTop: "1em" }}>Save to library</Button>
 
 
-                  <Legend src={this.state.src}/>
-                            
-                  
+                  <Legend src={this.state.src} />
+
                 </div>
-                </Container>
-              </div>
-              </div>
+              </Container>
+            </div>
+          </div>
 
-             </Row>
+        </Row>
 
       </div>
     </>

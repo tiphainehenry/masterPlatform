@@ -77,26 +77,26 @@ class NewTemplate extends React.Component {
         <Row>
           <SidebarModel />
 
-          <div class="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+          <div className="bg-green col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
 
               <Container fluid >
 
                 <div className='container'>
                   <h1>Creation of a new template</h1>
-                  <ul class="nav nav-tabs">
+                  <ul className="nav nav-tabs">
                   </ul>
-                  <div class="tab-content" >
-                    <div class="tab-pane active" id="users">
+                  <div className="tab-content" >
+                    <div className="tab-pane active" id="users">
 
                       <form id="search-users" name="searchUsers" method="post" action="/">
-                        <div class="row">
-                          <div class="form-group col-12 ">
-                            <label class="is-required" for="role">Choose the name of your process</label>
-                            <input type="input" onChange={e => this.onChange(e)} placeholder={this.state.processName} class="form-control required"></input>
+                        <div className="row">
+                          <div className="form-group col-12 ">
+                            <label className="is-required" htmlFor="role">Choose the name of your process</label>
+                            <input type="input" onChange={e => this.onChange(e)} placeholder={this.state.processName} className="form-control required"></input>
                             {!this.state.valid ? <p style={{ 'padding': '10px', 'color': 'red' }}>Name of template already taken</p> : null}
                           </div>
-                          <div class="form-group col-12 ">
+                          <div className="form-group col-12 ">
 
                             {this.state.valid ? 
                             
@@ -124,20 +124,20 @@ class NewTemplate extends React.Component {
                   <br />
                   <br />
 
-                  <Table id="myTable" class="table tablesorter table-responsive">
+                  <Table id="myTable" className="table tablesorter table-responsive">
                     <caption>My templates </caption>
-                    <thead class="cf">
+                    <thead className="cf">
                       <tr>
-                        <th class="header" scope="col">Name (click to edit)</th>
-                        <th class="header" scope="col">Type</th>
-                        <th class="header" scope="col">Last Update</th>
+                        <th className="header" scope="col">Name (click to edit)</th>
+                        <th className="header" scope="col">Type</th>
+                        <th className="header" scope="col">Last Update</th>
                       </tr>
                     </thead>
                     <tbody>
                       {Array.from({ length: this.state.templates.length }, (x, i) =>
 
-                        <tr>
-                          <td class="align-middle">
+                        <tr key={i}>
+                          <td className="align-middle">
                           <Nav.Link as={Link}
                                         to={{
                                           pathname: './creation/' + this.state.templates[i] 
@@ -145,8 +145,8 @@ class NewTemplate extends React.Component {
                                       >  <File />{this.state.templates[i]}
                                       </Nav.Link>
                           </td>
-                          <td class="align-middle">("test")</td>
-                          <td class="align-middle">("test")</td>
+                          <td className="align-middle">("test")</td>
+                          <td className="align-middle">("test")</td>
 
                         </tr>
                       )}

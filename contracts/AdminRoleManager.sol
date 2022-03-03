@@ -14,7 +14,7 @@ contract AdminRoleManager {
     address[] roleList;
 
     constructor() public {
-        address modAddress = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
+        address modAddress = 0x4936762f3C1B553748851900E60d9DBbcF278d1c;
         newRole(modAddress, "Alice", true);
         AddElemRole(modAddress, "Florist");
         AddElemRole(modAddress, "Tourist");
