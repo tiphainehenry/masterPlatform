@@ -109,6 +109,8 @@ class CreationDeck extends React.Component {
       dataFields: [],
       activitiesNames: [],
       dataFieldsList: [],
+      add_new_var_role: [],
+      authMatrix: [],
 
       roles: [],
 
@@ -235,6 +237,24 @@ class CreationDeck extends React.Component {
     this.setState({ selectValue: e.target.value });
   }
 
+  onChangeMatrix(e) {
+    const currentMatrix = [...this.state.authMatrix];
+    var splitResult = e.target.id.split("-"); 
+    var r = splitResult[0];
+    var c = splitResult[1];
+    var currentbool = currentMatrix[Number(r)][Number(c)];
+    console.log(currentbool, r, c);
+    console.log(currentMatrix);
+
+    if(currentbool) {
+      currentMatrix[Number(r)][Number(c)] = false; 
+    } else {
+      currentMatrix[Number(r)][Number(c)] = true;
+    }
+    this.setState({authMatrix: currentMatrix});
+    console.log(currentMatrix);
+  }
+
   onChange(e) {
     if (e.target.name === "address")
       this.setState({ address: e.target.value })
@@ -253,6 +273,41 @@ class CreationDeck extends React.Component {
     } else if (e.target.name === "newDataRole") {
       console.log(e.target.value);
       this.setState({ newDataRole: e.target.value })
+    } else if (e.target.name === "add_new_var_role") {
+      var temp = this.state.add_new_var_role;
+      console.log(e.target.value);
+      if (temp == null || temp.length == 0) {
+        temp = [e.target.value];
+        console.log("case1");
+        this.setState({ add_new_var_role: temp });
+      }
+      // console.log(!(e.target.name in temp));
+      else if ((e.target.value in temp)) {
+        console.log("case2");
+
+        temp.push(e.target.value);
+        this.setState({ add_new_var_role: temp });
+
+      }
+      else if (!(e.target.value in temp)){
+        console.log("case3");
+
+        var temp2 = [];
+        for (var s = 0; s < temp.length; s++) {
+          if (e.target.value != temp[s]) temp2.push(temp[s]);
+        }
+        this.setState({ add_new_var_role: temp2 });
+
+      }
+      console.log(this.state.add_new_var_role);
+
+      // temp = [...new Set(temp)];
+
+      // } else {
+      //   temp.push(e.target.value);
+      // }
+
+      this.getDataFieldsList();
     }
   }
 
@@ -561,12 +616,23 @@ class CreationDeck extends React.Component {
           this.cy.add(result.data);
           this.setState({ newActivityCnt: this.cy.filter('nodes').length });
           var activitiesNames = [];
+          var authMatrix = [];
+          var size = 0;
           for (var i = 0; i < result.data.length; i++) {
             if (result.data[i].group === "nodes")
-              activitiesNames.push(result.data[i].data.name);
+            {
+              size++;
+              console.log(result.data[i].data.name.split(' '));
+              activitiesNames.push(result.data[i].data.name.split(' ')[1]);
+            }
           }
+          for(var i = 0; i < 4; i ++) {
+            authMatrix.push(new Array(size).fill(false));
+          }
+          console.log(authMatrix);
           console.log(activitiesNames);
           this.setState({ activitiesNames: activitiesNames });
+          this.setState({ authMatrix: authMatrix });
           console.log(result.data.public_var)
           this.setState({ dataFields: result.data.public_var });
           this.getDataFieldsList();
@@ -746,12 +812,15 @@ class CreationDeck extends React.Component {
       public_vars.push({
         id: i,
         value: this.state.dataFields[i].value,
+        activitiesName : this.state.dataFields[i].activitiesName,
+        matrix: this.state.dataFields[i].matrix,
         role: this.state.dataFields[i].role,
       });
     };
     console.log(public_vars);
     this.setState({ data: tmp.elements, iterator: 1, public_var: public_vars });
     var toadd = { public_var: public_vars };
+
     this.postLibrary({ ...tmp.elements, ...toadd });
     console.log("saved");
 
@@ -760,19 +829,26 @@ class CreationDeck extends React.Component {
 
   addNewField = () => {
 
-    var dataFields = this.state.dataFields;
-    console.log(this.state.newDataRole);
-    dataFields.push(
+    var dataField = this.state.dataFields;
+    if (dataField == null) dataField = [];
+    console.log(dataField);
+    const tt = this.state.add_new_var_role;
+    dataField.push(
       {
         type: "text",
         value: this.state.newDataField,
-        role: this.state.newDataRole
+        role: this.state.newDataRole,
+        activitiesName : this.state.activitiesNames,
+        matrix: this.state.authMatrix,
+        activities: tt,
       });
 
-    this.getDataFieldsList();
     this.setState(
-      { dataFields: dataFields },
+      { dataFields: dataField },
     );
+
+    this.getDataFieldsList();
+
   };
 
   handleDataFieldChange = e => {
@@ -792,13 +868,40 @@ class CreationDeck extends React.Component {
   async getDataFieldsList() {
     //const roles = await this.state.instance.methods.getElemRoles(address).call()
     var line = [];
-    if(this.state.dataFields == null) return;
+    if (this.state.dataFields == null) return;
     for (let i = 0; i < this.state.dataFields.length; i++) {
       line.push(
-        <tr key={i}>
+        <tr key={i} style={{ margin: "1em" }}>
           <td>{i}</td>
           <td>{this.state.dataFields[i].value}</td>
           <td>{this.state.dataFields[i].role}</td>
+          <td>
+            <table>
+              <tr>
+                <td>Type</td>
+                {console.log(this.state.dataFields[i])}
+                {this.state.dataFields[i].activitiesName.map((name, i) => (<td>{name}</td>))}
+              </tr>
+              <tr>
+                <td>Read</td>
+                {this.state.dataFields[i].matrix[0].map((name, i) => (<td><input type="checkbox" id={"2-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} disabled defaultChecked={name} /> </td>))}
+              </tr>
+              <tr>
+                <td>Write</td>
+                {this.state.dataFields[i].matrix[1].map((name, i) => (<td><input type="checkbox" id={"2-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} disabled defaultChecked={name} /> </td>))}
+              </tr>
+              <tr>
+                <td>Create</td>
+                {this.state.dataFields[i].matrix[2].map((name, i) => (<td><input type="checkbox" id={"2-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} disabled defaultChecked={name} /> </td>))}
+              </tr>
+              <tr>
+                <td>Delete</td>
+                {this.state.dataFields[i].matrix[3].map((name, i) => (<td><input type="checkbox" id={"2-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} disabled defaultChecked={name} /> </td>))}
+              </tr>
+            </table>
+          </td>
+          {this.state.dataFields[i].activities.map((name, j) => (<td key={j}>{name}</td>))}
+
           <td><Button onClick={() => this.deleteDataField(i)} className="btn btn-danger">Delete</Button></td>
         </tr>)
     }
@@ -1050,24 +1153,56 @@ class CreationDeck extends React.Component {
                                             </td>
                                             <td>
                                               <div className="form-group">
-                                                <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
+                                                {/* <select className="custom-select" name="view-selector" onChange={this.handleTenant} placeholder={"Tenant"} value={this.state.tenantName} >
                                                   <option value=''> ---</option>
                                                   {
                                                     React.Children.toArray(
                                                       this.state.activitiesNames.map((name, i) => <option key={i}>{name}</option>)
                                                     )
-                                                  }
-                                                </select>
+                                                                                                       {/* <Form.Check
+                                                      id={i}
+                                                      onChange={e => this.onChange(e)}
+                                                      name="add_new_var_role"
+                                                      label={name}
+                                                      value={name}
+                                                    /> */}
+                                                 
+                                                <table>
+                                                  <tr>
+                                                    <th>Type</th>
+                                                    {this.state.activitiesNames.map((name, i) => (<th>{name}</th>))}
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Read</td>
+                                                    {this.state.activitiesNames.map((name, i) => (<td><input type="checkbox" id={"0-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} /> </td>))}
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Write</td>
+                                                    {this.state.activitiesNames.map((name, i) => (<td><input type="checkbox" id={"1-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} /> </td>))}
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Create</td>
+                                                    {this.state.activitiesNames.map((name, i) => (<td><input type="checkbox" id={"2-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} /> </td>))}
+                                                  </tr>
+                                                  <tr>
+                                                    <td>Delete</td>
+                                                    {this.state.activitiesNames.map((name, i) => (<td><input type="checkbox" id={"3-" + i.toString()} key={i} onChange={e => this.onChangeMatrix(e)} /> </td>))}
+                                                  </tr>
+                                                </table>
+  
+                                                {/* </select> */}
                                               </div>
                                             </td>
                                             <td><Button onClick={() => this.addNewField()} className="btn btn-primary">{"  Add  "}</Button></td>
                                           </tr>
-
                                           {this.state.dataFieldsList}
                                         </tbody>
+
                                       </table>
+
                                     </Card.Body>
                                   </Card>
+
                                 </ListGroup.Item>
                               </Form>
                             </ListGroup>

@@ -1,0 +1,151 @@
+{
+  "activityNames": {
+    "default": [
+      "e1", 
+      "Driver"
+    ], 
+    "receive": [
+      "e1r", 
+      "Driver"
+    ], 
+    "send": [
+      "e1s", 
+      "Driver"
+    ]
+  }, 
+  "publicData": [], 
+  "fullMarkings": {
+    "included": [
+      "0", 
+      "1"
+    ], 
+    "executed": [
+      "0", 
+      "0"
+    ], 
+    "pending": [
+      "0", 
+      "0"
+    ]
+  }, 
+  "relations": [
+    {
+      "exclude": [
+        [
+          0.0, 
+          0.0
+        ], 
+        [
+          0.0, 
+          0.0
+        ]
+      ], 
+      "include": [
+        [
+          0.0, 
+          0.0
+        ], 
+        [
+          0.0, 
+          0.0
+        ]
+      ], 
+      "response": [
+        [
+          0.0, 
+          0.0
+        ], 
+        [
+          0.0, 
+          0.0
+        ]
+      ], 
+      "condition": [
+        [
+          0.0, 
+          0.0
+        ], 
+        [
+          0.0, 
+          0.0
+        ]
+      ], 
+      "milestone": [
+        [
+          0.0, 
+          0.0
+        ], 
+        [
+          1.0, 
+          0.0
+        ]
+      ]
+    }
+  ], 
+  "markings": [
+    {
+      "executed": 0, 
+      "include": 0, 
+      "id": "e1", 
+      "pending": 0
+    }, 
+    {
+      "executed": 0, 
+      "include": 1, 
+      "id": "Driver", 
+      "pending": 0
+    }
+  ], 
+  "fullRelations": {
+    "exclude": [
+      [
+        "0", 
+        "0"
+      ], 
+      [
+        "0", 
+        "0"
+      ]
+    ], 
+    "include": [
+      [
+        "0", 
+        "0"
+      ], 
+      [
+        "0", 
+        "0"
+      ]
+    ], 
+    "response": [
+      [
+        "0", 
+        "0"
+      ], 
+      [
+        "0", 
+        "0"
+      ]
+    ], 
+    "condition": [
+      [
+        "0", 
+        "0"
+      ], 
+      [
+        "0", 
+        "0"
+      ]
+    ], 
+    "milestone": [
+      [
+        "0", 
+        "0"
+      ], 
+      [
+        "1", 
+        "0"
+      ]
+    ]
+  }
+}

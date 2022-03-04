@@ -1,0 +1,41 @@
+{
+  "externalEvents": [], 
+  "roleMapping": [
+    {
+      "role": "Driver", 
+      "id": "r1"
+    }, 
+    {
+      "role": "Florist", 
+      "id": "r2"
+    }
+  ], 
+  "global": {
+    "events": [
+      {
+        "id": 0, 
+        "event": "e1[test src=Driver tgt=Florist]"
+      }, 
+      {
+        "id": 1, 
+        "event": "Driver [role=testbis]"
+      }
+    ], 
+    "relations": [
+      {
+        "relation": "Driver --<> e1", 
+        "id": 0
+      }
+    ]
+  }, 
+  "addresses": [
+    {
+      "pk": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
+      "role": "Driver"
+    }, 
+    {
+      "pk": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+      "role": "Florist"
+    }
+  ]
+}

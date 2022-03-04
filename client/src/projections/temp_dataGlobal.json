@@ -1,0 +1,18 @@
+[
+  {
+    "data": {
+      "id": "e1", 
+      "name": "Driver\ntest\nFlorist"
+    }, 
+    "classes": "choreography type_choreography", 
+    "group": "nodes"
+  }, 
+  {
+    "data": {
+      "id": "Driver", 
+      "name": "testbis\nDriver"
+    }, 
+    "classes": "included executable", 
+    "group": "nodes"
+  }
+]
