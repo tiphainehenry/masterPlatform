@@ -167,6 +167,10 @@ def byteify(input):
 def SaveToLibrary():
     """
      Save a Template into the Library / return a certain template from the library
+             value: this.state.dataFields[i].value,
+        activitiesName : this.state.dataFields[i].activitiesName,
+        matrix: this.state.dataFields[i].matrix,
+        role: this.state.dataFields[i].role,
     """
 
     dataPath = '../../client/src/projections/Library.json'

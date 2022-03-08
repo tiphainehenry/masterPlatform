@@ -1565,9 +1565,9 @@
         "externalEvents": [
           {
             "eventName": "NewActivity1", 
-            "event": " NewActivity1[role=Florist]", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": " NewActivity1[role=Florist]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ], 
@@ -1581,9 +1581,9 @@
         "privateEvents": [
           {
             "eventName": "NewActivity2", 
-            "event": "NewActivity2[role=Driver]", 
-            "role": "Driver", 
             "id": 0, 
+            "role": "Driver", 
+            "event": "NewActivity2[role=Driver]", 
             "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
           }
         ]
@@ -1623,9 +1623,9 @@
       "externalEvents": [
         {
           "eventName": "NewActivity1", 
-          "event": " NewActivity1[role=Florist]", 
-          "role": "Florist", 
           "id": 0, 
+          "role": "Florist", 
+          "event": " NewActivity1[role=Florist]", 
           "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
         }
       ], 
@@ -1637,15 +1637,15 @@
             "eventName": "NewActivity1", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "NewActivity1[role=Florist]"
+            "event": "NewActivity1[role=Florist]", 
+            "id": 0
           }, 
           {
             "eventName": "e1", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 1, 
-            "event": "e1[undefined src=Florist tgt=Florist tgt=Driver]\n"
+            "event": "e1[undefined src=Florist tgt=Florist tgt=Driver]\n", 
+            "id": 1
           }
         ]
       }, 
@@ -1658,15 +1658,15 @@
             "eventName": "e1s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e1s[\"!(undefined, Florist-&gt;Florist,Driver)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e1s[\"!(undefined, Florist-&gt;Florist,Driver)\"]"
           }, 
           {
             "eventName": "NewActivity1", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "NewActivity1[role=Florist]", 
-            "id": 1
+            "id": 1, 
+            "event": "NewActivity1[role=Florist]"
           }
         ]
       }
@@ -3094,8 +3094,8 @@
             "eventName": "e1s", 
             "address": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
             "role": "Driver", 
-            "event": "e1s[\"!(test, Driver-&gt;Florist)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e1s[\"!(test, Driver-&gt;Florist)\"]"
           }
         ]
       }, 
@@ -3137,16 +3137,16 @@
         "privateEvents": [
           {
             "eventName": "e1", 
-            "event": "e1[test src=Driver tgt=Florist]\n", 
-            "role": "Driver", 
             "id": 0, 
+            "role": "Driver", 
+            "event": "e1[test src=Driver tgt=Florist]\n", 
             "address": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
           }, 
           {
             "eventName": "e2", 
-            "event": "e2[Test src=Restaurant tgt=Tourist]\n", 
-            "role": "Restaurant", 
             "id": 1, 
+            "role": "Restaurant", 
+            "event": "e2[Test src=Restaurant tgt=Tourist]\n", 
             "address": "0xundefined"
           }
         ]
@@ -3158,9 +3158,9 @@
         "privateEvents": [
           {
             "eventName": "e1r", 
-            "id": 0, 
-            "role": "Driver", 
             "event": "e1r[\"?(test, Driver-&gt;Florist)\"]", 
+            "role": "Driver", 
+            "id": 0, 
             "address": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
           }
         ]
@@ -3507,6 +3507,2182 @@
           }
         }
       ], 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "projType": "g_to_p", 
+    "id": "p5"
+  }, 
+  "p12": {
+    "r1": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0xundefined", 
+          "role": "NewActivity0"
+        }, 
+        {
+          "pk": "0xundefined", 
+          "role": "undefined"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "e1[undefined src=NewActivity0 tgt=undefined]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [
+        {
+          "role": "NewActivity0", 
+          "id": "r1"
+        }, 
+        {
+          "role": "undefined", 
+          "id": "r2"
+        }
+      ], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e1", 
+            "address": "0xundefined", 
+            "role": "NewActivity0", 
+            "event": "e1[undefined src=NewActivity0 tgt=undefined]\n", 
+            "id": 0
+          }
+        ]
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": []
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1"
+          ], 
+          "receive": [
+            "e1r"
+          ], 
+          "send": [
+            "e1s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1", 
+            "name": "NewActivity0\nundefined\nundefined"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }
+      ]
+    }, 
+    "id": "p5", 
+    "projType": "g_to_p", 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1"
+          ], 
+          "receive": [
+            "e1r"
+          ], 
+          "send": [
+            "e1s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1", 
+            "name": "NewActivity0\nundefined\nundefined"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }
+      ], 
+      "exec": {
+        "execLogs": []
+      }
+    }
+  }, 
+  "p13": {
+    "r1": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x0x2a706c6006e33610d92ea2a440cc99d5b58353e1", 
+          "role": "Customer"
+        }, 
+        {
+          "pk": "0x0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17", 
+          "role": "TouristOfficer"
+        }, 
+        {
+          "pk": "0x0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
+          "role": "Tourist"
+        }, 
+        {
+          "pk": "0xundefined", 
+          "role": "Restaurant"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "e2[ActiviteA src=TouristOfficer tgt=Tourist]"
+          }, 
+          {
+            "id": 1, 
+            "event": "e3[test src=Restaurant tgt=Tourist]"
+          }, 
+          {
+            "id": 2, 
+            "event": "Customer [role=Ateec]"
+          }, 
+          {
+            "id": 3, 
+            "event": "TouristOfficer [role=ActivitieB]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [
+        {
+          "role": "TouristOfficer", 
+          "id": "r1"
+        }, 
+        {
+          "role": "Tourist", 
+          "id": "r2"
+        }, 
+        {
+          "role": "Restaurant", 
+          "id": "r3"
+        }
+      ], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e2", 
+            "event": "e2[ActiviteA src=TouristOfficer tgt=Tourist]\n", 
+            "role": "TouristOfficer", 
+            "id": 0, 
+            "address": "0x0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17"
+          }, 
+          {
+            "eventName": "e3", 
+            "event": "e3[test src=Restaurant tgt=Tourist]\n", 
+            "role": "Restaurant", 
+            "id": 1, 
+            "address": "0xundefined"
+          }
+        ]
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": []
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e2", 
+            "e3", 
+            "Customer", 
+            "TouristOfficer"
+          ], 
+          "receive": [
+            "e2r", 
+            "e3r", 
+            "Customer", 
+            "TouristOfficer"
+          ], 
+          "send": [
+            "e2s", 
+            "e3s", 
+            "Customer", 
+            "TouristOfficer"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1", 
+            "1", 
+            "1"
+          ], 
+          "executed": [
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ], 
+          "pending": [
+            "0", 
+            "0", 
+            "0", 
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e2", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e3", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "Customer", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "TouristOfficer", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0", 
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e2", 
+            "name": "TouristOfficer\nActiviteA\nTourist"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e3", 
+            "name": "Restaurant\ntest\nTourist"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "included executable", 
+          "data": {
+            "id": "Customer", 
+            "name": "Ateec\nCustomer"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "included executable", 
+          "data": {
+            "id": "TouristOfficer", 
+            "name": "ActivitieB\nTouristOfficer"
+          }
+        }
+      ]
+    }, 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e2", 
+            "e3"
+          ], 
+          "receive": [
+            "e2r", 
+            "e3r"
+          ], 
+          "send": [
+            "e2s", 
+            "e3s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1"
+          ], 
+          "executed": [
+            "0", 
+            "0"
+          ], 
+          "pending": [
+            "0", 
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e2", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e3", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e2", 
+            "name": "TouristOfficer\nActiviteA\nTourist"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e3", 
+            "name": "Restaurant\ntest\nTourist"
+          }
+        }
+      ], 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "projType": "g_to_p", 
+    "id": "p5"
+  }, 
+  "p14": {
+    "r1": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
+          "role": "Driver"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "Driver [role=Test]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": []
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "Driver"
+          ], 
+          "receive": [
+            "Driver"
+          ], 
+          "send": [
+            "Driver"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "Driver", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "Driver", 
+            "name": "Test\nDriver"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }
+      ]
+    }, 
+    "id": "p5", 
+    "projType": "g_to_p", 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [], 
+          "receive": [], 
+          "send": []
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [], 
+          "executed": [], 
+          "pending": []
+        }, 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ], 
+        "markings": [], 
+        "fullRelations": {
+          "exclude": [], 
+          "include": [], 
+          "response": [], 
+          "condition": [], 
+          "milestone": []
+        }
+      }, 
+      "data": [], 
+      "exec": {
+        "execLogs": []
+      }
+    }
+  }, 
+  "p15": {
+    "r1": {
+      "vect": {
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e1s", 
+            "pending": 0
+          }
+        ], 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ]
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "type_projChoreo included executable", 
+          "data": {
+            "id": "e1s", 
+            "name": "!(NewActivity0, Florist-->Tourist)"
+          }
+        }
+      ], 
+      "init": {
+        "vect": {
+          "markings": [
+            {
+              "include": 1, 
+              "executed": 0, 
+              "id": "e1s", 
+              "pending": 0
+            }
+          ], 
+          "relations": [
+            {
+              "exclude": [
+                [
+                  0.0
+                ]
+              ], 
+              "include": [
+                [
+                  0.0
+                ]
+              ], 
+              "response": [
+                [
+                  0.0
+                ]
+              ], 
+              "condition": [
+                [
+                  0.0
+                ]
+              ], 
+              "milestone": [
+                [
+                  0.0
+                ]
+              ]
+            }
+          ]
+        }, 
+        "data": [
+          {
+            "group": "nodes", 
+            "classes": "type_projChoreo included executable", 
+            "data": {
+              "id": "e1s", 
+              "name": "!(NewActivity0, Florist-->Tourist)"
+            }
+          }
+        ]
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+          "role": "Florist"
+        }, 
+        {
+          "pk": "0x0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
+          "role": "Tourist"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "e1[NewActivity0 src=Florist tgt=Tourist]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [
+        {
+          "role": "Florist", 
+          "id": "r1"
+        }, 
+        {
+          "role": "Tourist", 
+          "id": "r2"
+        }
+      ], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e1", 
+            "id": 0, 
+            "role": "Florist", 
+            "event": "e1[NewActivity0 src=Florist tgt=Tourist]\n", 
+            "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }
+        ]
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e1s", 
+            "event": "e1s[\"!(NewActivity0, Florist-&gt;Tourist)\"]", 
+            "role": "Florist", 
+            "id": 0, 
+            "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }
+        ]
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1"
+          ], 
+          "receive": [
+            "e1r"
+          ], 
+          "send": [
+            "e1s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e1", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e1", 
+            "name": "Florist\nNewActivity0\nTourist"
+          }
+        }
+      ]
+    }, 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1"
+          ], 
+          "receive": [
+            "e1r"
+          ], 
+          "send": [
+            "e1s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e1", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e1", 
+            "name": "Florist\nNewActivity0\nTourist"
+          }
+        }
+      ], 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "projType": "g_to_p", 
+    "id": "p5"
+  }, 
+  "p16": {
+    "r1": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
+          "role": "Tourist"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "Tourist [role=ouais]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": []
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "Tourist"
+          ], 
+          "receive": [
+            "Tourist"
+          ], 
+          "send": [
+            "Tourist"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "Tourist", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "Tourist", 
+            "name": "ouais\nTourist"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }
+      ]
+    }, 
+    "id": "p5", 
+    "projType": "g_to_p", 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [], 
+          "receive": [], 
+          "send": []
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [], 
+          "executed": [], 
+          "pending": []
+        }, 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ], 
+        "markings": [], 
+        "fullRelations": {
+          "exclude": [], 
+          "include": [], 
+          "response": [], 
+          "condition": [], 
+          "milestone": []
+        }
+      }, 
+      "data": [], 
+      "exec": {
+        "execLogs": []
+      }
+    }
+  }, 
+  "p17": {
+    "r1": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+          "role": "Florist"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "Florist [role=name]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": []
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "Florist"
+          ], 
+          "receive": [
+            "Florist"
+          ], 
+          "send": [
+            "Florist"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "Florist", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "included executable", 
+          "data": {
+            "id": "Florist", 
+            "name": "name\nFlorist"
+          }
+        }
+      ]
+    }, 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [], 
+          "receive": [], 
+          "send": []
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [], 
+          "executed": [], 
+          "pending": []
+        }, 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ], 
+        "markings": [], 
+        "fullRelations": {
+          "exclude": [], 
+          "include": [], 
+          "response": [], 
+          "condition": [], 
+          "milestone": []
+        }
+      }, 
+      "data": [], 
       "exec": {
         "execLogs": []
       }
