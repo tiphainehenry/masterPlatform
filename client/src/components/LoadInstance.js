@@ -319,6 +319,14 @@ class LoadInstance extends React.Component {
 
     return axios.post(url, formData, config);
   }
+
+
+  filterToDraw = (item) => {
+    if (item.classes === undefined || item.classes === '') {
+      return false
+    }
+    return true;
+  }
   /**
    * 
    * Get the template data if it already exist in DB
@@ -330,7 +338,9 @@ class LoadInstance extends React.Component {
       (response) => {
         var result = response;
         if (result.data !== "KO") {
-          this.cy.add(result.data)
+          var t = result.data;
+          t = Object.values(t);
+          this.cy.add(t.filter(this.filterToDraw));
           this.setState({ newActivityCnt: this.cy.filter('nodes').length })
         }
       },

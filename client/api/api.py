@@ -199,7 +199,7 @@ def SaveToLibrary():
         with open(dataPath, "r") as json_file:
             library = json.load(json_file)
             if not all == "":
-                #print(library.keys())
+                print(library.keys())
                 return jsonify(library.keys())
                 # return json.dumps(list(library.keys()))
             if not(key in library):
