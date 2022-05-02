@@ -66,7 +66,7 @@ def updWithName(dataTxt, pi, projType):
     :param dataTxt: text input to project
     :param pi: process id to be generated. eg: 'p1'
     """
-
+    print("Uploading new version ...")
     target = '../../client/src/projections/'
     dataPath = '../../client/src/projections/dcrTexts.json'
     this_folder = os.path.dirname(os.path.abspath(__file__))
@@ -77,8 +77,12 @@ def updWithName(dataTxt, pi, projType):
     # print(dataPath)
 
     _data = removeGroups(dataTxt)
+
     #print("2/ updWithName  -----------------------")
     projectGlobal(pi, dataTxt, target)
+
+    # print("debug")
+    # exit(-1)
 
     dataDict = loadJSONFile(dataPath)
     dataDict['externalEvents'] = []
@@ -134,6 +138,8 @@ def updWithName(dataTxt, pi, projType):
     # savethis_folder
     dataJson = loadJSONFile(projDBPath)
     dataJson['p'+str(len(dataJson)+1)] = processData
+    print(processData)
+
     dumpJSONFile(projDBPath, dataJson)
 
     # rm temp files
@@ -450,19 +456,19 @@ def inputFileLaunch():
     """
     reads input dcr textual representation
     """
-    try:
-        file = request.files['file']
-        data = file.readlines()
-        print("-----------------------------------")
-        processID = str(request.form['processID'])
-        projType = str(request.form['projType'])
+    # try:
+    file = request.files['file']
+    data = file.readlines()
+    print("-----------------------------------")
+    processID = str(request.form['processID'])
+    projType = str(request.form['projType'])
 
-        updWithName(data, processID, projType)
+    updWithName(data, processID, projType)
 
-        return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
+    return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
-    except:
-        return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
+    # except:
+        # return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
 
 
 @app.route('/delete', methods=['GET', 'POST'])

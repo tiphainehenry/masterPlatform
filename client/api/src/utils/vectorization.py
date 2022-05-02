@@ -234,7 +234,8 @@ def computeActivityNames(activities):
     receive = []
 
     for elem in activities:
-        if(elem[0] == 'e'):
+        print(elem)
+        if(elem and elem[0] == 'e'):
             send.append(elem+'s')
             receive.append(elem+'r')
         else:

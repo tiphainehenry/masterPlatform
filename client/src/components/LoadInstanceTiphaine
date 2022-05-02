@@ -53,7 +53,6 @@ class LoadInstance extends React.Component {
       iterator: 0,
       data: [],
       templateID: this.props.match.params.pid,
-      public_var: [],
 
       processID: JSON.parse(localStorage.getItem('processID')) || '',
       ipfsHash: JSON.parse(localStorage.getItem('ipfsHash')) || null,
@@ -233,7 +232,8 @@ class LoadInstance extends React.Component {
     event.preventDefault();
 
     //save document to IPFS,return its hash#, and set hash# to state
-    //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add
+    //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add 
+    alert("Hellow,World");
     alert(this.state.processID);
 
     var input = ProcessDB[this.state.processID]['Public']['data'];
@@ -297,8 +297,7 @@ class LoadInstance extends React.Component {
       }
     };
 
-    let r = axios.post(url, formData, config);
-    return r;
+    return axios.post(url, formData, config);
   }
 
 
@@ -318,13 +317,11 @@ class LoadInstance extends React.Component {
     axios.get(`http://localhost:5000/library?processID=` + this.state.templateID).then(
       (response) => {
         var result = response;
-        console.log(result.data);
         if (result.data !== "KO") {
           var t = result.data;
           t = Object.values(t);
           this.cy.add(t.filter(this.filterToDraw));
           this.setState({ newActivityCnt: this.cy.filter('nodes').length })
-          this.setState({ public_var: result.data['public_var'] });
         }
       },
       (error) => {
@@ -422,14 +419,10 @@ class LoadInstance extends React.Component {
      */
   createFile(e) {
     e.preventDefault() // Stop form submit
-    // console.log(e);
-    // return;
     var newData = [];
     var publicData = [];
     // retrieve data
     var rolelist = new Map()
-    console.log(this.cy.elements());
-    // return;
     this.cy.elements().forEach(function (ele, id) {
       //console.log(ele)
       //console.log("id = " + id);
@@ -552,10 +545,7 @@ class LoadInstance extends React.Component {
     const data = arrayEvent.concat(arrayLink);
     console.log('/// data ///')
     data.forEach(line => console.log(line));
-    data.push(this.state.public_var);
     const file = new File(data, 'creationDeck.txt', { type: "text/plain" });
-    console.log(data);
-    return;
     this.fileUpload(file).then((response) => {
       alert(response.data);
       if (response.data === "ok") {
@@ -565,10 +555,7 @@ class LoadInstance extends React.Component {
         console.log('projection failed');
       }
     })
-    return;
-
-    // console.log(newdata);
-    // return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
+    //return (new File(newdata, 'creationDeck.txt', { type: "text/plain" }))
   }
 
   async instantiate() {
@@ -580,8 +567,7 @@ class LoadInstance extends React.Component {
   * Save a graph as a template and send it to the API
   * 
   */
-  onFormSubmit(e) {
-    e.preventDefault();
+  onFormSubmit() {
     const tmp = this.cy.json(true)
     this.setState({ data: tmp.elements, iterator: 1 })
     // this.cy.remove('nodes')
@@ -612,7 +598,7 @@ class LoadInstance extends React.Component {
                   <h2>Instantiate process from template [{this.state.templateID}]</h2>
                   <Row>
                     <Col>
-                      <Card style={{}}>
+                      <Card style={{ height: '95%' }}>
                         <Card.Body >
                           <CytoscapeComponent
                             stylesheet={stylesheet}
@@ -621,78 +607,6 @@ class LoadInstance extends React.Component {
                             cy={(cy) => { this.cy = cy }}
                             boxSelectionEnabled={false}
                           />
-                        </Card.Body>
-                      </Card>
-                      <Card>
-                        <Card.Title>Public Variables</Card.Title>
-                        <Card.Body>
-                          <table>
-                            {
-                              this.state.public_var.map((value, j) => {
-                                console.log("matrix to process", value);
-                                return (
-                                  <>
-                                    <tr>
-                                      <td>Variable Name : {value.name}</td>
-                                    </tr>
-                                    <tr>
-                                      {
-                                        Object.entries(value.matrix).map((val, j) => {
-                                          console.log("val to render", val);
-                                          if (val)
-                                            return (
-                                              <>
-                                                <tr>
-                                                  <td>Actor : {val[0]}</td>
-                                                </tr>
-
-                                                <tr>
-                                                  <td>
-                                                    <table>
-                                                      <tr>
-                                                        <th>Activity</th>
-                                                        <th>Read</th>
-                                                        <th>Write</th>
-                                                        <th>Create</th>
-                                                        <th>Delete</th>
-                                                      </tr>
-                                                      {val[1].map((v) => {
-                                                        if (!v) return;
-                                                        let m = [];
-                                                        for (let e in v.matrix) {
-                                                          m.push(v.matrix[e]);
-                                                        }
-                                                        console.log(m)
-                                                        return (
-                                                          <tr>
-                                                            <td>{v.name}</td>
-                                                            {m.map((e, j) => {
-                                                              if(e)
-                                                              return (
-                                                                <td><input type="checkbox" checked disabled /></td>
-                                                              )
-                                                              return (
-                                                                <td><input type="checkbox" disabled /></td>
-                                                              )
-                                                            }
-                                                            )}
-
-                                                          </tr>
-                                                        );
-                                                      })}
-                                                    </table>
-                                                  </td>
-                                                </tr>
-                                              </>
-                                            );
-                                        })
-                                      }
-                                    </tr>
-                                  </>
-                                );
-                              })
-                            }
-                          </table>
                         </Card.Body>
                       </Card>
                     </Col>
