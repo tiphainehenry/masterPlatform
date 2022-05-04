@@ -552,10 +552,11 @@ class LoadInstance extends React.Component {
     const data = arrayEvent.concat(arrayLink);
     console.log('/// data ///')
     data.forEach(line => console.log(line));
-    data.push(this.state.public_var);
+    const myJSON = JSON.stringify(this.state.public_var);
+    data.push(myJSON);
     const file = new File(data, 'creationDeck.txt', { type: "text/plain" });
     console.log(data);
-    return;
+    // return;
     this.fileUpload(file).then((response) => {
       alert(response.data);
       if (response.data === "ok") {

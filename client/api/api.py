@@ -114,6 +114,9 @@ def updWithName(dataTxt, pi, projType):
     }
     processData['projType'] = projType
 
+    print(dataTxt)
+    processData['variables'] = json.loads(dataTxt[-1])
+
     for role in getRoles(pi):
         roleMapping = getRoleMapping(pi, role)
         #rolePath= os.path.join(this_folder, '../src/projections/temp_data'+roleMapping['id']+'.json')
