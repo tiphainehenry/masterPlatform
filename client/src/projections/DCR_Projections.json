@@ -320,8 +320,8 @@
             "eventName": "e3", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "id": 0
+            "id": 0, 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
           }
         ]
       }, 
@@ -332,16 +332,16 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
             "eventName": "ActiviteA", 
-            "event": "ActiviteA[role=Florist]", 
-            "role": "Florist", 
             "id": 1, 
+            "role": "Florist", 
+            "event": "ActiviteA[role=Florist]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -1035,9 +1035,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -1051,15 +1051,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "ActiviteA[role=Florist]", 
-            "id": 1
+            "id": 1, 
+            "event": "ActiviteA[role=Florist]"
           }
         ]
       }
@@ -1551,9 +1551,9 @@
         "privateEvents": [
           {
             "eventName": "e2", 
-            "id": 0, 
-            "role": "Tourist", 
             "event": "e2[ole src=Tourist tgt=Tourist,Driver,TouristOfficer]\n", 
+            "role": "Tourist", 
+            "id": 0, 
             "address": "0x0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819"
           }
         ]
@@ -1963,8 +1963,8 @@
             "eventName": "e2", 
             "address": "0x0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
             "role": "Tourist", 
-            "id": 0, 
-            "event": "e2[ole src=Tourist tgt=Tourist,Driver,TouristOfficer]\n"
+            "event": "e2[ole src=Tourist tgt=Tourist,Driver,TouristOfficer]\n", 
+            "id": 0
           }
         ]
       }, 
@@ -2297,8 +2297,8 @@
             "eventName": "e2", 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e2[NewActivity1 src=Florist tgt=Tourist]\n"
+            "event": "e2[NewActivity1 src=Florist tgt=Tourist]\n", 
+            "id": 0
           }
         ]
       }
@@ -3252,8 +3252,8 @@
             "eventName": "e2", 
             "address": "0x0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
             "role": "Tourist", 
-            "id": 0, 
-            "event": "e2[NewActivity1 src=Tourist tgt=Florist]\n"
+            "event": "e2[NewActivity1 src=Tourist tgt=Florist]\n", 
+            "id": 0
           }
         ]
       }, 
@@ -3266,8 +3266,8 @@
             "eventName": "e2r", 
             "address": "0x0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
             "role": "Tourist", 
-            "event": "e2r[\"?(NewActivity1, Tourist-&gt;Florist)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e2r[\"?(NewActivity1, Tourist-&gt;Florist)\"]"
           }
         ]
       }
@@ -3744,9 +3744,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver,TouristOfficer]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3[e src=Florist tgt=Driver,TouristOfficer]\n", 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -3758,9 +3758,9 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -4776,8 +4776,8 @@
             "eventName": "e3", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "id": 0
           }
         ]
       }, 
@@ -4788,16 +4788,16 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
             "eventName": "ActiviteA", 
-            "id": 1, 
-            "role": "Florist", 
             "event": "ActiviteA[role=Florist]", 
+            "role": "Florist", 
+            "id": 1, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -5405,9 +5405,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver,TouristOfficer]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3[e src=Florist tgt=Driver,TouristOfficer]\n", 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -5421,8 +5421,8 @@
             "eventName": "e3s", 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "id": 0
           }
         ]
       }
@@ -6116,8 +6116,8 @@
             "eventName": "e3", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "id": 0
+            "id": 0, 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
           }
         ]
       }, 
@@ -6128,16 +6128,16 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
             "eventName": "ActiviteA", 
-            "event": "ActiviteA[role=Florist]", 
-            "role": "Florist", 
             "id": 1, 
+            "role": "Florist", 
+            "event": "ActiviteA[role=Florist]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -6830,9 +6830,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -6846,15 +6846,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "ActiviteA[role=Florist]", 
-            "id": 1
+            "id": 1, 
+            "event": "ActiviteA[role=Florist]"
           }
         ]
       }
@@ -7462,8 +7462,8 @@
             "eventName": "e3", 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver,TouristOfficer]\n"
+            "event": "e3[e src=Florist tgt=Driver,TouristOfficer]\n", 
+            "id": 0
           }
         ]
       }, 
@@ -7474,9 +7474,9 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -7896,9 +7896,9 @@
         "privateEvents": [
           {
             "eventName": "e2", 
-            "id": 0, 
-            "role": "e2", 
             "event": "e2[undefined src=e2 tgt=undefined]\n", 
+            "role": "e2", 
+            "id": 0, 
             "address": "0xundefined"
           }
         ]
@@ -8502,9 +8502,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -8518,15 +8518,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "ActiviteA[role=Florist]", 
-            "id": 1
+            "id": 1, 
+            "event": "ActiviteA[role=Florist]"
           }
         ]
       }
@@ -9220,8 +9220,8 @@
             "eventName": "e3", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "id": 0
           }
         ]
       }, 
@@ -9232,16 +9232,16 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
             "eventName": "ActiviteA", 
-            "id": 1, 
-            "role": "Florist", 
             "event": "ActiviteA[role=Florist]", 
+            "role": "Florist", 
+            "id": 1, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -9936,8 +9936,8 @@
             "eventName": "e3", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "id": 0
+            "id": 0, 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
           }
         ]
       }, 
@@ -9948,16 +9948,16 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
             "eventName": "ActiviteA", 
-            "event": "ActiviteA[role=Florist]", 
-            "role": "Florist", 
             "id": 1, 
+            "role": "Florist", 
+            "event": "ActiviteA[role=Florist]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -10650,9 +10650,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -10666,15 +10666,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "id": 0
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
+            "event": "ActiviteA[role=Florist]", 
+            "id": 1
           }
         ]
       }
@@ -11366,9 +11366,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -11382,15 +11382,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "ActiviteA[role=Florist]", 
-            "id": 1
+            "id": 1, 
+            "event": "ActiviteA[role=Florist]"
           }
         ]
       }
@@ -12245,8 +12245,8 @@
             "eventName": "e1s", 
             "address": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
             "role": "Driver", 
-            "event": "e1s[\"!(test, Driver-&gt;Florist)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e1s[\"!(test, Driver-&gt;Florist)\"]"
           }
         ]
       }, 
@@ -12288,16 +12288,16 @@
         "privateEvents": [
           {
             "eventName": "e1", 
-            "event": "e1[test src=Driver tgt=Florist]\n", 
-            "role": "Driver", 
             "id": 0, 
+            "role": "Driver", 
+            "event": "e1[test src=Driver tgt=Florist]\n", 
             "address": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
           }, 
           {
             "eventName": "e2", 
-            "event": "e2[Test src=Restaurant tgt=Tourist]\n", 
-            "role": "Restaurant", 
             "id": 1, 
+            "role": "Restaurant", 
+            "event": "e2[Test src=Restaurant tgt=Tourist]\n", 
             "address": "0xundefined"
           }
         ]
@@ -12309,9 +12309,9 @@
         "privateEvents": [
           {
             "eventName": "e1r", 
-            "id": 0, 
-            "role": "Driver", 
             "event": "e1r[\"?(test, Driver-&gt;Florist)\"]", 
+            "role": "Driver", 
+            "id": 0, 
             "address": "0x0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
           }
         ]
@@ -12777,8 +12777,8 @@
             "eventName": "e1", 
             "address": "0xundefined", 
             "role": "NewActivity0", 
-            "id": 0, 
-            "event": "e1[undefined src=NewActivity0 tgt=undefined]\n"
+            "event": "e1[undefined src=NewActivity0 tgt=undefined]\n", 
+            "id": 0
           }
         ]
       }, 
@@ -13131,16 +13131,16 @@
         "privateEvents": [
           {
             "eventName": "e2", 
-            "id": 0, 
-            "role": "TouristOfficer", 
             "event": "e2[ActiviteA src=TouristOfficer tgt=Tourist]\n", 
+            "role": "TouristOfficer", 
+            "id": 0, 
             "address": "0x0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17"
           }, 
           {
             "eventName": "e3", 
-            "id": 1, 
-            "role": "Restaurant", 
             "event": "e3[test src=Restaurant tgt=Tourist]\n", 
+            "role": "Restaurant", 
+            "id": 1, 
             "address": "0xundefined"
           }
         ]
@@ -14125,9 +14125,9 @@
         "privateEvents": [
           {
             "eventName": "e1", 
-            "event": "e1[NewActivity0 src=Florist tgt=Tourist]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e1[NewActivity0 src=Florist tgt=Tourist]\n", 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -14139,9 +14139,9 @@
         "privateEvents": [
           {
             "eventName": "e1s", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e1s[\"!(NewActivity0, Florist-&gt;Tourist)\"]", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -15029,8 +15029,8 @@
             "eventName": "e2", 
             "address": "0xundefined", 
             "role": "Restaurant", 
-            "event": "e2[call_driver src=Restaurant tgt=Florist]\n", 
-            "id": 0
+            "id": 0, 
+            "event": "e2[call_driver src=Restaurant tgt=Florist]\n"
           }
         ]
       }, 
@@ -15043,8 +15043,8 @@
             "eventName": "e2r", 
             "address": "0xundefined", 
             "role": "Restaurant", 
-            "id": 0, 
-            "event": "e2r[\"?(call_driver, Restaurant-&gt;Florist)\"]"
+            "event": "e2r[\"?(call_driver, Restaurant-&gt;Florist)\"]", 
+            "id": 0
           }
         ]
       }
@@ -15967,9 +15967,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -15983,15 +15983,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "id": 0
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
+            "event": "ActiviteA[role=Florist]", 
+            "id": 1
           }
         ]
       }
@@ -16685,8 +16685,8 @@
             "eventName": "e3", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "id": 0
           }
         ]
       }, 
@@ -16697,16 +16697,16 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "id": 0, 
-            "role": "Florist", 
             "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "role": "Florist", 
+            "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
             "eventName": "ActiviteA", 
-            "id": 1, 
-            "role": "Florist", 
             "event": "ActiviteA[role=Florist]", 
+            "role": "Florist", 
+            "id": 1, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -17081,6 +17081,1438 @@
     }
   }, 
   "p36": {
+    "r1": {
+      "vect": {
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e3s", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "ActiviteA", 
+            "pending": 0
+          }
+        ], 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ]
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "type_projChoreo included executable", 
+          "data": {
+            "id": "e3s", 
+            "name": "!(e, Florist-->Driver,TouristOfficer)"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "included executable", 
+          "data": {
+            "id": "ActiviteA", 
+            "name": "Florist\nActiviteA"
+          }
+        }
+      ], 
+      "init": {
+        "vect": {
+          "markings": [
+            {
+              "include": 1, 
+              "executed": 0, 
+              "id": "e3s", 
+              "pending": 0
+            }, 
+            {
+              "include": 1, 
+              "executed": 0, 
+              "id": "ActiviteA", 
+              "pending": 0
+            }
+          ], 
+          "relations": [
+            {
+              "exclude": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "include": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "response": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "condition": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "milestone": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ]
+            }
+          ]
+        }, 
+        "data": [
+          {
+            "group": "nodes", 
+            "classes": "type_projChoreo included executable", 
+            "data": {
+              "id": "e3s", 
+              "name": "!(e, Florist-->Driver,TouristOfficer)"
+            }
+          }, 
+          {
+            "group": "nodes", 
+            "classes": "included executable", 
+            "data": {
+              "id": "ActiviteA", 
+              "name": "Florist\nActiviteA"
+            }
+          }
+        ]
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r3": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+          "role": "Florist"
+        }, 
+        {
+          "pk": "0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
+          "role": "Tourist"
+        }, 
+        {
+          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
+          "role": "Driver"
+        }, 
+        {
+          "pk": "0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17", 
+          "role": "TouristOfficer"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "r3": {
+        "externalEvents": [], 
+        "role": "TouristOfficer", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]"
+          }, 
+          {
+            "id": 1, 
+            "event": "ActiviteA[role=Florist]"
+          }, 
+          {
+            "id": 2, 
+            "event": "Activity_B[role=Tourist]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [
+        {
+          "role": "Florist", 
+          "id": "r1"
+        }, 
+        {
+          "role": "Driver", 
+          "id": "r2"
+        }, 
+        {
+          "role": "TouristOfficer", 
+          "id": "r3"
+        }
+      ], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e3", 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
+            "role": "Florist", 
+            "id": 0, 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }
+        ]
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e3s", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+            "role": "Florist", 
+            "id": 0, 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
+          }, 
+          {
+            "eventName": "ActiviteA", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+            "role": "Florist", 
+            "id": 1, 
+            "event": "ActiviteA[role=Florist]"
+          }
+        ]
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e3", 
+            "ActiviteA", 
+            "Activity_B"
+          ], 
+          "receive": [
+            "e3r", 
+            "ActiviteA", 
+            "Activity_B"
+          ], 
+          "send": [
+            "e3s", 
+            "ActiviteA", 
+            "Activity_B"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1", 
+            "1"
+          ], 
+          "executed": [
+            "0", 
+            "0", 
+            "0"
+          ], 
+          "pending": [
+            "0", 
+            "0", 
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e3", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "ActiviteA", 
+            "pending": 0
+          }, 
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "Activity_B", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e3", 
+            "name": "Florist\ne\nDriver"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "included executable", 
+          "data": {
+            "id": "ActiviteA", 
+            "name": "Florist\nActiviteA"
+          }
+        }, 
+        {
+          "group": "nodes", 
+          "classes": "included executable", 
+          "data": {
+            "id": "Activity_B", 
+            "name": "Tourist\nActivity_B"
+          }
+        }
+      ]
+    }, 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e3"
+          ], 
+          "receive": [
+            "e3r"
+          ], 
+          "send": [
+            "e3s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "include": 1, 
+            "executed": 0, 
+            "id": "e3", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "group": "nodes", 
+          "classes": "choreography type_choreography included executable", 
+          "data": {
+            "id": "e3", 
+            "name": "Florist\ne\nDriver"
+          }
+        }
+      ], 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "projType": "g_to_p", 
+    "id": "p36"
+  }, 
+  "p37": {
+    "r1": {
+      "vect": {
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e3s", 
+            "pending": 0
+          }, 
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "ActiviteA", 
+            "pending": 0
+          }
+        ], 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ]
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e3s", 
+            "name": "!(e, Florist-->Driver,TouristOfficer)"
+          }, 
+          "classes": "type_projChoreo included executable", 
+          "group": "nodes"
+        }, 
+        {
+          "data": {
+            "id": "ActiviteA", 
+            "name": "Florist\nActiviteA"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }
+      ], 
+      "init": {
+        "vect": {
+          "markings": [
+            {
+              "executed": 0, 
+              "include": 1, 
+              "id": "e3s", 
+              "pending": 0
+            }, 
+            {
+              "executed": 0, 
+              "include": 1, 
+              "id": "ActiviteA", 
+              "pending": 0
+            }
+          ], 
+          "relations": [
+            {
+              "exclude": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "include": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "response": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "condition": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "milestone": [
+                [
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0
+                ]
+              ]
+            }
+          ]
+        }, 
+        "data": [
+          {
+            "data": {
+              "id": "e3s", 
+              "name": "!(e, Florist-->Driver,TouristOfficer)"
+            }, 
+            "classes": "type_projChoreo included executable", 
+            "group": "nodes"
+          }, 
+          {
+            "data": {
+              "id": "ActiviteA", 
+              "name": "Florist\nActiviteA"
+            }, 
+            "classes": "included executable", 
+            "group": "nodes"
+          }
+        ]
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r2": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "r3": {
+      "vect": {
+        "markings": [], 
+        "relations": [
+          {
+            "exclude": [], 
+            "include": [], 
+            "response": [], 
+            "condition": [], 
+            "milestone": []
+          }
+        ]
+      }, 
+      "data": [], 
+      "init": {
+        "vect": {
+          "markings": [], 
+          "relations": [
+            {
+              "exclude": [], 
+              "include": [], 
+              "response": [], 
+              "condition": [], 
+              "milestone": []
+            }
+          ]
+        }, 
+        "data": []
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+          "role": "Florist"
+        }, 
+        {
+          "pk": "0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
+          "role": "Tourist"
+        }, 
+        {
+          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
+          "role": "Driver"
+        }, 
+        {
+          "pk": "0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17", 
+          "role": "TouristOfficer"
+        }
+      ], 
+      "r2": {
+        "externalEvents": [], 
+        "role": "Driver", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "r3": {
+        "externalEvents": [], 
+        "role": "TouristOfficer", 
+        "relations": [], 
+        "privateEvents": []
+      }, 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]"
+          }, 
+          {
+            "id": 1, 
+            "event": "ActiviteA[role=Florist]"
+          }, 
+          {
+            "id": 2, 
+            "event": "Activity_B[role=Tourist]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [
+        {
+          "role": "Florist", 
+          "id": "r1"
+        }, 
+        {
+          "role": "Driver", 
+          "id": "r2"
+        }, 
+        {
+          "role": "TouristOfficer", 
+          "id": "r3"
+        }
+      ], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e3", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+            "role": "Florist", 
+            "id": 0, 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
+          }
+        ]
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e3s", 
+            "id": 0, 
+            "role": "Florist", 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }, 
+          {
+            "eventName": "ActiviteA", 
+            "id": 1, 
+            "role": "Florist", 
+            "event": "ActiviteA[role=Florist]", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }
+        ]
+      }
+    }, 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e3", 
+            "ActiviteA", 
+            "Activity_B"
+          ], 
+          "receive": [
+            "e3r", 
+            "ActiviteA", 
+            "Activity_B"
+          ], 
+          "send": [
+            "e3s", 
+            "ActiviteA", 
+            "Activity_B"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1", 
+            "1"
+          ], 
+          "executed": [
+            "0", 
+            "0", 
+            "0"
+          ], 
+          "pending": [
+            "0", 
+            "0", 
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e3", 
+            "pending": 0
+          }, 
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "ActiviteA", 
+            "pending": 0
+          }, 
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "Activity_B", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e3", 
+            "name": "Florist\ne\nDriver"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }, 
+        {
+          "data": {
+            "id": "ActiviteA", 
+            "name": "Florist\nActiviteA"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }, 
+        {
+          "data": {
+            "id": "Activity_B", 
+            "name": "Tourist\nActivity_B"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }
+      ]
+    }, 
+    "id": "p37", 
+    "projType": "g_to_p", 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e3"
+          ], 
+          "receive": [
+            "e3r"
+          ], 
+          "send": [
+            "e3s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e3", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e3", 
+            "name": "Florist\ne\nDriver"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }
+      ], 
+      "exec": {
+        "execLogs": []
+      }
+    }
+  }, 
+  "p34": {
     "r1": {
       "vect": {
         "markings": [
@@ -17794,9 +19226,9 @@
       }
     }, 
     "projType": "g_to_p", 
-    "id": "p36"
+    "id": "p34"
   }, 
-  "p37": {
+  "p35": {
     "r1": {
       "vect": {
         "markings": [
@@ -18139,1438 +19571,6 @@
             "event": "ActiviteA[role=Florist]", 
             "role": "Florist", 
             "id": 1, 
-            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
-          }
-        ]
-      }
-    }, 
-    "Global": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e3", 
-            "ActiviteA", 
-            "Activity_B"
-          ], 
-          "receive": [
-            "e3r", 
-            "ActiviteA", 
-            "Activity_B"
-          ], 
-          "send": [
-            "e3s", 
-            "ActiviteA", 
-            "Activity_B"
-          ]
-        }, 
-        "publicData": [], 
-        "fullMarkings": {
-          "included": [
-            "1", 
-            "1", 
-            "1"
-          ], 
-          "executed": [
-            "0", 
-            "0", 
-            "0"
-          ], 
-          "pending": [
-            "0", 
-            "0", 
-            "0"
-          ]
-        }, 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e3", 
-            "pending": 0
-          }, 
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "ActiviteA", 
-            "pending": 0
-          }, 
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "Activity_B", 
-            "pending": 0
-          }
-        ], 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e3", 
-            "name": "Florist\ne\nDriver"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }, 
-        {
-          "data": {
-            "id": "ActiviteA", 
-            "name": "Florist\nActiviteA"
-          }, 
-          "classes": "included executable", 
-          "group": "nodes"
-        }, 
-        {
-          "data": {
-            "id": "Activity_B", 
-            "name": "Tourist\nActivity_B"
-          }, 
-          "classes": "included executable", 
-          "group": "nodes"
-        }
-      ]
-    }, 
-    "id": "p37", 
-    "projType": "g_to_p", 
-    "Public": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e3"
-          ], 
-          "receive": [
-            "e3r"
-          ], 
-          "send": [
-            "e3s"
-          ]
-        }, 
-        "publicData": [], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }, 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e3", 
-            "pending": 0
-          }
-        ], 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e3", 
-            "name": "Florist\ne\nDriver"
-          }, 
-          "classes": "choreography type_choreography included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "exec": {
-        "execLogs": []
-      }
-    }
-  }, 
-  "p34": {
-    "r1": {
-      "vect": {
-        "markings": [
-          {
-            "include": 1, 
-            "executed": 0, 
-            "id": "e3s", 
-            "pending": 0
-          }, 
-          {
-            "include": 1, 
-            "executed": 0, 
-            "id": "ActiviteA", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "group": "nodes", 
-          "classes": "type_projChoreo included executable", 
-          "data": {
-            "id": "e3s", 
-            "name": "!(e, Florist-->Driver,TouristOfficer)"
-          }
-        }, 
-        {
-          "group": "nodes", 
-          "classes": "included executable", 
-          "data": {
-            "id": "ActiviteA", 
-            "name": "Florist\nActiviteA"
-          }
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "include": 1, 
-              "executed": 0, 
-              "id": "e3s", 
-              "pending": 0
-            }, 
-            {
-              "include": 1, 
-              "executed": 0, 
-              "id": "ActiviteA", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "group": "nodes", 
-            "classes": "type_projChoreo included executable", 
-            "data": {
-              "id": "e3s", 
-              "name": "!(e, Florist-->Driver,TouristOfficer)"
-            }
-          }, 
-          {
-            "group": "nodes", 
-            "classes": "included executable", 
-            "data": {
-              "id": "ActiviteA", 
-              "name": "Florist\nActiviteA"
-            }
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r2": {
-      "vect": {
-        "markings": [], 
-        "relations": [
-          {
-            "exclude": [], 
-            "include": [], 
-            "response": [], 
-            "condition": [], 
-            "milestone": []
-          }
-        ]
-      }, 
-      "data": [], 
-      "init": {
-        "vect": {
-          "markings": [], 
-          "relations": [
-            {
-              "exclude": [], 
-              "include": [], 
-              "response": [], 
-              "condition": [], 
-              "milestone": []
-            }
-          ]
-        }, 
-        "data": []
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r3": {
-      "vect": {
-        "markings": [], 
-        "relations": [
-          {
-            "exclude": [], 
-            "include": [], 
-            "response": [], 
-            "condition": [], 
-            "milestone": []
-          }
-        ]
-      }, 
-      "data": [], 
-      "init": {
-        "vect": {
-          "markings": [], 
-          "relations": [
-            {
-              "exclude": [], 
-              "include": [], 
-              "response": [], 
-              "condition": [], 
-              "milestone": []
-            }
-          ]
-        }, 
-        "data": []
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "TextExtraction": {
-      "addresses": [
-        {
-          "pk": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
-          "role": "Florist"
-        }, 
-        {
-          "pk": "0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
-          "role": "Tourist"
-        }, 
-        {
-          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "Driver"
-        }, 
-        {
-          "pk": "0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17", 
-          "role": "TouristOfficer"
-        }
-      ], 
-      "r2": {
-        "externalEvents": [], 
-        "role": "Driver", 
-        "relations": [], 
-        "privateEvents": []
-      }, 
-      "r3": {
-        "externalEvents": [], 
-        "role": "TouristOfficer", 
-        "relations": [], 
-        "privateEvents": []
-      }, 
-      "global": {
-        "events": [
-          {
-            "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]"
-          }, 
-          {
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
-          }, 
-          {
-            "id": 2, 
-            "event": "Activity_B[role=Tourist]"
-          }
-        ], 
-        "relations": []
-      }, 
-      "roleMapping": [
-        {
-          "role": "Florist", 
-          "id": "r1"
-        }, 
-        {
-          "role": "Driver", 
-          "id": "r2"
-        }, 
-        {
-          "role": "TouristOfficer", 
-          "id": "r3"
-        }
-      ], 
-      "externalEvents": [], 
-      "public": {
-        "externalEvents": [], 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "role": "Florist", 
-            "id": 0, 
-            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
-          }
-        ]
-      }, 
-      "r1": {
-        "externalEvents": [], 
-        "role": "Florist", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e3s", 
-            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
-            "role": "Florist", 
-            "id": 0, 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
-          }, 
-          {
-            "eventName": "ActiviteA", 
-            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
-            "role": "Florist", 
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
-          }
-        ]
-      }
-    }, 
-    "Global": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e3", 
-            "ActiviteA", 
-            "Activity_B"
-          ], 
-          "receive": [
-            "e3r", 
-            "ActiviteA", 
-            "Activity_B"
-          ], 
-          "send": [
-            "e3s", 
-            "ActiviteA", 
-            "Activity_B"
-          ]
-        }, 
-        "publicData": [], 
-        "fullMarkings": {
-          "included": [
-            "1", 
-            "1", 
-            "1"
-          ], 
-          "executed": [
-            "0", 
-            "0", 
-            "0"
-          ], 
-          "pending": [
-            "0", 
-            "0", 
-            "0"
-          ]
-        }, 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "markings": [
-          {
-            "include": 1, 
-            "executed": 0, 
-            "id": "e3", 
-            "pending": 0
-          }, 
-          {
-            "include": 1, 
-            "executed": 0, 
-            "id": "ActiviteA", 
-            "pending": 0
-          }, 
-          {
-            "include": 1, 
-            "executed": 0, 
-            "id": "Activity_B", 
-            "pending": 0
-          }
-        ], 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
-              "0", 
-              "0"
-            ]
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "group": "nodes", 
-          "classes": "choreography type_choreography included executable", 
-          "data": {
-            "id": "e3", 
-            "name": "Florist\ne\nDriver"
-          }
-        }, 
-        {
-          "group": "nodes", 
-          "classes": "included executable", 
-          "data": {
-            "id": "ActiviteA", 
-            "name": "Florist\nActiviteA"
-          }
-        }, 
-        {
-          "group": "nodes", 
-          "classes": "included executable", 
-          "data": {
-            "id": "Activity_B", 
-            "name": "Tourist\nActivity_B"
-          }
-        }
-      ]
-    }, 
-    "Public": {
-      "vect": {
-        "activityNames": {
-          "default": [
-            "e3"
-          ], 
-          "receive": [
-            "e3r"
-          ], 
-          "send": [
-            "e3s"
-          ]
-        }, 
-        "publicData": [], 
-        "fullMarkings": {
-          "included": [
-            "1"
-          ], 
-          "executed": [
-            "0"
-          ], 
-          "pending": [
-            "0"
-          ]
-        }, 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0
-              ]
-            ]
-          }
-        ], 
-        "markings": [
-          {
-            "include": 1, 
-            "executed": 0, 
-            "id": "e3", 
-            "pending": 0
-          }
-        ], 
-        "fullRelations": {
-          "exclude": [
-            [
-              "0"
-            ]
-          ], 
-          "include": [
-            [
-              "0"
-            ]
-          ], 
-          "response": [
-            [
-              "0"
-            ]
-          ], 
-          "condition": [
-            [
-              "0"
-            ]
-          ], 
-          "milestone": [
-            [
-              "0"
-            ]
-          ]
-        }
-      }, 
-      "data": [
-        {
-          "group": "nodes", 
-          "classes": "choreography type_choreography included executable", 
-          "data": {
-            "id": "e3", 
-            "name": "Florist\ne\nDriver"
-          }
-        }
-      ], 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "projType": "g_to_p", 
-    "id": "p34"
-  }, 
-  "p35": {
-    "r1": {
-      "vect": {
-        "markings": [
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "e3s", 
-            "pending": 0
-          }, 
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "ActiviteA", 
-            "pending": 0
-          }
-        ], 
-        "relations": [
-          {
-            "exclude": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "include": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "response": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "condition": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ], 
-            "milestone": [
-              [
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0
-              ]
-            ]
-          }
-        ]
-      }, 
-      "data": [
-        {
-          "data": {
-            "id": "e3s", 
-            "name": "!(e, Florist-->Driver,TouristOfficer)"
-          }, 
-          "classes": "type_projChoreo included executable", 
-          "group": "nodes"
-        }, 
-        {
-          "data": {
-            "id": "ActiviteA", 
-            "name": "Florist\nActiviteA"
-          }, 
-          "classes": "included executable", 
-          "group": "nodes"
-        }
-      ], 
-      "init": {
-        "vect": {
-          "markings": [
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "e3s", 
-              "pending": 0
-            }, 
-            {
-              "executed": 0, 
-              "include": 1, 
-              "id": "ActiviteA", 
-              "pending": 0
-            }
-          ], 
-          "relations": [
-            {
-              "exclude": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "include": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "response": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "condition": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ], 
-              "milestone": [
-                [
-                  0.0, 
-                  0.0
-                ], 
-                [
-                  0.0, 
-                  0.0
-                ]
-              ]
-            }
-          ]
-        }, 
-        "data": [
-          {
-            "data": {
-              "id": "e3s", 
-              "name": "!(e, Florist-->Driver,TouristOfficer)"
-            }, 
-            "classes": "type_projChoreo included executable", 
-            "group": "nodes"
-          }, 
-          {
-            "data": {
-              "id": "ActiviteA", 
-              "name": "Florist\nActiviteA"
-            }, 
-            "classes": "included executable", 
-            "group": "nodes"
-          }
-        ]
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r2": {
-      "vect": {
-        "markings": [], 
-        "relations": [
-          {
-            "exclude": [], 
-            "include": [], 
-            "response": [], 
-            "condition": [], 
-            "milestone": []
-          }
-        ]
-      }, 
-      "data": [], 
-      "init": {
-        "vect": {
-          "markings": [], 
-          "relations": [
-            {
-              "exclude": [], 
-              "include": [], 
-              "response": [], 
-              "condition": [], 
-              "milestone": []
-            }
-          ]
-        }, 
-        "data": []
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r3": {
-      "vect": {
-        "markings": [], 
-        "relations": [
-          {
-            "exclude": [], 
-            "include": [], 
-            "response": [], 
-            "condition": [], 
-            "milestone": []
-          }
-        ]
-      }, 
-      "data": [], 
-      "init": {
-        "vect": {
-          "markings": [], 
-          "relations": [
-            {
-              "exclude": [], 
-              "include": [], 
-              "response": [], 
-              "condition": [], 
-              "milestone": []
-            }
-          ]
-        }, 
-        "data": []
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "TextExtraction": {
-      "addresses": [
-        {
-          "pk": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
-          "role": "Florist"
-        }, 
-        {
-          "pk": "0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
-          "role": "Tourist"
-        }, 
-        {
-          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "Driver"
-        }, 
-        {
-          "pk": "0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17", 
-          "role": "TouristOfficer"
-        }
-      ], 
-      "r2": {
-        "externalEvents": [], 
-        "role": "Driver", 
-        "relations": [], 
-        "privateEvents": []
-      }, 
-      "r3": {
-        "externalEvents": [], 
-        "role": "TouristOfficer", 
-        "relations": [], 
-        "privateEvents": []
-      }, 
-      "global": {
-        "events": [
-          {
-            "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]"
-          }, 
-          {
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
-          }, 
-          {
-            "id": 2, 
-            "event": "Activity_B[role=Tourist]"
-          }
-        ], 
-        "relations": []
-      }, 
-      "roleMapping": [
-        {
-          "role": "Florist", 
-          "id": "r1"
-        }, 
-        {
-          "role": "Driver", 
-          "id": "r2"
-        }, 
-        {
-          "role": "TouristOfficer", 
-          "id": "r3"
-        }
-      ], 
-      "externalEvents": [], 
-      "public": {
-        "externalEvents": [], 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e3", 
-            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
-            "role": "Florist", 
-            "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
-          }
-        ]
-      }, 
-      "r1": {
-        "externalEvents": [], 
-        "role": "Florist", 
-        "relations": [], 
-        "privateEvents": [
-          {
-            "eventName": "e3s", 
-            "id": 0, 
-            "role": "Florist", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
-          }, 
-          {
-            "eventName": "ActiviteA", 
-            "id": 1, 
-            "role": "Florist", 
-            "event": "ActiviteA[role=Florist]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -21510,9 +21510,9 @@
         "externalEvents": [
           {
             "eventName": "NewActivity1", 
-            "event": " NewActivity1[role=Florist]", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": " NewActivity1[role=Florist]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ], 
@@ -21526,9 +21526,9 @@
         "privateEvents": [
           {
             "eventName": "NewActivity2", 
-            "event": "NewActivity2[role=Driver]", 
-            "role": "Driver", 
             "id": 0, 
+            "role": "Driver", 
+            "event": "NewActivity2[role=Driver]", 
             "address": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5"
           }
         ]
@@ -21568,9 +21568,9 @@
       "externalEvents": [
         {
           "eventName": "NewActivity1", 
-          "event": " NewActivity1[role=Florist]", 
-          "role": "Florist", 
           "id": 0, 
+          "role": "Florist", 
+          "event": " NewActivity1[role=Florist]", 
           "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
         }
       ], 
@@ -21582,15 +21582,15 @@
             "eventName": "NewActivity1", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "NewActivity1[role=Florist]"
+            "event": "NewActivity1[role=Florist]", 
+            "id": 0
           }, 
           {
             "eventName": "e1", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 1, 
-            "event": "e1[undefined src=Florist tgt=Florist tgt=Driver]\n"
+            "event": "e1[undefined src=Florist tgt=Florist tgt=Driver]\n", 
+            "id": 1
           }
         ]
       }, 
@@ -21603,15 +21603,15 @@
             "eventName": "e1s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e1s[\"!(undefined, Florist-&gt;Florist,Driver)\"]", 
-            "id": 0
+            "id": 0, 
+            "event": "e1s[\"!(undefined, Florist-&gt;Florist,Driver)\"]"
           }, 
           {
             "eventName": "NewActivity1", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "NewActivity1[role=Florist]", 
-            "id": 1
+            "id": 1, 
+            "event": "NewActivity1[role=Florist]"
           }
         ]
       }
@@ -22390,9 +22390,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -22406,23 +22406,58 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "id": 0
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
+            "event": "ActiviteA[role=Florist]", 
+            "id": 1
           }
         ]
       }
     }, 
     "variables": [
       {
-        "id": 0, 
+        "matrix": {
+          "Florist": [
+            {
+              "matrix": [
+                true, 
+                false, 
+                false, 
+                true
+              ], 
+              "name": "ActiviteA"
+            }, 
+            {
+              "matrix": [
+                false, 
+                false, 
+                true, 
+                false
+              ], 
+              "name": "e"
+            }
+          ], 
+          "Tourist": [
+            {
+              "matrix": [
+                false, 
+                true, 
+                false, 
+                false
+              ], 
+              "name": "Activity_B"
+            }
+          ]
+        }, 
         "name": "Water", 
+        "id": 0
+      }, 
+      {
         "matrix": {
           "Florist": [
             {
@@ -22455,48 +22490,11 @@
               "name": "Activity_B"
             }
           ]
-        }
-      }, 
-      {
-        "id": 1, 
+        }, 
         "name": "Temperature", 
-        "matrix": {
-          "Florist": [
-            {
-              "matrix": [
-                true, 
-                false, 
-                false, 
-                true
-              ], 
-              "name": "ActiviteA"
-            }, 
-            {
-              "matrix": [
-                false, 
-                false, 
-                true, 
-                false
-              ], 
-              "name": "e"
-            }
-          ], 
-          "Tourist": [
-            {
-              "matrix": [
-                false, 
-                true, 
-                false, 
-                false
-              ], 
-              "name": "Activity_B"
-            }
-          ]
-        }
+        "id": 1
       }, 
       {
-        "id": 2, 
-        "name": "Time", 
         "matrix": {
           "Florist": [
             {
@@ -22529,7 +22527,9 @@
               "name": "Activity_B"
             }
           ]
-        }
+        }, 
+        "name": "Time", 
+        "id": 2
       }
     ], 
     "Global": {
@@ -23221,8 +23221,8 @@
             "eventName": "e3", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "id": 0
+            "id": 0, 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n"
           }
         ]
       }, 
@@ -23233,16 +23233,16 @@
         "privateEvents": [
           {
             "eventName": "e3s", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
             "eventName": "ActiviteA", 
-            "event": "ActiviteA[role=Florist]", 
-            "role": "Florist", 
             "id": 1, 
+            "role": "Florist", 
+            "event": "ActiviteA[role=Florist]", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -23866,13 +23866,13 @@
         "markings": [
           {
             "include": 1, 
-            "executed": 0, 
+            "executed": 1, 
             "id": "e3s", 
             "pending": 0
           }, 
           {
             "include": 1, 
-            "executed": 0, 
+            "executed": 1, 
             "id": "ActiviteA", 
             "pending": 0
           }
@@ -23935,7 +23935,7 @@
       "data": [
         {
           "group": "nodes", 
-          "classes": "type_projChoreo included executable", 
+          "classes": "type_projChoreo  included  executable executed", 
           "data": {
             "id": "e3s", 
             "name": "!(e, Florist-->Driver,TouristOfficer)"
@@ -23943,7 +23943,7 @@
         }, 
         {
           "group": "nodes", 
-          "classes": "included executable", 
+          "classes": "included  executable executed", 
           "data": {
             "id": "ActiviteA", 
             "name": "Florist\nActiviteA"
@@ -24041,7 +24041,40 @@
         ]
       }, 
       "exec": {
-        "execLogs": []
+        "execLogs": [
+          {
+            "status": "executed", 
+            "task": "Florist\nActiviteA", 
+            "timestamp_endTask": "05/05/2022, 15:00:58", 
+            "timestamp_startTask": "5/5/2022, 3:00:58 PM", 
+            "data": "Test", 
+            "id": 0
+          }, 
+          {
+            "status": "executed", 
+            "task": "Florist\nActiviteA", 
+            "timestamp_endTask": "05/05/2022, 15:01:34", 
+            "timestamp_startTask": "5/5/2022, 3:01:34 PM", 
+            "data": "Test", 
+            "id": 1
+          }, 
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:02:56", 
+            "timestamp_startTask": "5/5/2022, 3:02:47 PM", 
+            "data": "Test", 
+            "id": 2
+          }, 
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:03:14", 
+            "timestamp_startTask": "5/5/2022, 3:03:06 PM", 
+            "data": "Test", 
+            "id": 3
+          }
+        ]
       }
     }, 
     "r2": {
@@ -24074,7 +24107,24 @@
         "data": []
       }, 
       "exec": {
-        "execLogs": []
+        "execLogs": [
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:02:56", 
+            "timestamp_startTask": "5/5/2022, 3:02:47 PM", 
+            "data": "Test", 
+            "id": 0
+          }, 
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:03:14", 
+            "timestamp_startTask": "5/5/2022, 3:03:06 PM", 
+            "data": "Test", 
+            "id": 1
+          }
+        ]
       }
     }, 
     "r3": {
@@ -24107,7 +24157,24 @@
         "data": []
       }, 
       "exec": {
-        "execLogs": []
+        "execLogs": [
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:02:56", 
+            "timestamp_startTask": "5/5/2022, 3:02:47 PM", 
+            "data": "Test", 
+            "id": 0
+          }, 
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:03:14", 
+            "timestamp_startTask": "5/5/2022, 3:03:06 PM", 
+            "data": "Test", 
+            "id": 1
+          }
+        ]
       }
     }, 
     "TextExtraction": {
@@ -24179,9 +24246,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -24195,15 +24262,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "id": 0
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
+            "event": "ActiviteA[role=Florist]", 
+            "id": 1
           }
         ]
       }
@@ -24570,7 +24637,24 @@
         }
       ], 
       "exec": {
-        "execLogs": []
+        "execLogs": [
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:02:55", 
+            "timestamp_startTask": "5/5/2022, 3:02:47 PM", 
+            "data": "Test", 
+            "id": 0
+          }, 
+          {
+            "status": "public node - ", 
+            "task": "!(e, Florist-->Driver,TouristOfficer)", 
+            "timestamp_endTask": "05/05/2022, 15:03:13", 
+            "timestamp_startTask": "5/5/2022, 3:03:06 PM", 
+            "data": "Test", 
+            "id": 1
+          }
+        ]
       }
     }, 
     "projType": "g_to_p", 
@@ -24895,9 +24979,9 @@
         "privateEvents": [
           {
             "eventName": "e3", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "role": "Florist", 
             "id": 0, 
+            "role": "Florist", 
+            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }
         ]
@@ -24911,15 +24995,15 @@
             "eventName": "e3s", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 0, 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]"
+            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "id": 0
           }, 
           {
             "eventName": "ActiviteA", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "id": 1, 
-            "event": "ActiviteA[role=Florist]"
+            "event": "ActiviteA[role=Florist]", 
+            "id": 1
           }
         ]
       }

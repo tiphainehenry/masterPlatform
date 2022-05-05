@@ -63,6 +63,8 @@ contract PublicDCRManager {
         bytes[] ipfsActivityHashes;
         uint256 numActivities; //number of included activities
         uint256[][][] relations; //includesTo, excludesTo, responsesTo, conditionsFrom, milestonesFrom
+        mapping(string => mapping(address => uint8)) access_matrix;
+
         
         address[] approvalAddresses;
         uint[] approvalOutcomes;
@@ -100,6 +102,10 @@ contract PublicDCRManager {
         uint256[] executed;
         uint256[] pending;
     }
+
+    // struct Access {
+    //     mapping(string => mapping(string => uint4)) access;
+    // }
 
     struct Activity {
         uint32 canExecuteCheck;
@@ -647,6 +653,8 @@ contract PublicDCRManager {
         //process information
         address[] memory _roleAddresses,
         address[] memory _approvalAddresses,
+        mapping(string => mapping(address => uint8)) _access_matrix,
+        
 
         string[] memory _activityNames,
         string memory _name,
@@ -670,6 +678,7 @@ contract PublicDCRManager {
                 new bytes[](markingStates[0].length),
                 markingStates[0].length,
                 _relations,
+                _access_matrix,
                 _approvalAddresses,
                 new uint[](_approvalAddresses.length),
                 new uint[](_approvalAddresses.length),

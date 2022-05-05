@@ -48,6 +48,8 @@ cd ~/client/api && python api.py #backend
 Launch local blockchain in terminal:
 
 ganache-cli -m "east enjoy keen nut hat debris blur trophy alone steak large federal"
+To use a specific port number :
+ganache-cli --mnemonic="trend acid deal original skate oblige mountain erupt rebuild panic release response" -i 8545
 
 truffle migrate #migrate the contract
 ```

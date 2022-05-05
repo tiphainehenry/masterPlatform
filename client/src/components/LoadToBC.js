@@ -27,7 +27,7 @@ class LoadToBCL extends React.Component {
       lenDataDB: 0,
       wkState: '... waiting for Smart Contract instanciation ...',
 
-      addresses:[],
+      addresses: [],
       includedStates: '',
       executedStates: '',
       pendingStates: '',
@@ -37,7 +37,7 @@ class LoadToBCL extends React.Component {
       conditionsFrom: '',
       milestonesFrom: '',
       publicData: '',
-      ethAddress:''
+      ethAddress: ''
     };
     this.handleCreateWkf = this.handleCreateWkf.bind(this);
     this.connectToWeb3 = this.connectToWeb3.bind(this);
@@ -59,7 +59,7 @@ class LoadToBCL extends React.Component {
 
     var lenDataDB = Object.keys(ProcessDB).length;
 
-    try{
+    try {
       if (lenDataDB > 0) {
         // connect list of activities to corresponding role first, and then to the right role address
         var wkData = this.fetchWKData(Object.keys(ProcessDB)[1]);
@@ -67,7 +67,7 @@ class LoadToBCL extends React.Component {
           lenDataDB: lenDataDB,
           data: wkData[0],
           processName: wkData[1],
-    
+
           activityNames: wkData[2],
           includedStates: wkData[3],
           executedStates: wkData[4],
@@ -80,11 +80,11 @@ class LoadToBCL extends React.Component {
           addresses: wkData[11],
           approvalList: wkData[12],
           publicData: wkData[13]
-        });    
+        });
       }
-  
+
     }
-    catch{
+    catch {
       console.log('initialization of the db')
     }
     this.connectToWeb3()
@@ -121,46 +121,46 @@ class LoadToBCL extends React.Component {
     };
   }
 
-  fetchWKData(pid){
-    
+  fetchWKData(pid) {
+
     //Object.keys(ProcessDB).forEach(k => {console.log(k)});
 
     var activities = ProcessDB[pid]['TextExtraction']['public']['privateEvents'];
 
-    
+
     var orderedPk = []
-    var orderedNames= ProcessDB[pid]['Public']['vect']['activityNames']['default'];
-    
-    for (let i in orderedNames){
+    var orderedNames = ProcessDB[pid]['Public']['vect']['activityNames']['default'];
+
+    for (let i in orderedNames) {
       let matchingPk = ''
       Object.keys(activities).forEach(k => {
-        if(activities[k].eventName === orderedNames[i]){
+        if (activities[k].eventName === orderedNames[i]) {
           //console.log("Match between " + orderedNames[i]+"and"+activities[k].eventName);
           matchingPk = activities[k].address;
         }
       });
-      if(matchingPk !== ''){
+      if (matchingPk !== '') {
         orderedPk.push(matchingPk);
       }
     }
     let approvalList = [...new Set(orderedPk)];
-    
+
     var PubVec = ProcessDB[pid]['Public']['vect'];
     return [ProcessDB[pid]['Global']['data'],
-            pid,
-            PubVec['activityNames']['default'],
-            PubVec['fullMarkings']['included'],
-            PubVec['fullMarkings']['executed'],
-            PubVec['fullMarkings']['pending'],
-            PubVec['fullRelations']['include'],
-            PubVec['fullRelations']['exclude'],
-            PubVec['fullRelations']['response'],
-            PubVec['fullRelations']['condition'],
-            PubVec['fullRelations']['milestone'],
-            orderedPk,
-            approvalList
-            //PubVec['publicData'].toString()
-  ]
+      pid,
+    PubVec['activityNames']['default'],
+    PubVec['fullMarkings']['included'],
+    PubVec['fullMarkings']['executed'],
+    PubVec['fullMarkings']['pending'],
+    PubVec['fullRelations']['include'],
+    PubVec['fullRelations']['exclude'],
+    PubVec['fullRelations']['response'],
+    PubVec['fullRelations']['condition'],
+    PubVec['fullRelations']['milestone'],
+      orderedPk,
+      approvalList
+      //PubVec['publicData'].toString()
+    ]
 
 
   }
@@ -204,59 +204,60 @@ class LoadToBCL extends React.Component {
 
 
     try {
-        // connect list of activities to corresponding role first, and then to the right role address
-        
-        alert(this.props.processID);
-        var wkData = this.fetchWKData(this.props.processID);
+      // connect list of activities to corresponding role first, and then to the right role address
 
-        var data =  wkData[0];
-        var processName= wkData[1];
-    
-        var activityNames= wkData[2];
-        var includedStates= wkData[3];
-        var executedStates= wkData[4];
-        var pendingStates= wkData[5];
-        var includesTo= wkData[6];
-        var excludesTo= wkData[7];
-        var responsesTo= wkData[8];
-        var conditionsFrom= wkData[9];
-        var milestonesFrom= wkData[10];
-        var addresses= wkData[11];
-        var approvalList= wkData[12];
-//        var publicData = wkData[13];
+      alert(this.props.processID);
+      var wkData = this.fetchWKData(this.props.processID);
+      console.log(wkData);
 
-        this.setState({
-          data,
-          processName,
-    
-          activityNames,
-          includedStates,
-          executedStates,
-          pendingStates,
-          includesTo,
+      var data = wkData[0];
+      var processName = wkData[1];
+
+      var activityNames = wkData[2];
+      var includedStates = wkData[3];
+      var executedStates = wkData[4];
+      var pendingStates = wkData[5];
+      var includesTo = wkData[6];
+      var excludesTo = wkData[7];
+      var responsesTo = wkData[8];
+      var conditionsFrom = wkData[9];
+      var milestonesFrom = wkData[10];
+      var addresses = wkData[11];
+      var approvalList = wkData[12];
+      //        var publicData = wkData[13];
+
+      this.setState({
+        data,
+        processName,
+
+        activityNames,
+        includedStates,
+        executedStates,
+        pendingStates,
+        includesTo,
+        excludesTo,
+        responsesTo,
+        conditionsFrom,
+        milestonesFrom,
+        addresses,
+        approvalList
+        //          publicData
+      });
+
+      if (includedStates.length === 0) {
+        alert("oops -didnt have time to update freshly updated db [to be implemented]");
+      }
+      else {
+        console.log('passed the if statement');
+        var relations = [includesTo,
           excludesTo,
           responsesTo,
           conditionsFrom,
-          milestonesFrom,
-          addresses,
-          approvalList
-//          publicData
-        });
-
-      if(includedStates.length === 0){
-        alert("oops -didnt have time to update freshly updated db [to be implemented]");  
-      }
-      else{
-        console.log('passed the if statement');
-        var relations =[includesTo,
-                        excludesTo,
-                        responsesTo,
-                        conditionsFrom,
-                        milestonesFrom]
+          milestonesFrom]
 
         await contract.methods.uploadPublicView(
-          [includedStates,executedStates,pendingStates], //marking
-  
+          [includedStates, executedStates, pendingStates], //marking
+
           this.props.ipfsHash,
           addresses,
           approvalList,
@@ -268,19 +269,19 @@ class LoadToBCL extends React.Component {
         ).send({ from: accounts[0] }
           , (error, transactionHash) => {
             console.log(transactionHash);
-            this.setState({ transactionHash, ethAddress:contract.options.address });
+            this.setState({ transactionHash, ethAddress: contract.options.address });
           }); //storehash
 
-      //axios.post(`http://localhost:5000/reinit`, 
-      //{
-      //  processID:this.state.processName 
-      //},
-      //{"headers" : {"Access-Control-Allow-Origin": "*"}}
-      //);
-      // window.location.reload(false);
+        //axios.post(`http://localhost:5000/reinit`, 
+        //{
+        //  processID:this.state.processName 
+        //},
+        //{"headers" : {"Access-Control-Allow-Origin": "*"}}
+        //);
+        // window.location.reload(false);
 
+      }
     }
-  }
     catch (err) {
       window.alert('test' + err);
 
@@ -298,60 +299,60 @@ class LoadToBCL extends React.Component {
     if (window.location.href.indexOf("creation"))
       return (<>
 
-            <div className="form-group my-3" >
-              <button onClick= {this.handleCreateWkf} className="btn btn-secondary">
-                {this.props.stage==="templateInstance"? "3. ":"4. "} Instantiate view in smart contract
-              </button>
-            </div>
+        <div className="form-group my-3" >
+          <button onClick={this.handleCreateWkf} className="btn btn-secondary">
+            {this.props.stage === "templateInstance" ? "3. " : "4. "} Instantiate view in smart contract
+          </button>
+        </div>
 
-     <br/>
-     <br/>
-     {this.props.src === 'creation-deck'? <></>:<>
-                  <Button onClick={this.getWKCreationReceipt} variant='info'> <span><Info/> <span>Get Transaction Receipt</span> </span></Button>
-
-
-                  <Table id="myTable" className="table tablesorter table-responsive">
-                    <thead className="cf">
-                      <tr>
-                        <th className="header" scope="col">Tx Receipt Category</th>
-                        <th className="header" scope="col">Values</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr>
-                          <td className="align-middle">IPFS Hash # stored on Eth Contract
-                          </td>
-                          <td className="align-middle">{this.props.ipfsHash}</td>
-
-                        </tr>
-
-                        <tr>
-                          <td className="align-middle">Ethereum Contract Address
-                          </td>
-                          <td className="align-middle">{this.state.ethAddress}</td>
-
-                        </tr>
+        <br />
+        <br />
+        {this.props.src === 'creation-deck' ? <></> : <>
+          <Button onClick={this.getWKCreationReceipt} variant='info'> <span><Info /> <span>Get Transaction Receipt</span> </span></Button>
 
 
-                        <tr>
-                        <td className="align-middle">Tx Hash # </td>
-                        <td className="align-middle">{this.state.transactionHash}</td>
-                      </tr>
+          <Table id="myTable" className="table tablesorter table-responsive">
+            <thead className="cf">
+              <tr>
+                <th className="header" scope="col">Tx Receipt Category</th>
+                <th className="header" scope="col">Values</th>
+              </tr>
+            </thead>
+            <tbody>
 
-                      <tr>
-                        <td className="align-middle">Block Number # </td>
-                        <td className="align-middle">{this.state.blockNumber}</td>
-                      </tr>
+              <tr>
+                <td className="align-middle">IPFS Hash # stored on Eth Contract
+                </td>
+                <td className="align-middle">{this.props.ipfsHash}</td>
 
-                      <tr>
-                        <td className="align-middle">Gas Used</td>
-                        <td className="align-middle">{this.state.gasUsed}</td>
-                      </tr>
+              </tr>
+
+              <tr>
+                <td className="align-middle">Ethereum Contract Address
+                </td>
+                <td className="align-middle">{this.state.ethAddress}</td>
+
+              </tr>
 
 
-                    </tbody>
-                  </Table></>}</>
+              <tr>
+                <td className="align-middle">Tx Hash # </td>
+                <td className="align-middle">{this.state.transactionHash}</td>
+              </tr>
+
+              <tr>
+                <td className="align-middle">Block Number # </td>
+                <td className="align-middle">{this.state.blockNumber}</td>
+              </tr>
+
+              <tr>
+                <td className="align-middle">Gas Used</td>
+                <td className="align-middle">{this.state.gasUsed}</td>
+              </tr>
+
+
+            </tbody>
+          </Table></>}</>
 
       )
     return <>
