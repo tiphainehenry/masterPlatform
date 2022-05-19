@@ -762,47 +762,6 @@
 				"constant": false,
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "_hash",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256[][]",
-						"name": "_markingStates",
-						"type": "uint256[][]"
-					},
-					{
-						"internalType": "uint256[][][]",
-						"name": "_relations",
-						"type": "uint256[][][]"
-					},
-					{
-						"internalType": "string[]",
-						"name": "_activityNames",
-						"type": "string[]"
-					},
-					{
-						"internalType": "address[]",
-						"name": "_roleAddresses",
-						"type": "address[]"
-					}
-				],
-				"name": "switchWorkflows",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"payable": true,
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"constant": false,
-				"inputs": [
-					{
 						"internalType": "address",
 						"name": "myAddress",
 						"type": "address"
@@ -851,6 +810,11 @@
 						"internalType": "address[]",
 						"name": "_approvalAddresses",
 						"type": "address[]"
+					},
+					{
+						"internalType": "uint8[]",
+						"name": "_access_matrix_raw",
+						"type": "uint8[]"
 					},
 					{
 						"internalType": "string[]",
@@ -931,7 +895,7 @@
 				"getChangeApprovalsOutcome(string)": {
 					"notice": "/////////// Accepted Changes post treatment //////////////"
 				},
-				"uploadPublicView(uint256[][],string,address[],address[],string[],string,uint256[][][])": {
+				"uploadPublicView(uint256[][],string,address[],address[],uint8[],string[],string,uint256[][][])": {
 					"notice": "////////////// Workflow creation /////////////////////////"
 				}
 			}
@@ -965,10 +929,10 @@
 			]
 		},
 		"PublicDCRManager.sol": {
-			"keccak256": "0x8eb0fd39dce321eb2f6d076219dbb27b464d1094f304fe836b014780c39e1b4b",
+			"keccak256": "0xcae472d62bab15b7941d164c4ccd42998a17dbc524a45780b843e74ea79931ef",
 			"urls": [
-				"bzz-raw://57757476ef9f1b33f17b78764eacda9c6777a32a9201ea748c51fe3f185dc2e1",
-				"dweb:/ipfs/QmXaiGxV1VfhfhG5FxJTasK5Ydyc8d7BtYxP5zDBEgTYSb"
+				"bzz-raw://9e06aceffded346e9aeb5d33b9839807e6e91c74253174118197376f0c87776d",
+				"dweb:/ipfs/Qmb6qgkpD3pnr6YSRJH6MCgSBS22UorGR3WRGhneYvv3wL"
 			]
 		}
 	},

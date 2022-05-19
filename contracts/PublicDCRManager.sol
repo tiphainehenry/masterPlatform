@@ -6,6 +6,14 @@ import "./ProvableAPI_0.5.sol";
 
 import "./LibPublicDCRM.sol";
 
+contract Access_matrix {
+    mapping(string => mapping(address => uint8)) matrix;
+
+    function updateMatrix(string memory _activity, address _role, uint8 _val) public {
+      matrix[_activity][_role] = _val;
+    }
+}
+
 contract PublicDCRManager {
     // event declaration
     event LogWorkflowCreation(
@@ -63,13 +71,13 @@ contract PublicDCRManager {
         bytes[] ipfsActivityHashes;
         uint256 numActivities; //number of included activities
         uint256[][][] relations; //includesTo, excludesTo, responsesTo, conditionsFrom, milestonesFrom
-        mapping(string => mapping(address => uint8)) access_matrix;
 
         
         address[] approvalAddresses;
         uint[] approvalOutcomes;
         uint[] didFetch;
         Activity execStatus;
+        Access_matrix access_matrix;
 
         //string publicData;
     }
@@ -402,39 +410,39 @@ contract PublicDCRManager {
         return changeRequests[_hash].approvalOutcomes;
     }  
 
-    function switchWorkflows(string memory _hash, uint256[][] memory _markingStates,
-            uint256[][][] memory _relations,   
-            string[] memory _activityNames, 
-            address[] memory _roleAddresses
-) public payable returns (string memory){
+//     function switchWorkflows(string memory _hash, uint256[][] memory _markingStates,
+//             uint256[][][] memory _relations,   
+//             string[] memory _activityNames, 
+//             address[] memory _roleAddresses
+// ) public payable returns (string memory){
 
-        require((msg.sender==changeRequests[_hash].initiator) && 
-        (LibPublicDCRM.evaluateChgApproval(changeRequests[_hash].approvalOutcomes, changeRequests[_hash].numEndorsers)==1));
+//         require((msg.sender==changeRequests[_hash].initiator) && 
+//         (LibPublicDCRM.evaluateChgApproval(changeRequests[_hash].approvalOutcomes, changeRequests[_hash].numEndorsers)==1));
         
-        uploadPublicView(
-            // packed state variables
-            _markingStates,
-            changeRequests[_hash].reqHash,
+//         uploadPublicView(
+//             // packed state variables
+//             _markingStates,
+//             changeRequests[_hash].reqHash,
 
-            //process information
-            _roleAddresses,
-            _roleAddresses,
+//             //process information
+//             _roleAddresses,
+//             _roleAddresses,
 
-            _activityNames,         
-            workflows[_hash].name,                 
+//             _activityNames,         
+//             workflows[_hash].name,                 
 
-            // relations
-            _relations
+//             // relations
+//             _relations
 
-            //changeRequests[_hash].publicData
+//             //changeRequests[_hash].publicData
 
-            );
+//             );
 
-            changeRequests[_hash].status=ChgStatus.Switched;
+//             changeRequests[_hash].status=ChgStatus.Switched;
             
 
-            return 'switch done';
-    }
+//             return 'switch done';
+//     }
 
     ///////////////// Public-to-local Projections ////////////////////////
 
@@ -653,7 +661,7 @@ contract PublicDCRManager {
         //process information
         address[] memory _roleAddresses,
         address[] memory _approvalAddresses,
-        mapping(string => mapping(address => uint8)) _access_matrix,
+        uint8[] memory _access_matrix_raw,
         
 
         string[] memory _activityNames,
@@ -663,8 +671,16 @@ contract PublicDCRManager {
         uint256[][][] memory _relations // includesto, excludesto, responsesto, conditionsfrom, milestonesFrom,
 
     ) public payable {
-        
-        
+        Access_matrix _access_matrix = new Access_matrix();
+        // mapping(string => mapping(address => uint8)) storage _access_matrix;
+        uint nb_of_roles = _roleAddresses.length;
+        uint nb_of_activities = _activityNames.length;
+        for(uint i = 0; i < _roleAddresses.length; i++) {
+            for(uint j = 0; j < _activityNames.length; j++) {
+                uint indice = nb_of_roles * i + j;
+                _access_matrix.updateMatrix(_activityNames[j], _roleAddresses[i], _access_matrix_raw[indice]);
+            }
+        }
         Activity memory execStatus = Activity(0, 0);
         Marking memory markings = Marking(markingStates[0],markingStates[1],markingStates[2]);
         Workflow memory wf =
@@ -678,11 +694,11 @@ contract PublicDCRManager {
                 new bytes[](markingStates[0].length),
                 markingStates[0].length,
                 _relations,
-                _access_matrix,
                 _approvalAddresses,
                 new uint[](_approvalAddresses.length),
                 new uint[](_approvalAddresses.length),
-                execStatus
+                execStatus,
+                _access_matrix
                 //_publicData
             );
         workflows[_ipfsViewHash]=wf;
