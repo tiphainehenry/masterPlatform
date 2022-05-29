@@ -4,7 +4,6 @@ pragma experimental ABIEncoderV2;
 contract AdminIoTPoolManager {
     struct IoTPool {
         string name;
-        bool isIoTPool;
         string[] ioTPool;
         mapping(string => bool) ioTPoolMap;
     }
@@ -14,25 +13,9 @@ contract AdminIoTPoolManager {
 
     constructor() public {
         address modAddress = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
-        newIoTPool(modAddress, "Alice", true);
+        newIoTPool(modAddress, "temperature")
         AddElemIoTPool(modAddress, "Florist");
         AddElemIoTPool(modAddress, "Tourist");
-
-        address peonAddress1 = 0x1ED034135e576A6c1bf3ee8E05aaDEEF24D4A819;
-        newIoTPool(peonAddress1, "Bob", false);
-        AddElemIoTPool(peonAddress1, "Driver");
-        AddElemIoTPool(peonAddress1, "TouristOfficer");
-
-        address modAddress1 = 0x5AfBDd0e5DE3315a96504C06ac49bF34B5ECACB5;
-        newIoTPool(modAddress1, "Carol", true);
-        AddElemIoTPool(modAddress1, "Customer");
-        AddElemIoTPool(modAddress1, "Restaurant");
-
-        address modAddress2 = 0xC9f167B5056B03eB29963aB8e6F78bB12Cf5BA17;
-        newIoTPool(modAddress2, "Dave", true);
-
-        address modAddress3 = 0x2a706c6006e33610D92ea2a440Cc99d5b58353E1;
-        newIoTPool(modAddress3, "Trent", true);
 
     }
 
