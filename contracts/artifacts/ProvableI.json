@@ -1,0 +1,381 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"görli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"cbAddress()": "c281d19e",
+			"getPrice(string)": "524f3889",
+			"getPrice(string,uint256)": "2ef3accc",
+			"query(uint256,string,string)": "adf59f99",
+			"query2(uint256,string,string,string)": "77228659",
+			"query2_withGasLimit(uint256,string,string,string,uint256)": "85dee34c",
+			"queryN(uint256,string,bytes)": "83eed3d5",
+			"queryN_withGasLimit(uint256,string,bytes,uint256)": "c55c1cb6",
+			"query_withGasLimit(uint256,string,string,uint256)": "c51be90f",
+			"randomDS_getSessionPubKeyHash()": "abaa5f3e",
+			"setCustomGasPrice(uint256)": "ca6ad1e4",
+			"setProofType(bytes1)": "688dcfd7"
+		}
+	},
+	"abi": [
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "cbAddress",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_gasLimit",
+					"type": "uint256"
+				}
+			],
+			"name": "getPrice",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "_dsprice",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				}
+			],
+			"name": "getPrice",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "_dsprice",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_timestamp",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_arg",
+					"type": "string"
+				}
+			],
+			"name": "query",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "_id",
+					"type": "bytes32"
+				}
+			],
+			"payable": true,
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_timestamp",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_arg1",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_arg2",
+					"type": "string"
+				}
+			],
+			"name": "query2",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "_id",
+					"type": "bytes32"
+				}
+			],
+			"payable": true,
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_timestamp",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_arg1",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_arg2",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_gasLimit",
+					"type": "uint256"
+				}
+			],
+			"name": "query2_withGasLimit",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "_id",
+					"type": "bytes32"
+				}
+			],
+			"payable": true,
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_timestamp",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				},
+				{
+					"internalType": "bytes",
+					"name": "_argN",
+					"type": "bytes"
+				}
+			],
+			"name": "queryN",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "_id",
+					"type": "bytes32"
+				}
+			],
+			"payable": true,
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_timestamp",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				},
+				{
+					"internalType": "bytes",
+					"name": "_argN",
+					"type": "bytes"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_gasLimit",
+					"type": "uint256"
+				}
+			],
+			"name": "queryN_withGasLimit",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "_id",
+					"type": "bytes32"
+				}
+			],
+			"payable": true,
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_timestamp",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_datasource",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_arg",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_gasLimit",
+					"type": "uint256"
+				}
+			],
+			"name": "query_withGasLimit",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "_id",
+					"type": "bytes32"
+				}
+			],
+			"payable": true,
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "randomDS_getSessionPubKeyHash",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "_sessionKeyHash",
+					"type": "bytes32"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_gasPrice",
+					"type": "uint256"
+				}
+			],
+			"name": "setCustomGasPrice",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "bytes1",
+					"name": "_proofType",
+					"type": "bytes1"
+				}
+			],
+			"name": "setProofType",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}
+	]
+}

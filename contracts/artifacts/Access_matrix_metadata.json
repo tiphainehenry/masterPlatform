@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.5.16+commit.9c3226ce"
+		"version": "0.5.17+commit.d19bba13"
 	},
 	"language": "Solidity",
 	"output": {
@@ -40,7 +40,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"PublicDCRManager.sol": "Access_matrix"
+			"Access_Matrix.sol": "Access_matrix"
 		},
 		"evmVersion": "istanbul",
 		"libraries": {},
@@ -51,25 +51,11 @@
 		"remappings": []
 	},
 	"sources": {
-		"LibPublicDCRM.sol": {
-			"keccak256": "0xa225cbe4265ccfc88f257761d3bce988800d3c8d8f5f597d396720cb7bfab9e0",
+		"Access_Matrix.sol": {
+			"keccak256": "0xb58aef78863c7e97dbbb1e4a473262ad857131ccbd8f2bee756e8925cedbf818",
 			"urls": [
-				"bzz-raw://b3dc59e9671cf78e63f101b1a9b02b28bc9a7e13b83cd5f94260bf58588950ec",
-				"dweb:/ipfs/QmQu4JMw49R21KFNXYDwXcw2tpybafhD48FpkdQUnupeKi"
-			]
-		},
-		"ProvableAPI_0.5.sol": {
-			"keccak256": "0xe432de8e7f28fa4713fa42c96cd143f00b6a5e5e4664d7050bfc9dad02585ff9",
-			"urls": [
-				"bzz-raw://71ad647d1eb0e7615a95379f7526238eb9d0da7029d86cb750b4099e48d364c5",
-				"dweb:/ipfs/Qmcmjpqa8aDXnWABMc1GMLmwhk9BexBubFJdn3kzyBz5t8"
-			]
-		},
-		"PublicDCRManager.sol": {
-			"keccak256": "0xcae472d62bab15b7941d164c4ccd42998a17dbc524a45780b843e74ea79931ef",
-			"urls": [
-				"bzz-raw://9e06aceffded346e9aeb5d33b9839807e6e91c74253174118197376f0c87776d",
-				"dweb:/ipfs/Qmb6qgkpD3pnr6YSRJH6MCgSBS22UorGR3WRGhneYvv3wL"
+				"bzz-raw://58f60764b0864fce482dfff32a8cfdf2cb99dc30cfe34290b4790184c58c6d5a",
+				"dweb:/ipfs/QmVoDQRUBeA1a2xkrSKjQVJUC4VPAFYYxXiV2BXZiUJYGf"
 			]
 		}
 	},

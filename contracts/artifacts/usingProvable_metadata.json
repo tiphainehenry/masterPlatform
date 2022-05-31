@@ -1,0 +1,87 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_myid",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "_result",
+						"type": "string"
+					}
+				],
+				"name": "__callback",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_myid",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "_result",
+						"type": "string"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_proof",
+						"type": "bytes"
+					}
+				],
+				"name": "__callback",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"__callback(bytes32,string)": {
+					"details": "The following `__callback` functions are just placeholders ideally     meant to be defined in child contract when proofs are used.     The function bodies simply silence compiler warnings."
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"ProvableAPI_0.5.sol": "usingProvable"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"ProvableAPI_0.5.sol": {
+			"keccak256": "0xe432de8e7f28fa4713fa42c96cd143f00b6a5e5e4664d7050bfc9dad02585ff9",
+			"urls": [
+				"bzz-raw://71ad647d1eb0e7615a95379f7526238eb9d0da7029d86cb750b4099e48d364c5",
+				"dweb:/ipfs/Qmcmjpqa8aDXnWABMc1GMLmwhk9BexBubFJdn3kzyBz5t8"
+			]
+		}
+	},
+	"version": 1
+}

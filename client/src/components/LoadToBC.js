@@ -28,6 +28,7 @@ class LoadToBCL extends React.Component {
       wkState: '... waiting for Smart Contract instanciation ...',
 
       addresses: [],
+      access_matrix: null,
       includedStates: '',
       executedStates: '',
       pendingStates: '',
@@ -124,8 +125,10 @@ class LoadToBCL extends React.Component {
   fetchWKData(pid) {
 
     //Object.keys(ProcessDB).forEach(k => {console.log(k)});
+    // console.log(ProcessDB[pid]);
 
     var activities = ProcessDB[pid]['TextExtraction']['public']['privateEvents'];
+
 
 
     var orderedPk = []
@@ -158,7 +161,8 @@ class LoadToBCL extends React.Component {
     PubVec['fullRelations']['condition'],
     PubVec['fullRelations']['milestone'],
       orderedPk,
-      approvalList
+      approvalList,
+      ProcessDB[pid]['variables']
       //PubVec['publicData'].toString()
     ]
 
@@ -197,9 +201,9 @@ class LoadToBCL extends React.Component {
   /**
    * launches a transaction to the smart contract workflow manager to create a new workflow.
    */
-  handleCreateWkf = async () => {
+  handleCreateWkf = async (event) => {
     alert('Save public view onchain');
-
+    event.preventDefault();
     const { accounts, contract } = this.state;
 
 
@@ -224,7 +228,28 @@ class LoadToBCL extends React.Component {
       var milestonesFrom = wkData[10];
       var addresses = wkData[11];
       var approvalList = wkData[12];
+      var matrix = wkData[13];
       //        var publicData = wkData[13];
+      var access_matrix_raw = [];
+      console.log(matrix)
+      for(let k = 0; k < matrix.length; k++) {
+        console.log(matrix[k].matrix)
+        for(const [key, value] of Object.entries(matrix[k].matrix)) {
+          console.log(key,value)
+          let m = value.matrix;
+          for(let j = 0; j < value.length; j++) {
+            let m = value[j].matrix;
+            let number_to_push = m[3] * 8 + m[2] * 4 + m[1] * 2 + m[0] * 1; 
+            console.log(number_to_push);
+            access_matrix_raw.push(number_to_push);
+          }
+          console.log(m)
+          // let m = matrix[k].matrix[j].matrix;
+
+        }
+      }
+
+      console.log(access_matrix_raw);
 
       this.setState({
         data,
@@ -261,6 +286,9 @@ class LoadToBCL extends React.Component {
           this.props.ipfsHash,
           addresses,
           approvalList,
+
+          access_matrix_raw, //access matrix
+
           activityNames,
           processName,
           relations

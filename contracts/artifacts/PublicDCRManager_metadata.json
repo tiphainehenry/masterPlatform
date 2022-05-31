@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.5.16+commit.9c3226ce"
+		"version": "0.5.17+commit.d19bba13"
 	},
 	"language": "Solidity",
 	"output": {
@@ -849,14 +849,6 @@
 					},
 					"return": "list of approval outcomes."
 				},
-				"confirmProjection(string,address)": {
-					"details": "post private projection approval function.",
-					"params": {
-						"_hash": "index of the workflow (eg 0 for the first workflow).",
-						"myAddress": "address of the sender (necessary for web3js dev)."
-					},
-					"return": "list of approval outcomes."
-				},
 				"fetchPublicView(string,address)": {
 					"details": "Getter for workflow.",
 					"params": {
@@ -914,6 +906,13 @@
 		"remappings": []
 	},
 	"sources": {
+		"Access_Matrix.sol": {
+			"keccak256": "0xb58aef78863c7e97dbbb1e4a473262ad857131ccbd8f2bee756e8925cedbf818",
+			"urls": [
+				"bzz-raw://58f60764b0864fce482dfff32a8cfdf2cb99dc30cfe34290b4790184c58c6d5a",
+				"dweb:/ipfs/QmVoDQRUBeA1a2xkrSKjQVJUC4VPAFYYxXiV2BXZiUJYGf"
+			]
+		},
 		"LibPublicDCRM.sol": {
 			"keccak256": "0xa225cbe4265ccfc88f257761d3bce988800d3c8d8f5f597d396720cb7bfab9e0",
 			"urls": [
@@ -929,10 +928,10 @@
 			]
 		},
 		"PublicDCRManager.sol": {
-			"keccak256": "0xcae472d62bab15b7941d164c4ccd42998a17dbc524a45780b843e74ea79931ef",
+			"keccak256": "0xf6ba0c820b9c6509e0952657498b14fd2b7bc467b901fce382467a0524ff37f5",
 			"urls": [
-				"bzz-raw://9e06aceffded346e9aeb5d33b9839807e6e91c74253174118197376f0c87776d",
-				"dweb:/ipfs/Qmb6qgkpD3pnr6YSRJH6MCgSBS22UorGR3WRGhneYvv3wL"
+				"bzz-raw://d3268a2ea7396b31775be7387fc6931aae634f661eadb93579dfb3b4ce76c906",
+				"dweb:/ipfs/QmP8bw4uHBfsuYoruCh5Ej82jjPTfUrm2qLLvigwXGG1Mg"
 			]
 		}
 	},

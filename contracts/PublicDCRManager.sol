@@ -1,18 +1,12 @@
-//pragma solidity 0.5.10;
+// pragma solidity 0.5.10;
 pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
 import "./ProvableAPI_0.5.sol";
-
+import "./Access_Matrix.sol";
 import "./LibPublicDCRM.sol";
 
-contract Access_matrix {
-    mapping(string => mapping(address => uint8)) matrix;
 
-    function updateMatrix(string memory _activity, address _role, uint8 _val) public {
-      matrix[_activity][_role] = _val;
-    }
-}
 
 contract PublicDCRManager {
     // event declaration
@@ -410,40 +404,6 @@ contract PublicDCRManager {
         return changeRequests[_hash].approvalOutcomes;
     }  
 
-//     function switchWorkflows(string memory _hash, uint256[][] memory _markingStates,
-//             uint256[][][] memory _relations,   
-//             string[] memory _activityNames, 
-//             address[] memory _roleAddresses
-// ) public payable returns (string memory){
-
-//         require((msg.sender==changeRequests[_hash].initiator) && 
-//         (LibPublicDCRM.evaluateChgApproval(changeRequests[_hash].approvalOutcomes, changeRequests[_hash].numEndorsers)==1));
-        
-//         uploadPublicView(
-//             // packed state variables
-//             _markingStates,
-//             changeRequests[_hash].reqHash,
-
-//             //process information
-//             _roleAddresses,
-//             _roleAddresses,
-
-//             _activityNames,         
-//             workflows[_hash].name,                 
-
-//             // relations
-//             _relations
-
-//             //changeRequests[_hash].publicData
-
-//             );
-
-//             changeRequests[_hash].status=ChgStatus.Switched;
-            
-
-//             return 'switch done';
-//     }
-
     ///////////////// Public-to-local Projections ////////////////////////
 
 
@@ -500,11 +460,6 @@ contract PublicDCRManager {
         return 0;
     }
 
-    /** @dev post private projection approval function.
-      * @param _hash index of the workflow (eg 0 for the first workflow).
-      * @param myAddress address of the sender (necessary for web3js dev).
-      * @return list of approval outcomes.
-      */
     function confirmProjection(string memory _hash, address myAddress) public payable returns (uint[] memory){
         // get id of approvalList.addresses corresponding to msgSender. If (approval[id]==0): set to one;
         
@@ -674,7 +629,7 @@ contract PublicDCRManager {
         Access_matrix _access_matrix = new Access_matrix();
         // mapping(string => mapping(address => uint8)) storage _access_matrix;
         uint nb_of_roles = _roleAddresses.length;
-        uint nb_of_activities = _activityNames.length;
+        // uint nb_of_activities = _activityNames.length;
         for(uint i = 0; i < _roleAddresses.length; i++) {
             for(uint j = 0; j < _activityNames.length; j++) {
                 uint indice = nb_of_roles * i + j;
