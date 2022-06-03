@@ -857,13 +857,6 @@
 					},
 					"return": "workflow, update didFetch variable to one."
 				},
-				"getCanExecuteCheck(string)": {
-					"details": "Getter for workflow execution status.",
-					"params": {
-						"_hash": "index of the workflow (eg 0 for the first workflow)."
-					},
-					"return": "execution status of the task: 0=ok, 1= "
-				},
 				"requestChange(address,address[],string,string,string)": {
 					"details": "manages change requests: if a request is already ongoing, cancel. Else, create a new change request and notify endorsers.",
 					"params": {
@@ -907,10 +900,10 @@
 	},
 	"sources": {
 		"Access_Matrix.sol": {
-			"keccak256": "0xb58aef78863c7e97dbbb1e4a473262ad857131ccbd8f2bee756e8925cedbf818",
+			"keccak256": "0xc2f644c19eee4025a58929c2d4251fcbb293d47235ae55b434f6cf4e5f513f23",
 			"urls": [
-				"bzz-raw://58f60764b0864fce482dfff32a8cfdf2cb99dc30cfe34290b4790184c58c6d5a",
-				"dweb:/ipfs/QmVoDQRUBeA1a2xkrSKjQVJUC4VPAFYYxXiV2BXZiUJYGf"
+				"bzz-raw://2e9ac8b82727a5de0fce0ef1f91d2e3f40f46773990d69179f8121277da26ca5",
+				"dweb:/ipfs/QmWTicdNFp41MU5pKRM2jBGMBtM78TiNzcNMUq3G5fsKeN"
 			]
 		},
 		"LibPublicDCRM.sol": {
@@ -928,10 +921,17 @@
 			]
 		},
 		"PublicDCRManager.sol": {
-			"keccak256": "0xf6ba0c820b9c6509e0952657498b14fd2b7bc467b901fce382467a0524ff37f5",
+			"keccak256": "0x2e221358afcb052ee231b1e504ab8260cf74dd80e822adfedbaeff84942fb6c5",
 			"urls": [
-				"bzz-raw://d3268a2ea7396b31775be7387fc6931aae634f661eadb93579dfb3b4ce76c906",
-				"dweb:/ipfs/QmP8bw4uHBfsuYoruCh5Ej82jjPTfUrm2qLLvigwXGG1Mg"
+				"bzz-raw://ce56123aa3b1322a23859f49bb6980671edebb664bcf428c59dc09a277643723",
+				"dweb:/ipfs/QmQDpoTDUEpvGTYaHdrVSCGNiMi5Eqby6fa7KWGPEfgspg"
+			]
+		},
+		"hardhat/console.sol": {
+			"keccak256": "0x72b6a1d297cd3b033d7c2e4a7e7864934bb767db6453623f1c3082c6534547f4",
+			"urls": [
+				"bzz-raw://a8cb8681076e765c214e0d51cac989325f6b98e315eaae06ee0cbd5a9f084763",
+				"dweb:/ipfs/QmNWGHi4zmjxQTYN3NMGnJd49jBT5dE4bxTdWEaDuJrC6N"
 			]
 		}
 	},

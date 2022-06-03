@@ -12,6 +12,36 @@
 						"internalType": "string",
 						"name": "_activity",
 						"type": "string"
+					}
+				],
+				"name": "deleteVariable",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getVariableValue",
+				"outputs": [
+					{
+						"internalType": "uint32",
+						"name": "_var",
+						"type": "uint32"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_activity",
+						"type": "string"
 					},
 					{
 						"internalType": "address",
@@ -29,10 +59,56 @@
 				"payable": false,
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint32",
+						"name": "_variable_value",
+						"type": "uint32"
+					},
+					{
+						"internalType": "string",
+						"name": "_activity",
+						"type": "string"
+					}
+				],
+				"name": "updateValue",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
-			"methods": {}
+			"methods": {
+				"deleteVariable(string)": {
+					"details": "deletes the contract if the caller has the authorization (first bit starting from right).",
+					"params": {
+						"_activity": "that want to have access"
+					}
+				},
+				"getVariableValue()": {
+					"details": "Get the variable value",
+					"return": "_var the variable value "
+				},
+				"updateMatrix(string,address,uint8)": {
+					"details": "Update an entry of the access matrix",
+					"params": {
+						"_activity": "is the name of the activity ",
+						"_role": "is the role",
+						"_val": "is a 4 bit int that allows to find if a certain matrix entry has access or not to a vraiable (read,write,create,delete) are the four bits."
+					}
+				},
+				"updateValue(uint32,string)": {
+					"details": "Update the variable value if the caller has access",
+					"params": {
+						"_activity": "name of the activity that want to update the variable value",
+						"_variable_value": "new variable value "
+					}
+				}
+			}
 		},
 		"userdoc": {
 			"methods": {}
@@ -52,10 +128,17 @@
 	},
 	"sources": {
 		"Access_Matrix.sol": {
-			"keccak256": "0xb58aef78863c7e97dbbb1e4a473262ad857131ccbd8f2bee756e8925cedbf818",
+			"keccak256": "0xee19c588e87a7a4eae85bed60482637da6abe15df0e500efb3ef8dab3922ebfb",
 			"urls": [
-				"bzz-raw://58f60764b0864fce482dfff32a8cfdf2cb99dc30cfe34290b4790184c58c6d5a",
-				"dweb:/ipfs/QmVoDQRUBeA1a2xkrSKjQVJUC4VPAFYYxXiV2BXZiUJYGf"
+				"bzz-raw://22efc4888e61da094909298a19b34d5a5bd81d5a2f6bfd5f60e07e10eb4e8fa0",
+				"dweb:/ipfs/QmYgcHdZc8DKnpqGX8QLsjH6Y3TyRaikv1HBrJGgHp2UPF"
+			]
+		},
+		"hardhat/console.sol": {
+			"keccak256": "0x72b6a1d297cd3b033d7c2e4a7e7864934bb767db6453623f1c3082c6534547f4",
+			"urls": [
+				"bzz-raw://a8cb8681076e765c214e0d51cac989325f6b98e315eaae06ee0cbd5a9f084763",
+				"dweb:/ipfs/QmNWGHi4zmjxQTYN3NMGnJd49jBT5dE4bxTdWEaDuJrC6N"
 			]
 		}
 	},
