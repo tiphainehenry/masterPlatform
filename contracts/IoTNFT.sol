@@ -1,4 +1,4 @@
-/ SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 // File: @openzeppelin/contracts/utils/Context.sol
 pragma solidity >=0.6.0 <0.8.0;
@@ -57,8 +57,7 @@ pragma solidity >=0.6.2 <0.8.0;
 interface IERC721Metadata is IERC721 {
     function name() external view returns (string memory);
     function pool() external view returns (string memory);
-    function owner() external view returns (string memory);
-    function authentificaitonKey() external view returns (string memory);
+    function authentificationKey() external view returns (string memory);
     function symbol() external view returns (string memory);
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
@@ -86,7 +85,7 @@ abstract contract ERC165 is IERC165 {
 
     mapping(bytes4 => bool) private _supportedInterfaces;
 
-    constructor () {
+    constructor() public {
         // Derived contracts need only register support for their own interfaces,
         // we register support for ERC165 itself here
         _registerInterface(_INTERFACE_ID_ERC165);
@@ -126,7 +125,7 @@ library SafeMath {
         return (true, c);
     }
 
-     */
+     
     function trySub(uint256 a, uint256 b) internal pure returns (bool, uint256) {
         if (b > a) return (false, 0);
         return (true, a - b);
@@ -906,6 +905,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
     // Token pool
     string private _pool;
 
+     // Token owner
+    string private _owner;
+
      // Token authentificationkey
     string private _authentificationKey;
 
@@ -955,11 +957,11 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor (string memory name_, string memory symbol_,  string memory pool_, string memory authentificationKey_, string memory owner_) {
+    constructor  (string memory name_, string memory symbol_,  string memory pool_, string memory authentificationKey_, string memory owner_) public{
         _name = name_;
         _symbol = symbol_;
         _pool = pool_;
-        _authentificationKey = authetificationKey_;
+        _authentificationKey = authentificationKey_;
         _owner = owner_ ;
 
         // register the supported interfaces to conform to ERC721 via ERC165
@@ -1349,7 +1351,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
         emit Approval(ERC721.ownerOf(tokenId), to, tokenId); // internal owner
     }
 
-    /**
+     /**
      * @dev Hook that is called before any token transfer. This includes minting
      * and burning.
      *
@@ -1359,9 +1361,30 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
      * transferred to `to`.
      * - When `from` is zero, `tokenId` will be minted for `to`.
      * - When `to` is zero, ``from``'s `tokenId` will be burned.
-     * - `from` cannot be the zero address.
-     * - `to` cannot be the zero address.
+     * - `from` and `to` are never both zero.
      *
      * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
      */
-    functio
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {}
+
+    /**
+     * @dev Hook that is called after any transfer of tokens. This includes
+     * minting and burning.
+     *
+     * Calling conditions:
+     *
+     * - when `from` and `to` are both non-zero.
+     * - `from` and `to` are never both zero.
+     *
+     * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
+     */
+    function _afterTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {}
+}
