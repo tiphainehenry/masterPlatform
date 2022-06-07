@@ -1,9 +1,10 @@
 pragma solidity ^0.4.24;
 
-import "../installed_contracts/ERC721/ERC721Token.sol";
+import "../../installed_contracts/ERC721/ERC721Token.sol";
+import "../AdminIoTPoolManager.sol";
 
 contract MyERC721 is ERC721Token {
-    constructor (string _name, string _symbol, string _pool, string_authentificationKey) public
+    constructor (AdminIoTPoolManager _pool, string _symbol, string _authentificationKey) public
         ERC721Token(_name, _symbol, _pool, _authentificationKey)
     {
     }

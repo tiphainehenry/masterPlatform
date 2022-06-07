@@ -26,7 +26,6 @@ contract AdminIoTPoolManager {
     }
 
     function imPool() public view returns (string[] memory pool) {
-        string[] memory pool = new string[](2);
         if (isPool(msg.sender)) {
             pool[0] = Pools[msg.sender].name;
             pool[1] = "qqc";

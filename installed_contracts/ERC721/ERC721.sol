@@ -1,6 +1,7 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.16;
 
 import "./ERC721Basic.sol";
+import "../../contracts/AdminIoTPoolManager.sol";
 
 
 /**
@@ -29,7 +30,7 @@ contract ERC721Metadata is ERC721Basic {
   function name() external view returns (string _name);
   function symbol() external view returns (string _symbol);
   function tokenURI(uint256 _tokenId) public view returns (string);
-  function pool() external view returns (string _pool);
+  function pool() external view returns (AdminIoTPoolManager _pool);
   function authentificationKey() external view returns (string _authentificationKey);
 }
 

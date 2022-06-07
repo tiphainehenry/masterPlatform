@@ -1,9 +1,9 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.16;
 
 import "./ERC721.sol";
 import "./ERC721BasicToken.sol";
 import "../ERC165/SupportsInterfaceWithLookup.sol";
-
+import"../../contracts/AdminIoTPoolManager.sol";
 
 /**
  * @title Full ERC721 Token
@@ -20,7 +20,7 @@ contract ERC721Token is SupportsInterfaceWithLookup, ERC721BasicToken, ERC721 {
   string internal symbol_;
 
   // Token pool
-  string private pool_;
+  AdminIoTPoolManager private pool_;
 
     // Token authentificationkey
   string private authentificationKey_;
@@ -44,7 +44,7 @@ contract ERC721Token is SupportsInterfaceWithLookup, ERC721BasicToken, ERC721 {
    * @dev Constructor function
    */
 
-  constructor  (string memory _name, string memory _symbol,  string memory _pool, string memory _authentificationKey) public{
+  constructor  (string memory _name, string memory _symbol,  AdminIoTPoolManager memory _pool, string memory _authentificationKey) public{
         name_ = _name;
         symbol_ = _symbol;
         pool_ = _pool;
@@ -72,14 +72,14 @@ contract ERC721Token is SupportsInterfaceWithLookup, ERC721BasicToken, ERC721 {
     return symbol_;
   }
 
-  function pool() public view virtual override returns (string memory) {
+  function pool() external view returns (AdminIoTPoolManager) {
     return pool_;
 }
 
   /**
   * @dev See {IERC721Metadata-AuthentificationKey}.
   */
-function authentificationKey() public view virtual override returns (string memory) {
+function authentificationKey() external view returns (string) {
     return authentificationKey_;
 }
 

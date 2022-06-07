@@ -2,13 +2,12 @@ pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
 
-import "filename" as symbolName;
+
 
 
 contract AdminIoTManager {
     struct IoT {
         string name;
-        struct IoTPool;
         bool isIoT;
         string[] ioT;
         mapping(string => bool) ioTMap;
@@ -19,7 +18,7 @@ contract AdminIoTManager {
 
     constructor() public {
         address modAddress = 0x89033bC8f73Ef5b46CCb013f6F948b00954a06BB;
-        newIoT(modAddress, "temperature")
+        newIoT(modAddress, "temperature");
         AddElemIoT(modAddress, "Localisation");
 
     }
@@ -49,8 +48,7 @@ contract AdminIoTManager {
                             "Account nbr:",
                             uint2str(ioTList.length)
                         )
-                    ),
-                    false
+                    )
                 );
                 AddElemIoT(add[i], ioT[i]);
             } else {
@@ -115,7 +113,7 @@ contract AdminIoTManager {
                     IoTs[ioTList[i]].name,
                     "///",
                     toAsciiString(ioTList[i]),
-                    "///",
+                    "///"
                 )
             );
         }
@@ -123,13 +121,13 @@ contract AdminIoTManager {
     }
 
 
-    function getElemIoTs(address address)
+    function getElemIoTs(address addr)
         public
         view
         returns (string[] memory list)
     {
-        if (!isIoT(address)) revert();
-        return IoTs[address].ioT;
+        if (!isIoT(addr)) revert();
+        return IoTs[addr].ioT;
     }
 
     function AddElemIoT(address add, string memory newIoT) public {
@@ -144,7 +142,7 @@ contract AdminIoTManager {
             IoTs[addr].ioT[i] = IoTs[addr].ioT[i + 1];
             i++;
         }
-        IoTs[add].ioT.length--;
+        IoTs[addr].ioT.length--;
     }
 
     function toAsciiString(address x) internal view returns (string memory) {
@@ -166,7 +164,7 @@ contract AdminIoTManager {
 
     function newIoT(
         address IoTAddress,
-        string memory name,
+        string memory name
     ) public returns (string memory rowNumber) {
         if (isIoT(IoTAddress)) revert();
         string[] memory tmpList = new string[](0);
@@ -178,7 +176,7 @@ contract AdminIoTManager {
 
     function updateIoT(
         address IoTAddress,
-        string memory name,
+        string memory name
     ) public returns (bool success) {
         if (!isIoT(IoTAddress)) revert();
         IoTs[IoTAddress].name = name;
