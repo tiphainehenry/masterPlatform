@@ -157,6 +157,7 @@ class LoadInstance extends React.Component {
   componentWillMount() {
 
     this.getRoles().then(res => {
+      console.log("addresses loaded");
       var roleOptions = [];
 
       this.state.roles.forEach((r) => {
@@ -213,14 +214,16 @@ class LoadInstance extends React.Component {
           }
         }
       }
-      console.log(addresses);
-      console.log(roles);
+      // console.log(addresses);
+      // console.log(roles);
       console.log(rolesWithAddresses);
       this.setState({
         roles: roles,
         addresses: addresses,
         rolesWithAddresses: rolesWithAddresses
-      })
+      });
+      console.log(this.state.rolesWithAddresses);
+      this.loadToBC.current.setAccessMatrix(rolesWithAddresses);
 
     } catch (error) {
       //alert(
@@ -573,7 +576,8 @@ class LoadInstance extends React.Component {
   }
 
   async instantiate() {
-    this.loadToBC.current.handleCreateWkf();
+    console.log(this.state.rolesWithAddresses);
+    this.loadToBC.current.handleCreateWkf(this.state.rolesWithAddresses);
     console.log("is ok loadtoBC");
   }
 
@@ -603,7 +607,8 @@ class LoadInstance extends React.Component {
       <Authentification status={this.getStatus} />
       <div>
         <Header />
-        <LoadToBC ref={this.loadToBC} processID={this.state.processID} src={this.state.src}></LoadToBC>
+          <LoadToBC ref={this.loadToBC} processID={this.state.processID} src={this.state.src} rolesWithAddresses={this.state.rolesWithAddresses}></LoadToBC>
+
         <Row>
           <SidebarModel />
           <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
@@ -630,7 +635,6 @@ class LoadInstance extends React.Component {
                           <table>
                             {
                               this.state.public_var.map((value, j) => {
-                                console.log("matrix to process", value);
                                 return (
                                   <>
                                     <tr>
@@ -639,7 +643,6 @@ class LoadInstance extends React.Component {
                                     <tr>
                                       {
                                         Object.entries(value.matrix).map((val, j) => {
-                                          console.log("val to render", val);
                                           if (val)
                                             return (
                                               <>
@@ -663,15 +666,14 @@ class LoadInstance extends React.Component {
                                                         for (let e in v.matrix) {
                                                           m.push(v.matrix[e]);
                                                         }
-                                                        console.log(m)
                                                         return (
                                                           <tr>
                                                             <td>{v.name}</td>
                                                             {m.map((e, j) => {
-                                                              if(e)
-                                                              return (
-                                                                <td><input type="checkbox" checked disabled /></td>
-                                                              )
+                                                              if (e)
+                                                                return (
+                                                                  <td><input type="checkbox" checked disabled /></td>
+                                                                )
                                                               return (
                                                                 <td><input type="checkbox" disabled /></td>
                                                               )

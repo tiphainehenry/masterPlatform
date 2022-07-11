@@ -10,13 +10,21 @@ module.exports = {
   contracts_build_directory: path.join(__dirname, "client/src/contracts"),
   networks: {
     development: {
-	    network_id:"*",
-	    host:'127.0.0.1',
-	    port: 8545
-	
+      network_id: "*",
+      host: '127.0.0.1',
+      port: 8545,
+      gas: 8721974
+    },
+    compilers: {
+      solc: {
+        optimizer: {
+          enabled: true,
+          runs: 200
+        }
+      }
     },
     ropsten: {
-      provider:  new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/f86c1527e7f24bf99018c94a7b5abae4"),
+      provider: new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/f86c1527e7f24bf99018c94a7b5abae4"),
       network_id: '3',
       //gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
     }

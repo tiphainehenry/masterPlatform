@@ -105,10 +105,6 @@ contract PublicDCRManager {
         uint256[] pending;
     }
 
-    // struct Access {
-    //     mapping(string => mapping(string => uint4)) access;
-    // }
-
     struct Activity {
         uint32 canExecuteCheck;
         uint256 status; //0=no, 1=yes
@@ -141,12 +137,6 @@ contract PublicDCRManager {
 
     }
 
-
-    function  getTest() public view returns (string memory,string memory){
-        return (Test.test,
-                Test.testBis);
-    }
-
     /** @dev Getter for workflow execution status.
       * @param _hash index of the workflow (eg 0 for the first workflow).
       * @return execution status of the task: 0=ok, 1= 
@@ -157,6 +147,14 @@ contract PublicDCRManager {
         returns (uint32)
     {
         return workflows[_hash].execStatus.canExecuteCheck;
+    }
+
+    function getVariableAddress(string memory _hash)
+        public
+        view
+        returns (address)
+    {
+        return address(workflows[_hash].access_matrix);
     }
 
     function getIncluded(string memory _hash)
@@ -612,30 +610,16 @@ contract PublicDCRManager {
         uint256[][] memory markingStates, // included, executed, pending
 
         string memory _ipfsViewHash,
-
         //process information
         address[] memory _roleAddresses,
         address[] memory _approvalAddresses,
-        uint8[] memory _access_matrix_raw,
-        
-
         string[] memory _activityNames,
         string memory _name,
-
         // relations
         uint256[][][] memory _relations // includesto, excludesto, responsesto, conditionsfrom, milestonesFrom,
 
-    ) public payable {
+    ) public payable returns (address) {
         Access_matrix _access_matrix = new Access_matrix();
-        // mapping(string => mapping(address => uint8)) storage _access_matrix;
-        uint nb_of_roles = _roleAddresses.length;
-        // uint nb_of_activities = _activityNames.length;
-        for(uint i = 0; i < _roleAddresses.length; i++) {
-            for(uint j = 0; j < _activityNames.length; j++) {
-                uint indice = nb_of_roles * i + j;
-                _access_matrix.updateMatrix(_activityNames[j], _roleAddresses[i], _access_matrix_raw[indice]);
-            }
-        }
         Activity memory execStatus = Activity(0, 0);
         Marking memory markings = Marking(markingStates[0],markingStates[1],markingStates[2]);
         Workflow memory wf =
@@ -674,6 +658,8 @@ contract PublicDCRManager {
         changeRequests[_ipfsViewHash]=chgReq;
 
         emit LogWorkflowCreation(wf.ipfsViewHash, msg.sender);
+
+        return address(_access_matrix);
 
     }
 

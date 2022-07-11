@@ -1,6 +1,7 @@
 import React from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 import PublicDCRManager from "../contracts/PublicDCRManager.json";
+import AccessMatrix from '../contracts/Access_matrix.json';
 import getWeb3 from "../getWeb3";
 
 import { Button, Table } from 'react-bootstrap';
@@ -26,6 +27,7 @@ class LoadToBCL extends React.Component {
       data: '',
       lenDataDB: 0,
       wkState: '... waiting for Smart Contract instanciation ...',
+      rolesWithAddresses: props.rolesWithAddresses,
 
       addresses: [],
       access_matrix: null,
@@ -107,7 +109,10 @@ class LoadToBCL extends React.Component {
         deployedNetwork && deployedNetwork.address,
       );
 
-      this.setState({ web3, accounts, contract: instance });
+      this.setState({ contract: instance });
+
+
+
 
       // Checking if contract already populated
       //this.setState({ wkState: '2./ Uploaded' })
@@ -162,7 +167,7 @@ class LoadToBCL extends React.Component {
     PubVec['fullRelations']['milestone'],
       orderedPk,
       approvalList,
-      ProcessDB[pid]['variables']
+    ProcessDB[pid]['variables']
       //PubVec['publicData'].toString()
     ]
 
@@ -196,6 +201,9 @@ class LoadToBCL extends React.Component {
     } //catch
   } //getWKCreationReceipt
 
+  setAccessMatrix = (p) => {
+    this.setState({ rolesWithAddresses: p });
+  }
 
 
   /**
@@ -207,115 +215,152 @@ class LoadToBCL extends React.Component {
     const { accounts, contract } = this.state;
 
 
-    try {
-      // connect list of activities to corresponding role first, and then to the right role address
+    // try {
+    // connect list of activities to corresponding role first, and then to the right role address
 
-      alert(this.props.processID);
-      var wkData = this.fetchWKData(this.props.processID);
-      console.log(wkData);
+    alert(this.props.processID);
+    console.log("addresses = ", this.props.rolesWithAddresses);
+    var wkData = this.fetchWKData(this.props.processID);
+    console.log(wkData);
 
-      var data = wkData[0];
-      var processName = wkData[1];
+    var data = wkData[0];
+    var processName = wkData[1];
 
-      var activityNames = wkData[2];
-      var includedStates = wkData[3];
-      var executedStates = wkData[4];
-      var pendingStates = wkData[5];
-      var includesTo = wkData[6];
-      var excludesTo = wkData[7];
-      var responsesTo = wkData[8];
-      var conditionsFrom = wkData[9];
-      var milestonesFrom = wkData[10];
-      var addresses = wkData[11];
-      var approvalList = wkData[12];
-      var matrix = wkData[13];
-      //        var publicData = wkData[13];
-      var access_matrix_raw = [];
-      console.log(matrix)
-      for(let k = 0; k < matrix.length; k++) {
-        console.log(matrix[k].matrix)
-        for(const [key, value] of Object.entries(matrix[k].matrix)) {
-          console.log(key,value)
-          let m = value.matrix;
-          for(let j = 0; j < value.length; j++) {
-            let m = value[j].matrix;
-            let number_to_push = m[3] * 8 + m[2] * 4 + m[1] * 2 + m[0] * 1; 
-            console.log(number_to_push);
-            access_matrix_raw.push(number_to_push);
-          }
-          console.log(m)
-          // let m = matrix[k].matrix[j].matrix;
-
+    var activityNames = wkData[2];
+    var includedStates = wkData[3];
+    var executedStates = wkData[4];
+    var pendingStates = wkData[5];
+    var includesTo = wkData[6];
+    var excludesTo = wkData[7];
+    var responsesTo = wkData[8];
+    var conditionsFrom = wkData[9];
+    var milestonesFrom = wkData[10];
+    var addresses = wkData[11];
+    var approvalList = wkData[12];
+    var matrix = wkData[13];
+    //        var publicData = wkData[13];
+    var access_matrix_raw = [];
+    console.log("matrix to upload to access contract", matrix)
+    for (let k = 0; k < matrix.length; k++) {
+      console.log(matrix[k].matrix)
+      for (const [key, value] of Object.entries(matrix[k].matrix)) {
+        console.log(key, value)
+        let m = value.matrix;
+        for (let j = 0; j < value.length; j++) {
+          let m = value[j].matrix;
+          let number_to_push = m[3] * 8 + m[2] * 4 + m[1] * 2 + m[0] * 1;
+          console.log(number_to_push);
+          access_matrix_raw.push(number_to_push);
         }
+        console.log(m)
+        // let m = matrix[k].matrix[j].matrix;
+
       }
+    }
 
-      console.log(access_matrix_raw);
+    console.log(access_matrix_raw);
 
-      this.setState({
-        data,
-        processName,
+    this.setState({
+      data,
+      processName,
 
-        activityNames,
-        includedStates,
-        executedStates,
-        pendingStates,
-        includesTo,
+      activityNames,
+      includedStates,
+      executedStates,
+      pendingStates,
+      includesTo,
+      excludesTo,
+      responsesTo,
+      conditionsFrom,
+      milestonesFrom,
+      addresses,
+      approvalList
+      //          publicData
+    });
+
+    if (includedStates.length === 0) {
+      alert("oops -didnt have time to update freshly updated db [to be implemented]");
+    }
+    else {
+      console.log('passed the if statement');
+
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+      // const deployedNetwork = PublicDCRManager.networks[networkId];
+      var relations = [includesTo,
         excludesTo,
         responsesTo,
         conditionsFrom,
-        milestonesFrom,
+        milestonesFrom]
+
+      let addressOfAccessMatrix = ""
+
+      let r = await contract.methods.uploadPublicView(
+        [includedStates, executedStates, pendingStates], //marking
+        this.props.ipfsHash,
         addresses,
-        approvalList
-        //          publicData
-      });
+        approvalList,
+        activityNames,
+        processName,
+        relations
+      ).send({ from: accounts[0] }); //storehash
+      let transactionHash = r.transactionHash;
 
-      if (includedStates.length === 0) {
-        alert("oops -didnt have time to update freshly updated db [to be implemented]");
+      let getAccessMatrixaddress = await contract.methods.getVariableAddress(
+        this.props.ipfsHash
+      ).call();
+      console.log(getAccessMatrixaddress);
+
+      const matrixInstance = new web3.eth.Contract(
+        AccessMatrix.abi,
+        getAccessMatrixaddress
+      );
+      try {
+
+        console.log(matrix);
+        for (let k = 0; k < matrix.length; k++) {
+          let activities_ = [];
+          let roles_ = [];
+          let vals_ = [];
+          for (const [key, value] of Object.entries(matrix[k].matrix)) {
+            let m = value.matrix;
+            for (let j = 0; j < value.length; j++) {
+              let m = value[j].matrix;
+              let number_to_push = m[3] * 8 + m[2] * 4 + m[1] * 2 + m[0] * 1; // On construit le nombre 
+              activities_.push(value[j].name);
+              roles_.push(accounts[0]);
+              vals_.push(number_to_push);
+            }
+          }
+          // let name = this.props.ipfsHash + 
+          let upload = await matrixInstance.methods.uploadMatrix(this.props.ipfsHash, matrix[k].name, activities_, roles_, vals_, vals_.length).send({ from: accounts[0] });
+          console.log(upload);
+        }
+        // let upload = await matrixInstance.methods.uploadMatrix()
+        // let setname = await matrixInstance.methods.setVariableName(matrix[0].name).send({from : accounts[0]}); 
+        // let checkAccess = await matrixInstance.methods.updateMultipleMatrix(activities_, roles_, vals_, vals_.length).send({ from: accounts[0] });
+      } catch (error) {
+        console.log(error);
       }
-      else {
-        console.log('passed the if statement');
-        var relations = [includesTo,
-          excludesTo,
-          responsesTo,
-          conditionsFrom,
-          milestonesFrom]
 
-        await contract.methods.uploadPublicView(
-          [includedStates, executedStates, pendingStates], //marking
+      this.setState({ transactionHash, ethAddress: contract.options.address });
 
-          this.props.ipfsHash,
-          addresses,
-          approvalList,
 
-          access_matrix_raw, //access matrix
+      //axios.post(`http://localhost:5000/reinit`, 
+      //{
+      //  processID:this.state.processName 
+      //},
+      //{"headers" : {"Access-Control-Allow-Origin": "*"}}
+      //);
+      // window.location.reload(false);
 
-          activityNames,
-          processName,
-          relations
-          //publicData
-
-        ).send({ from: accounts[0] }
-          , (error, transactionHash) => {
-            console.log(transactionHash);
-            this.setState({ transactionHash, ethAddress: contract.options.address });
-          }); //storehash
-
-        //axios.post(`http://localhost:5000/reinit`, 
-        //{
-        //  processID:this.state.processName 
-        //},
-        //{"headers" : {"Access-Control-Allow-Origin": "*"}}
-        //);
-        // window.location.reload(false);
-
-      }
     }
-    catch (err) {
-      window.alert('test' + err);
+    // }
+    // catch (err) {
+    //   window.alert('test' + err);
 
-      this.setState({ wkState: '2/. Save public view onchain' });
-    }
-
+    //   this.setState({ wkState: '2/. Save public view onchain' });
+    // }
 
   }
 

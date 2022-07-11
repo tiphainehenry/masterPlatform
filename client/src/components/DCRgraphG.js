@@ -4,10 +4,13 @@ import Button from 'react-bootstrap/Button'
 
 import axios from 'axios';
 import ExecLogger from './execLogger';
+import VarLogger from './varLogger';
 import PublicMarkings from './PublicMarkings';
 
 import PublicDCRManager from '../contracts/PublicDCRManager.json';
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
+import AccessMatrix from '../contracts/Access_matrix.json';
+
 
 import getWeb3 from '../getWeb3';
 import ipfs from '../ipfs';
@@ -41,6 +44,7 @@ var ProcessDB = require('../projections/DCR_Projections.json');
 class DCRgraphG extends React.Component {
   constructor(props) {
     super(props);
+    console.log(ProcessDB[this.props.processID]);
 
     this.state = {
       start_timestamp: '',
@@ -50,6 +54,12 @@ class DCRgraphG extends React.Component {
 
       processData: ProcessDB[this.props.processID],
       activityNames: ProcessDB[this.props.processID]['Public']['vect']["activityNames"],
+      vars: ProcessDB[this.props.processID]['variables'],
+      varContractAddress: '',
+      varValue: [],
+      activitiesName: [],
+      selectValue: "",
+      InputValues: [],
 
       web3: null,
       accounts: null,
@@ -57,6 +67,7 @@ class DCRgraphG extends React.Component {
 
       bcRes: '',
       owner: '',
+
 
       incl: '',
       exec: '',
@@ -70,6 +81,7 @@ class DCRgraphG extends React.Component {
       dataValues: [],
       altVersionExists: false,
       chgType: 'NA',
+      selectedNodeHTML: <p></p>,
 
       BCQuery: JSON.parse(localStorage.getItem('BCQuery')) || false,
       hasApprovedChg: 0,
@@ -90,7 +102,10 @@ class DCRgraphG extends React.Component {
     this.handleUpdWkf = this.handleUpdWkf.bind(this);
     this.uploadOnChain = this.uploadOnChain.bind(this);
     this.updMyHash = this.updMyHash.bind(this);
+    this.updateVariable = this.updateVariable.bind(this);
+    this.change = this.change.bind(this);
     this.getCanExecuteCheck = this.getCanExecuteCheck.bind(this);
+    this.changeInput = this.changeInput.bind(this);
 
   }
 
@@ -155,29 +170,59 @@ class DCRgraphG extends React.Component {
       const execVector = await instance.methods.getExecuted(pHash).call();
       const pendVector = await instance.methods.getPending(pHash).call();
       const hashesVector = await instance.methods.getHashes(pHash).call();
+      const varAddress = await instance.methods.getVariableAddress(pHash).call();
+      this.setState({ varContractAddress: varAddress })
+
+      const MatrixInstance = new web3.eth.Contract(
+        AccessMatrix.abi,
+        varAddress
+      );
 
 
 
+      // try {
+      // const A = "ActivityA";
+      // const checkAccess = await MatrixInstance.methods.getAccess("ActiviteA",accounts[0]).call();
+
+      // console.log("acces de l'utilisateur ", checkAccess);
+      // } catch(error) {
+      //   console.log(error);
+      // }
+
+      const allvars = await MatrixInstance.methods.getAllVariables(pHash).call();
+      console.log("allvars = ", allvars);
+      const actvts = await MatrixInstance.methods.getActivites(pHash, 0).call();
+      console.log(actvts);
+
+      // const currentValue = await MatrixInstance.methods.getVariableValue(pHash).call();
+      // const varname = await MatrixInstance.methods.getVariableName(pHash).call();
+      for(let k = 0; k < allvars[0].length; k++) {
+        console.log([allvars[0][k]], allvars[1][k]);
+        this.setState({ [allvars[0][k]] : allvars[1][k]});
+        // console.log(this.state);
+      }
+      this.setState({ varValue: allvars[0], varName: allvars[1], activitiesName: actvts });
+      // console.log(currentValue);
 
       const AdminDeployedNetwork = AdminRoleManager.networks[networkId];
       const AdminInstance = new web3.eth.Contract(
-          AdminRoleManager.abi,
-          AdminDeployedNetwork && AdminDeployedNetwork.address,
+        AdminRoleManager.abi,
+        AdminDeployedNetwork && AdminDeployedNetwork.address,
       );
       var userRoles = await AdminInstance.methods.getElemRoles(accounts[0]).call();
-      var isRoleOwner=false;
-      if(userRoles.includes(this.props.id)){
+      var isRoleOwner = false;
+      if (userRoles.includes(this.props.id)) {
         console.log('success, user is role owner')
-        isRoleOwner=true;
+        isRoleOwner = true;
       }
-  
+
       var acc = web3.currentProvider.selectedAddress;
       const hasApprovedChg = await instance.methods.hasApprovedProjection(pHash, acc).call();
 
       const chgApprovalList = await instance.methods.getChangeApprovalsOutcome(pHash).call();
       //console.log('chg',chgApprovalList);
       const chgApprovalAddresses = await instance.methods.getEndorserAddresses(pHash).call();
-      const Test = await instance.methods.getTest().call(); //?
+      // const Test = await instance.methods.getTest().call(); //?
 
       await instance.methods.getChangeArgs(pHash).call()
         .then(res => {
@@ -215,8 +260,8 @@ class DCRgraphG extends React.Component {
         hasApprovedChg: parseInt(hasApprovedChg),
         chgApprovalList: chgApprovalList,
         chgApprovalAddresses: chgApprovalAddresses,
-        testBis: Test[1],
-        test: Test[0]
+        testBis: 'init',
+        test: 'init'
 
       })
 
@@ -235,9 +280,9 @@ class DCRgraphG extends React.Component {
 
     } catch (error) {
       // Catch any errors for any of the above operations.
-      alert(
-        `[Load contract issue] Failed to load web3, accounts, or contract. Check console for details.`,
-      );
+      // alert(
+      //   `[Load contract issue] Failed to load web3, accounts, or contract. Check console for details.`,
+      // );
       console.error(error);
     };
 
@@ -302,6 +347,7 @@ class DCRgraphG extends React.Component {
     this.setState({ indexClicked: indexClicked });
 
   }
+
 
   /**
    * Calls the DCR-manager smart contract to check whether an event is executable. 
@@ -405,6 +451,19 @@ class DCRgraphG extends React.Component {
       }
       else {
         this.setState({ activityData: dataMisc });
+        console.log(ProcessDB[this.props.processID]);
+        this.setState({
+          selectedNodeHTML:
+            <div className="card-text" >
+              <div style={{ paddingTop: "1em" }}>
+
+                <h3>{event.target['_private']['data']['name']}</h3>
+                <p>Current Value : {this.state.varValue} </p>
+                <input type="number" ></input>
+                <button>Update Value</button>
+              </div>
+            </div>
+        })
 
         //updateGraphMarkings
         event.preventDefault();
@@ -415,29 +474,29 @@ class DCRgraphG extends React.Component {
         var headers = {
           "Access-Control-Allow-Origin": "*",
         };
-        axios.post(`http://localhost:5000/process`,
-          {
-            idClicked,
-            projId: this.props.id,
-            activityName: this.state.nameClicked,
-            start_timestamp: this.state.start_timestamp,
-            data: this.state.activityData,
-            processID: this.props.processID
-          },
-          { "headers": headers }
-        ).then(
-          (response) => {
-            var result = response.data;
+        // axios.post(`http://localhost:5000/process`,
+        //   {
+        //     idClicked,
+        //     projId: this.props.id,
+        //     activityName: this.state.nameClicked,
+        //     start_timestamp: this.state.start_timestamp,
+        //     data: this.state.activityData,
+        //     processID: this.props.processID
+        //   },
+        //   { "headers": headers }
+        // ).then(
+        //   (response) => {
+        //     var result = response.data;
 
-            if (result.includes('BC')) {
-              //check BC execution
-              this.runBCCheck();
-            }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        //     if (result.includes('BC')) {
+        //       //check BC execution
+        //       this.runBCCheck();
+        //     }
+        //   },
+        //   (error) => {
+        //     console.log(error);
+        //   }
+        // );
       }
 
     })
@@ -679,13 +738,13 @@ class DCRgraphG extends React.Component {
     }
     else {
       if (this.state.chgType === 'Private') {
-        alert('Launching '+this.state.chgType+' change');
+        alert('Launching ' + this.state.chgType + ' change');
 
         // else, launch update: the current projection will be replaced by the alternative one via an API call.
         // var headers = {
         //   "Access-Control-Allow-Origin": "*",
         // };
-        alert('reqHash: '+this.state.reqHash);
+        alert('reqHash: ' + this.state.reqHash);
         axios.post(`http://localhost:5000/switchProj`,
           {
             projID: this.props.id,
@@ -693,7 +752,7 @@ class DCRgraphG extends React.Component {
             reqHash: this.state.pHash
             //reqHash: this.state.reqHash
           },
-          { "headers": { "Access-Control-Allow-Origin": "*" }}
+          { "headers": { "Access-Control-Allow-Origin": "*" } }
         ).then(
           (response) => {
             this.setState({
@@ -733,7 +792,7 @@ class DCRgraphG extends React.Component {
 
     var wkData = this.fetchWKData(this.props.processID);
     var addresses = wkData[11];
-    
+
     console.log(this.state.activityNames['default']);
     console.log(addresses);
 
@@ -748,6 +807,48 @@ class DCRgraphG extends React.Component {
       .then(res => {
         this.updMyHash();
       });
+  }
+
+  async updateVariable(event) {
+    try {
+      // Get network provider and web3 instance.
+      const web3 = await getWeb3();
+
+      // Use web3 to get the user's accounts.
+      const accounts = await web3.eth.getAccounts();
+      this.setState({ owner: accounts[0] });
+      const MatrixInstance = new web3.eth.Contract(
+        AccessMatrix.abi,
+        this.state.varContractAddress
+      );
+      var pHash = ProcessDB[this.props.processName]['hash'];
+      const allvars = await MatrixInstance.methods.updateValue(pHash, 0, event, this.state.selectValue).send({from : accounts[0]});
+
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  change(event) {
+    console.log(event.target.value);
+    try {
+      this.setState({ selectValue: event.target.value });
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  changeInput(event) {
+    if(event)
+    try {
+      console.log(event.target.value);
+      this.setState({ [event.target.id] : event.target.value});
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   async updMyHash() {
@@ -846,8 +947,8 @@ class DCRgraphG extends React.Component {
             }
 
             <p>This view represents a private DCR projection of the input workflow. Its state is managed in a hybrid fashion.
-            The local tasks are updated locally via API calls.
-                  The public tasks are updated after a call to the smart contract instance of the public projection. </p>
+              The local tasks are updated locally via API calls.
+              The public tasks are updated after a call to the smart contract instance of the public projection. </p>
 
             <p> Execution logs and the markings of the public graph are displayed in the panels below. </p>
 
@@ -856,8 +957,8 @@ class DCRgraphG extends React.Component {
             <Card style={{ height: '90%', 'marginTop': '3vh' }}>
               <Card.Header style={{ color: 'white', 'backgroundColor': '#ff7900', 'borderBottom': 'white' }}>
                 {this.props.id} Projection
-              <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
-              <div className='bg-idheader'>Public view IPFS hash: {this.state.pHash}</div>
+                <div className='bg-idheader'> My ETH address: {this.state.owner} </div>
+                <div className='bg-idheader'>Public view IPFS hash: {this.state.pHash}</div>
               </Card.Header>
               <Card.Body >
                 <CytoscapeComponent elements={this.props.data}
@@ -869,7 +970,30 @@ class DCRgraphG extends React.Component {
                 />
               </Card.Body>
             </Card>
-
+            <Card id="exec" style={{ height: '70%', 'marginTop': '3vh' }}>
+              <Card.Header as="p" style={{ color: 'white', 'backgroundColor': 'blue', 'borderBottom': 'white' }}>
+                Variable modifier</Card.Header>
+              <Card.Body style={{ 'overflowY': 'scroll', height: '20vh' }}>
+                Activity :
+                <select onChange={this.change}>
+                  {this.state.activitiesName.map((value, index) => {
+                    return <option value={value}>{value}</option>
+                  })}
+                </select>
+                {this.state.varValue.map((value, index) => {
+                  let v = [value];
+                  console.log("val = ", v, this.state[v], this.state);
+                  return (
+                    <li key={index}>
+                      {value} : <input type="number" id={value} onChange={this.changeInput} value={this.state[v]} />
+                      <button onClick={async () => {await this.updateVariable (this.state[v])} } id={value}>Update</button>
+                    </li>);
+                })}
+                {/* Value:{this.state.varValue}
+                Name: {this.state.varName} */}
+                {this.state.selectedNodeHTML}
+              </Card.Body>
+            </Card>
             <ExecLogger execLogs={this.props.execLogs} activityNames={this.state.activityNames} />
             <PublicMarkings
               activityNames={this.state.activityNames["default"]}
@@ -884,32 +1008,32 @@ class DCRgraphG extends React.Component {
           </div>
 
           {(this.state.isRoleOwner &&
-            this.state.altVersionExists && 
-            (this.state.chgApprovalOutcome !== 1) && 
-            (!Number.isNaN(this.state.chgApprovalOutcome))&&
+            this.state.altVersionExists &&
+            (this.state.chgApprovalOutcome !== 1) &&
+            (!Number.isNaN(this.state.chgApprovalOutcome)) &&
             (this.state.hasApprovedChg === 0) &&
-            (this.state.chgType ==='Private')
-            ) ?
+            (this.state.chgType === 'Private')
+          ) ?
             <>
-            <p>A private change request has been registered: please switch to new version by clicking below.
-            </p>
+              <p>A private change request has been registered: please switch to new version by clicking below.
+              </p>
 
               <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button>
             </> :
             <></>
           }
 
-{(this.state.isRoleOwner &&
-            this.state.altVersionExists && 
-            (this.state.chgApprovalOutcome !== 1) && 
-            (!Number.isNaN(this.state.chgApprovalOutcome))&&
-            (this.state.hasApprovedChg === 0)&&
-            (this.state.chgType!=='Private')
-            
-            ) ?
+          {(this.state.isRoleOwner &&
+            this.state.altVersionExists &&
+            (this.state.chgApprovalOutcome !== 1) &&
+            (!Number.isNaN(this.state.chgApprovalOutcome)) &&
+            (this.state.hasApprovedChg === 0) &&
+            (this.state.chgType !== 'Private')
+
+          ) ?
             <>
-            <p>A change request has been accepted by participants: please switch to new version by clicking below.
-            </p>
+              <p>A change request has been accepted by participants: please switch to new version by clicking below.
+              </p>
 
               <Button onClick={this.handleProjSwitch}>Switch to new version of the projection</Button>
 
@@ -919,10 +1043,10 @@ class DCRgraphG extends React.Component {
 
 
           {(this.state.isRoleOwner &&
-            this.state.altVersionExists && 
-            (this.state.chgApprovalOutcome !== 1) && 
-            (!Number.isNaN(this.state.chgApprovalOutcome)&&
-            (this.state.hasApprovedChg===1))) ?
+            this.state.altVersionExists &&
+            (this.state.chgApprovalOutcome !== 1) &&
+            (!Number.isNaN(this.state.chgApprovalOutcome) &&
+              (this.state.hasApprovedChg === 1))) ?
             <>
               <p>Waiting for initiator switch.</p>
               <div style={{ 'marginTop': '60vh' }}>
@@ -939,8 +1063,8 @@ class DCRgraphG extends React.Component {
               this.state.iamTheInitiator ?
                 <div>
                   <p> Dear change initiator, your change request has been approved.
-                  Please click below to change the public view onchain.
-</p>
+                    Please click below to change the public view onchain.
+                  </p>
                   <Button onClick={this.finalSwitchProj}>1./ Click me to compute public view</Button>
                   <Button onClick={this.uploadOnChain}>2./ Click me to switch projection onchain</Button>
                 </div> :

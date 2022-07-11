@@ -10,6 +10,16 @@
 				"inputs": [
 					{
 						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
 						"name": "_activity",
 						"type": "string"
 					}
@@ -22,7 +32,158 @@
 			},
 			{
 				"constant": true,
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_activity",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "_role",
+						"type": "address"
+					}
+				],
+				"name": "getAccess",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "_access",
+						"type": "uint8"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "getActivites",
+				"outputs": [
+					{
+						"internalType": "string[]",
+						"name": "",
+						"type": "string[]"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					}
+				],
+				"name": "getAllVariables",
+				"outputs": [
+					{
+						"internalType": "string[]",
+						"name": "",
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint32[]",
+						"name": "",
+						"type": "uint32[]"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "getRoles",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "getVariableName",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "_varName",
+						"type": "string"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
 				"name": "getVariableValue",
 				"outputs": [
 					{
@@ -38,6 +199,41 @@
 			{
 				"constant": false,
 				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_newName",
+						"type": "string"
+					}
+				],
+				"name": "setVariableName",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
 					{
 						"internalType": "string",
 						"name": "_activity",
@@ -64,6 +260,16 @@
 				"constant": false,
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
+					{
 						"internalType": "uint32",
 						"name": "_variable_value",
 						"type": "uint32"
@@ -79,21 +285,61 @@
 				"payable": false,
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_newName",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "_activities",
+						"type": "string[]"
+					},
+					{
+						"internalType": "address[]",
+						"name": "_roles",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint8[]",
+						"name": "_vals",
+						"type": "uint8[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nbOfElements",
+						"type": "uint256"
+					}
+				],
+				"name": "uploadMatrix",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
 			"methods": {
-				"deleteVariable(string)": {
+				"deleteVariable(string,uint256,string)": {
 					"details": "deletes the contract if the caller has the authorization (first bit starting from right).",
 					"params": {
 						"_activity": "that want to have access"
 					}
 				},
-				"getVariableValue()": {
+				"getVariableValue(string,uint256)": {
 					"details": "Get the variable value",
 					"return": "_var the variable value "
 				},
-				"updateMatrix(string,address,uint8)": {
+				"updateMatrix(string,uint256,string,address,uint8)": {
 					"details": "Update an entry of the access matrix",
 					"params": {
 						"_activity": "is the name of the activity ",
@@ -101,7 +347,7 @@
 						"_val": "is a 4 bit int that allows to find if a certain matrix entry has access or not to a vraiable (read,write,create,delete) are the four bits."
 					}
 				},
-				"updateValue(uint32,string)": {
+				"updateValue(string,uint256,uint32,string)": {
 					"details": "Update the variable value if the caller has access",
 					"params": {
 						"_activity": "name of the activity that want to update the variable value",
@@ -128,17 +374,10 @@
 	},
 	"sources": {
 		"Access_Matrix.sol": {
-			"keccak256": "0xee19c588e87a7a4eae85bed60482637da6abe15df0e500efb3ef8dab3922ebfb",
+			"keccak256": "0xad49daf1866a3fb57132c12669450d852733009afae3e0290fd8fe802968b700",
 			"urls": [
-				"bzz-raw://22efc4888e61da094909298a19b34d5a5bd81d5a2f6bfd5f60e07e10eb4e8fa0",
-				"dweb:/ipfs/QmYgcHdZc8DKnpqGX8QLsjH6Y3TyRaikv1HBrJGgHp2UPF"
-			]
-		},
-		"hardhat/console.sol": {
-			"keccak256": "0x72b6a1d297cd3b033d7c2e4a7e7864934bb767db6453623f1c3082c6534547f4",
-			"urls": [
-				"bzz-raw://a8cb8681076e765c214e0d51cac989325f6b98e315eaae06ee0cbd5a9f084763",
-				"dweb:/ipfs/QmNWGHi4zmjxQTYN3NMGnJd49jBT5dE4bxTdWEaDuJrC6N"
+				"bzz-raw://bf76d8e289545c24845619c4eec330fc39d063c8b1f85f7f26a9e2e2e8ea4f69",
+				"dweb:/ipfs/QmRyvP9xCC7YjU2vKcEJb17d96r83sSpV4e9A1Gf2tHwYy"
 			]
 		}
 	},
