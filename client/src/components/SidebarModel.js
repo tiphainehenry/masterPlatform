@@ -32,8 +32,11 @@ class SidebarModel extends React.Component {
                     <li className="nav-item">
                         <a className="nav-link" href="/newrole">
                             <span> <Users /> Manage roles</span>
-
-
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="/newdevice">
+                            <span> <Users /> Manage IoT device</span>
                         </a>
                     </li>
                 </ul></div>

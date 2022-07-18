@@ -809,7 +809,7 @@ class DCRgraphG extends React.Component {
       });
   }
 
-  async updateVariable(event) {
+  async updateVariable(event, idex) {
     try {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
@@ -822,7 +822,7 @@ class DCRgraphG extends React.Component {
         this.state.varContractAddress
       );
       var pHash = ProcessDB[this.props.processName]['hash'];
-      const allvars = await MatrixInstance.methods.updateValue(pHash, 0, event, this.state.selectValue).send({from : accounts[0]});
+      const allvars = await MatrixInstance.methods.updateValue(pHash, idex, event, this.state.selectValue).send({from : accounts[0]});
 
     }
     catch (e) {
@@ -982,11 +982,11 @@ class DCRgraphG extends React.Component {
                 </select>
                 {this.state.varValue.map((value, index) => {
                   let v = [value];
-                  console.log("val = ", v, this.state[v], this.state);
+                  console.log("val = ", v, this.state[v], this.state, index);
                   return (
                     <li key={index}>
                       {value} : <input type="number" id={value} onChange={this.changeInput} value={this.state[v]} />
-                      <button onClick={async () => {await this.updateVariable (this.state[v])} } id={value}>Update</button>
+                      <button onClick={async () => {await this.updateVariable(this.state[v], index)} } id={value}>Update</button>
                     </li>);
                 })}
                 {/* Value:{this.state.varValue}

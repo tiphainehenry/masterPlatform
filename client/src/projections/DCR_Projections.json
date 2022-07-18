@@ -2489,21 +2489,1167 @@
       }
     }
   }, 
-  "p4": {
-    "hash": "QmPtCY1gtUfv6tFsXBJDiCExe3KNfDeV56oJ9jAYH1Kf4X", 
+  "p6": {
+    "hash": "QmfXEVk3ctESAPdrPjL865wMorXcJzjKnKWz6HeUn5CECN", 
     "r1": {
       "vect": {
         "markings": [
           {
             "executed": 0, 
             "include": 1, 
-            "id": "e3s", 
+            "id": "e1s", 
             "pending": 0
           }, 
           {
             "executed": 0, 
             "include": 1, 
-            "id": "ActiviteA", 
+            "id": "Activity2", 
+            "pending": 0
+          }, 
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "Activity3", 
+            "pending": 0
+          }
+        ], 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ]
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1s", 
+            "name": "!(Activity1, Florist-->Florist)"
+          }, 
+          "classes": "type_projChoreo included executable", 
+          "group": "nodes"
+        }, 
+        {
+          "data": {
+            "id": "Activity2", 
+            "name": "Florist\nActivity2"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }, 
+        {
+          "data": {
+            "id": "Activity3", 
+            "name": "Florist\nActivity3"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }
+      ], 
+      "init": {
+        "vect": {
+          "markings": [
+            {
+              "executed": 0, 
+              "include": 1, 
+              "id": "e1s", 
+              "pending": 0
+            }, 
+            {
+              "executed": 0, 
+              "include": 1, 
+              "id": "Activity2", 
+              "pending": 0
+            }, 
+            {
+              "executed": 0, 
+              "include": 1, 
+              "id": "Activity3", 
+              "pending": 0
+            }
+          ], 
+          "relations": [
+            {
+              "exclude": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "include": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "response": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "condition": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ], 
+              "milestone": [
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ], 
+                [
+                  0.0, 
+                  0.0, 
+                  0.0
+                ]
+              ]
+            }
+          ]
+        }, 
+        "data": [
+          {
+            "data": {
+              "id": "e1s", 
+              "name": "!(Activity1, Florist-->Florist)"
+            }, 
+            "classes": "type_projChoreo included executable", 
+            "group": "nodes"
+          }, 
+          {
+            "data": {
+              "id": "Activity2", 
+              "name": "Florist\nActivity2"
+            }, 
+            "classes": "included executable", 
+            "group": "nodes"
+          }, 
+          {
+            "data": {
+              "id": "Activity3", 
+              "name": "Florist\nActivity3"
+            }, 
+            "classes": "included executable", 
+            "group": "nodes"
+          }
+        ]
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+          "role": "Florist"
+        }
+      ], 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "e1[Activity1 src=Florist tgt=Florist]"
+          }, 
+          {
+            "id": 1, 
+            "event": "Activity2[role=Florist]"
+          }, 
+          {
+            "id": 2, 
+            "event": "Activity3[role=Florist]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [
+        {
+          "role": "Florist", 
+          "id": "r1"
+        }
+      ], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e1", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+            "role": "Florist", 
+            "event": "e1[Activity1 src=Florist tgt=Florist]\n", 
+            "id": 0
+          }
+        ]
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e1s", 
+            "id": 0, 
+            "role": "Florist", 
+            "event": "e1s[\"!(Activity1, Florist-&gt;Florist)\"]", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }, 
+          {
+            "eventName": "Activity2", 
+            "id": 1, 
+            "role": "Florist", 
+            "event": "Activity2[role=Florist]", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }, 
+          {
+            "eventName": "Activity3", 
+            "id": 2, 
+            "role": "Florist", 
+            "event": "Activity3[role=Florist]", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }
+        ]
+      }
+    }, 
+    "variables": [
+      {
+        "matrix": {
+          "Florist": [
+            {
+              "matrix": [
+                true, 
+                false, 
+                false, 
+                false
+              ], 
+              "name": "Activity1"
+            }, 
+            {
+              "matrix": [
+                true, 
+                false, 
+                true, 
+                false
+              ], 
+              "name": "Activity2"
+            }, 
+            {
+              "matrix": [
+                false, 
+                true, 
+                false, 
+                false
+              ], 
+              "name": "Activity3"
+            }
+          ]
+        }, 
+        "id": 0, 
+        "name": "VV"
+      }
+    ], 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1", 
+            "Activity2", 
+            "Activity3"
+          ], 
+          "receive": [
+            "e1r", 
+            "Activity2", 
+            "Activity3"
+          ], 
+          "send": [
+            "e1s", 
+            "Activity2", 
+            "Activity3"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1", 
+            "1", 
+            "1"
+          ], 
+          "executed": [
+            "0", 
+            "0", 
+            "0"
+          ], 
+          "pending": [
+            "0", 
+            "0", 
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1", 
+            "pending": 0
+          }, 
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "Activity2", 
+            "pending": 0
+          }, 
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "Activity3", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ], 
+            [
+              "0", 
+              "0", 
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1", 
+            "name": "Florist\nActivity1\nFlorist"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }, 
+        {
+          "data": {
+            "id": "Activity2", 
+            "name": "Florist\nActivity2"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }, 
+        {
+          "data": {
+            "id": "Activity3", 
+            "name": "Florist\nActivity3"
+          }, 
+          "classes": "included executable", 
+          "group": "nodes"
+        }
+      ]
+    }, 
+    "id": "p6", 
+    "projType": "g_to_p", 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1"
+          ], 
+          "receive": [
+            "e1r"
+          ], 
+          "send": [
+            "e1s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1", 
+            "name": "Florist\nActivity1\nFlorist"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }
+      ], 
+      "exec": {
+        "execLogs": []
+      }
+    }
+  }, 
+  "p4": {
+    "hash": "QmfXEVk3ctESAPdrPjL865wMorXcJzjKnKWz6HeUn5CECN", 
+    "r1": {
+      "vect": {
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1s", 
+            "pending": 0
+          }
+        ], 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ]
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1s", 
+            "name": "!(Activity1, Florist-->Florist)"
+          }, 
+          "classes": "type_projChoreo included executable", 
+          "group": "nodes"
+        }
+      ], 
+      "init": {
+        "vect": {
+          "markings": [
+            {
+              "executed": 0, 
+              "include": 1, 
+              "id": "e1s", 
+              "pending": 0
+            }
+          ], 
+          "relations": [
+            {
+              "exclude": [
+                [
+                  0.0
+                ]
+              ], 
+              "include": [
+                [
+                  0.0
+                ]
+              ], 
+              "response": [
+                [
+                  0.0
+                ]
+              ], 
+              "condition": [
+                [
+                  0.0
+                ]
+              ], 
+              "milestone": [
+                [
+                  0.0
+                ]
+              ]
+            }
+          ]
+        }, 
+        "data": [
+          {
+            "data": {
+              "id": "e1s", 
+              "name": "!(Activity1, Florist-->Florist)"
+            }, 
+            "classes": "type_projChoreo included executable", 
+            "group": "nodes"
+          }
+        ]
+      }, 
+      "exec": {
+        "execLogs": []
+      }
+    }, 
+    "TextExtraction": {
+      "addresses": [
+        {
+          "pk": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+          "role": "Florist"
+        }
+      ], 
+      "global": {
+        "events": [
+          {
+            "id": 0, 
+            "event": "e1[Activity1 src=Florist tgt=Florist]"
+          }
+        ], 
+        "relations": []
+      }, 
+      "roleMapping": [
+        {
+          "role": "Florist", 
+          "id": "r1"
+        }
+      ], 
+      "externalEvents": [], 
+      "public": {
+        "externalEvents": [], 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e1", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
+            "role": "Florist", 
+            "event": "e1[Activity1 src=Florist tgt=Florist]\n", 
+            "id": 0
+          }
+        ]
+      }, 
+      "r1": {
+        "externalEvents": [], 
+        "role": "Florist", 
+        "relations": [], 
+        "privateEvents": [
+          {
+            "eventName": "e1s", 
+            "id": 0, 
+            "role": "Florist", 
+            "event": "e1s[\"!(Activity1, Florist-&gt;Florist)\"]", 
+            "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
+          }
+        ]
+      }
+    }, 
+    "variables": [
+      {
+        "matrix": {
+          "Florist": [
+            {
+              "matrix": [
+                true, 
+                true, 
+                true, 
+                true
+              ], 
+              "name": "Activity1"
+            }
+          ]
+        }, 
+        "id": 0, 
+        "name": "Time"
+      }
+    ], 
+    "Global": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1"
+          ], 
+          "receive": [
+            "e1r"
+          ], 
+          "send": [
+            "e1s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1", 
+            "name": "Florist\nActivity1\nFlorist"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }
+      ]
+    }, 
+    "id": "p4", 
+    "projType": "g_to_p", 
+    "Public": {
+      "vect": {
+        "activityNames": {
+          "default": [
+            "e1"
+          ], 
+          "receive": [
+            "e1r"
+          ], 
+          "send": [
+            "e1s"
+          ]
+        }, 
+        "publicData": [], 
+        "fullMarkings": {
+          "included": [
+            "1"
+          ], 
+          "executed": [
+            "0"
+          ], 
+          "pending": [
+            "0"
+          ]
+        }, 
+        "relations": [
+          {
+            "exclude": [
+              [
+                0.0
+              ]
+            ], 
+            "include": [
+              [
+                0.0
+              ]
+            ], 
+            "response": [
+              [
+                0.0
+              ]
+            ], 
+            "condition": [
+              [
+                0.0
+              ]
+            ], 
+            "milestone": [
+              [
+                0.0
+              ]
+            ]
+          }
+        ], 
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1", 
+            "pending": 0
+          }
+        ], 
+        "fullRelations": {
+          "exclude": [
+            [
+              "0"
+            ]
+          ], 
+          "include": [
+            [
+              "0"
+            ]
+          ], 
+          "response": [
+            [
+              "0"
+            ]
+          ], 
+          "condition": [
+            [
+              "0"
+            ]
+          ], 
+          "milestone": [
+            [
+              "0"
+            ]
+          ]
+        }
+      }, 
+      "data": [
+        {
+          "data": {
+            "id": "e1", 
+            "name": "Florist\nActivity1\nFlorist"
+          }, 
+          "classes": "choreography type_choreography included executable", 
+          "group": "nodes"
+        }
+      ], 
+      "exec": {
+        "execLogs": []
+      }
+    }
+  }, 
+  "p5": {
+    "hash": "QmfXEVk3ctESAPdrPjL865wMorXcJzjKnKWz6HeUn5CECN", 
+    "r1": {
+      "vect": {
+        "markings": [
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "e1s", 
+            "pending": 0
+          }, 
+          {
+            "executed": 0, 
+            "include": 1, 
+            "id": "Activity2", 
             "pending": 0
           }
         ], 
@@ -2565,16 +3711,16 @@
       "data": [
         {
           "data": {
-            "id": "e3s", 
-            "name": "!(e, Florist-->Driver,TouristOfficer)"
+            "id": "e1s", 
+            "name": "!(Activity1, Florist-->Florist)"
           }, 
           "classes": "type_projChoreo included executable", 
           "group": "nodes"
         }, 
         {
           "data": {
-            "id": "ActiviteA", 
-            "name": "Florist\nActiviteA"
+            "id": "Activity2", 
+            "name": "Florist\nActivity2"
           }, 
           "classes": "included executable", 
           "group": "nodes"
@@ -2586,13 +3732,13 @@
             {
               "executed": 0, 
               "include": 1, 
-              "id": "e3s", 
+              "id": "e1s", 
               "pending": 0
             }, 
             {
               "executed": 0, 
               "include": 1, 
-              "id": "ActiviteA", 
+              "id": "Activity2", 
               "pending": 0
             }
           ], 
@@ -2654,16 +3800,16 @@
         "data": [
           {
             "data": {
-              "id": "e3s", 
-              "name": "!(e, Florist-->Driver,TouristOfficer)"
+              "id": "e1s", 
+              "name": "!(Activity1, Florist-->Florist)"
             }, 
             "classes": "type_projChoreo included executable", 
             "group": "nodes"
           }, 
           {
             "data": {
-              "id": "ActiviteA", 
-              "name": "Florist\nActiviteA"
+              "id": "Activity2", 
+              "name": "Florist\nActivity2"
             }, 
             "classes": "included executable", 
             "group": "nodes"
@@ -2674,116 +3820,22 @@
         "execLogs": []
       }
     }, 
-    "r2": {
-      "vect": {
-        "markings": [], 
-        "relations": [
-          {
-            "exclude": [], 
-            "include": [], 
-            "response": [], 
-            "condition": [], 
-            "milestone": []
-          }
-        ]
-      }, 
-      "data": [], 
-      "init": {
-        "vect": {
-          "markings": [], 
-          "relations": [
-            {
-              "exclude": [], 
-              "include": [], 
-              "response": [], 
-              "condition": [], 
-              "milestone": []
-            }
-          ]
-        }, 
-        "data": []
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
-    "r3": {
-      "vect": {
-        "markings": [], 
-        "relations": [
-          {
-            "exclude": [], 
-            "include": [], 
-            "response": [], 
-            "condition": [], 
-            "milestone": []
-          }
-        ]
-      }, 
-      "data": [], 
-      "init": {
-        "vect": {
-          "markings": [], 
-          "relations": [
-            {
-              "exclude": [], 
-              "include": [], 
-              "response": [], 
-              "condition": [], 
-              "milestone": []
-            }
-          ]
-        }, 
-        "data": []
-      }, 
-      "exec": {
-        "execLogs": []
-      }
-    }, 
     "TextExtraction": {
       "addresses": [
         {
           "pk": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
           "role": "Florist"
-        }, 
-        {
-          "pk": "0x1ed034135e576a6c1bf3ee8e05aadeef24d4a819", 
-          "role": "Tourist"
-        }, 
-        {
-          "pk": "0x5afbdd0e5de3315a96504c06ac49bf34b5ecacb5", 
-          "role": "Driver"
-        }, 
-        {
-          "pk": "0xc9f167b5056b03eb29963ab8e6f78bb12cf5ba17", 
-          "role": "TouristOfficer"
         }
       ], 
-      "r2": {
-        "externalEvents": [], 
-        "role": "Driver", 
-        "relations": [], 
-        "privateEvents": []
-      }, 
-      "r3": {
-        "externalEvents": [], 
-        "role": "TouristOfficer", 
-        "relations": [], 
-        "privateEvents": []
-      }, 
       "global": {
         "events": [
           {
             "id": 0, 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]"
+            "event": "e1[Activity1 src=Florist tgt=Florist]"
           }, 
           {
             "id": 1, 
-            "event": "ActiviteA[role=Florist]"
-          }, 
-          {
-            "id": 2, 
-            "event": "Activity_B[role=Tourist]"
+            "event": "Activity2[role=Florist]"
           }
         ], 
         "relations": []
@@ -2792,14 +3844,6 @@
         {
           "role": "Florist", 
           "id": "r1"
-        }, 
-        {
-          "role": "Driver", 
-          "id": "r2"
-        }, 
-        {
-          "role": "TouristOfficer", 
-          "id": "r3"
         }
       ], 
       "externalEvents": [], 
@@ -2808,11 +3852,11 @@
         "relations": [], 
         "privateEvents": [
           {
-            "eventName": "e3", 
+            "eventName": "e1", 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c", 
             "role": "Florist", 
-            "event": "e3[e src=Florist tgt=Driver tgt=TouristOfficer]\n", 
-            "id": 0
+            "id": 0, 
+            "event": "e1[Activity1 src=Florist tgt=Florist]\n"
           }
         ]
       }, 
@@ -2822,15 +3866,15 @@
         "relations": [], 
         "privateEvents": [
           {
-            "eventName": "e3s", 
-            "event": "e3s[\"!(e, Florist-&gt;Driver,TouristOfficer)\"]", 
+            "eventName": "e1s", 
+            "event": "e1s[\"!(Activity1, Florist-&gt;Florist)\"]", 
             "role": "Florist", 
             "id": 0, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
           }, 
           {
-            "eventName": "ActiviteA", 
-            "event": "ActiviteA[role=Florist]", 
+            "eventName": "Activity2", 
+            "event": "Activity2[role=Florist]", 
             "role": "Florist", 
             "id": 1, 
             "address": "0x4936762f3c1b553748851900e60d9dbbcf278d1c"
@@ -2840,114 +3884,29 @@
     }, 
     "variables": [
       {
-        "matrix": {
-          "Florist": [
-            {
-              "matrix": [
-                true, 
-                false, 
-                false, 
-                true
-              ], 
-              "name": "ActiviteA"
-            }, 
-            {
-              "matrix": [
-                false, 
-                false, 
-                true, 
-                false
-              ], 
-              "name": "e"
-            }
-          ], 
-          "Tourist": [
-            {
-              "matrix": [
-                false, 
-                true, 
-                false, 
-                false
-              ], 
-              "name": "Activity_B"
-            }
-          ]
-        }, 
         "id": 0, 
-        "name": "Water"
-      }, 
-      {
         "matrix": {
           "Florist": [
             {
               "matrix": [
                 true, 
                 false, 
-                false, 
-                true
+                true, 
+                false
               ], 
-              "name": "ActiviteA"
+              "name": "Activity1"
             }, 
             {
               "matrix": [
                 false, 
-                false, 
-                true, 
-                false
-              ], 
-              "name": "e"
-            }
-          ], 
-          "Tourist": [
-            {
-              "matrix": [
-                false, 
                 true, 
                 false, 
                 false
               ], 
-              "name": "Activity_B"
+              "name": "Activity2"
             }
           ]
         }, 
-        "id": 1, 
-        "name": "Temperature"
-      }, 
-      {
-        "matrix": {
-          "Florist": [
-            {
-              "matrix": [
-                true, 
-                true, 
-                false, 
-                false
-              ], 
-              "name": "ActiviteA"
-            }, 
-            {
-              "matrix": [
-                true, 
-                true, 
-                false, 
-                false
-              ], 
-              "name": "e"
-            }
-          ], 
-          "Tourist": [
-            {
-              "matrix": [
-                true, 
-                true, 
-                true, 
-                true
-              ], 
-              "name": "Activity_B"
-            }
-          ]
-        }, 
-        "id": 2, 
         "name": "Time"
       }
     ], 
@@ -2955,35 +3914,29 @@
       "vect": {
         "activityNames": {
           "default": [
-            "e3", 
-            "ActiviteA", 
-            "Activity_B"
+            "e1", 
+            "Activity2"
           ], 
           "receive": [
-            "e3r", 
-            "ActiviteA", 
-            "Activity_B"
+            "e1r", 
+            "Activity2"
           ], 
           "send": [
-            "e3s", 
-            "ActiviteA", 
-            "Activity_B"
+            "e1s", 
+            "Activity2"
           ]
         }, 
         "publicData": [], 
         "fullMarkings": {
           "included": [
             "1", 
-            "1", 
             "1"
           ], 
           "executed": [
             "0", 
-            "0", 
             "0"
           ], 
           "pending": [
-            "0", 
             "0", 
             "0"
           ]
@@ -2993,16 +3946,9 @@
             "exclude": [
               [
                 0.0, 
-                0.0, 
                 0.0
               ], 
               [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
                 0.0, 
                 0.0
               ]
@@ -3010,16 +3956,9 @@
             "include": [
               [
                 0.0, 
-                0.0, 
                 0.0
               ], 
               [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
                 0.0, 
                 0.0
               ]
@@ -3027,16 +3966,9 @@
             "response": [
               [
                 0.0, 
-                0.0, 
                 0.0
               ], 
               [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
                 0.0, 
                 0.0
               ]
@@ -3044,16 +3976,9 @@
             "condition": [
               [
                 0.0, 
-                0.0, 
                 0.0
               ], 
               [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
                 0.0, 
                 0.0
               ]
@@ -3061,16 +3986,9 @@
             "milestone": [
               [
                 0.0, 
-                0.0, 
                 0.0
               ], 
               [
-                0.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
                 0.0, 
                 0.0
               ]
@@ -3081,19 +3999,13 @@
           {
             "executed": 0, 
             "include": 1, 
-            "id": "e3", 
+            "id": "e1", 
             "pending": 0
           }, 
           {
             "executed": 0, 
             "include": 1, 
-            "id": "ActiviteA", 
-            "pending": 0
-          }, 
-          {
-            "executed": 0, 
-            "include": 1, 
-            "id": "Activity_B", 
+            "id": "Activity2", 
             "pending": 0
           }
         ], 
@@ -3101,16 +4013,9 @@
           "exclude": [
             [
               "0", 
-              "0", 
               "0"
             ], 
             [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
               "0", 
               "0"
             ]
@@ -3118,16 +4023,9 @@
           "include": [
             [
               "0", 
-              "0", 
               "0"
             ], 
             [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
               "0", 
               "0"
             ]
@@ -3135,16 +4033,9 @@
           "response": [
             [
               "0", 
-              "0", 
               "0"
             ], 
             [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
               "0", 
               "0"
             ]
@@ -3152,16 +4043,9 @@
           "condition": [
             [
               "0", 
-              "0", 
               "0"
             ], 
             [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
               "0", 
               "0"
             ]
@@ -3169,16 +4053,9 @@
           "milestone": [
             [
               "0", 
-              "0", 
               "0"
             ], 
             [
-              "0", 
-              "0", 
-              "0"
-            ], 
-            [
-              "0", 
               "0", 
               "0"
             ]
@@ -3188,43 +4065,35 @@
       "data": [
         {
           "data": {
-            "id": "e3", 
-            "name": "Florist\ne\nDriver"
+            "id": "e1", 
+            "name": "Florist\nActivity1\nFlorist"
           }, 
           "classes": "choreography type_choreography included executable", 
           "group": "nodes"
         }, 
         {
           "data": {
-            "id": "ActiviteA", 
-            "name": "Florist\nActiviteA"
-          }, 
-          "classes": "included executable", 
-          "group": "nodes"
-        }, 
-        {
-          "data": {
-            "id": "Activity_B", 
-            "name": "Tourist\nActivity_B"
+            "id": "Activity2", 
+            "name": "Florist\nActivity2"
           }, 
           "classes": "included executable", 
           "group": "nodes"
         }
       ]
     }, 
-    "id": "p4", 
+    "id": "p5", 
     "projType": "g_to_p", 
     "Public": {
       "vect": {
         "activityNames": {
           "default": [
-            "e3"
+            "e1"
           ], 
           "receive": [
-            "e3r"
+            "e1r"
           ], 
           "send": [
-            "e3s"
+            "e1s"
           ]
         }, 
         "publicData": [], 
@@ -3272,7 +4141,7 @@
           {
             "executed": 0, 
             "include": 1, 
-            "id": "e3", 
+            "id": "e1", 
             "pending": 0
           }
         ], 
@@ -3307,8 +4176,8 @@
       "data": [
         {
           "data": {
-            "id": "e3", 
-            "name": "Florist\ne\nDriver"
+            "id": "e1", 
+            "name": "Florist\nActivity1\nFlorist"
           }, 
           "classes": "choreography type_choreography included executable", 
           "group": "nodes"

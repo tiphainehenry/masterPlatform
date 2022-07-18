@@ -92,7 +92,7 @@ def projectGlobal(processID, data, target):
     generates global projection (text, cytoscape, and vector descriptions) out of a textual DCR description
 
     :param processID: the ID of the current process. eg: "p1"
-    :param data: json description of the global dcr
+    :param data: json description of the global dcrv
     :param target: the path where the projection will be saved. eg: '../../client/src/projections/'
     """ 
     this_folder = os.path.dirname(os.path.abspath(__file__))

@@ -21,6 +21,7 @@ import WelcomeInstance from './components/WelcomeInstance';
 import WelcomeModel from './components/WelcomeModel';
 import CreationDeck from './components/CreationDeck';
 import NewRole from './components/NewRole';
+import NewDevice from './components/NewDevice';
 import Headers from './components/Header';
 import MyNotifications from './components/MyNotifications';
 // import store from './components/store'
@@ -85,6 +86,7 @@ const App = () => (
       </Switch>
 
       <Route exact path="/newrole" component={NewRole} />
+      <Route exact path="/newdevice" component={NewDevice} />
       <Route exact path="/mynotifications" component={MyNotifications} />
 
       <Switch>
