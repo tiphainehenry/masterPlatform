@@ -3,8 +3,13 @@ import Header from './Header';
 import { Button, Row, Form, Container } from 'react-bootstrap';
 
 import SidebarModel from './SidebarModel';
+import ipfs from '../ipfs';
+import axios from 'axios';
+
 
 import AdminRoleManager from '../contracts/AdminRoleManager.json';
+import nft from '../contracts/NFTContract.json';
+
 import getWeb3 from '../getWeb3';
 
 
@@ -31,6 +36,8 @@ class NewRole extends React.Component {
             allRegisteredRoles:[]
         };
 
+        this.onIPFSSubmit = this.onIPFSSubmit.bind(this);
+
     }
 
     /**
@@ -47,16 +54,62 @@ class NewRole extends React.Component {
             this.setState({ name: e.target.value })
         else if (e.target.name === "selector") {
             this.setState({ selectValue: e.target.value })
-            this.setState({ isNew: (e.target.value === "") })
-            if (e.target.value !== "") {
-                this.getListRoles('0x' + this.state.addresses[this.state.roles.indexOf(e.target.value)])
-            }
+            // this.setState({ isNew: (e.target.value === "") })
+            // if (e.target.value !== "") {
+            //     this.getListRoles('0x' + this.state.addresses[this.state.roles.indexOf(e.target.value)])
+            // }
         } else if (e.target.name === "isAdmin") {
             this.setState(prevstate => ({ isAdmin: !prevstate.isAdmin }))
         } else if (e.target.name === "newRole") {
             this.setState({ newRoleName: e.target.value });
         }
     }
+
+    onIPFSSubmit = async () => {
+    
+        //save document to IPFS,return its hash#, and set hash# to state
+        //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add
+        // alert(this.state.processID);
+    
+        var input = {"type" : this.state.selectValue, "name" : this.state.name};
+        console.log(input);
+        // var input = "Test";
+    
+        try {
+          ipfs.files.add(Buffer.from(JSON.stringify(input)))
+            .then(res => {
+              const hash = res[0].hash;
+              console.log(this.state.accounts[0], "https://infura-ipfs.io/ipfs/" + hash);
+              this.state.nftContract.methods.mintNFT(this.state.accounts[0], "https://infura-ipfs.io/ipfs/" + hash).send({ from: this.state.accounts[0] });
+            //   console.log(r);
+              console.log(hash);
+              this.setState({
+                ipfsHash: hash
+              }, () => {
+                localStorage.setItem('ipfsHash', JSON.stringify(this.state.ipfsHash))
+              });
+              this.getDevices();
+    
+            //   axios.post(`http://localhost:5000/saveHash`,
+            //     {
+            //       "hash": hash,
+            //       "processId": this.state.processID,
+            //     },
+            //     { "headers": { "Access-Control-Allow-Origin": "*" } }
+            //   );
+    
+              return ipfs.files.cat(hash)
+            })
+            .then(output => {
+              console.log(JSON.parse(output));
+              alert('Saved to IPFS')
+            })
+        }
+        catch (error) {
+          alert('Is the VPN on?');
+        }
+    
+      }; //onIPFSSubmit 
 
     /**
      * Connect to Smart contract
@@ -71,10 +124,14 @@ class NewRole extends React.Component {
                 AdminRoleManager.abi,
                 deployedNetwork && deployedNetwork.address,
             );
+            const nftdeployedNetwork = nft.networks[networkId];
+        
+            const nftinstance = new web3.eth.Contract(
+                nft.abi,
+                nftdeployedNetwork && nftdeployedNetwork.address,
+            );
             this.setState({ instance: instance })
-            this.setState({ web3, accounts, contract: instance });
-            this.getRoles();
-            this.computeListofAllRegisteredRoles();
+            this.setState({ web3, accounts, contract: instance, nftContract: nftinstance });
         } catch (error) {
             //alert(
             //  `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -115,6 +172,13 @@ class NewRole extends React.Component {
             tmpAdmin.push(val[2] === "true" ? true : false)
         });
         this.setState({ roles: tmpRoles, addresses: tmpAddress, admins: tmpAdmin })
+    }
+
+    async getDevices() {
+        const dev = await this.state.nftContract.methods.getAllTokens().call();
+        const dev2 = await this.state.nftContract.methods.getCounterCount().call();
+
+        console.log(dev, dev2);
     }
 
     /**
@@ -223,7 +287,7 @@ class NewRole extends React.Component {
                         </div>
                     </div>
                     <div class="form-group col-12 ">
-                        <Button onClick={() => this.manageRole()} class="btn btn-primary">Mint new device</Button>
+                        <Button onClick={() => this.onIPFSSubmit()} class="btn btn-primary">Mint new device</Button>
                     </div>
                 </>)
 

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.16;
+pragma solidity >=0.5.16;
 pragma experimental ABIEncoderV2;
 
 // import "hardhat/console.sol";
@@ -52,7 +52,7 @@ contract Access_matrix {
       * @return 
       */
     function updateValue(string memory _hash, uint index, uint32 _variable_value, string memory _activity) public {
-        bool has_access = (variables[_hash][index].matrix[_activity][msg.sender] >> 2 ) & 1 == 1;
+        bool has_access = (variables[_hash][index].matrix[_activity][msg.sender] >> 3 ) & 1 == 1;
         assert(has_access);
         variables[_hash][index].value = _variable_value;
     }
@@ -91,8 +91,8 @@ contract Access_matrix {
       * @return 
       */
     function deleteVariable(string memory _hash, uint index, string memory _activity) public {
-        // bool has_access = (variables[_hash][index].matrix[_activity][msg.sender]) & 1 == 1;
-        // assert(has_access);
+        bool has_access = (variables[_hash][index].matrix[_activity][msg.sender]) & 1 == 1;
+        assert(has_access);
         selfdestruct(msg.sender);
     }
 }
