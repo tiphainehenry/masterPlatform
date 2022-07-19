@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import '../style/boosted.min.css';
 import Authentification from './Authentification';
 
-import { Users, FilePlus, Edit, PlayCircle } from 'react-feather';
+import { Users, FilePlus, Edit, PlayCircle, Cpu } from 'react-feather';
 
 
 /**
@@ -36,7 +36,7 @@ class SidebarModel extends React.Component {
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/newdevice">
-                            <span> <Users /> Manage IoT device</span>
+                            <span> <Cpu /> Manage IoT device</span>
                         </a>
                     </li>
                 </ul></div>

@@ -25,7 +25,8 @@ class NewRole extends React.Component {
             isNew: true,
             isAdmin: true,
             address: "",
-            name: "",
+            name: "default",
+            ipaddress: "192.168.0.1",
             selectValue: "Actuators",
             roles: [],
             myRoles: [],
@@ -54,6 +55,9 @@ class NewRole extends React.Component {
             this.setState({ address: e.target.value })
         else if (e.target.name === "name")
             this.setState({ name: e.target.value })
+        else if (e.target.name === "ipaddress") {
+            this.setState({ipaddress : e.target.value})
+        }
         else if (e.target.name === "selector") {
             this.setState({ selectValue: e.target.value })
             // this.setState({ isNew: (e.target.value === "") })
@@ -72,7 +76,7 @@ class NewRole extends React.Component {
         //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add
         // alert(this.state.processID);
 
-        var input = { "type": this.state.selectValue, "name": this.state.name };
+        var input = { "type": this.state.selectValue, "name": this.state.name, "ipaddress" : this.state.ipaddress, "address" : this.state.accounts[0] };
         console.log(input);
         // var input = "Test";
 
@@ -165,6 +169,10 @@ class NewRole extends React.Component {
                         <td>{i}</td>
                         <td>{response.data.type}</td>
                         <td>{response.data.name}</td>
+                        <td>{response.data.ipaddress}</td>
+                        <td>{response.data.address}</td>
+
+
                     </tr>
                 );
             })
@@ -209,7 +217,10 @@ class NewRole extends React.Component {
                                                 <div className="form-group col-12 col-lg-6">
                                                     <label className="is-required" for="role">Name</label>
                                                     <input type="input" name="name" class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true"  ></input>
-
+                                                </div>
+                                                <div className="form-group col-12 col-lg-6">
+                                                    <label className="is-required" for="role">IP Address</label>
+                                                    <input type="input" name="ipaddress" class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true"  ></input>
                                                 </div>
                                                 <div className="form-group col-12 col-lg-6">
                                                     <Button onClick={this.onIPFSSubmit}>Mint a new device</Button>
@@ -231,6 +242,8 @@ class NewRole extends React.Component {
                                                                 <th>#</th>
                                                                 <th>Device's Type</th>
                                                                 <th>Device's Name</th>
+                                                                <th>IP address</th>
+                                                                <th>Owner's Address</th>
                                                             </tr>
 
                                                         </thead>
