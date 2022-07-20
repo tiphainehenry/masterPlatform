@@ -1,0 +1,12 @@
+{
+  "markings": [], 
+  "relations": [
+    {
+      "exclude": [], 
+      "include": [], 
+      "response": [], 
+      "condition": [], 
+      "milestone": []
+    }
+  ]
+}

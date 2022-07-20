@@ -24,52 +24,52 @@ const cytoMenuHelpers = {
         /// Remove space in name and assign Name
         const tmp = this.cy.getElementById(this.state.elemClicked.id);
         //console.log(tmp['private']);
-        try{
+        try {
             if (this.state.elemClicked.activityName !== tmp.data('properName')) {
                 //console.log("verif"this.state.dataFields);
                 this.setState({ elemClicked: { activityName: tmp.data('name').split(' ')[1] } })
-            }    
+            }
         }
-        catch(error){
+        catch (error) {
             console.log(error);
         }
 
         if ((this.state.elemClicked.classes.has("type_choreography"))) {
             //console.log('choreography task');
 
-            try{
+            try {
                 var receivers = "";
-                this.state.optionSelected.forEach(elem=>{
-                    receivers=receivers+","+elem['value'];
+                this.state.optionSelected.forEach(elem => {
+                    receivers = receivers + "," + elem['value'];
                 })
-                if(receivers[0]===","){
-                    receivers=receivers.substring(1);
+                if (receivers[0] === ",") {
+                    receivers = receivers.substring(1);
                 }
-    
-                tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + receivers);    
+
+                tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + receivers);
             }
-            catch(error){
+            catch (error) {
                 console.log(error);
             }
         }
-        else if((this.state.elemClicked.classes.has("type_projChoreo"))){
-            try{
-            //console.log('choreography task');
-            var act = this.state.elemClicked.raw_activityName.split('(')[1].split(',')[0];
-            tmp['_private']['classes'].delete("type_projChoreo");
-            tmp['_private']['classes'].add("type_choreography");
+        else if ((this.state.elemClicked.classes.has("type_projChoreo"))) {
+            try {
+                //console.log('choreography task');
+                var act = this.state.elemClicked.raw_activityName.split('(')[1].split(',')[0];
+                tmp['_private']['classes'].delete("type_projChoreo");
+                tmp['_private']['classes'].add("type_choreography");
 
-            receivers = "";
-            this.state.optionSelected.forEach(elem=>{
-                receivers=receivers+","+elem['value'];
-            })
-            if(receivers[0]===","){
-                receivers=receivers.substring(1);
-            }
+                receivers = "";
+                this.state.optionSelected.forEach(elem => {
+                    receivers = receivers + "," + elem['value'];
+                })
+                if (receivers[0] === ",") {
+                    receivers = receivers.substring(1);
+                }
 
-            tmp.data('name', this.state.choreographyNames.sender + ' ' + act + ' ' + receivers);
+                tmp.data('name', this.state.choreographyNames.sender + ' ' + act + ' ' + receivers);
             }
-            catch(error){
+            catch (error) {
                 console.log(error);
             }
         }
@@ -83,13 +83,13 @@ const cytoMenuHelpers = {
 
         /// take care of datafields
 
-        if(this.state.dataFields.length > 0){
+        if (this.state.dataFields.length > 0) {
             tmp.data('dataFields', this.state.dataFields);
             tmp['_private']['classes'].add("has_datafields");
         }
 
-        console.log(tmp.data('dataFields'));        
-        
+        console.log(tmp.data('dataFields'));
+
     },
 
     /**
@@ -134,20 +134,20 @@ const cytoMenuHelpers = {
     /**
     * remove event or relation
     */
-     removeCreate: function () {
+    removeCreate: function () {
         // watch out node or edge
 
         var id = this.state.elemClicked.id;
 
         switch (this.state.elemClicked.type) {
             case 'nodes':
-                    console.log('removing node with id ' + id);
-                    var jn = this.cy.getElementById(id);
+                console.log('removing node with id ' + id);
+                var jn = this.cy.getElementById(id);
 
-                    this.setState({
-                        numSelected: this.state.numSelected - 1
-                    });
-                    this.cy.remove(jn);
+                this.setState({
+                    numSelected: this.state.numSelected - 1
+                });
+                this.cy.remove(jn);
                 break;
 
             case 'edges':
@@ -206,6 +206,55 @@ const cytoMenuHelpers = {
                 nbr: this.state.newActivityCnt
             },
             classes: "subgraph type_choreography"
+        });
+
+        this.setState({
+            newActivityCnt: this.state.newActivityCnt + 1
+        });
+    },
+
+    addChoreoActivityActuator: function () {
+
+        console.log('add choreography activity');
+
+        var label = 'Actuator' + this.state.newActivityCnt;
+
+        this.cy.add({
+            group: 'nodes',
+            data: {
+                id: label,
+                name: this.state.choreographyNames.sender + " " + label + " " + this.state.choreographyNames.receiver,
+                nbr: this.state.newActivityCnt
+            },
+            classes: "subgraph actuator",
+            style: { // style property overrides 
+                'background-color': 'red'
+            }
+        });
+
+        this.setState({
+            newActivityCnt: this.state.newActivityCnt + 1
+        });
+    },
+
+    addChoreoActivitySensor: function () {
+
+        console.log('add choreography activity');
+
+        var label = 'Sensor' + this.state.newActivityCnt;
+
+        this.cy.add({
+            group: 'nodes',
+            data: {
+                id: label,
+                name: this.state.choreographyNames.sender + " " + label + " " + this.state.choreographyNames.receiver,
+                nbr: this.state.newActivityCnt
+            },
+            classes: "subgraph sensor",
+            style: { // style property overrides 
+                "shape": "triangle",
+                'background-color': 'red'
+            }
         });
 
         this.setState({

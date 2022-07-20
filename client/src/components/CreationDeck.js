@@ -164,6 +164,8 @@ class CreationDeck extends React.Component {
     /// Add activity
     this.addLocalActivity = cytoMenuHelpers.addLocalActivity.bind(this);
     this.addChoreoActivity = cytoMenuHelpers.addChoreoActivity.bind(this);
+    this.addChoreoActivityActuator = cytoMenuHelpers.addChoreoActivityActuator.bind(this);
+    this.addChoreoActivitySensor = cytoMenuHelpers.addChoreoActivitySensor.bind(this);
 
     // Add relation
     this.addRelation = cytoMenuHelpers.addRelation.bind(this);

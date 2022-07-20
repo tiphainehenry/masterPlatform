@@ -1,0 +1,26 @@
+[
+  {
+    "data": {
+      "id": "e1", 
+      "name": "e1\nundefined\nundefined"
+    }, 
+    "classes": "choreography type_choreography included executable", 
+    "group": "nodes"
+  }, 
+  {
+    "data": {
+      "id": "e4", 
+      "name": "Tourist\nTourist\nundefined"
+    }, 
+    "classes": "choreography type_choreography included executable", 
+    "group": "nodes"
+  }, 
+  {
+    "data": {
+      "id": "e5", 
+      "name": "e5\nundefined\nundefined"
+    }, 
+    "classes": "choreography type_choreography included executable", 
+    "group": "nodes"
+  }
+]

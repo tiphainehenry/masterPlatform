@@ -26,7 +26,7 @@ export function getMenuStyle() {
         show: true, // Whether the item will be shown or not
         hasTrailingDivider: true, // Whether the item will have a trailing divider
         coreAsWell: false, // Whether core instance have this item on cxttap
-        },
+      },
       {
         id: 'add-activity',
         content: 'add activity',
@@ -49,9 +49,35 @@ export function getMenuStyle() {
             tooltipText: 'add choreography activity',
             selector: 'node',
             coreAsWell: true,
-            onClickFunction: this.addChoreoActivity
+            onClickFunction: this.addChoreoActivity,
           }
         ]
+      },
+      {
+        id: 'add-activity-iot',
+        content: 'add IoT activity',
+        tooltipText: 'add activity',
+        selector: 'node',
+        coreAsWell: true,
+        submenu: [
+          {
+            id: 'add-choreo-sensor',
+            content: 'add sensor activity',
+            tooltipText: 'add local activity',
+            selector: 'node',
+            coreAsWell: true,
+            onClickFunction: this.addChoreoActivitySensor
+          },
+          {
+            id: 'add-choreo-actuator',
+            content: 'add actuator activity',
+            tooltipText: 'add choreography activity',
+            selector: 'node',
+            coreAsWell: true,
+            onClickFunction: this.addChoreoActivityActuator
+          }
+        ]
+
       },
       {
         id: 'add-relation',

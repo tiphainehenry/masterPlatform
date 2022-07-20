@@ -14,7 +14,7 @@
       "text-halign": "center",
       "text-valign": "center",
       "text-wrap": "wrap",
-      "text-max-width": 60, 
+      "text-max-width": 60,
       "line-height": 2,
       "label": "data(name)"
     }
@@ -25,66 +25,79 @@
       "height": 15
     }
   },
-    {
-      "selector": "node.executable",
-      "style": {
-        "border-color": "#454545",
-        "color": "#454545",
-        "backgroundColor":"white"
-      }
-    },
-    {
-      "selector": "node.included",
-      "style": {
-        "backgroundColor":"white",
-        "border-style": "solid"
-      }
-    },
-    {
-     "selector": "node.executed",
-      "style": {
-        "color": "#29A81A",
-        "backgroundColor":"white"
-      }
-    },
-    {
-      "selector": "node.pending",
-      "style": {
-        "border-color": "#1E90FF"
-      }
-    },
-    {
-      "selector": "node.selected",
-      "style": {
-        "border-width": 10
-      }
-    },
-    {
-        "selector": "node.external,node.type_projReceiver",
-        "style": {
-          "shape":"octagon",
-          "opacity":0.6,
-          "border-style": "dashed"
-          }
-        },
-        {
-      "selector": "node.subgraph",
-      "style": {
-        "backgroundColor": "#ff7900"
-      }
-    },
-    {
-      "selector": "node.choreography, node.type_projChoreo, node.type_choreography",
-      "style": {
-        "shape":"octagon"
-}
-    },
-    {
-      "selector":"node.has_datafields",
-      "style": {
-        "overlay-color":"pink",
-        "overlay-shape":"ellipse"
-      }
+  {
+    "selector": "node.executable",
+    "style": {
+      "border-color": "#454545",
+      "color": "#454545",
+      "backgroundColor": "white"
     }
-  
+  },
+  {
+    "selector": "node.included",
+    "style": {
+      "backgroundColor": "white",
+      "border-style": "solid"
+    }
+  },
+  {
+    "selector": "node.executed",
+    "style": {
+      "color": "#29A81A",
+      "backgroundColor": "white"
+    }
+  },
+  {
+    "selector": "node.pending",
+    "style": {
+      "border-color": "#1E90FF"
+    }
+  },
+  {
+    "selector": "node.selected",
+    "style": {
+      "border-width": 10
+    }
+  },
+  {
+    "selector": "node.external,node.type_projReceiver",
+    "style": {
+      "shape": "octagon",
+      "opacity": 0.6,
+      "border-style": "dashed"
+    }
+  },
+  {
+    "selector": "node.subgraph",
+    "style": {
+      "backgroundColor": "#ff7900"
+    }
+  },
+  {
+    "selector": "node.sensor",
+    "style": {
+      "shape": "diamond",
+      "backgroundColor": "#ff0000"
+    }
+  },
+  {
+    "selector": "node.actuator",
+    "style": {
+      "shape": "diamond",
+      "backgroundColor": "#ff0000"
+    }
+  },
+  {
+    "selector": "node.choreography, node.type_projChoreo, node.type_choreography",
+    "style": {
+      "shape": "octagon"
+    }
+  },
+  {
+    "selector": "node.has_datafields",
+    "style": {
+      "overlay-color": "pink",
+      "overlay-shape": "ellipse"
+    }
+  }
 ]
