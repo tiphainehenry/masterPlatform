@@ -9,16 +9,24 @@
   }, 
   {
     "data": {
-      "id": "e4", 
-      "name": "Tourist\nTourist\nundefined"
+      "id": "e2", 
+      "name": "Florist\nSensor2\nFlorist,Tourist"
     }, 
     "classes": "choreography type_choreography included executable", 
     "group": "nodes"
   }, 
   {
     "data": {
-      "id": "e5", 
-      "name": "e5\nundefined\nundefined"
+      "id": "e3", 
+      "name": "Sensor2\nundefined\nundefined"
+    }, 
+    "classes": "choreography type_choreography included executable", 
+    "group": "nodes"
+  }, 
+  {
+    "data": {
+      "id": "e4", 
+      "name": "Actuatortest\nTSensor1\nundefined"
     }, 
     "classes": "choreography type_choreography included executable", 
     "group": "nodes"

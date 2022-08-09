@@ -14,9 +14,9 @@ from flask import Flask, flash, request, redirect, url_for, session, jsonify
 from flask_cors import CORS, cross_origin
 from flask_restful import reqparse, abort, Api, Resource
 from werkzeug.utils import secure_filename
-from src.projalgoGlobal import projectGlobal,projectGlobalforPublicChange
+from src.projalgoGlobal import projectGlobal, projectGlobalforPublicChange
 from src.projalgoPublic import projectPublic
-from src.projalgoRoles import projRole, projRole_fromLocalRequest,projRole_fromPublicRequest
+from src.projalgoRoles import projRole, projRole_fromLocalRequest, projRole_fromPublicRequest
 from src.utils.formatting import removeGroups, getChoreographyDetails
 from src.utils.vectorization import getRelationElems
 from src.utils.chunking import getRoles, getRoleMapping
@@ -92,7 +92,7 @@ def updWithName(dataTxt, pi, projType):
 
     for role in getRoles(pi):
         print('[INFO] Starting projection on role '+role)
-        projRole(pi, dataTxt, target, role) 
+        projRole(pi, dataTxt, target, role)
         dumpJSONFile(os.path.join(target, 'exec' +
                                   getId(pi, role)+'.json'), {"execLogs": []})
 
@@ -183,7 +183,7 @@ def SaveToLibrary():
     """
 
     dataPath = '../../client/src/projections/Library.json'
-    #print(request.method)
+    # print(request.method)
     if request.method == 'POST':
         data = request.get_json(silent=True)
 
@@ -471,7 +471,7 @@ def inputFileLaunch():
     return 'ok', 200, {'Access-Control-Allow-Origin': '*'}
 
     # except:
-        # return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
+    #     return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
 
 
 @app.route('/delete', methods=['GET', 'POST'])
@@ -566,7 +566,6 @@ def cleanActivityId(id, mapping):
         return id
 
 
-
 def pprintDict(_dict):
     for key, value in _dict.items():
         print('[KEY] '+str(key)+':')
@@ -590,7 +589,7 @@ def publicChg():
         publicData = json.loads(request.form['JSONPubView'])
         reqHash = str(request.form['reqHash'])
 
-        #step1: generate text
+        # step1: generate text
         dcrTextList = []
 
         choreo = []
@@ -598,11 +597,10 @@ def publicChg():
         events = []
         edges = []
 
-
         for ele in publicData:
             if ele['group'] == 'nodes':
                 line = ele['data']
-                
+
                 if((ele['data']['id'][0] == 'e') & (ele['data']['id'][-1].isnumeric())):
                     activityName = ele['data']['name'].split('\n')[1]
                     src = ele['data']['name'].split('\n')[0]
@@ -647,7 +645,6 @@ def publicChg():
 
                         if ele not in toreformat:
                             toreformat.append(ele)
-
 
         # fetch number of public nodes in the original version
         dataJson = loadJSONFile(projDBPath)
@@ -716,29 +713,27 @@ def publicChg():
         # merge all and project
         projText = addresses+choreo+edges
 
-
-        #step2: public projection (data and vect)
+        # step2: public projection (data and vect)
         target = '../../client/src/projections/'
         dataPath = '../../client/src/projections/dcrTexts.json'
         this_folder = os.path.dirname(os.path.abspath(__file__))
-    
+
         projectGlobalforPublicChange(processID, projText, target)
 
         dataJson = loadJSONFile(projDBPath)
 
-
         projectPublic(processID, projText, target)
 
         TxtExt = loadJSONFile(os.path.join(target, 'dcrTexts.json'))
-        
-        pprintDict(TxtExt)
-        
-        dataJson[processID]['TextExtraction']['public'] = TxtExt['public'] 
-        dataJson[processID]['TextExtraction']['global'] = TxtExt['global'] 
 
-        #for role in getRoles(processID):
+        pprintDict(TxtExt)
+
+        dataJson[processID]['TextExtraction']['public'] = TxtExt['public']
+        dataJson[processID]['TextExtraction']['global'] = TxtExt['global']
+
+        # for role in getRoles(processID):
         #    print('[INFO] Starting projection on role '+role)
-        #    projRole_fromPublicRequest(processID, projTxt, target, role) 
+        #    projRole_fromPublicRequest(processID, projTxt, target, role)
         #print('ok 5')
         dataJson[processID]['Public'] = {
             'data': loadJSONFile(os.path.join(target, 'temp_data'+'Public'+'.json')),
@@ -750,7 +745,7 @@ def publicChg():
             }
         }
 
-        dataJson[processID]['projType'] = 'g_to_p' ### to check
+        dataJson[processID]['projType'] = 'g_to_p'  # to check
         print('ok 5')
 
         dumpJSONFile(projDBPath, dataJson)
@@ -773,7 +768,6 @@ def publicChg():
 
     except:
         return 'nope', 500, {'Access-Control-Allow-Origin': '*'}
-
 
 
 @app.route('/localChg', methods=['GET', 'POST'])
@@ -976,7 +970,7 @@ def localChg():
             }
         }
 
-        dataJson['projType'] = 'g_to_p' ### to check
+        dataJson['projType'] = 'g_to_p'  # to check
 
         dumpJSONFile(projDBPath, dataJson)
 
@@ -1021,8 +1015,8 @@ def switchProj():
         'vect': dataProj[processID][roleMapping['id']]['v_upd']['vect']
     }
 
-    dataProj[processID]['hash']=reqHash
-    
+    dataProj[processID]['hash'] = reqHash
+
     # clean db and save
     dataProj[processID][roleMapping['id']].pop('v_upd', None)
     dumpJSONFile(projDBPath, dataProj)

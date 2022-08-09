@@ -1,0 +1,10 @@
+[
+  {
+    "data": {
+      "id": "e6r", 
+      "name": "?(Sensor5, Tourist-->Florist)"
+    }, 
+    "classes": "type_projChoreo type_projReceiver included executable", 
+    "group": "nodes"
+  }
+]

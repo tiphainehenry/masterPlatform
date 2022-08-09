@@ -38,9 +38,13 @@ const activityUpdHelpers = {
     * @param e: click event
     */
     handleTenant: function (e) {
-        e.preventDefault();
-        
+        e.preventDefault();   
         this.setState({ tenantName: e.target.value });
+    },
+
+    handleIoTTenant: function (e) {
+        e.preventDefault();   
+        this.setState({ iotdeviceselected: e.target.value });
     },
 
     /**

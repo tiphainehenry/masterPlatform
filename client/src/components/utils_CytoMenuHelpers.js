@@ -6,6 +6,7 @@ const cytoMenuHelpers = {
     updActivity: function () {
         var id = this.state.elemClicked.id;
         console.log('updating activity ' + id);
+        console.log(this.state.iotdeviceselected);
         /// Marking
         this.cy.getElementById(this.state.elemClicked.id).removeClass('included');
         this.cy.getElementById(this.state.elemClicked.id).removeClass('executed');
@@ -23,6 +24,7 @@ const cytoMenuHelpers = {
 
         /// Remove space in name and assign Name
         const tmp = this.cy.getElementById(this.state.elemClicked.id);
+        console.log(tmp, this.state.elemClicked.activityName);
         //console.log(tmp['private']);
         try {
             if (this.state.elemClicked.activityName !== tmp.data('properName')) {
@@ -49,6 +51,42 @@ const cytoMenuHelpers = {
                 tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + receivers);
             }
             catch (error) {
+                console.log(error);
+            }
+        }
+        else if(this.state.elemClicked.classes.has("actuator")) {
+            console.log("updating actuator");
+            try {
+                var receivers = "";
+                if(this.state.optionSelected)
+                this.state.optionSelected.forEach(elem => {
+                    receivers = receivers + "," + elem['value'];
+                })
+                if (receivers[0] === ",") {
+                    receivers = receivers.substring(1);
+                }
+                tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + receivers + ' ' + this.state.iotdeviceselected);
+
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
+        else if(this.state.elemClicked.classes.has("sensor")) {
+            console.log("updating sensor");
+            try {
+                var receivers = "";
+                if(this.state.optionSelected)
+                this.state.optionSelected.forEach(elem => {
+                    receivers = receivers + "," + elem['value'];
+                })
+                if (receivers[0] === ",") {
+                    receivers = receivers.substring(1);
+                }
+                tmp.data('name', this.state.choreographyNames.sender + ' ' + this.state.elemClicked.activityName + ' ' + receivers + ' ' + this.state.iotdeviceselected);
+
+            }
+            catch(error) {
                 console.log(error);
             }
         }
@@ -224,6 +262,7 @@ const cytoMenuHelpers = {
             data: {
                 id: label,
                 name: this.state.choreographyNames.sender + " " + label + " " + this.state.choreographyNames.receiver,
+                device : this.state.iotdeviceselected,
                 nbr: this.state.newActivityCnt
             },
             classes: "subgraph actuator",
@@ -248,6 +287,8 @@ const cytoMenuHelpers = {
             data: {
                 id: label,
                 name: this.state.choreographyNames.sender + " " + label + " " + this.state.choreographyNames.receiver,
+            
+                device : this.state.iotdeviceselected,
                 nbr: this.state.newActivityCnt
             },
             classes: "subgraph sensor",

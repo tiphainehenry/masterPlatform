@@ -1,0 +1,10 @@
+[
+  {
+    "data": {
+      "id": "e2r", 
+      "name": "?(Sensor2, Florist-->Florist,Tourist)"
+    }, 
+    "classes": "type_projChoreo type_projReceiver included executable", 
+    "group": "nodes"
+  }
+]

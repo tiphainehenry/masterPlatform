@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "data": {
+      "id": "e2s", 
+      "name": "!(Sensor2, Florist-->Florist,Tourist)"
+    }, 
+    "classes": "type_projChoreo included executable", 
+    "group": "nodes"
+  }
+]

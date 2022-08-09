@@ -1,0 +1,39 @@
+{
+  "markings": [
+    {
+      "executed": 0, 
+      "include": 1, 
+      "id": "e4s", 
+      "pending": 0
+    }
+  ], 
+  "relations": [
+    {
+      "exclude": [
+        [
+          0.0
+        ]
+      ], 
+      "include": [
+        [
+          0.0
+        ]
+      ], 
+      "response": [
+        [
+          0.0
+        ]
+      ], 
+      "condition": [
+        [
+          0.0
+        ]
+      ], 
+      "milestone": [
+        [
+          0.0
+        ]
+      ]
+    }
+  ]
+}

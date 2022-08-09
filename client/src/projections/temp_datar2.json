@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "data": {
+      "id": "e1r", 
+      "name": "?(undefined, e1-->undefined)"
+    }, 
+    "classes": "type_projChoreo type_projReceiver included executable", 
+    "group": "nodes"
+  }, 
+  {
+    "data": {
+      "id": "e3r", 
+      "name": "?(undefined, Sensor2-->undefined)"
+    }, 
+    "classes": "type_projChoreo type_projReceiver included executable", 
+    "group": "nodes"
+  }, 
+  {
+    "data": {
+      "id": "e4r", 
+      "name": "?(TSensor1, Actuatortest-->undefined)"
+    }, 
+    "classes": "type_projChoreo type_projReceiver included executable", 
+    "group": "nodes"
+  }
+]

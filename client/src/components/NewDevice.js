@@ -26,6 +26,7 @@ class NewRole extends React.Component {
             isAdmin: true,
             address: "",
             name: "default",
+            varname: "",
             ipaddress: "192.168.0.1",
             selectValue: "Actuators",
             roles: [],
@@ -55,8 +56,10 @@ class NewRole extends React.Component {
             this.setState({ address: e.target.value })
         else if (e.target.name === "name")
             this.setState({ name: e.target.value })
+        else if (e.target.name === "varName")
+            this.setState({ varname: e.target.value })
         else if (e.target.name === "ipaddress") {
-            this.setState({ipaddress : e.target.value})
+            this.setState({ ipaddress: e.target.value })
         }
         else if (e.target.name === "selector") {
             this.setState({ selectValue: e.target.value })
@@ -76,7 +79,7 @@ class NewRole extends React.Component {
         //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add
         // alert(this.state.processID);
 
-        var input = { "type": this.state.selectValue, "name": this.state.name, "ipaddress" : this.state.ipaddress, "address" : this.state.accounts[0] };
+        var input = { "type": this.state.selectValue, "name": this.state.name, "ipaddress": this.state.ipaddress, "address": this.state.accounts[0], "varname" : this.state.varname };
         console.log(input);
         // var input = "Test";
 
@@ -85,7 +88,7 @@ class NewRole extends React.Component {
                 .then(res => {
                     const hash = res[0].hash;
                     console.log(this.state.accounts[0], "https://infura-ipfs.io/ipfs/" + hash);
-                    this.state.nftContract.methods.mintNFT(this.state.accounts[0], "https://infura-ipfs.io/ipfs/" + hash).send({ from: this.state.accounts[0] });
+                    this.state.nftContract.methods.mintNFT(this.state.accounts[0], "https://infura-ipfs.io/ipfs/" + hash, this.state.varname).send({ from: this.state.accounts[0] });
                     //   console.log(r);
                     console.log(hash);
                     this.setState({
@@ -158,6 +161,7 @@ class NewRole extends React.Component {
 
     async getDevices() {
         const dev = await this.state.nftContract.methods.getAllTokens().call();
+        console.log(dev);
         const dev2 = await this.state.nftContract.methods.getCounterCount().call();
         let workedData = [];
         for (let i = 0; i < dev.length; i++) {
@@ -171,8 +175,7 @@ class NewRole extends React.Component {
                         <td>{response.data.name}</td>
                         <td>{response.data.ipaddress}</td>
                         <td>{response.data.address}</td>
-
-
+                        <td>{response.data.varname}</td>
                     </tr>
                 );
             })
@@ -215,8 +218,12 @@ class NewRole extends React.Component {
                                                     </select>
                                                 </div>
                                                 <div className="form-group col-12 col-lg-6">
-                                                    <label className="is-required" for="role">Name</label>
+                                                    <label className="is-required" for="role">Device's Name</label>
                                                     <input type="input" name="name" class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true"  ></input>
+                                                </div>
+                                                <div className="form-group col-12 col-lg-6">
+                                                    <label className="is-required" for="role">Variable's Name</label>
+                                                    <input type="input" name="varName" class="form-control required" onInput={e => this.onChange(e)} onChange={e => this.onChange(e)} required aria-required="true"  ></input>
                                                 </div>
                                                 <div className="form-group col-12 col-lg-6">
                                                     <label className="is-required" for="role">IP Address</label>
@@ -243,7 +250,9 @@ class NewRole extends React.Component {
                                                                 <th>Device's Type</th>
                                                                 <th>Device's Name</th>
                                                                 <th>IP address</th>
+                                                                
                                                                 <th>Owner's Address</th>
+                                                                <th>Variable's Name</th>
                                                             </tr>
 
                                                         </thead>
