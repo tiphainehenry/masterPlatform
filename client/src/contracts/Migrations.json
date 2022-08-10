@@ -915,12 +915,12 @@
     "8545": {
       "events": {},
       "links": {},
-      "address": "0x6C4754E5D7362eDb8947877EE07b6b60b4d9F4B3",
-      "transactionHash": "0x3f3344bc1705d2c7402295cdae363944fbb1994f71db35b7a38aa499e312dc6f"
+      "address": "0xb7A7C468f09399F862c17Fda3BE8dB34Af72517C",
+      "transactionHash": "0xf6085b25f4c6e427d992825e74f12b12fe8647f676c418398bc506262d791293"
     }
   },
   "schemaVersion": "3.4.8",
-  "updatedAt": "2022-08-08T09:14:33.068Z",
+  "updatedAt": "2022-08-09T15:04:14.389Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
