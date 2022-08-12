@@ -63,3 +63,20 @@ In a third terminal, run the bridge to connect the blockchain to the outside wor
 npm run bridge
 ```
 Make sure that the database is initially empty ! (Button 'delete all instances' in the 'my instances' panel)
+
+### Deploying the contracts (author leo)
+First deploying the blockchain
+```
+ganache-cli --mnemonic="trend acid deal original skate oblige mountain erupt rebuild panic release response" -i 8545 --gasLimit=0x1fffffffffffff --allowUnlimitedContractSize -e 1000000000
+```
+Then deploying the nft contract
+```
+cd ./nftcontract
+truffle deploy
+```
+Then deploying the rest of the contract
+```
+cd ..
+truffle deploy
+truffle deploy --reset (if it doesn't deploy)
+```
